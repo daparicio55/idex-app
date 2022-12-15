@@ -26,15 +26,14 @@ class CepreReporteController extends Controller
     public function index(Request $request)
     {
         //
-        
         $cepres = Cepre::orderBy('periodoCepre','desc')->pluck('periodoCepre','idCepre')->toArray();
         if(isset($request->idCepre)){
-            //tenemos hacer los carnets
             $cepre = Cepre::findOrFail($request->idCepre);
             $estudiantes = CepreEstudiante::where('idCepre','=',$cepre->idCepre)->get();
             $programas = DB::table('cepre_estudiantes as ce')
             ->select('c.nombreCarrera as programa',DB::raw("count(*) as cantidad"))
             ->join('ccarreras as c','c.idCarrera','=','ce.idCarrera')
+            ->where('ce.idCepre','=',$cepre->idCepre)
             ->groupBy('c.nombreCarrera')
             ->get();
             return view('cepres.reportes.index',compact('cepres','cepre','estudiantes','programas'));
