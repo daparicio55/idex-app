@@ -12,6 +12,16 @@
             margin: 0;
             padding: 0;
         }
+        label{
+            padding: 0px;
+        }
+        strong{
+            padding: 0px;
+        }
+        p{
+            padding: 0px;
+            margin: 0px;
+        }
     </style>
     <title>Carnets Cepre {{$cepre->periodoCepre}}</title>
 </head>
@@ -26,23 +36,19 @@
     @endphp
     <div class="row">
         <div class="col-6">
-            <div class="card mb-3" style="max-width: 8.1cm; height: 5.1cm; background-image: url('https://sisge.idexperujapon.edu.pe/img/fondocarnetv2.png'); background-size: 8.1cm">
-                <div class="card-header" style="height: 0.7cm;"></div>
-                <div class="card-body text-dark" style="height: 3cm">
+            <div class="card mb-3" style="max-width: 8.1cm; height: 5.1cm; background-image: url('https://sisge.idexperujapon.edu.pe/img/fondoCarnet.png') ; background-size: 8.1cm">
+                <div class="card-header  fw-bold" style="color: #6e1a05fa ; border:1px solid rgb(4, 4, 74) ">
+                    <img src="{{ asset('img/logo.png') }}" style="height: 0.7cm;" alt="">
+                    CEPRE IDEX PERÚ JAPÓN
+                </div>
+                <div class="card-body" style="height: 3cm; padding-top: 6px; padding-left: 5px; color: #6e1a05fa">
                     <div class="row">
-                        <div class="col-7">
-                            <div class="form-group">
-                                <strong>
-                                    <label for="">DNI:</label>
-                                    <label for="">{{$estudiantes[$i]->cliente->dniRuc}}</label>
-                                </strong>
-                            </div>
-                            <div class="form-group">
-                                <strong>
-                                    <label for="">Periodo:</label>
-                                    <label for="">{{$cepre->periodoCepre}}</label>
-                                </strong>
-                            </div>
+                        <div class="col-7" style="line-height: 19px">
+                            <p style="margin-top: 0px"><strong><label for="">DNI:</label><label for="">{{$estudiantes[$i]->cliente->dniRuc}}</label></strong></p>
+                            <p><strong>
+                                <label for="">Periodo:</label>
+                                <label for="">{{$cepre->periodoCepre}}</label>
+                            </strong></p>
                             <div class="form-group">
                                 <strong>
                                     <label for="">Prog. de Estudios:</label>
@@ -60,6 +66,9 @@
                                 </strong>
                             </div>
                         </div>
+                        <div class="col-5">
+                            <img src="{{ Storage::url($estudiantes[$i]->url) }}" style="width: 85%" alt="">
+                        </div>
                     </div>
                 </div>
                 <?php
@@ -74,30 +83,29 @@
                         $nombre = $nombres;
                     }
                 ?>
-                <div class="card-footer bg-transparent h7" style="height: 0.9cm; text-align: center"><strong class="text-uppercase">{{$estudiantes[$i]->cliente->apellido}}</strong>,<span class="text-capitalize"> {{strtolower($nombre)}}</span></div>
+                <div class="card-footer bg-transparent h7" style="text-align: center;padding:0px; border:1px solid rgb(4, 4, 74)">
+                    <strong class="text-uppercase">{{$estudiantes[$i]->cliente->apellido}}</strong>,<span class="text-capitalize"> {{strtolower($nombre)}}</span>
+                </div>
             </div>
         </div>
         @php
             $i++;
         @endphp
+
         <div class="col-6">
-            <div class="card mb-3" style="max-width: 8.1cm; height: 5.1cm; background-image: url('https://sisge.idexperujapon.edu.pe/img/fondocarnetv2.png'); background-size: 8.1cm">
-                <div class="card-header" style="height: 0.7cm;"></div>
-                <div class="card-body text-dark" style="height: 3cm">
+            <div class="card mb-3" style="max-width: 8.1cm; height: 5.1cm; background-image: url('https://sisge.idexperujapon.edu.pe/img/fondoCarnet.png') ; background-size: 8.1cm">
+                <div class="card-header  fw-bold" style="color: #6e1a05fa ; border:1px solid rgb(4, 4, 74) ">
+                    <img src="{{ asset('img/logo.png') }}" style="height: 0.7cm;" alt="">
+                    CEPRE IDEX PERÚ JAPÓN
+                </div>
+                <div class="card-body" style="height: 3cm; padding-top: 6px; padding-left: 5px; color: #6e1a05fa">
                     <div class="row">
-                        <div class="col-7">
-                            <div class="form-group">
-                                <strong>
-                                    <label for="">DNI:</label>
-                                    <label for="">{{$estudiantes[$i]->cliente->dniRuc}}</label>
-                                </strong>
-                            </div>
-                            <div class="form-group">
-                                <strong>
-                                    <label for="">Periodo:</label>
-                                    <label for="">{{$cepre->periodoCepre}}</label>
-                                </strong>
-                            </div>
+                        <div class="col-7" style="line-height: 19px">
+                            <p style="margin-top: 0px"><strong><label for="">DNI:</label><label for="">{{$estudiantes[$i]->cliente->dniRuc}}</label></strong></p>
+                            <p><strong>
+                                <label for="">Periodo:</label>
+                                <label for="">{{$cepre->periodoCepre}}</label>
+                            </strong></p>
                             <div class="form-group">
                                 <strong>
                                     <label for="">Prog. de Estudios:</label>
@@ -115,6 +123,9 @@
                                 </strong>
                             </div>
                         </div>
+                        <div class="col-5">
+                            <img src="{{ Storage::url($estudiantes[$i]->url) }}" style="width: 85%" alt="">
+                        </div>
                     </div>
                 </div>
                 <?php
@@ -129,9 +140,15 @@
                         $nombre = $nombres;
                     }
                 ?>
-                <div class="card-footer bg-transparent h7" style="height: 0.9cm; text-align: center"><strong class="text-uppercase">{{$estudiantes[$i]->cliente->apellido}}</strong>,<span class="text-capitalize"> {{strtolower($nombre)}}</span></div>
+                <div class="card-footer bg-transparent h7" style="text-align: center;padding:0px; border:1px solid rgb(4, 4, 74)">
+                    <strong class="text-uppercase">{{$estudiantes[$i]->cliente->apellido}}</strong>,<span class="text-capitalize"> {{strtolower($nombre)}}</span>
+                </div>
             </div>
         </div>
+
+
+
+        
     </div>
     @if ($fila == 5)
         <hr>

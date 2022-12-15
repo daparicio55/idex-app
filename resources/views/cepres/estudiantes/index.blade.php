@@ -29,6 +29,7 @@
                     <th>Apellidos, Nombres</th>
                     <th>Telefono</th>
                     <th>Carrera</th>
+                    <th>Periodo</th>
                     <th></th>
                 </thead>
                 @foreach ($cepreEstudiantes as $cepreEstudiante)
@@ -37,6 +38,7 @@
                     <td><strong class="text-uppercase">{{$cepreEstudiante->cliente->apellido}}</strong>, <span class="text-capitalize">{{Str::lower($cepreEstudiante->cliente->nombre)}}</span></td>
                     <td>{{$cepreEstudiante->cliente->telefono}}</td>
                     <td>{{$cepreEstudiante->carrera->nombreCarrera}}</td>
+                    <td>{{ $cepreEstudiante->cepre->periodoCepre }}</td>
                     <td style="text-align: center; width: 160px">
                         <a class="btn btn-info" target="_blank" href="{{route('cepres.estudiantes.show',['estudiante'=>$cepreEstudiante->idCepreEstudiante])}}">
                             <i class="fa fa-print" aria-hidden="true"></i>

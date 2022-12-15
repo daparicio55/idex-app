@@ -445,3 +445,19 @@ function deuda($id){
         }
         return ($total);
 }
+function totalPrograma($pmatricula_id,$idCarrera){        
+        $cantidad = Ematricula::where('pmatricula_id',$pmatricula_id
+        )->whereHas('estudiante.postulante',function($query) use($idCarrera){
+                $query->where('idCarrera',$idCarrera);
+        })->count();
+        return $cantidad;
+}
+function totalProgramaSexos($pmatricula_id,$idCarrera,$sexo){
+        $cantidad = Ematricula::where('pmatricula_id',$pmatricula_id
+        )->whereHas('estudiante.postulante',function($query) use($idCarrera,$sexo){
+                $query->where('idCarrera',$idCarrera)
+                ->where('sexo',$sexo);
+        })->count();
+        return $cantidad;
+
+}

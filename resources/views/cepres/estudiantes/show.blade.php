@@ -19,7 +19,7 @@
           <div class="col-md-10 text-center">
             <div class="card-body">
               <h1 class="card-title">CENTRO PRE "IDEX PERÚ JAPÓN"</h1>
-              <h3 class="card-title">Ficha de Inscripción - Año {{$cepreEstudiante->periodoCepre}}</h3>
+              <h3 class="card-title">Ficha de Inscripción - Año {{$cepreEstudiante->cepre->periodoCepre}}</h3>
               <p class="card-subtitle"><strong>Chachapoyas - Amazonas</strong></p>
               <p class="card-subtitle"><small class="text-muted"><i class="fa fa-check" aria-hidden="true"></i> Jr. Amazonas #120 <i class="fa fa-mobile" aria-hidden="true"></i> 041 - 750047 <i class="fa fa-globe" aria-hidden="true"></i> www.idexperujapon.edu.pe</small></p>
             </div>
@@ -45,7 +45,7 @@
         </div>
         <div class="row no-gutters">
           <div class="col-md-2">
-            <img src="{{asset('img/foto.png')}}" style="" style="width: 4cm;height: 5cm" class="mx-auto d-block card-img" alt="...">
+            <img src="{{ Storage::url($cepreEstudiante->url) }}" style="width: 4cm;height: 5cm" class="mx-auto d-block card-img" alt="...">
           </div>
           <div class="col-md-10">
             <div class="card-body">

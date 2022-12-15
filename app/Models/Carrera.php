@@ -22,5 +22,8 @@ class Carrera extends Model
     public function modulos(){
         return $this->hasMany(Mformativo::class,'carrera_id');
     }
+    public function postulantes(){
+        return $this->hasMany(AdmisionePostulante::class,'idCarrera');
+    }
     
 }

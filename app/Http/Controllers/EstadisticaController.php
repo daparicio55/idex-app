@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Carrera;
 use App\Models\Ematricula;
 use App\Models\Pmatricula;
 use Illuminate\Http\Request;
@@ -26,10 +27,16 @@ class EstadisticaController extends Controller
     public function index(Request $request)
     {
         //
-        $periodos = Pmatricula::pluck('nombre','id')->toArray();
+        $periodos = Pmatricula::orderBy('nombre','desc')->pluck('nombre','id')->toArray();
         if(isset($request->id)){
-            $matriculados = Ematricula::where('pmatricula_id','=',$request->id)->get();
-            return view('sacademica.estadisticas.index',compact('periodos','matriculados'));
+            /* $carreras = Carrera::whereHas('postulantes.estudiante.matriculas',function($query){
+                $query->where('pmatricula_id',68);
+            })->get(); */
+            /* dd($carreras[2]->postulantes()->get()); */
+            /* $carrera = Carrera::find(8);
+            return $carrera->postulantes()->estudiantes()->get(); */     
+            $carreras = Carrera::orderBy('nombreCarrera','asc')->get();
+            return view('sacademica.estadisticas.index',compact('periodos','carreras'));
         }
         return view('sacademica.estadisticas.index',compact('periodos'));
     }

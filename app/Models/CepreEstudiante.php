@@ -12,6 +12,7 @@ class CepreEstudiante extends Model
     protected $primaryKey = 'idCepreEstudiante';
     public $timestamps = false;
     protected $filltable = [
+        'url',
         'fechaNacimiento',
         'ieProcedencia',
         'ieDistrito',
@@ -51,5 +52,4 @@ class CepreEstudiante extends Model
     public function ceprePagos(){
         return $this->hasMany('App\Models\CeprePago','idCepreEstudiante');
     }
-
 }

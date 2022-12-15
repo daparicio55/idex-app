@@ -8,6 +8,7 @@ use App\Models\CepreEstudiante;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use PDF;
 
 class CepreEstudianteController extends Controller
@@ -38,7 +39,7 @@ class CepreEstudianteController extends Controller
                 $query->where('dniRuc','like','%'.$searchText.'%')->orWhere('apellido','like','%'.$searchText.'%');
             })->get();
         }else{
-            $cepreEstudiantes = CepreEstudiante::all();
+            $cepreEstudiantes = CepreEstudiante::orderBy('idCepreEstudiante','desc')->get();
         }
         return view('cepres.estudiantes.index',compact('cepreEstudiantes','searchText'));
     }
@@ -59,7 +60,7 @@ class CepreEstudianteController extends Controller
             $searchText = $request->searchText;
         }
         $carreras = Carrera::pluck('nombreCarrera','idCarrera')->toArray();
-        $cepres = Cepre::pluck('periodoCepre','idCepre')->toArray();
+        $cepres = Cepre::orderBy('idCepre','desc')->pluck('periodoCepre','idCepre')->toArray();
         return view('cepres.estudiantes.create',compact('carreras','cepres','cliente','searchText'));
     }
 
@@ -75,9 +76,15 @@ class CepreEstudianteController extends Controller
         try {
             //code...
             //verificamos si como esta el id del Cliente
+            if($request->hasFile('url')){
+                $url = Storage::put('ceprefotos',$request->file('url'));
+            }else{
+                $url = 'ceprefotos/pordefectoimagen.png';
+            }
             $cliente = Cliente::updateOrCreate(['idCliente'=>$request->idCliente],['direccion'=>$request->direccion,'dniRuc'=>$request->dniRuc,'apellido'=>$request->apellido,'nombre'=>$request->nombre,'telefono'=>$request->telefono,'telefono2'=>$request->telefono2,'email'=>$request->email]);
             CepreEstudiante::create([
                 'fechaNacimiento'=>$request->fechaNacimiento,
+                'url'=>$url,
                 'ieProcedencia'=>$request->ieProcedencia,
                 'ieDistrito'=>$request->ieDistrito,
                 'ieProvincia'=>$request->ieProvincia,
@@ -131,7 +138,7 @@ class CepreEstudianteController extends Controller
     {
         //
         $carreras = Carrera::pluck('nombreCarrera','idCarrera')->toArray();
-        $cepres = Cepre::pluck('periodoCepre','idCepre')->toArray();
+        $cepres = Cepre::orderBy('idCepre','desc')->pluck('periodoCepre','idCepre')->toArray();
         $cepreEstudiante = CepreEstudiante::findOrFail($id);
         return view('cepres.estudiantes.edit',compact('cepreEstudiante','carreras','cepres'));
     }
@@ -148,10 +155,17 @@ class CepreEstudianteController extends Controller
         //
         try {
             //code...
+            
             Cliente::updateOrCreate(['idCliente'=>$request->idCliente],['direccion'=>$request->direccion,'dniRuc'=>$request->dniRuc,'apellido'=>$request->apellido,'nombre'=>$request->nombre,'telefono'=>$request->telefono,'telefono2'=>$request->telefono2,'email'=>$request->email]);
             $cepreEstudiante = CepreEstudiante::findOrFail($id);
-            $cepreEstudiante->update($request->except('idCliente','direccion','dniRuc','apellido','nombre','telefono','telefono2','email'));
-
+            if ($request->hasFile('url')){
+                $url = Storage::put('ceprefotos',$request->file('url'));
+                $cepreEstudiante->update($request->except('url','D_NIV_MOD','COD_MOD','colegio_id','txt_codigo','idCliente','direccion','dniRuc','apellido','nombre','telefono','telefono2','email'));
+                $cepreEstudiante->url = $url;
+                $cepreEstudiante->save();
+            }else{
+                $cepreEstudiante->update($request->except('D_NIV_MOD','COD_MOD','colegio_id','txt_codigo','idCliente','direccion','dniRuc','apellido','nombre','telefono','telefono2','email','url'));
+            }
         } catch (\Throwable $th) {
             //throw $th;
             return Redirect::to('cepres/estudiantes')->with('error','no se actualizo la matricula del estudiantes correctamente, error: '.$th->getMessage());
