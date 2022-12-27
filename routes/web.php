@@ -8,6 +8,7 @@ use App\Http\Controllers\AdmisioneOrdinarioController;
 use App\Http\Controllers\AdmisionePostulanteController;
 use App\Http\Controllers\AdmisioneReporteController;
 use App\Http\Controllers\AdmisioneVacanteController;
+use App\Http\Controllers\CargarNotaController;
 use App\Http\Controllers\CepreCarnetController;
 use App\Http\Controllers\CepreCruzeController;
 use App\Http\Controllers\CepreEstudianteController;
@@ -93,6 +94,7 @@ Route::resource('sacademica/convalidaciones', ConvalidacioneController::class)->
 Route::resource('sacademica/regularizaciones', RegularizacioneController::class)->names('sacademica.regularizaciones');
 Route::resource('sacademica/estudiantes',EstudianteController::class)->names('sacademica.estudiantes');
 Route::resource('sacademica/licencias',LicenciaController::class)->names('sacademica.licencias');
+Route::resource('sacademica/cargarnotas',CargarNotaController::class)->names('sacademica.cargarnotas');
 /* rutas para students */
 Route::resource('students',StudentController::class)->names('students');
 /* fin ruta students */

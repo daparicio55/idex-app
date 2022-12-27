@@ -59,7 +59,7 @@ class CepreEstudianteController extends Controller
             $cliente = BuscarDni($request->searchText);
             $searchText = $request->searchText;
         }
-        $carreras = Carrera::pluck('nombreCarrera','idCarrera')->toArray();
+        $carreras = Carrera::where('observacionCarrera','=','visible')->pluck('nombreCarrera','idCarrera')->toArray();
         $cepres = Cepre::orderBy('idCepre','desc')->pluck('periodoCepre','idCepre')->toArray();
         return view('cepres.estudiantes.create',compact('carreras','cepres','cliente','searchText'));
     }
@@ -137,7 +137,7 @@ class CepreEstudianteController extends Controller
     public function edit($id)
     {
         //
-        $carreras = Carrera::pluck('nombreCarrera','idCarrera')->toArray();
+        $carreras = Carrera::where('observacionCarrera','=','visible')->pluck('nombreCarrera','idCarrera')->toArray();
         $cepres = Cepre::orderBy('idCepre','desc')->pluck('periodoCepre','idCepre')->toArray();
         $cepreEstudiante = CepreEstudiante::findOrFail($id);
         return view('cepres.estudiantes.edit',compact('cepreEstudiante','carreras','cepres'));

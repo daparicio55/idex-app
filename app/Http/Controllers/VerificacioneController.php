@@ -90,7 +90,7 @@ class VerificacioneController extends Controller
                 ->get();
                 //lista de alumnos
                 $estudiantes = DB::table('ematriculas as ema')
-                ->select('ema.licencia','cli.apellido','cli.nombre','cli.dniRuc','ema.id','cli.telefono','cli.telefono2','pos.sexo','pos.discapacidad','ud.nombre as unidad')
+                ->select('ema.licenciaObservacion','ema.licencia','cli.apellido','cli.nombre','cli.dniRuc','ema.id','cli.telefono','cli.telefono2','pos.sexo','pos.discapacidad','ud.nombre as unidad')
                 ->join('ematricula_detalles as emad','emad.ematricula_id','=','ema.id')
                 ->join('udidacticas as ud','ud.id','=','emad.udidactica_id')
                 ->join('mformativos as mf','mf.id','=','ud.mformativo_id')
@@ -100,7 +100,7 @@ class VerificacioneController extends Controller
                 ->where('ema.pmatricula_id','=',$matricula)
                 ->where('ud.ciclo','=',$ciclo)
                 ->where('mf.carrera_id','=',$carrera)
-                ->groupBy('ema.licencia','cli.apellido','cli.nombre','cli.dniRuc','ema.id','cli.telefono','cli.telefono2','pos.sexo','pos.discapacidad','ud.nombre')
+                ->groupBy('ema.licenciaObservacion','ema.licencia','cli.apellido','cli.nombre','cli.dniRuc','ema.id','cli.telefono','cli.telefono2','pos.sexo','pos.discapacidad','ud.nombre')
                 ->orderBy('unidad','asc')
                 ->orderBy('cli.apellido','asc')
                 ->orderBy('cli.nombre','asc')
