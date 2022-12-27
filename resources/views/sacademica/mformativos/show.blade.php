@@ -29,6 +29,7 @@
 		<div class="table-responsive">
 			<table class="table table-striped table-bordered table-condensed table-hover">
                 <thead>
+                    <th>Ord.</th>
                     <th>Tipo</th>
                     <th>Unidad Didactica</th>
                     <th>Horas</th>
@@ -38,6 +39,7 @@
                 </thead>
                 @foreach ($unidades as $unidad)
                     <tr>
+                        <td>{{ $unidad->orden }}</td>
                         <td>{{ $unidad->tipo }}</td>
                         <td>{{ $unidad->nombre }}</td>
                         <td>{{ $unidad->horas }}</td>

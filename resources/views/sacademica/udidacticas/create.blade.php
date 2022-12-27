@@ -40,7 +40,11 @@
                     {!! Form::label('tipo', 'Tipo', [null]) !!}
                     {!! Form::select('tipo', $tUnidades, null, ['class'=>'form-control']) !!}
                 </div>
-            </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                    {!! Form::label('orden', 'Ord.', [null]) !!}
+                    {!! Form::number('orden', 1, ['class'=>'form-control','step'=>1,'required']) !!}
+                </div>
+            </div> 
         </div>
     </div>
 </div>

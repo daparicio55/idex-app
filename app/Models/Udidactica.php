@@ -15,7 +15,8 @@ class Udidactica extends Model
         'ciclo',
         'moodle',
         'mformativo_id',
-        'tipo'
+        'tipo',
+        'orden'
     ];
     public function modulo(){
         return $this->belongsTo(Mformativo::class,'mformativo_id');
