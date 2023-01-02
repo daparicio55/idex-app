@@ -10,6 +10,12 @@
 @stop
 
 @section('content')
+@if (session('token'))
+    <div class="alert alert-primary" id='token'>
+		<p>Se genero el token correctamente, recuerde que esta es la unica vez que se mostrara, guardelo de forma adecuada: </p>
+        <strong>{{session('token')}}</strong>
+    </div>
+@endif
 @if (session('info'))
     <div class="alert alert-success" id='info'>
         <strong>{{session('info')}}</strong>
@@ -36,7 +42,10 @@
 						<td>{{$usuario->name}}</td>
                         <td>{{$usuario->email}}</td>
                         <td>{{$usuario->oficina->nombre}}</td>
-						<td style="width: 125px; text-align: center">
+						<td style="width: 160px; text-align: center">
+							<a href="{{ route('accesos.usuarios.show',['usuario'=>$usuario->id]) }}" class="btn btn-warning" title="personal token">
+								<i class="fas fa-key"></i>
+							</a>
 							<a title="editar usuario" class="btn btn-info" href="{{route('accesos.usuarios.edit',['usuario'=>$usuario->id])}}">
 								<i class="far fa-edit"></i>
 							</a>

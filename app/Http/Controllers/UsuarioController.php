@@ -87,9 +87,15 @@ class UsuarioController extends Controller
      */
     public function show($id)
     {
-        //vamos poner roles UserRoleController
-        //tenemos que verificar si ya existe roles en el base de datos
-        
+        try {
+            //code...
+            $user = User::findOrFail($id);
+            $token = $user->createToken('apitoken')->plainTextToken;
+        } catch (\Throwable $th) {
+            //throw $th;
+            return Redirect::route('accesos.usuarios.index')->with('error',$th->getMessage());    
+        }
+        return Redirect::route('accesos.usuarios.index')->with('token',$token);
     }
 
     /**
@@ -150,4 +156,5 @@ class UsuarioController extends Controller
         }
         return Redirect::to('accesos/usuarios/')->with('info','el  usuario se elimino correctamente');
     }
+    
 }
