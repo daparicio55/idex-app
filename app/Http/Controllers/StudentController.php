@@ -17,7 +17,7 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        //
+        ///
         if(isset($request->dni)){
             $cliente = Cliente::where('dniRuc','=',$request->dni)->first();
             return view('students.index',compact('cliente'));

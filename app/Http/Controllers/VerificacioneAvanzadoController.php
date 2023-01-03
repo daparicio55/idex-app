@@ -53,7 +53,7 @@ class VerificacioneAvanzadoController extends Controller
     public function store(Request $request)
     {
         //ahora guardamos para el periodo de matricula
-        //dd($request);
+        //dd($request);;
         try {
             //code...
             //ciclo.. 

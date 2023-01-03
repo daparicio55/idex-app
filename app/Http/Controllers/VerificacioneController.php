@@ -156,11 +156,20 @@ class VerificacioneController extends Controller
     public function store(Request $request)
     {
         //
+        //dd($request);
         try {
             //code....
             DB::beginTransaction();
             $cantidad = count($request->id)-1;
-
+            if(isset($request->es_id)){
+                $cant = count($request->es_id)-1;
+                for($z=0;$z<$cant;$z++){
+                    $matricula = Ematricula::findOrFail($request->es_id[$z]);
+                    $matricula->ponderado = $request->ponderados[$z];
+                    $matricula->puesto = $request->puestos[$z];
+                    $matricula->update();
+                }
+            }
             for($i=0;$i<=$cantidad;$i++){
                 $detalle = EmatriculaDetalle::findOrFail($request->id[$i]);
                 $detalle->nota = $request->notas[$i];
@@ -170,7 +179,7 @@ class VerificacioneController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
-            return Redirect::to('sacademica/verificaciones')->with('error',$th->getMessage());
+            return Redirect::to('sacademica/verificaciones')->with('error',$th->__toString());
         }
         return Redirect::to('sacademica/verificaciones')->with('info','la informacion con las notas se guardaron correctamente');
     }
