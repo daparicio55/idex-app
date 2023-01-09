@@ -72,8 +72,10 @@
                     <table style="font-size: 0.9rem" class="table table-striped table-bordered table-condensed table-hover">
                         <tbody>
                             {{-- primer semestre --}}
-                            <tr>
-                                <th colspan="11" style="text-align: center">SEMESTRE I</th>
+                            <tr class="bg-success text-center">
+                                <th colspan="11">
+                                    <h5>SEMESTRE I</h5>
+                                </th>
                             </tr>
                             <tr>
                                 <th>Unidad Didactica</th>
@@ -138,9 +140,33 @@
                                    @endif
                                    @endforeach
                             @endforeach
-                            {{-- segundo semestre --}}
+                            <tr class="text-center bg-info">
+                                @php
+                                    $cont = 0;
+                                @endphp
+                                <td colspan="3">Puestos</td>
+                                @foreach (primeros($postulacion->estudiante->id,"I") as $item)
+                                    <td>{{ $item['nota'] }}</td>
+                                    <td>{{ $item['puesto'] }}</td>
+                                    @php
+                                        $cont ++;
+                                    @endphp
+                                @endforeach
+                                @for ($i = $cont; $i < 3; $i++)
+                                    <td></td>
+                                    <td></td>
+                                @endfor
+                                <td></td>
+                                <td></td>
+                            </tr>
                             <tr>
-                                <th colspan="11" style="text-align: center">SEMESTRE II</th>
+                                <td colspan="11" style="background-color: #ffffff; text-align: center">------------------------</td>
+                            </tr>
+                            {{-- segundo semestre --}}
+                            <tr class="bg-success text-center">
+                                <th colspan="11">
+                                    <h5>SEMESTRE II</h5>
+                                </th>
                             </tr>
                             <tr>
                                 <th>Unidad Didactica</th>
@@ -205,9 +231,33 @@
                                    @endif
                                    @endforeach
                             @endforeach
-                            {{-- tercer semestre --}}
+                            <tr class="text-center bg-info">
+                                @php
+                                    $cont = 0;
+                                @endphp
+                                <td colspan="3">Puestos</td>
+                                @foreach (primeros($postulacion->estudiante->id,"II") as $item)
+                                    <td>{{ $item['nota'] }}</td>
+                                    <td>{{ $item['puesto'] }}</td>
+                                    @php
+                                        $cont ++;
+                                    @endphp
+                                @endforeach
+                                @for ($i = $cont; $i < 3; $i++)
+                                    <td></td>
+                                    <td></td>
+                                @endfor
+                                <td></td>
+                                <td></td>
+                            </tr>
                             <tr>
-                                <th colspan="11" style="text-align: center">SEMESTRE III</th>
+                                <td colspan="11" style="background-color: #ffffff; text-align: center">------------------------</td>
+                            </tr>
+                            {{-- tercer semestre --}}
+                            <tr class="bg-success text-center">
+                                <th colspan="11">
+                                    <h5>SEMESTRE III</h5>
+                                </th>
                             </tr>
                             <tr>
                                 <th>Unidad Didactica</th>
@@ -272,9 +322,33 @@
                                    @endif
                                    @endforeach
                             @endforeach
-                            {{-- cuarto semestre --}}
+                            <tr class="text-center bg-info">
+                                @php
+                                    $cont = 0;
+                                @endphp
+                                <td colspan="3">Puestos</td>
+                                @foreach (primeros($postulacion->estudiante->id,"III") as $item)
+                                    <td>{{ $item['nota'] }}</td>
+                                    <td>{{ $item['puesto'] }}</td>
+                                    @php
+                                        $cont ++;
+                                    @endphp
+                                @endforeach
+                                @for ($i = $cont; $i < 3; $i++)
+                                    <td></td>
+                                    <td></td>
+                                @endfor
+                                <td></td>
+                                <td></td>
+                            </tr>
                             <tr>
-                                <th colspan="11" style="text-align: center">SEMESTRE IV</th>
+                                <td colspan="11" style="background-color: #ffffff; text-align: center">------------------------</td>
+                            </tr>
+                            {{-- cuarto semestre --}}
+                            <tr class="bg-success text-center">
+                                <th colspan="11">
+                                    <h5>SEMESTRE IV</h5>
+                                </th>
                             </tr>
                             <tr>
                                 <th>Unidad Didactica</th>
@@ -339,9 +413,33 @@
                                    @endif
                                    @endforeach
                             @endforeach
-                            {{-- quinto semestre --}}
+                            <tr class="text-center bg-info">
+                                @php
+                                    $cont = 0;
+                                @endphp
+                                <td colspan="3">Puestos</td>
+                                @foreach (primeros($postulacion->estudiante->id,"IV") as $item)
+                                    <td>{{ $item['nota'] }}</td>
+                                    <td>{{ $item['puesto'] }}</td>
+                                    @php
+                                        $cont ++;
+                                    @endphp
+                                @endforeach
+                                @for ($i = $cont; $i < 3; $i++)
+                                    <td></td>
+                                    <td></td>
+                                @endfor
+                                <td></td>
+                                <td></td>
+                            </tr>
                             <tr>
-                                <th colspan="11" style="text-align: center">SEMESTRE V</th>
+                                <td colspan="11" style="background-color: #ffffff; text-align: center">------------------------</td>
+                            </tr>
+                            {{-- quinto semestre --}}
+                            <tr class="bg-success text-center">
+                                <th colspan="11">
+                                    <h5>SEMESTRE V</h5>
+                                </th>
                             </tr>
                             <tr>
                                 <th>Unidad Didactica</th>
@@ -406,9 +504,33 @@
                                    @endif
                                    @endforeach
                             @endforeach
-                            {{-- sexto semestre --}}
+                            <tr class="text-center bg-info">
+                                @php
+                                    $cont = 0;
+                                @endphp
+                                <td colspan="3">Puestos</td>
+                                @foreach (primeros($postulacion->estudiante->id,"V") as $item)
+                                    <td>{{ $item['nota'] }}</td>
+                                    <td>{{ $item['puesto'] }}</td>
+                                    @php
+                                        $cont ++;
+                                    @endphp
+                                @endforeach
+                                @for ($i = $cont; $i < 3; $i++)
+                                    <td></td>
+                                    <td></td>
+                                @endfor
+                                <td></td>
+                                <td></td>
+                            </tr>
                             <tr>
-                                <th colspan="11" style="text-align: center">SEMESTRE VI</th>
+                                <td colspan="11" style="background-color: #ffffff; text-align: center">------------------------</td>
+                            </tr>
+                            {{-- sexto semestre --}}
+                            <tr class="bg-success text-center">
+                                <th colspan="11">
+                                    <h5>SEMESTRE VI</h5>
+                                </th>
                             </tr>
                             <tr>
                                 <th>Unidad Didactica</th>
@@ -473,6 +595,28 @@
                                    @endif
                                    @endforeach
                             @endforeach
+                            <tr class="text-center bg-info">
+                                @php
+                                    $cont = 0;
+                                @endphp
+                                <td colspan="3">Puestos</td>
+                                @foreach (primeros($postulacion->estudiante->id,"VI") as $item)
+                                    <td>{{ $item['nota'] }}</td>
+                                    <td>{{ $item['puesto'] }}</td>
+                                    @php
+                                        $cont ++;
+                                    @endphp
+                                @endforeach
+                                @for ($i = $cont; $i < 3; $i++)
+                                    <td></td>
+                                    <td></td>
+                                @endfor
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="11" style="background-color: #ffffff; text-align: center">------------------------</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

@@ -13,6 +13,7 @@ use App\Models\Ematricula;
 use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
 use App\Models\Mformativo;
+use App\Models\Udidactica;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -461,3 +462,145 @@ function totalProgramaSexos($pmatricula_id,$idCarrera,$sexo){
         return $cantidad;
 
 }
+
+function primeros($id,$ciclo){
+        //$ciclo = 'IV';
+        $array = [];
+        $creditos = 0;
+        $sumaNotas=0;
+        $promedios=[];
+        $listaPromedios=[];
+        $lista=[];
+        $suma=0;
+        //voy a calcular todas las notas pertenecientes al ciclo
+        //necesito el periodo de la matricula
+        //necesito el ciclo de la matricula
+        //necesito el carrera
+        //ahora tambien puede ser que tenga muchas periodos de matricula para ese ciclo
+        $estudiante = Estudiante::findOrFail($id);
+        //calculamos los creditos totales
+        $unidades = Udidactica::whereHas('modulo',function($query) use($estudiante,$ciclo){
+                $query->where('carrera_id',$estudiante->postulante->idCarrera)
+                ->where('ciclo',$ciclo);
+        })->get();
+        foreach ($unidades as $unidad) {
+                # code...
+                $creditos = $creditos + $unidad->creditos;
+        }
+
+        //revizamos las  matriculas del estudiante
+        $matriculas = Ematricula::whereHas('detalles.unidad',function($query) use ($ciclo,$estudiante){
+                $query->where('ciclo',$ciclo)->where('estudiante_id',$estudiante->id);
+        })->get();
+        
+
+        //tengo que sacar las notas en cada periodo
+        foreach ($matriculas as $matricula) {
+                # code...
+                //buscar las notas para sacar el promedio
+                foreach ($matricula->detalles as $detalle) {
+                        # code...
+                        if ($detalle->unidad->ciclo == $ciclo){
+                                $sumaNotas = $sumaNotas + ($detalle->nota * $detalle->unidad->creditos);
+                        }
+                }
+                //luego de sumar las notas ahora vamos a agregarla a un array
+                if($sumaNotas>0){
+                        $total = round($sumaNotas / $creditos,2);
+                        array_push($promedios,$total);
+                        $sumaNotas=0;
+                }
+                //tengo q obtener el periodo y el ciclo para obtener la lista de los estudiantes
+                //vamos a poner las notas
+                $matricula_alumnos = Ematricula::whereHas('detalles.unidad',function($query) use ($ciclo,$matricula){
+                        $query->where('ciclo',$ciclo)->where('pmatricula_id',$matricula->pmatricula_id);
+                })->whereHas('estudiante.postulante.carrera',function($sql) use($estudiante){
+                        $sql->where('idCarrera',$estudiante->postulante->carrera->idCarrera);
+                })
+                ->get();
+                //ahora vamos a sacar las los promedios de todos
+                foreach ($matricula_alumnos as $alumno) {
+                        # code...
+                        foreach ($alumno->detalles as $detalle) {
+                                # code...
+                                if($detalle->unidad->ciclo == $ciclo){
+                                        if($detalle->tipo == 'Regular' || $detalle->tipo == 'Repitencia'){
+                                                //ahora si vamos a calcular las notas
+                                                $suma = $suma + $detalle->nota*$detalle->unidad->creditos;
+                                        }
+                                }
+                        }
+                        //aca calculo la nota para crear el array con las notas
+                        $pro = round($suma / $creditos,2);   
+                        array_push($lista,$pro);
+                        $suma=0;                     
+                }
+                //la agrego al array principal
+                rsort($lista);
+                $solo = array_values(array_unique($lista));
+                //busco la nota en el array
+                $puesto = array_search($total,$solo)+1;
+                array_push($array,['nota'=>$total,'puesto'=>$puesto]);
+                $lista = [];
+        }
+        $objeto = (object)$array;
+        return $objeto;
+        //dd($listaPromedios);
+        //ahora vamos sacar los puestos de todos ciclos
+
+       /*  $array = [];
+        $contador=0;
+        $suma = 0;
+        $estudiante = Estudiante::findOrFail($id);
+        //vamos a sacar de cada uno de los procesos de matricula
+        $nota=0;
+        $creditos=0;
+        $sumaCreditos = 0;
+        $alumnos= [];
+        foreach ($estudiante->matriculas as $matricula) {
+                //calculamos la nota que sac
+                foreach ($matricula->detalles as $detalle) {
+                        # code...
+                        if($detalle->unidad->ciclo == $ciclo){
+                                $nota = $nota + ($detalle->nota * $detalle->unidad->creditos);
+                                $creditos = $creditos + $detalle->unidad->creditos;
+                        }
+                }
+                if ($nota>0){
+                        $nota = round($nota / $creditos,2);
+                }
+
+                $detalles = EmatriculaDetalle::whereRelation('unidad','ciclo',$ciclo)
+                ->where('ematricula_id',$matricula->id)->get();
+
+                if (count($detalles)>0){
+                        foreach ($detalles as $detalle) {
+                                # code...
+                                if ($detalle->observacion != "Convalidacion"){
+                                        $sumaCreditos =  $sumaCreditos + $detalle->unidad->creditos;
+                                        $suma = $suma + ($detalle->nota * $detalle->unidad->creditos);
+                                }
+                                if ($suma>0){
+                                        $suma = $suma / $sumaCreditos;
+                                        array_push($alumnos,round($suma,2));
+                                        $sumaCreditos = 0;
+                                        $suma=0;
+                                }
+                                $contador ++;
+                        }
+                        $unico = array_unique($alumnos);
+                        rsort($unico);
+                        //vamos a sacar las notas para el ciclo
+                        //return $unico;
+                        //return $estudiante->postulante->carrera->idCarrera;
+                        $puesto = array_search($nota,$unico);
+                        array_push($array,['Nota'=>$nota,'Cantidad'=>$contador,'Puesto'=>$puesto,'Notas'=>$unico]);
+                        $nota=0;
+                        $creditos=0;
+                        $contador =0;
+                        $alumnos=[];
+                }
+        } */
+        
+}
+        
