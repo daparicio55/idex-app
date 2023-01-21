@@ -363,6 +363,17 @@ return [
             ],
         ],
         [
+            'text'=>'Docentes',
+            'icon'=>'fas fa-user-tie',
+            'submenu'=>[
+                [
+                    'text'=>'Hoja de vida',
+                    'icon'=>'far fa-sticky-note',
+                    'route'=>'docentes.cvs.index'
+                ]
+            ]
+        ],
+        [
             'text'=>'Sec. Académica',
             'icon'=>'fas fa-user-graduate',
             'can'=>'sacademica.iformativos.index',
@@ -381,6 +392,11 @@ return [
                     'text'=>'Periodos',
                     'icon'=>'fas fa-hourglass-end',
                     'url'=>'sacademica/pmatriculas'
+                ],
+                [
+                    'text'=>'Asignar U. Didacticas',
+                    'icon'=>'fas fa-book-open',
+                    'route'=>'sacademica.uasignadas.index'
                 ],
                 [
                     'text'=>'Modulos Formativos',
@@ -554,6 +570,21 @@ return [
                     'asset' => false,
                     'location' => '//google.com/recaptcha/api.js',
                 ],
+            ],
+        ],
+        'bootstrapSlider'=>[
+            'active'=>true,
+            'files'=>[
+                [
+                    'type'=>'css',
+                    'asset'=>true,
+                    'location'=>'/vendor/bootstrap-slider/css/bootstrap-slider.css'
+                ],
+                [
+                    'type'=>'js',
+                    'asset'=>true,
+                    'location'=>'/vendor/bootstrap-slider/bootstrap-slider.js'
+                ]
             ],
         ],
         'Datatables' => [

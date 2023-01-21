@@ -21,6 +21,13 @@ use App\Http\Controllers\CepreSumativoConsolidadoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ColegioController;
 use App\Http\Controllers\ConvalidacioneController;
+use App\Http\Controllers\cvCapacitacionController;
+use App\Http\Controllers\cvConocimientoController;
+use App\Http\Controllers\cvController;
+use App\Http\Controllers\cvEstudioController;
+use App\Http\Controllers\cvExperienciaController;
+use App\Http\Controllers\cvPersonalController;
+use App\Http\Controllers\cvReporteController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\VentaController;
@@ -33,6 +40,7 @@ use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\EstudiantePEstudioController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FdocumentoController;
+
 use App\Http\Controllers\IformativoController;
 use App\Http\Controllers\InsidenciaController;
 use App\Http\Controllers\LicenciaController;
@@ -45,15 +53,20 @@ use App\Http\Controllers\NominaController;
 use App\Http\Controllers\OficinaController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermisoController;
+
 use App\Http\Controllers\PmatriculaController;
 use App\Http\Controllers\RdocumentoController;
 use App\Http\Controllers\RegularizacioneController;
 use App\Http\Controllers\RepositorioController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\UasignadaController;
 use App\Http\Controllers\UdidacticaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VerificacioneAvanzadoController;
 use App\Http\Controllers\VerificacioneController;
+use App\Models\cvPersonale;
+use App\Models\Pmatricula;
+use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -77,6 +90,21 @@ Route::get('/home',function(){
 })->name('home');
 
 Auth::routes(["register" => false]);
+Route::resource('docentes/cvs',cvController::class)->names('docentes.cvs');
+Route::resource('docentes/cv/experiencias',cvExperienciaController::class)->names('docentes.cv.experiencias');
+Route::resource('docentes/cv/capacitaciones',cvCapacitacionController::class)->names('docentes.cv.capacitaciones');
+Route::resource('docentes/cv/personales',cvPersonalController::class)->names('docentes.cv.personales');
+Route::resource('docentes/cv/estudios',cvEstudioController::class)->names('docentes.cv.estudios');
+Route::resource('docentes/cv/reportes',cvReporteController::class)->names('docentes.cv.reportes');
+Route::resource('docentes/cv/conocimientos',cvConocimientoController::class)->names('docentes.cv.conocimientos');
+//servicios de de hojas de vida
+Route::get('/cv/{mail}',function($mail){
+    $user = User::where('email','=',$mail)->first();
+    $periodo = Pmatricula::orderBy('nombre','desc')->first();
+    $personale = cvPersonale::where('user_id','=',$user->id)->first();
+    return view('docentes.cv.show',compact('personale','periodo'));
+})->name('cv');
+
 
 Route::resource('sacademica/iformativos',IformativoController::class)->names('sacademica.iformativos');
 Route::resource('sacademica/pmatriculas',PmatriculaController::class)->names('sacademica.pmatriculas');
@@ -95,6 +123,7 @@ Route::resource('sacademica/regularizaciones', RegularizacioneController::class)
 Route::resource('sacademica/estudiantes',EstudianteController::class)->names('sacademica.estudiantes');
 Route::resource('sacademica/licencias',LicenciaController::class)->names('sacademica.licencias');
 Route::resource('sacademica/cargarnotas',CargarNotaController::class)->names('sacademica.cargarnotas');
+Route::resource('sacademica/uasignadas',UasignadaController::class)->names('sacademica.uasignadas');
 /* rutas para students */
 Route::resource('students',StudentController::class)->names('students');
 /* fin ruta students */

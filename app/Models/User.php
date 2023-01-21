@@ -51,4 +51,7 @@ class User extends Authenticatable
     public function repositorios(){
         return $this->hasMany(Repositorio::class);
     }
+    public function unidades(){
+        return $this->hasMany(Uasignada::class);
+    }
 }

@@ -1,0 +1,70 @@
+@extends('adminlte::page')
+@section('title', 'Experiencias laborales')
+@section('content_header')
+<h1>List de unidades didacticas asignadas
+    <a href="{{route('sacademica.uasignadas.create')}}" class="btn btn-success">
+        <i class="far fa-file"></i> Nueva Asignacion
+    </a>
+</h1>
+@stop
+@section('content')
+@if (session('info'))
+    <div class="alert alert-success" id='info'>
+        <strong>{{session('info')}}</strong>
+    </div>
+@endif
+@if (session('error'))
+    <div class="alert alert-danger" id='error'>
+        <strong>{{session('error')}}</strong>
+    </div>
+@endif
+@include('sacademica.uasignadas.search')
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Unidad</th>
+            <th>Docente</th>
+            <th>Periodo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($uasignadas as $uasignada)
+            <tr>
+                
+                <td>{{ $uasignada->unidad->nombre }} - {{ $uasignada->unidad->modulo->carrera->nombreCarrera }}</td>
+                <td>{{ $uasignada->user->name }}</td>
+                <td>{{ $uasignada->periodo->nombre }}</td>
+                <td>
+                    <a data-toggle="modal" data-target="#modal-delete-{{ $uasignada->id }}" class="btn btn-danger" title="eliminar">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            @include('sacademica.uasignadas.modal')
+        @endforeach
+    </tbody>
+</table>
+
+@stop
+@section('js')
+<script>
+    $(document).ready(function(){
+        setTimeout(() => {
+        $("#info").hide();
+      }, 12000);
+    });
+    $(document).ready(function(){
+        setTimeout(() => {
+        $("#error").hide();
+      }, 12000);
+    })
+    const frm = document.getElementById('frm');
+    frm.addEventListener('submit',function(event){
+        const txt = document.getElementById('searchText');
+        if(txt.value.trim() == ""){
+            event.preventDefault();
+            alert('debe ingresar un criterio a buscar')
+        }
+    });
+</script>
+@stop

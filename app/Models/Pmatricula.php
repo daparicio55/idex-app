@@ -16,4 +16,7 @@ class Pmatricula extends Model
     public function iformativo(){
         return $this->belongsTo(Iformativo::class);
     }
+    public function asignaciones(){
+        return $this->belongsTo(Uasignada::class);
+    }
 }
