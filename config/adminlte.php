@@ -445,6 +445,18 @@ return [
                 ]
             ]
         ],
+        [
+            'text'=>'Salud',
+            'icon'=>'fas fa-hospital-user',
+            'route'=>'salud.index',
+            'submenu'=>[
+                [
+                    'text'=>'Campañas',
+                    'icon'=>'fas fa-thumbtack',
+                    'route'=>'salud.acampanias.index'
+                ]
+            ],
+        ],
         /* [
             'text'=>'Trámite Documentario',
             'icon'=>'far fa-file',

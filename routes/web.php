@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcampianiasController;
 use App\Http\Controllers\AdmisioneAlternativaController;
 use App\Http\Controllers\AdmisioneConfiguracionController;
 use App\Http\Controllers\AdmisioneEstudiante;
@@ -58,6 +59,8 @@ use App\Http\Controllers\PmatriculaController;
 use App\Http\Controllers\RdocumentoController;
 use App\Http\Controllers\RegularizacioneController;
 use App\Http\Controllers\RepositorioController;
+use App\Http\Controllers\SaludappController;
+use App\Http\Controllers\SaludController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UasignadaController;
 use App\Http\Controllers\UdidacticaController;
@@ -89,7 +92,14 @@ Route::get('/home',function(){
     return Redirect::to('inicio');
 })->name('home');
 
-Auth::routes(["register" => false]);
+Auth::routes(["register" =>'false']);
+//rutas de salud
+Route::get('/salud/app/profile/{id}',[SaludappController::class,'profile'])->name('salud.app.profile');
+Route::get('/salud/app/atenciones/{id}',[SaludappController::class,'atencione'])->name('salud.app.atencione');
+Route::resource('/salud/app',SaludappController::class)->names('salud.app');
+Route::resource('/salud',SaludController::class)->names('salud');
+Route::resource('/salud/acampanias/',AcampianiasController::class)->names('salud.acampanias');
+
 Route::resource('docentes/cvs',cvController::class)->names('docentes.cvs');
 Route::resource('docentes/cv/experiencias',cvExperienciaController::class)->names('docentes.cv.experiencias');
 Route::resource('docentes/cv/capacitaciones',cvCapacitacionController::class)->names('docentes.cv.capacitaciones');

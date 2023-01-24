@@ -14,4 +14,7 @@ class Estudiante extends Model
     public function matriculas(){
         return $this->hasMany(Ematricula::class,'estudiante_id');
     }
+    public function acampanias(){
+        return $this->hasMany(Acampania::class);
+    }
 }
