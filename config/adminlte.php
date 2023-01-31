@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'logo' => '<b>SISGE-PJ</b> | Principal<br><b><small class="text-info">Uso administrativo</small></b>',
+    'logo' => '<b>SISGE-PJ</b> | Principal',
     'logo_img' => 'img/logo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
