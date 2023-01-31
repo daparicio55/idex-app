@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'logo' => '<b>SISGE-PJ</b> | Principal',
+    'logo' => '<b>SISGE-PJ</b> | Principal<br><b><small class="text-info">Uso administrativo</small></b>',
     'logo_img' => 'img/logo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -409,7 +409,7 @@ return [
                     'url'=>'sacademica/matriculas'
                 ],
                 [
-                    'text'=>'Móminas',
+                    'text'=>'Nominas',
                     'icon'=>'far fa-list-alt',
                     'url'=>'sacademica/nominas'
                 ],
@@ -451,9 +451,14 @@ return [
             'route'=>'salud.index',
             'submenu'=>[
                 [
-                    'text'=>'Campañas',
+                    'text'=>'Atenciones Campañas',
                     'icon'=>'fas fa-thumbtack',
                     'route'=>'salud.acampanias.index'
+                ],
+                [
+                    'text'=>'Campañas',
+                    'icon'=>'fas fa-stethoscope',
+                    'route'=>'salud.campanias.index',
                 ]
             ],
         ],

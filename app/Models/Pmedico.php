@@ -5,13 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Acampania extends Model
+class Pmedico extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    public function campania(){
-        return $this->belongsTo(Campania::class);
-    }
+    public $fillable = [
+        'estudiante_id',
+        'lab_gs',
+        'lab_fs',
+        'nutri_talla'
+    ];
     public function estudiante(){
         return $this->belongsTo(Estudiante::class);
     }

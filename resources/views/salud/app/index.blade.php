@@ -15,7 +15,7 @@
     <div class="d-flex mx-2 justify-content-center align-items-center">
         <div class="row">
             <div class="col-sm-11 p-2 shadow-sm border rounded-5 border-primary">
-                <img src="{{ asset('img/logoapp.png') }}" style="width: 90%" class="mx-auto d-block" alt="">
+                <img src="{{ asset('img/logoapp.png') }}" style="width: 70%; margin-top: 2rem" class="mx-auto d-block" alt="">
                 {{-- <h2 class="text-center mb-4 text-primary">IESTP Perú Japón</h2> --}}
                 {!! Form::open(['route'=>'salud.app.store','method'=>'post']) !!}
                     @if (session('error'))
@@ -25,7 +25,7 @@
                     @endif
                     <div class="mb-3 mt-3">
                         <label for="dni" class="form-label fw-bold">N° DNI</label>
-                        <input type="text" class="form-control bg-info bg-opacity-10 border border-primary" id="dni" name="dni" aria-describedby="emailHelp">
+                        <input type="text" class="form-control form-control-lg bg-info bg-opacity-10 border border-primary" id="dni" name="dni" aria-describedby="emailHelp">
                         @error('dni')
                             <small class="text-danger" id="error_dni">
                                 <i class="fas fa-exclamation-triangle"></i> DNI requerido
@@ -34,7 +34,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="fecha" class="form-label fw-bold">Fecha Nacimiento</label>
-                        <input type="date" class="form-control bg-info bg-opacity-10 border border-primary" id="fecha" name="fecha" >
+                        <input type="date" class="form-control form-control-lg bg-info bg-opacity-10 border border-primary" id="fecha" name="fecha" >
                         @error('fecha')
                             <small class="text-danger" id="error_fecha">
                                 <i class="fas fa-exclamation-triangle"></i> Fecha requerida
@@ -42,8 +42,8 @@
                         @enderror
                     </div>
                     <p class="small"><a class="text-primary" href="#">necesitas ayuda?</a></p>
-                    <div class="d-grid">
-                        <button class="btn btn-primary fw-bold" id="btnIngresar" type="submit">
+                    <div class="d-grid mb-5">
+                        <button class="btn btn-primary btn-lg fw-bold" id="btnIngresar" type="submit">
                             <i class="fas fa-sign-in-alt"></i> Ingresar
                         </button>
                     </div>

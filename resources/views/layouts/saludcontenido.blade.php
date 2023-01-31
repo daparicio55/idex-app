@@ -9,11 +9,11 @@
     <meta name="author" content="name">
     <meta name="description" content="description here">
     <meta name="keywords" content="keywords,here">
-
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/> <!--Replace with your tailwind.css once created-->
-    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet"> <!--Totally optional :) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js" integrity="sha256-xKeoJ50pzbUGkpQxDYHD7o7hxe0LaOGeguUidbq6vis=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/tailwind/css/tailwind.min.css') }}">
+    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+    <script src="{{ asset('vendor/chars/highcharts.js') }}"></script>
+    <script src="{{ asset('vendor/chars/highcharts-more.js') }}"></script>
     @yield('css')
 </head>
 
@@ -24,13 +24,14 @@
         <div class="flex flex-wrap items-center">
             <div class="flex flex-1 md:w-1/3 justify-center md:justify-start text-white px-2">
                 <span class="relative w-full">
-                    <label for="" style="display: block" class="w-full bg-gray-900 text-white transition border border-transparent focus:outline-none focus:border-gray-400 rounded py-3 px-2 pl-10 appearance-none leading-normal">I.E.S.T.P. Perú Japón</label>
-                    <div class="absolute search-icon" style="top: 1rem; left: .8rem;">
+                        <label style="display: block; font-size: 1.6rem" class="w-full bg-gray-900 text-white transition border border-transparent focus:outline-none focus:border-gray-400 rounded py-3 px-2 pl-10 appearance-none leading-normal">I.E.S.T.P. Perú Japón</label>
+                    <div class="absolute search-icon" style="top: 1.2rem; left: .8rem;">
                         {!! Form::open(['route'=>'salud.app.store','method'=>'post']) !!}
                             <input type="hidden" name="dni" value={{ $estudiante->postulante->cliente->dniRuc }}>
                             <input type="hidden" name="fecha" value="{{ $estudiante->postulante->fechaNacimiento }}">
                             <button type="submit">
-                                <img class="fill-current pointer-events-none text-white w-4 h-4" src="{{ asset('img/logoapp.png') }}"  alt="">
+                                <i class="fas fa-house-user fill-current pointer-events-none text-white w-4 h-4"></i>
+                               {{--  <img class="fill-current pointer-events-none text-white w-4 h-4" src="{{ asset('img/logoapp.png') }}"  alt=""> --}}
                             </button>
                         {!! Form::close() !!}
                     </div>
@@ -63,13 +64,13 @@
                             </a>
                         </li> --}}
                         <li class="mr-3 flex-1">
-                            <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-purple-500">
+                            <a href="{{ route('salud.app.resultados',$estudiante->id) }}" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-purple-500">
                                 <i class="fas fa-vials fa-2x pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">Resultados</span>
                             </a>
                         </li>
                         <li class="mr-3 flex-1">
-                            <a href="#" class="block py-1 md:py-3 pl-0 md:pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-red-500">
-                                <i class="far fa-list-alt fa-2x pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">Acerca</span>
+                            <a href="{{ route('salud.app.encuestas',$estudiante->id) }}" class="block py-1 md:py-3 pl-0 md:pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-red-500">
+                                <i class="far fa-list-alt fa-2x pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">Encuesta</span>
                             </a>
                         </li>
                     </ul>
@@ -82,6 +83,7 @@
     </div>
 </main>
 @yield('js')
+
 <script>
     /*Toggle dropdown list*/
     function toggleDD(myDropMenu) {

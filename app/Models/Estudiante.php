@@ -17,4 +17,7 @@ class Estudiante extends Model
     public function acampanias(){
         return $this->hasMany(Acampania::class);
     }
+    public function pmedico(){
+        return $this->hasOne(Pmedico::class);
+    }
 }

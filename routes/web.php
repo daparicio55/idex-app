@@ -9,6 +9,7 @@ use App\Http\Controllers\AdmisioneOrdinarioController;
 use App\Http\Controllers\AdmisionePostulanteController;
 use App\Http\Controllers\AdmisioneReporteController;
 use App\Http\Controllers\AdmisioneVacanteController;
+use App\Http\Controllers\CampaniaController;
 use App\Http\Controllers\CargarNotaController;
 use App\Http\Controllers\CepreCarnetController;
 use App\Http\Controllers\CepreCruzeController;
@@ -96,9 +97,18 @@ Auth::routes(["register" =>'false']);
 //rutas de salud
 Route::get('/salud/app/profile/{id}',[SaludappController::class,'profile'])->name('salud.app.profile');
 Route::get('/salud/app/atenciones/{id}',[SaludappController::class,'atencione'])->name('salud.app.atencione');
+Route::get('/salud/app/resultados/{id}',[SaludappController::class,'resultados'])->name('salud.app.resultados');
+Route::get('/salud/app/encuestas/{id}',[SaludappController::class,'encuestas'])->name('salud.app.encuestas');
+Route::post('/salud/app/surveys/',[SaludappController::class,'surveys_store'])->name('salud.app.surveys.store');
+Route::get('/salud/app/surveys/{id}',[SaludappController::class,'surveys'])->name('salud.app.surveys');
+
+
+
 Route::resource('/salud/app',SaludappController::class)->names('salud.app');
+Route::resource('/salud/acampanias',AcampianiasController::class)->names('salud.acampanias');
+Route::post('/salud/campanias/csv/{id}',[CampaniaController::class,'csv'])->name('salud.campanias.csv');
+Route::resource('/salud/campanias',CampaniaController::class)->names('salud.campanias');
 Route::resource('/salud',SaludController::class)->names('salud');
-Route::resource('/salud/acampanias/',AcampianiasController::class)->names('salud.acampanias');
 
 Route::resource('docentes/cvs',cvController::class)->names('docentes.cvs');
 Route::resource('docentes/cv/experiencias',cvExperienciaController::class)->names('docentes.cv.experiencias');
@@ -114,7 +124,6 @@ Route::get('/cv/{mail}',function($mail){
     $personale = cvPersonale::where('user_id','=',$user->id)->first();
     return view('docentes.cv.show',compact('personale','periodo'));
 })->name('cv');
-
 
 Route::resource('sacademica/iformativos',IformativoController::class)->names('sacademica.iformativos');
 Route::resource('sacademica/pmatriculas',PmatriculaController::class)->names('sacademica.pmatriculas');

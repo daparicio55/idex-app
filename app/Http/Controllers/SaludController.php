@@ -14,6 +14,7 @@ class SaludController extends Controller
     public function index()
     {
         //
+        dd('hola');
     }
 
     /**
