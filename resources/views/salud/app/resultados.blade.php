@@ -45,6 +45,7 @@
     }
     </style>
 @stop
+@if($estudiante->acampanias->count()>0)
 @section('cuerpo')
 <div class="main-content flex-1 mt-2 md:mt-2 pb-24 md:pb-5">
     <div class="flex flex-wrap">
@@ -333,7 +334,7 @@ Highcharts.chart("container_trigliceridos", {
   
   // the value axis
   yAxis: {
-    min: 60,
+    min: 15,
     max: 200,
     tickPixelInterval: 72,
     tickPosition: "inside",
@@ -349,7 +350,7 @@ Highcharts.chart("container_trigliceridos", {
     },
     plotBands: [
       {
-        from: 60,
+        from: 15,
         to: 150,
         color: "green", // green
         thickness: 20
@@ -904,3 +905,4 @@ Highcharts.chart("container_hemoglobina", {
 
 </script>
 @stop
+@endif

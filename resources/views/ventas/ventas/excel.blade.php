@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+@php
+    header('Content-type:application/xls');
+    header('Content-Disposition: attachment; filename='.$filename);
+@endphp
 <html>
 <head>
     <title>Sistema IDEX Perú Japón</title>
@@ -7,7 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="http://localhost:8000/vendor/fontawesome-free/css/all.min.css">
     <style>
         body{
             font-size: 12px;
@@ -28,7 +31,7 @@
         <thead>
             <tr >
                 <td colspan="9">
-                    <img src="https://intranet.idexperujapon.edu.pe/img/pjHeaderLargo.jpg">
+                    <h1>REPORTE DE VENTAS</h1>
                 </td>
             </tr>
             <tr>

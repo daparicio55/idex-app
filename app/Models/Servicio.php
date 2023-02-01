@@ -14,4 +14,7 @@ class Servicio extends Model
     public function deudas(){
         return $this->hasMany(Deuda::class,'idServicio');
     }
+    public function detalle(){
+        return $this->hasOne(VentaDetalle::class,'idServicio');
+    }
 }

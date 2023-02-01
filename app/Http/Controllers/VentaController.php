@@ -422,6 +422,57 @@ class VentaController extends Controller
 		$pdf->setPaper('a5','portrait');
 		return $pdf->download('comp'.$ventas->fecha.$ventas->tipo.'-'.$ventas->numero.'.pdf');
 	}
+	public function excel($id){
+		$datos = explode(":",$id);
+		if ($datos[1]!=NULL & $datos[2]!=NULL & $datos[3]!=NULL & $datos[4]!=NULL)
+		{
+			if ($datos[4]==0)
+			{
+				//cuando no tenemos servicio
+				$ventas=DB::table('ventas as v')
+				->join('clientes as c','c.idCliente','=','v.idCliente')
+				->select('v.idVenta','v.tipo','v.numero','c.nombre','c.direccion','c.apellido','v.estado','v.total','v.tipoPago','v.fecha','v.comentario')
+				->whereBetween('v.fecha',[$datos[2],$datos[3]])
+				->orderBy('v.idVenta','asc')
+				->get();
+				$sumaTotal=DB::table('ventas as v')
+				->join('clientes as c','c.idCliente','=','v.idCliente')
+				->join('ventasdetalles as vd','v.idVenta','=','vd.idVenta')
+				->select(DB::raw('SUM(v.total) as sumaTotal'))
+				->where ('v.estado','=','activo')
+				->whereBetween('v.fecha',[$datos[2],$datos[3]])
+				->first();
+				$servicio = 'todos';
+			}
+			else
+			{
+				//ahora cuando hay servicio
+				$ventas=DB::table('ventas as v')
+				->join('clientes as c','c.idCliente','=','v.idCliente')
+				->join('ventasdetalles as vd','v.idVenta','=','vd.idVenta')
+				->select('v.idVenta','v.tipo','v.numero','c.nombre','c.direccion','c.apellido','v.estado','v.total','v.tipoPago','v.fecha','v.comentario')
+				->where('vd.idServicio','=',$datos[4])
+				->whereBetween('v.fecha',[$datos[2],$datos[3]])
+				->orderBy('v.idVenta','asc')
+				->get();
+				$sumaTotal=DB::table('ventas as v')
+				->join('clientes as c','c.idCliente','=','v.idCliente')
+				->join('ventasdetalles as vd','v.idVenta','=','vd.idVenta')
+				->select(DB::raw('SUM(v.total) as sumaTotal'))
+				->where('v.estado','=','activo')
+				->where('vd.idServicio','=',$datos[4])
+				->whereBetween('v.fecha',[$datos[2],$datos[3]])
+				->first();
+				$serv = DB::table('servicios')
+				->where('idServicio','=',$datos[4])
+				->first();
+				$servicio = $serv->nombre;
+			}
+			$filename = 'REPORT'.$datos[2].'-'.$datos[3].'-'.$datos[1].'.xls';
+			return view("ventas.ventas.excel",["ventas"=>$ventas,"filename"=>$filename,"datos"=>$datos,"sumaTotal"=>$sumaTotal,'servicio'=>$servicio]);
+		}
+	}
+
 	public function imprimirv2($id)
 	{
 		$datos = explode(":",$id);
@@ -469,7 +520,6 @@ class VentaController extends Controller
 				->first();
 				$servicio = $serv->nombre;
 			}
-			
 			return view("ventas.ventas.imprimirv2",["ventas"=>$ventas,"datos"=>$datos,"sumaTotal"=>$sumaTotal,'servicio'=>$servicio]);
 			$pdf = PDF::loadview("ventas.ventas.imprimirv2",["ventas"=>$ventas,"datos"=>$datos,"sumaTotal"=>$sumaTotal,'servicio'=>$servicio]);
 			return $pdf->download('REPORT'.$datos[2].'-'.$datos[3].'-'.$datos[1].'.pdf');

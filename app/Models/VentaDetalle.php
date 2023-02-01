@@ -11,4 +11,10 @@ class VentaDetalle extends Model
     protected $table = 'ventasdetalles';
     protected $primaryKey = 'idVentasDetalles';
     public $timestamps = false;
+    public function venta(){
+        return $this->belongsTo(Venta::class,'idVenta');
+    }
+    public function servicio(){
+        return $this->belongsTo(Servicio::class,'idServicio');
+    }
 }

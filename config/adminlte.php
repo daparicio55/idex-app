@@ -515,6 +515,11 @@ return [
                     'text' => 'Deudas',
                     'url'  => 'ventas/deudas',
                 ],
+                [
+                    'text'=>'Reportes',
+                    'icon'=>'fas fa-chart-line',
+                    'url'=>'ventas/reportes'
+                ]
             ],
         ],
         /* ['header' => 'OTROS'],

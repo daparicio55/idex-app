@@ -24,24 +24,27 @@
                 <p class="mb-3">
                     <i class="far fa-envelope fa-2x text-success mb-3"></i> <b>Correo</b> {{ $estudiante->postulante->cliente->email }}
                 </p>
-                <h2 class="text-lg font-medium text-blue-900 mb-3">
-                    <b> PERFIL MÉDICO</b>
-                </h2>
-                <p class="mb-3">
-                    <i class="fas fa-balance-scale fa-2x"></i> <b>Peso</b> {{ $estudiante->acampanias[0]->nutri_peso }} Kg.
-                </p>
-                <p class="mb-3">
-                    <i class="fas fa-ruler-vertical fa-2x"></i> <b>Talla</b> {{ $estudiante->pmedico->nutri_talla }} cm.
-                </p>
-                <p class="mb-3">
-                    <i class="fas fa-circle-notch fa-2x"></i> <b>Perímetro Abdominal</b> {{ $estudiante->acampanias[0]->nutri_perimetro }} cm.
-                </p>
-                <p class="mb-3">
-                    <i class="fas fa-syringe fa-2x"></i> <b>Grupo Sanguineo</b> {{ $estudiante->pmedico->lab_gs }}
-                </p>
-                <p class="mb-3">
-                    <i class="fas fa-prescription fa-2x"></i> <b>Factor Sanguineo</b> {{ $estudiante->pmedico->lab_fs }}
-                </p>
+                @if($estudiante->acampanias->count()>0)
+                    <h2 class="text-lg font-medium text-blue-900 mb-3">
+                        <b> PERFIL MÉDICO</b>
+                    </h2>
+                    <p class="mb-3">
+                        <i class="fas fa-balance-scale fa-2x"></i> <b>Peso</b> {{ $estudiante->acampanias[0]->nutri_peso }} Kg.
+                    </p>
+                    <p class="mb-3">
+                        <i class="fas fa-ruler-vertical fa-2x"></i> <b>Talla</b> {{ $estudiante->pmedico->nutri_talla }} cm.
+                    </p>
+                    <p class="mb-3">
+                        <i class="fas fa-circle-notch fa-2x"></i> <b>Perímetro Abdominal</b> {{ $estudiante->acampanias[0]->nutri_perimetro }} cm.
+                    </p>
+                    <p class="mb-3">
+                        <i class="fas fa-syringe fa-2x"></i> <b>Grupo Sanguineo</b> {{ $estudiante->pmedico->lab_gs }}
+                    </p>
+                    <p class="mb-3">
+                        <i class="fas fa-prescription fa-2x"></i> <b>Factor Sanguineo</b> {{ $estudiante->pmedico->lab_fs }}
+                    </p> 
+                @endif
+                
                 </div>
                 <div class="px-6 py-4 flex justify-center align-center">
                     <a href="{{ route('salud.app.index') }}" class="mx-auto bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-600">

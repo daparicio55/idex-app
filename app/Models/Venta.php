@@ -11,4 +11,7 @@ class Venta extends Model
     protected $table = 'ventas';
     protected $primaryKey = 'idVenta';
     public $timestamps = false;
+    public function detalles(){
+        return $this->hasMany(VentaDetalle::class,'idVenta');
+    }
 }

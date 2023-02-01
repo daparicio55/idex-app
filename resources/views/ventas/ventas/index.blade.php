@@ -16,6 +16,9 @@
 					<i class="fa fa-print" aria-hidden="true"></i> Imprimir
 				</button>
 			</a>
+			<a href="{{ route('venta.ventas.excel',$searchText.':'.$tipoPago.':'.$dInicio.':'.$dFin.':'.$idServicio) }}" class="btn btn-success">
+				<i class="far fa-file-excel"></i> Excel
+			</a>
 			<a  href=""  data-target="#modal-anular-1" data-toggle="modal">
 				<button class="btn btn-danger">
 					<i class="fas fa-minus-circle" aria-hidden="true"></i> Anular

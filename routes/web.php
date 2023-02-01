@@ -66,6 +66,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UasignadaController;
 use App\Http\Controllers\UdidacticaController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\VentaReporteController;
 use App\Http\Controllers\VerificacioneAvanzadoController;
 use App\Http\Controllers\VerificacioneController;
 use App\Models\cvPersonale;
@@ -166,6 +167,7 @@ Route::resource('ventas/servicios',ServicioController::class)->names('ventas.ser
 Route::resource('ventas/clientes', ClienteController::class)->names('ventas.clientes');
 Route::resource('ventas/ventas', VentaController::class)->names('ventas.ventas');
 Route::resource('ventas/deudas', DeudaController::class)->names('ventas.deudas');
+Route::resource('ventas/reportes',VentaReporteController::class)->names('ventas.reportes');
 
 Route::resource('cepres/estudiantes', CepreEstudianteController::class)->names('cepres.estudiantes');
 Route::resource('cepres/pagos', CeprePagoController::class)->names('cepres.pagos');
@@ -230,6 +232,7 @@ Route::get('ventas/deudas/amortizar/{id}',[DeudaController::class,'amortizar'])
 ->where('id','[0-9]+')->name('ventas.deudas.amortizar');
 Route::get('ventas/deudas/impriAmortizacion/{id}',[DeudaController::class,'impriAmortizar'])
 ->where('id','[0-9]+')->name('ventas.deudas.impriAmortizacion');
+Route::get('ventas/ventas/excel/{id}',[VentaController::class,'excel'])->name('venta.ventas.excel');
 Route::get('ventas/ventas/imprimirv2/{id}',[VentaController::class,'imprimirv2'])->name('ventas.ventas.imprimirv2');
 Route::get('ventas/ventas/imprimir/{id}',[VentaController::class,'imprimir'])
 ->where('id','[0-9]+')->name('ventas.ventas.imprimir');
