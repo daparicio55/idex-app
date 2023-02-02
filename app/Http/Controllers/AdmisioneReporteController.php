@@ -25,29 +25,40 @@ class AdmisioneReporteController extends Controller
     }
     public function index(Request $request)
     {
-        //
         $admisiones = Admisione::orderBy('periodo','desc')->pluck('periodo','id')->toArray();
         if(isset($request->id)){
             $admisione = Admisione::findOrFail($request->id);
-            $postulantes = AdmisionePostulante::where('admisione_id','=',$admisione->id)
-            ->where('anulado','=','NO')
-            ->get();
-            $anulados = AdmisionePostulante::where('admisione_id','=',$admisione->id)
-            ->where('anulado','=','SI')
-            ->get();
+            $postulantes = AdmisionePostulante::whereHas('carrera',function($query) use($admisione){
+                $query->where('admisione_id','=',$admisione->id)
+                ->where('anulado','=','no')
+                ->where('observacionCarrera','=','visible');
+            })->get();
+            $anulados = AdmisionePostulante::whereHas('carrera',function($query) use($admisione){
+                $query->where('admisione_id','=',$admisione->id)
+                ->where('anulado','=','SI')
+                ->where('observacionCarrera','=','visible');
+            })->get();
+
             $programas = DB::table('admisione_postulantes as ap')
             ->select('c.nombreCarrera as programa',DB::raw("count(*) as cantidad"))
             ->join('ccarreras as c','c.idCarrera','=','ap.idCarrera')
+            ->where('ap.admisione_id',$admisione->id)
             ->where('ap.anulado','=','NO')
+            ->where('c.observacionCarrera','=','visible')
             ->groupBy('c.nombreCarrera')
             ->get();
+           
+
+
             //extraordinario ahora exonerados
-            $postulantesX = AdmisionePostulante::where('admisione_id','=',$admisione->id)
-            ->where('anulado','=','NO')
-            ->where('modalidadTipo','=','Exonerado')
-            ->orderBy('idCarrera','asc')
-            ->orderBy('modalidad','asc')
-            ->get();
+            $postulantesX = AdmisionePostulante::whereHas('carrera',function ($query) use($admisione){
+                $query->where('admisione_id','=',$admisione->id)
+                ->where('anulado','=','NO')
+                ->where('modalidadTipo','=','Exonerado')
+                ->where('observacionCarrera','=','visible')
+                ->orderBy('idCarrera','asc')
+                ->orderBy('modalidad','asc');
+            })->get();
             $anuladosX = AdmisionePostulante::where('admisione_id','=',$admisione->id)
             ->where('anulado','=','SI')
             ->where('modalidadTipo','=','Exonerado')
@@ -56,23 +67,33 @@ class AdmisioneReporteController extends Controller
             ->select('c.idCarrera','c.nombreCarrera as programa',DB::raw("count(*) as cantidad"))
             ->join('ccarreras as c','c.idCarrera','=','ap.idCarrera')
             ->where('ap.anulado','=','NO')
-            ->where('modalidadTipo','=','Exonerado')
+            ->where('ap.admisione_id',$admisione->id)
+            ->where('ap.modalidadTipo','=','Exonerado')
+            ->where('c.observacionCarrera','=','visible')
             ->groupBy('c.nombreCarrera','c.idCarrera')
             ->get();
             //ordinario
-            $postulantesO = AdmisionePostulante::where('admisione_id','=',$admisione->id)
-            ->where('anulado','=','NO')
-            ->where('modalidadTipo','=','Ordinario')
-            ->get();
-            $anuladosO = AdmisionePostulante::where('admisione_id','=',$admisione->id)
-            ->where('anulado','=','SI')
-            ->where('modalidadTipo','=','Ordinario')
-            ->get();
+            $postulantesO = AdmisionePostulante::whereHas('carrera',function($query) use($admisione){
+                $query->where('admisione_id','=',$admisione->id)
+                ->where('anulado','=','NO')
+                ->where('modalidadTipo','=','Ordinario')
+                ->where('observacionCarrera','=','visible');
+            })->get();
+
+            $anuladosO = AdmisionePostulante::whereHas('carrera',function($query) use($admisione){
+                $query->where('admisione_id','=',$admisione->id)
+                ->where('anulado','=','SI')
+                ->where('modalidadTipo','=','Ordinario')
+                ->where('observacionCarrera','=','visible');
+            })->get();
+
             $programasO = DB::table('admisione_postulantes as ap')
             ->select('c.nombreCarrera as programa',DB::raw("count(*) as cantidad"))
             ->join('ccarreras as c','c.idCarrera','=','ap.idCarrera')
             ->where('ap.anulado','=','NO')
-            ->where('modalidadTipo','=','Ordinario')
+            ->where('ap.admisione_id',$admisione->id)
+            ->where('ap.modalidadTipo','=','Ordinario')
+            ->where('c.observacionCarrera','=','visible')
             ->groupBy('c.nombreCarrera')
             ->get();
             return view('admisiones.reportes.index',compact('postulantesO','anuladosO','programasO','postulantesX','anuladosX','programasX','admisiones','anulados','admisione','postulantes','programas'));

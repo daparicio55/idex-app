@@ -81,7 +81,9 @@ class AdmisionePostulanteController extends Controller
             $searchText = $request->searchText;
         }
         $carreras = Carrera::where('observacionCarrera','=','visible')->pluck('nombreCarrera','idCarrera')->toArray();
-        $admisiones = Admisione::pluck('periodo','id')->toArray();
+        $admisiones = Admisione::orderBy('periodo','desc')
+        ->pluck('periodo','id')
+        ->toArray();
         return view('admisiones.postulantes.create',compact('modalidad','modalidadTipo','carreras','admisiones','sexos','cliente','searchText'));
     }
 
@@ -204,7 +206,9 @@ class AdmisionePostulanteController extends Controller
             'Traslado Externo'=>'Traslado Externo'
         ];
         $carreras = Carrera::pluck('nombreCarrera','idCarrera')->toArray();
-        $admisiones = Admisione::pluck('periodo','id')->toArray();
+        $admisiones = Admisione::orderBy('periodo','desc')
+        ->pluck('periodo','id')
+        ->toArray();
         return view('admisiones.postulantes.edit',compact('postulante','modalidad','modalidadTipo','carreras','admisiones','sexos'));
     }
 
