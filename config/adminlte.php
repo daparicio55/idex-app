@@ -459,6 +459,11 @@ return [
                     'text'=>'Campañas',
                     'icon'=>'fas fa-stethoscope',
                     'route'=>'salud.campanias.index',
+                ],
+                [
+                    'text'=>'Encuestas',
+                    'icon'=>'far fa-chart-bar',
+                    'route'=>'salud.encuestas.index',
                 ]
             ],
         ],

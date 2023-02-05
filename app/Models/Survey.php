@@ -9,6 +9,9 @@ class Survey extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    public $guarded = [
+        'id'
+    ];
     public function questions(){
         return $this->hasMany(Squestion::class);
     }

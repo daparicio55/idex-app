@@ -35,70 +35,94 @@
 @endphp
 
 @if(isset($_GET['id']))
-<div class="row">
-    <div class="col-sm-12">
-        <figure>
-            <div id="container"></div>
-            <p class="text-center">
-              Grafico Estadístico
-            </p>
-        </figure>
-    </div>  
-    @php
-        $puntos = [];
-    @endphp  
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <figure>
+                <div id="container"></div>
+                <p class="text-center">
+                  Grafico Estadístico
+                </p>
+            </figure>
+        </div>  
+        @php
+            $puntos = [];
+        @endphp  
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-condensed table-hover">
+                    <thead>
+                        <tr class="bg-info">
+                            <th>Programa de Estudios <b>--Cantidad de Matriculados--</b></th>
+                            <th>Varones</th>
+                            <th>Mujeres</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $tmasculino = 0;
+                            $tfenemino = 0;
+                            $total = 0;
+                            
+                        @endphp
+                        @foreach ($carreras as $carrera)
+                            @php
+                                $masculino = totalProgramaSexos($_GET['id'],$carrera->idCarrera,'Masculino');
+                                $femenino = totalProgramaSexos($_GET['id'],$carrera->idCarrera,'Femenino');
+                                $totalprograma = totalPrograma($_GET['id'],$carrera->idCarrera);
+                            @endphp  
+                            @if($totalprograma>0)
+                            <tr>
+                                <td>{{ $carrera->nombreCarrera }}</td>
+                                <td>{{ $masculino }}</td>
+                                <td>{{ $femenino }}</td>
+                                <td>{{ $totalprograma }}</td>
+                            </tr>
+                            @php
+                                $tmasculino = $tmasculino + $masculino;
+                                $tfenemino = $tfenemino + $femenino;
+                                $total = $total + $totalprograma;
+                                $puntos[] = [
+                                    'name'=>$carrera->nombreCarrera,'y'=>$totalprograma
+                                ];                            
+                            @endphp                  
+                            @endif
+                        @endforeach
+                        @php
+                            $json = json_encode($puntos);
+                        @endphp
+                        <tr class="bg-info">
+                            <td class="text-right">Totales</td>
+                            <td>{{ $tmasculino }}</td>
+                            <td>{{ $tfenemino }}</td>
+                            <td>{{ $total }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		<div class="table-responsive">
-			<table class="table table-striped table-bordered table-condensed table-hover">
-                <thead>
-                    <tr class="bg-info">
-                        <th>Programa de Estudios</th>
-                        <th>Varones</th>
-                        <th>Mujeres</th>
-                        <th>Total</th>
-                    </tr>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table">
+                <thead class="bg-info">
+                    <th>Programa de Estudios --Notas-- </th>
+                    <th>Aprobados</th>
+                    <th>Desaprobados</th>
+                    <th>Total</th>
                 </thead>
                 <tbody>
-                    @php
-                        $tmasculino = 0;
-                        $tfenemino = 0;
-                        $total = 0;
-                        
-                    @endphp
                     @foreach ($carreras as $carrera)
-                        @php
-                            $masculino = totalProgramaSexos($_GET['id'],$carrera->idCarrera,'Masculino');
-                            $femenino = totalProgramaSexos($_GET['id'],$carrera->idCarrera,'Femenino');
-                            $totalprograma = totalPrograma($_GET['id'],$carrera->idCarrera);
-                        @endphp  
-                        @if($totalprograma>0)
-                        <tr>
-                            <td>{{ $carrera->nombreCarrera }}</td>
-                            <td>{{ $masculino }}</td>
-                            <td>{{ $femenino }}</td>
-                            <td>{{ $totalprograma }}</td>
-                        </tr>
-                        @php
-                            $tmasculino = $tmasculino + $masculino;
-                            $tfenemino = $tfenemino + $femenino;
-                            $total = $total + $totalprograma;
-                            $puntos[] = [
-                                'name'=>$carrera->nombreCarrera,'y'=>$totalprograma
-                            ];                            
-                        @endphp                  
-                        @endif
-                    @endforeach
-                    @php
-                        $json = json_encode($puntos);
-                    @endphp
-                    <tr class="bg-info">
-                        <td class="text-right">Totales</td>
-                        <td>{{ $tmasculino }}</td>
-                        <td>{{ $tfenemino }}</td>
-                        <td>{{ $total }}</td>
+                    <tr>
+                        <td>{{ $carrera->nombreCarrera }}</td>
+                        <td>{{ total_notas('aprobados',$carrera->idCarrera,$_GET['id']) }}</td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

@@ -6,27 +6,10 @@
 <html>
 <head>
     <title>Sistema IDEX Perú Japón</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-        body{
-            font-size: 12px;
-        }
-        b{
-            color: blue;
-        }
-        h2{
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
-<section class="content">
-<div class="row">
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<section>
+
     <table class="table table-condensed">
         <thead>
             <tr >
@@ -45,7 +28,7 @@
                 </td>
             </tr>
         </thead>
-    <thead class="thead-dark">
+    <thead>
         <tr>
             <th style="width: 1%">#</th>
             <th style="width: 5%">T Pago</th>
@@ -59,7 +42,6 @@
         </tr>
     </thead>
         <input type="hidden" value="{{$i=1}}">
-        
     <tbody>
         @foreach ($ventas as $vent)
             <tr>
@@ -77,13 +59,10 @@
     </tbody>
         
     </table>
-</div>
-</div>
+
 </section>
-<footer class="main-footer">
-    <div class="pull-right hidden-xs" style="text-align: right">
+<footer>
         <h3><b>Total</b> {{$sumaTotal->sumaTotal}}</h3>
-    </div>
 </footer>
 </body>
 </html>

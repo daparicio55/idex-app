@@ -60,8 +60,11 @@ use App\Http\Controllers\PmatriculaController;
 use App\Http\Controllers\RdocumentoController;
 use App\Http\Controllers\RegularizacioneController;
 use App\Http\Controllers\RepositorioController;
+use App\Http\Controllers\SaludAlternativaController;
 use App\Http\Controllers\SaludappController;
 use App\Http\Controllers\SaludController;
+use App\Http\Controllers\SaludEncuestaController;
+use App\Http\Controllers\SaludPreguntaController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UasignadaController;
 use App\Http\Controllers\UdidacticaController;
@@ -102,14 +105,20 @@ Route::get('/salud/app/resultados/{id}',[SaludappController::class,'resultados']
 Route::get('/salud/app/encuestas/{id}',[SaludappController::class,'encuestas'])->name('salud.app.encuestas');
 Route::post('/salud/app/surveys/',[SaludappController::class,'surveys_store'])->name('salud.app.surveys.store');
 Route::get('/salud/app/surveys/{id}',[SaludappController::class,'surveys'])->name('salud.app.surveys');
-
-
-
+//CONTRALADOR PERSONALIZADO
+Route::resource('/salud/encuestas',SaludEncuestaController::class)
+->names('salud.encuestas');
+Route::resource('/salud/preguntas',SaludPreguntaController::class)
+->names('salud.preguntas');
+Route::resource('/salud/alternativas',SaludAlternativaController::class)
+->names('salud.alternativas');
+//******************************* */
 Route::resource('/salud/app',SaludappController::class)->names('salud.app');
 Route::resource('/salud/acampanias',AcampianiasController::class)->names('salud.acampanias');
 Route::post('/salud/campanias/csv/{id}',[CampaniaController::class,'csv'])->name('salud.campanias.csv');
 Route::resource('/salud/campanias',CampaniaController::class)->names('salud.campanias');
 Route::resource('/salud',SaludController::class)->names('salud');
+
 
 Route::resource('docentes/cvs',cvController::class)->names('docentes.cvs');
 Route::resource('docentes/cv/experiencias',cvExperienciaController::class)->names('docentes.cv.experiencias');
@@ -184,6 +193,8 @@ Route::post('cepres/sumativos/calificaciones/subircsv/{id}',[CepreSumativoCalifi
 ->name('cepres.sumativos.calificaciones.subircsv');
 Route::get('cepres/sumativos/calificaiones/resultados/{id}',[CepreSumativoCalificacioneController::class,'resultados'])
 ->name('cepres.sumativos.calificaciones.resultados');
+Route::get('/cepres/sumativos/calificaciones/descargar/{id}',[CepreSumativoCalificacioneController::class,'descargar'])
+->name('cepres.sumativos.calificaciones.descargar');
 /* exports */
 Route::get('exports/nomina1',[ExportController::class,'nomina1'])
 ->name('exports.nomina1');

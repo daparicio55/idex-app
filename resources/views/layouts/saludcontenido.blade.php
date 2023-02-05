@@ -1,6 +1,8 @@
+<div class="spinner-container" id="loader">
+    <div class="loader"></div>
+</div>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,10 +16,27 @@
     <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
     <script src="{{ asset('vendor/chars/highcharts.js') }}"></script>
     <script src="{{ asset('vendor/chars/highcharts-more.js') }}"></script>
+    <style>
+        .loader {
+          border: 16px solid #f3f3f3;
+          border-radius: 50%;
+          border-top: 16px solid #3498db;
+          width: 120px;
+          height: 120px;
+          -webkit-animation: spin 2s linear infinite; /* Safari */
+          animation: spin 2s linear infinite;
+        }
+        .spinner-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
     @yield('css')
 </head>
 
-<body class="bg-gray-800 font-sans leading-normal tracking-normal mt-12">
+<body class="bg-gray-800 font-sans leading-normal tracking-normal mt-12" onload="myFunction()">
 <header>
     <!--Nav-->
     <nav aria-label="menu nav" class="bg-gray-800 pt-2 md:pt-1 pb-1 px-1 mt-0 h-auto fixed w-full z-20 top-0">
@@ -83,7 +102,11 @@
     </div>
 </main>
 @yield('js')
-
+<script>
+    function myFunction() {
+        document.getElementById("loader").style.display = "none";
+    }
+</script>
 <script>
     /*Toggle dropdown list*/
     function toggleDD(myDropMenu) {
@@ -119,141 +142,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{{-- @extends('layouts.saludapp')
-@section('titulo','Salud APP')
-@section('css') --}}
-{{-- <style>
-    .form-control-dark {
-    border-color: var(--bs-gray);
-    }
-    .form-control-dark:focus {
-    border-color: #fff;
-    box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);
-    }
-    .text-small {
-    font-size: 85%;
-    }
-    .dropdown-toggle {
-    outline: 0;
-    }
-    .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-
-      .b-example-divider {
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
-
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
-
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
-
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-      footer{
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-      }
-     
-</style> --}}
-{{-- @stop
-@section('contenido') --}}
-    {{-- <header class="py-2 bg-primary mb-3 border-bottom">
-        <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
-          <div class="dropdown">
-            <a href="#" class="text-white d-flex align-items-center col-lg-4 mb-2 mb-lg-0 link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fas fa-sliders-h fa-2x"></i>
-            </a>
-            <ul class="dropdown-menu shadow" style="">
-              <li><a class="dropdown-item" href="{{ route('salud.app.atencione',$estudiante->id) }}">Atenciones</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Customers</a></li>
-              <li><a class="dropdown-item" href="#">Products</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Reports</a></li>
-              <li><a class="dropdown-item" href="#">Analytics</a></li>
-            </ul>
-          </div>
-    
-          <div class="d-flex align-items-center">
-            <form class="w-100 me-3" role="search">
-              
-            </form>
-            <div class="flex-shrink-0 dropdown">
-              <a href="#" class="w-100 d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <b class="text-white">{{ $estudiante->postulante->cliente->apellido }}</b> <img src="{{ Storage::url($estudiante->postulante->url) }}" alt="mdo" width="45" height="45" class="rounded-circle"> 
-              </a>
-              <ul class="dropdown-menu text-small shadow" style="">
-                <li><a class="dropdown-item" href="{{ route('salud.app.profile',$estudiante->id) }}"><i class="fas fa-user-tag"></i> Perfil</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{{ route('salud.app.index') }}"><i class="fas fa-sign-out-alt"></i> Cerrar</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-    </header>     
-    <main>
-        <div class="container">
-            @yield('cuerpo')
-        </div>
-    </main> --}}
-{{-- @stop --}}

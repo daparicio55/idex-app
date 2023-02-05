@@ -551,63 +551,38 @@ function primeros($id,$ciclo){
                 $lista = [];
         }
         $objeto = (object)$array;
-        return $objeto;
-        //dd($listaPromedios);
-        //ahora vamos sacar los puestos de todos ciclos
-
-       /*  $array = [];
-        $contador=0;
-        $suma = 0;
-        $estudiante = Estudiante::findOrFail($id);
-        //vamos a sacar de cada uno de los procesos de matricula
-        $nota=0;
-        $creditos=0;
-        $sumaCreditos = 0;
-        $alumnos= [];
-        foreach ($estudiante->matriculas as $matricula) {
-                //calculamos la nota que sac
-                foreach ($matricula->detalles as $detalle) {
-                        # code...
-                        if($detalle->unidad->ciclo == $ciclo){
-                                $nota = $nota + ($detalle->nota * $detalle->unidad->creditos);
-                                $creditos = $creditos + $detalle->unidad->creditos;
-                        }
-                }
-                if ($nota>0){
-                        $nota = round($nota / $creditos,2);
-                }
-
-                $detalles = EmatriculaDetalle::whereRelation('unidad','ciclo',$ciclo)
-                ->where('ematricula_id',$matricula->id)->get();
-
-                if (count($detalles)>0){
-                        foreach ($detalles as $detalle) {
-                                # code...
-                                if ($detalle->observacion != "Convalidacion"){
-                                        $sumaCreditos =  $sumaCreditos + $detalle->unidad->creditos;
-                                        $suma = $suma + ($detalle->nota * $detalle->unidad->creditos);
-                                }
-                                if ($suma>0){
-                                        $suma = $suma / $sumaCreditos;
-                                        array_push($alumnos,round($suma,2));
-                                        $sumaCreditos = 0;
-                                        $suma=0;
-                                }
-                                $contador ++;
-                        }
-                        $unico = array_unique($alumnos);
-                        rsort($unico);
-                        //vamos a sacar las notas para el ciclo
-                        //return $unico;
-                        //return $estudiante->postulante->carrera->idCarrera;
-                        $puesto = array_search($nota,$unico);
-                        array_push($array,['Nota'=>$nota,'Cantidad'=>$contador,'Puesto'=>$puesto,'Notas'=>$unico]);
-                        $nota=0;
-                        $creditos=0;
-                        $contador =0;
-                        $alumnos=[];
-                }
-        } */
-        
+        return $objeto;      
 }
+function total_notas($estado,$carrera_id,$pmatricula_id){
+        /* $estudiantes = Estudiante::whereHas('postulante',function ($query) use($carrera_id,$pmatricula_id){
+                $query->where('idCarrera','=',$carrera_id)
+                ->where('pmatricula_id','=',$pmatricula_id);
+        })->get(); */
+        $matriculas = Ematricula::whereHas('estudiante.postulante',function ($query) use($carrera_id,$pmatricula_id){
+                $query->where('idCarrera','=',$carrera_id)
+                ->where('pmatricula_id','=',$pmatricula_id);
+        })->get();
+        //vamos a recorrer los detalles de cada uno
+        $ponderados = [];
+        foreach ($matriculas as $matricula) {
+                # code...
+                $notas = 0;
+                $suma_creditos = 0;
+                $cantidad_creditos = 0;
+                foreach( $matricula->detalles as $detalle){
+                        if ($detalle->tipo == "Regular"){
+                                $notas = $notas + $detalle->nota;
+                        }
+                }
+                array_push($ponderados,$notas);
+        }
+        return json_encode($ponderados);
+        /* $matriculas = EmatriculaDetalle::whereHas('matricula.estudiante.postulante',function ($query) use($carrera_id,$pmatricula_id){
+                $query->where('idCarrera','=',$carrera_id)
+                ->where('pmatricula_id','=',$pmatricula_id);
+        })->where('tipo','Regular')
+        ->get(); */
         
+
+        return $matriculas;
+}

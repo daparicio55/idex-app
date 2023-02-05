@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CepreEstudianteExport;
 use App\Models\Cepre;
 use App\Models\CepreEstudiante;
 use App\Models\CepreSumativo;
@@ -11,6 +12,7 @@ use App\Models\CepreSumativoResultado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CepreSumativoCalificacioneController extends Controller
 {
@@ -220,5 +222,9 @@ class CepreSumativoCalificacioneController extends Controller
         ->where('cepre_sumativo_id','=',$id)
         ->get();
         return view ('cepres.sumativos.calificaciones.resultados',compact('resultados','sumativo'));
+    }
+    public function descargar($id){
+        $cepre = Cepre::findOrFail($id);
+        return Excel::download(new CepreEstudianteExport($id), $cepre->periodoCepre.'.xlsx');
     }
 }

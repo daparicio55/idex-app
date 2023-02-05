@@ -40,6 +40,9 @@
                         <a title="normalizar incluye a los estudiantes que tienen el pago completo" class="btn btn-success" href="{{route('cepres.sumativos.calificaciones.normalizar',['id'=>$sumativo->id])}}">
                             <i class="fas fa-gavel fa-2x"></i> Normalizar
                         </a>
+                        <a href="{{ route('cepres.sumativos.calificaciones.descargar',$sumativo->cepre_id) }}" class="btn btn-warning">
+                            <i class="fas fa-file-excel fa-2x"></i> Descargar Excel
+                        </a>
                         <a title="cargar el archivo CSV del escaner optico" data-target="#modal-csv-{{$sumativo->id}}" data-toggle="modal" href="" class="btn btn-primary">
                             <i class="fas fa-file-csv fa-2x"></i> Subir Fichas
                         </a>

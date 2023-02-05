@@ -9,6 +9,7 @@ class Squestion extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    public $guarded = ['id'];
     public function survey(){
         return $this->belongsTo(Survey::class);
     }

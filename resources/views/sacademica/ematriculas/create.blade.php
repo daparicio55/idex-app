@@ -11,7 +11,7 @@
     <div class="input-group">
         <input type="text" class="form-control" id="searchText" name="searchText" placeholder="Ingrese DNI a buscar ...">
         <span class="input-group-btn">
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" onclick="buscardni()" class="btn btn-primary">
                 <i class="fas fa-binoculars"></i> Buscar
             </button>
         </span>

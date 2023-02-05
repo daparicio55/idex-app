@@ -109,13 +109,14 @@
                             </td>
                         @endforeach
                         @php
-                            $promedio = $suma / $sumacreditos;
+                            $promedio = number_format($suma / $sumacreditos,2,'.','');
                         @endphp
-                        <td id="pro{{ round($promedio,2) }}">
-                            <input readonly style="background:lightgray; text-align: right" name="ponderados[]" class="form-control" type="text" id="txtpro{{ round($promedio,2) }}" value="{{ round($promedio,2) }}">
+                        {{ $promedio }}
+                        <td id="pro{{ $promedio }}">
+                            <input readonly style="background:lightgray; text-align: right" name="ponderados[]" class="form-control" type="text" id="txtpro{{ $promedio }}" value="{{ $promedio }}">
                         </td>
                         <td>
-                            <input class="form-control bg-info text-center" readonly type="text" name="puestos[]" @if(!strpos($promedio, '.')) id="txt-{{ $promedio }}.00" @else id="txt-{{ round($promedio,2) }}" @endif>
+                            <input class="form-control bg-info text-center" readonly type="text" name="puestos[]" @if(!strpos($promedio, '.')) id="txt-{{ $promedio }}.00" @else id="txt-{{ $promedio }}" @endif>
                         </td>
                         <td style="text-align: center; width: 60px">
                             <button class="btn btn-primary" type="submit">
@@ -134,7 +135,7 @@
                 @endphp
                 @endif
                 @endforeach
-                <input type="hidden" id="mayor"  value={{ round($mayor,2) }}>
+                <input type="hidden" id="mayor"  value={{ number_format($mayor,2,'.','') }}>
             </tbody>
         </table>
         {!! Form::close() !!}

@@ -38,7 +38,7 @@ class CepreEstudiante extends Model
         'id'
     ];
     protected $guarded = [
-
+        
     ]; 
     public function carrera(){
         return $this->belongsTo('App\Models\Carrera','idCarrera');

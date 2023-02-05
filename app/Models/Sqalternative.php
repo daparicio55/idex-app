@@ -10,6 +10,6 @@ class Sqalternative extends Model
     use HasFactory;
     public $timestamps = false;
     public function question(){
-        return $this->belongsTo(Squestion::class);
+        return $this->belongsTo(Squestion::class,'squestion_id');
     }
 }

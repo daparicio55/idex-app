@@ -1,3 +1,10 @@
+<div class="spinner-container">
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            
+        </div>
+    </div>
+</div>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,13 +18,26 @@
     <title>
         @yield('titulo')
     </title>
+    <style>
+        .spinner-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
     @yield('css')
 </head>
-<body>
+<body> 
         @yield('contenido')
         <script src="{{ asset('vendor/sweetalert2/sweetalert2@11.js') }}"></script>
         <script src="{{ asset('js/app.js') }}"></script>
         <script src="{{ asset('js/bootstrap.js') }}"></script>
         @yield('js')
+        <script>
+            window.onload = function() {
+                document.querySelector('.spinner-container').style.display = 'none';
+            };
+        </script>
 </body>
 </html>
