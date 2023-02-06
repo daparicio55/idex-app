@@ -22,7 +22,12 @@ class CampaniaController extends Controller
      */
     public function __construct()
     {
-        return $this->middleware('auth');
+        $this->middleware('auth');
+        $this->middleware('can:salud.campanias.index')->only('index');
+        $this->middleware('can:salud.campanias.create')->only('create','store');
+        $this->middleware('can:salud.campanias.edit')->only('edit','update');
+        $this->middleware('can:salud.campanias.destroy')->only('destroy');
+        $this->middleware('can:salud.campanias.show')->only('show');
     }
     public function index()
     {

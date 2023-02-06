@@ -280,32 +280,37 @@ return [
         [
             'text'    => 'Admisiones',
             'icon'    => 'fab fa-galactic-republic',
-            'can'   => 'admisiones.postulantes.index',
+            'can'   => 'admisiones.reportes.index',
             'submenu' => [
                 [
                     'icon'    => 'far fa-user',
                     'text' => 'Postulantes',
                     'url'  => 'admisiones/postulantes',
+                    'can'=>'admisiones.postulantes.index'
                 ],
                 [
                     'icon'=>'fas fa-microchip',
                     'text'=>'Configuracion',
                     'url'=>'admisiones/configuraciones',
+                    'can'=>'admisiones.configuraciones.index'
                 ],
                 [
                     'icon'=>'fas fa-cubes',
                     'text'=>'Eva. Ordinaria',
-                    'url'=>'admisiones/ordinarios'
+                    'url'=>'admisiones/ordinarios',
+                    'can'=>'admisiones.ordinarios.index'
                 ],
                 [
                     'icon'=>'fas fa-dungeon',
                     'text'=>'Estudiantes',
                     'url'=>'admisiones/estudiantes',
+                    'can'=>'admisiones.estudiantes.index'
                 ],
                 [
                     'icon'    => 'fas fa-eye',
                     'text' => 'Reportes',
                     'url'  => 'admisiones/reportes',
+                    'can'=>'admisiones.reportes.index'
                 ],
             ],
         ],
@@ -448,22 +453,25 @@ return [
         [
             'text'=>'Salud',
             'icon'=>'fas fa-hospital-user',
-            'route'=>'salud.index',
+            'can'=>'salud.acampanias.index',
             'submenu'=>[
                 [
                     'text'=>'Atenciones Campañas',
                     'icon'=>'fas fa-thumbtack',
-                    'route'=>'salud.acampanias.index'
+                    'route'=>'salud.acampanias.index',
+                    'can'=>'salud.acampanias.index'
                 ],
                 [
                     'text'=>'Campañas',
                     'icon'=>'fas fa-stethoscope',
                     'route'=>'salud.campanias.index',
+                    'can'=>'salud.campanias.index'
                 ],
                 [
                     'text'=>'Encuestas',
                     'icon'=>'far fa-chart-bar',
                     'route'=>'salud.encuestas.index',
+                    'can'=>'salud.encuestas.index'
                 ]
             ],
         ],

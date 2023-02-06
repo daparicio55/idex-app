@@ -15,6 +15,15 @@ class SaludAlternativaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:salud.alternativas.index')->only('index');
+        $this->middleware('can:salud.alternativas.create')->only('create','store');
+        $this->middleware('can:salud.alternativas.edit')->only('edit','update');
+        $this->middleware('can:salud.alternativas.destroy')->only('destroy');
+        $this->middleware('can:salud.alternativas.show')->only('show');
+    }
     public function index()
     {
         //

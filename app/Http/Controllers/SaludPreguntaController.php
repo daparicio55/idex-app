@@ -16,6 +16,15 @@ class SaludPreguntaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:salud.preguntas.index')->only('index');
+        $this->middleware('can:salud.preguntas.create')->only('create','store');
+        $this->middleware('can:salud.preguntas.edit')->only('edit','update');
+        $this->middleware('can:salud.preguntas.destroy')->only('destroy');
+        $this->middleware('can:salud.preguntas.show')->only('show');
+    }
     public function index()
     {
         //

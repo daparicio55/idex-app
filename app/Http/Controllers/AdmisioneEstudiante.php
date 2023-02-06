@@ -20,6 +20,12 @@ class AdmisioneEstudiante extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('can:admisiones.estudiantes.index')->only('index');
+        $this->middleware('can:admisiones.estudiantes.create')->only('create','store');
+        $this->middleware('can:admisiones.estudiantes.edit')->only('edit','update');
+        $this->middleware('can:admisiones.estudiantes.destroy')->only('destroy');
+        $this->middleware('can:admisiones.estudiantes.show')->only('show');
+        $this->middleware('can:admisiones.estudiantes.anular')->only('anular');
     }
     public function index(Request $request)
     {

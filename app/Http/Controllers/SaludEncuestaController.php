@@ -17,7 +17,12 @@ class SaludEncuestaController extends Controller
      */
     public function __construct()
     {
-        return $this->middleware('auth');
+        $this->middleware('auth');
+        $this->middleware('can:salud.encuestas.index')->only('index');
+        $this->middleware('can:salud.encuestas.create')->only('create','store');
+        $this->middleware('can:salud.encuestas.edit')->only('edit','update');
+        $this->middleware('can:salud.encuestas.destroy')->only('destroy');
+        $this->middleware('can:salud.encuestas.show')->only('show');
     }
     public function index()
     {

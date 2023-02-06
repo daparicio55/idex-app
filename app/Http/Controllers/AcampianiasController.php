@@ -23,7 +23,12 @@ class AcampianiasController extends Controller
      */
     public function __construct()
     {
-        return $this->middleware('auth');
+        $this->middleware('auth');
+        $this->middleware('can:salud.acampanias.index')->only('index');
+        $this->middleware('can:salud.acampanias.create')->only('create','store');
+        $this->middleware('can:salud.acampanias.edit')->only('edit','update');
+        $this->middleware('can:salud.acampanias.destroy')->only('destroy');
+        $this->middleware('can:salud.acampanias.show')->only('show');
     }
     public function index()
     {
