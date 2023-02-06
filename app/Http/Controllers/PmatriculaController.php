@@ -17,6 +17,11 @@ class PmatriculaController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('can:sacademica.pmatriculas.index')->only('index');
+        $this->middleware('can:sacademica.pmatriculas.create')->only('create','store');
+        $this->middleware('can:sacademica.pmatriculas.edit')->only('edit','update');
+        $this->middleware('can:sacademica.pmatriculas.destroy')->only('destroy');
+        $this->middleware('can:sacademica.pmatriculas.show')->only('show');
     }
     public function index()
     {

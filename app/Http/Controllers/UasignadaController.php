@@ -17,6 +17,15 @@ class UasignadaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:sacademica.uasignadas.index')->only('index');
+        $this->middleware('can:sacademica.uasignadas.create')->only('create','store');
+        $this->middleware('can:sacademica.uasignadas.edit')->only('edit','update');
+        $this->middleware('can:sacademica.uasignadas.destroy')->only('destroy');
+        $this->middleware('can:sacademica.uasignadas.show')->only('show');
+    }
     public function index(Request $request)
     {
         //

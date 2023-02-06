@@ -22,6 +22,11 @@ class RegularizacioneController extends Controller
     protected $buscar;
     public function __construct(){
         $this->middleware('auth');
+        $this->middleware('can:sacademica.regularizaciones.index')->only('index');
+        $this->middleware('can:sacademica.regularizaciones.create')->only('create','store');
+        $this->middleware('can:sacademica.regularizaciones.edit')->only('edit','update');
+        $this->middleware('can:sacademica.regularizaciones.destroy')->only('destroy');
+        $this->middleware('can:sacademica.regularizaciones.show')->only('show');
     }
     public function index(Request $request)
     {

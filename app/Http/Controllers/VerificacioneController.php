@@ -24,11 +24,11 @@ class VerificacioneController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        /* $this->middleware('can:accesos.usuarios.index')->only('index');
-        $this->middleware('can:accesos.usuarios.create')->only('create','store');
-        $this->middleware('can:accesos.usuarios.edit')->only('edit','update');
-        $this->middleware('can:accesos.usuarios.destroy')->only('destroy');
-        $this->middleware('can:accesos.usuarios.show')->only('show'); */
+        $this->middleware('can:sacademica.verificaciones.index')->only('index');
+        $this->middleware('can:sacademica.verificaciones.create')->only('create','store');
+        $this->middleware('can:sacademica.verificaciones.edit')->only('edit','update');
+        $this->middleware('can:sacademica.verificaciones.destroy')->only('destroy');
+        $this->middleware('can:sacademica.verificaciones.show')->only('show');
     }
     public function index(Request $request)
     {

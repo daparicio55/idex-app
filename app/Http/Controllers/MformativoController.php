@@ -19,6 +19,11 @@ class MformativoController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('can:sacademica.mformativos.index')->only('index');
+        $this->middleware('can:sacademica.mformativos.create')->only('create','store');
+        $this->middleware('can:sacademica.mformativos.edit')->only('edit','update');
+        $this->middleware('can:sacademica.mformativos.destroy')->only('destroy');
+        $this->middleware('can:sacademica.mformativos.show')->only('show');
     }
     public function index()
     {

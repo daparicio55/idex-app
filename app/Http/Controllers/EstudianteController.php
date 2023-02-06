@@ -25,6 +25,11 @@ class EstudianteController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('can:sacademica.estudiantes.index')->only('index');
+        $this->middleware('can:sacademica.estudiantes.create')->only('create','store');
+        $this->middleware('can:sacademica.estudiantes.edit')->only('edit','update');
+        $this->middleware('can:sacademica.estudiantes.destroy')->only('destroy');
+        $this->middleware('can:sacademica.estudiantes.show')->only('show');
     }
     public function index(Request $request)
     {

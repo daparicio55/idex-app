@@ -16,6 +16,11 @@ class MoodleController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('can:sacademica.moodle.index')->only('index');
+        $this->middleware('can:sacademica.moodle.create')->only('create','store');
+        $this->middleware('can:sacademica.moodle.edit')->only('edit','update');
+        $this->middleware('can:sacademica.moodle.destroy')->only('destroy');
+        $this->middleware('can:sacademica.moodle.show')->only('show');
     }
     public function index(Request $request)
     {

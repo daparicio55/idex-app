@@ -22,6 +22,11 @@ class ConvalidacioneController extends Controller
     protected $buscar;
     public function __construct(){
         $this->middleware('auth');
+        $this->middleware('can:sacademica.convalidaciones.index')->only('index');
+        $this->middleware('can:sacademica.convalidaciones.create')->only('create','store');
+        $this->middleware('can:sacademica.convalidaciones.edit')->only('edit','update');
+        $this->middleware('can:sacademica.convalidaciones.destroy')->only('destroy');
+        $this->middleware('can:sacademica.convalidaciones.show')->only('show');
     }
     public function index(Request $request)
     {

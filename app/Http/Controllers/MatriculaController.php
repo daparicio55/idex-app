@@ -25,6 +25,11 @@ class MatriculaController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('can:sacademica.matriculas.index')->only('index');
+        $this->middleware('can:sacademica.matriculas.create')->only('create','store');
+        $this->middleware('can:sacademica.matriculas.edit')->only('edit','update');
+        $this->middleware('can:sacademica.matriculas.destroy')->only('destroy');
+        $this->middleware('can:sacademica.matriculas.show')->only('show');
     }
     public function index(Request $request)
     {

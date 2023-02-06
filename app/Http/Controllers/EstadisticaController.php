@@ -17,12 +17,11 @@ class EstadisticaController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        /* $this->middleware('can:admisiones.configuraciones.index')->only('index');
-        $this->middleware('can:admisiones.configuraciones.create')->only('create','store');
-        $this->middleware('can:admisiones.configuraciones.edit')->only('edit','update');
-        $this->middleware('can:admisiones.configuraciones.destroy')->only('destroy');
-        $this->middleware('can:admisiones.configuraciones.show')->only('show');
-        $this->middleware('can:admisiones.configuraciones.anular')->only('anular'); */
+        $this->middleware('can:sacademica.estadisticas.index')->only('index');
+        $this->middleware('can:sacademica.estadisticas.create')->only('create','store');
+        $this->middleware('can:sacademica.estadisticas.edit')->only('edit','update');
+        $this->middleware('can:sacademica.estadisticas.destroy')->only('destroy');
+        $this->middleware('can:sacademica.estadisticas.show')->only('show');
     }
     public function index(Request $request)
     {
