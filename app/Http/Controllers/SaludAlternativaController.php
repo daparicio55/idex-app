@@ -49,12 +49,13 @@ class SaludAlternativaController extends Controller
     public function store(Request $request)
     {
         try {
-            //code...
+            //code....
             DB::beginTransaction();
             $sqalternative = new Sqalternative;
             $sqalternative->squestion_id = $request->squestion_id;
             $sqalternative->name_es = $request->name_es;
             $sqalternative->name_awa = $request->name_awa;
+            $sqalternative->point = $request->point;
             if(isset($request->required)){
                 $sqalternative->required = 1;
             }
@@ -110,6 +111,7 @@ class SaludAlternativaController extends Controller
             $sqalternative = Sqalternative::findOrFail($id);
             $sqalternative->name_es = $request->name_es;
             $sqalternative->name_awa = $request->name_awa;
+            $sqalternative->point = $request->point;
             if(isset($request->required)){
                 $sqalternative->required = 1;
             }else{

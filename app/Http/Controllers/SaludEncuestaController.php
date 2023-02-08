@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SurveyExport;
 use App\Models\Squestion;
 use App\Models\Survey;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SaludEncuestaController extends Controller
 {
@@ -27,10 +29,15 @@ class SaludEncuestaController extends Controller
     public function index()
     {
         //
-        $surveys = Survey::orderBy('id','desc')->get();
+        $surveys = Survey::orderBy('id','desc')
+        ->get();
         return view('salud.encuestas.index',compact('surveys'));
     }
-
+    public function download($id){
+        $survey = Survey::findOrFail($id);
+        //return view('exports.survey',compact('survey'));
+        return Excel::download(new SurveyExport($id), $survey->type.'-'.$survey->id.'.xlsx');        
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -39,8 +46,11 @@ class SaludEncuestaController extends Controller
     public function create()
     {
         //
-
-        return view('salud.encuestas.create');
+        $types = [
+            'Encuestas'=>'Encuestas',
+            'Psicologia'=>'Psicologia'
+        ];
+        return view('salud.encuestas.create',compact('types'));
     }
 
     /**
@@ -88,8 +98,12 @@ class SaludEncuestaController extends Controller
     public function edit($id)
     {
         //
+        $types = [
+            'Encuestas'=>'Encuestas',
+            'Psicologia'=>'Psicologia'
+        ];
         $survey = Survey::findOrFail($id);
-        return view('salud.encuestas.edit',compact('survey'));
+        return view('salud.encuestas.edit',compact('survey','types'));
     }
 
     /**

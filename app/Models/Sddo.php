@@ -12,4 +12,7 @@ class Sddo extends Model
     public function sdo(){
         return $this->belongsTo(Sdo::class);
     }
+    public function alternative(){
+        return $this->belongsTo(Sqalternative::class,'sqalternative_id');
+    }
 }

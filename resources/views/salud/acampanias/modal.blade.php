@@ -46,7 +46,8 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-8">
                             <p class="card-title">
-                                Resultados.
+                                <b class="text-uppercase">{{ $atencione->estudiante->postulante->cliente->apellido }},</b>
+                                <span class="text-capitalize">{{ strtolower($atencione->estudiante->postulante->cliente->nombre) }}</span>
                             </p>
                         </div>
                         <div class="col-sm-12 col-md-4">
@@ -111,9 +112,14 @@
                             {!! Form::label('nutri_edad', 'Edad', [null]) !!}
                             {!! Form::number('nutri_edad', Carbon::parse($atencione->estudiante->postulante->fechaNacimiento)->age, ['readonly','class'=>'form-control','step'=>'0.01']) !!}                
                         </div>
+                        @php
+                            $pmetros = number_format($atencione->estudiante->pmedico->nutri_talla / 100,2,'.','');
+                            $imc = number_format($atencione->nutri_peso  / ($pmetros * $pmetros),2,'.','');
+                            //$imc = 11;
+                        @endphp
                         <div class="col-sm-12 col-md-2">
                             {!! Form::label('nutri_imc', 'IMC', [null]) !!}
-                            {!! Form::number('nutri_imc', null, ['readonly','class'=>'form-control','step'=>'0.01','readonly']) !!}                
+                            {!! Form::number('nutri_imc', $imc, ['readonly','class'=>'form-control','step'=>'0.01','readonly']) !!}                
                         </div>
                         <div class="col-sm-12 mb-2 mt-3">
                             <h4 class="card-title text-danger">
@@ -134,11 +140,11 @@
                         </div>
                         <div class="col-sm-12 col-md-2">
                             {!! Form::label('lab_hdl', 'HDL', [null]) !!}
-                            {!! Form::number('lab_hdl', null, ['class'=>'form-control','step'=>'0.01']) !!}                
+                            {!! Form::number('lab_hdl', null, ['class'=>'form-control','step'=>'0.01','readonly']) !!}                
                         </div>
                         <div class="col-sm-12 col-md-2">
                             {!! Form::label('lab_ldl', 'LDL', [null]) !!}
-                            {!! Form::number('lab_ldl', null, ['class'=>'form-control','step'=>'0.01']) !!}                
+                            {!! Form::number('lab_ldl', null, ['class'=>'form-control','step'=>'0.01','readonly']) !!}                
                         </div>
                         <div class="col-sm-12 col-md-2">
                             {!! Form::label('lab_hto', 'Hematocrito', [null]) !!}
@@ -174,5 +180,51 @@
             </button>
         </div>
       </div>
+    </div>
+  </div>
+
+
+    
+  <!-- Modal -->
+  <div class="modal fade" id="modal-survey-{{ $atencione->id }}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h5 class="modal-title">
+                    <i class="fas fa-poll-h"></i> Lista de Encuestas y Test Realizados.
+                </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <th>#</th>
+                        <th>Encuesta</th>
+                        <th>Fecha</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        @foreach ($atencione->estudiante->surveys()->orderBy('id','desc')->get() as $key=>$survey )
+                            <tr>
+                                <td>{{ $key+1 }}</td>
+                                <td>{{ $survey->survey->name_es }}</td>
+                                <td style="width: 100px">{{ date('d-m-Y',strtotime($survey->date)) }}</td>
+                                <td>
+                                    <a href="{{ route('salud.acampanias.show',$survey->id) }}" class="btn btn-primary">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
   </div>

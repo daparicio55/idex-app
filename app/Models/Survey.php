@@ -15,5 +15,7 @@ class Survey extends Model
     public function questions(){
         return $this->hasMany(Squestion::class);
     }
-
+    public function sdo(){
+        return $this->hasMany(Sdo::class);
+    }
 }

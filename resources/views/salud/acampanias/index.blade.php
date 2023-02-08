@@ -19,7 +19,25 @@
     </div>
 @endif
 {{-- contenido --}}
-
+{!! Form::open(['rounte'=>'salud.acampanias.index','method'=>'get','role'=>'search']) !!}
+<div class="row">
+    <div class="col-sm-12">
+        <div class='form-group'>
+            <div class="input-group">
+                <input type="text" class="form-control" name="searchText" @if(isset($searchText)) value="{{$searchText}}" @endif placeholder="ingrese texto a buscar...">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search-plus"></i> Buscar
+                    </button>
+                    <a href="{{ route('salud.acampanias.index') }}" class="btn btn-danger">
+                        <i class="fas fa-broom"></i> Limpiar
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+{!! Form::close() !!}
 <div class="row">
     <div class="col-sm-12">
         <table class="table">
@@ -49,13 +67,16 @@
                         </td>
                         <td>{{ $atencione->estudiante->postulante->carrera->nombreCarrera }}</td>
                         <td>
-                            <a data-toggle="modal" data-target="#modal-show-{{ $atencione->id }}" class="btn btn-info" title="mostrar atencion">
+                            <a data-toggle="modal" data-target="#modal-show-{{ $atencione->id }}" class="btn btn-info mb-2" title="mostrar atencion">
                                 <i class="fa fa-eye"></i>
                             </a>
-                            <a href="{{ route('salud.acampanias.edit',$atencione->id) }}" class="btn btn-success" title="editar atencion">
+                            <a  data-toggle="modal" data-target="#modal-survey-{{ $atencione->id }}" title="Encuetas y Test" class="btn btn-warning mb-2">
+                                <i class="fas fa-poll"></i> 
+                            </a>
+                            <a href="{{ route('salud.acampanias.edit',$atencione->id) }}" class="btn btn-success mb-2" title="editar atencion">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <a data-toggle="modal" data-target="#modal-delete-{{ $atencione->id }}" class="btn btn-danger" title="eliminar atencion">
+                            <a data-toggle="modal" data-target="#modal-delete-{{ $atencione->id }}" class="btn btn-danger mb-2" title="eliminar atencion">
                                 <i class="fa fa-trash"></i>
                             </a>
                             @include('salud.acampanias.modal')
@@ -63,6 +84,15 @@
                     </tr>
                 @endforeach
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8">
+                       @if( method_exists($atenciones,'links'))
+                            {{ $atenciones->links() }}
+                       @endif
+                    </td>
+                </tr>
+            </tfoot>
         </div>
     </div>
 </div>

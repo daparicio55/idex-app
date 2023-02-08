@@ -103,11 +103,14 @@ Route::get('/salud/app/profile/{id}',[SaludappController::class,'profile'])->nam
 Route::get('/salud/app/atenciones/{id}',[SaludappController::class,'atencione'])->name('salud.app.atencione');
 Route::get('/salud/app/resultados/{id}',[SaludappController::class,'resultados'])->name('salud.app.resultados');
 Route::get('/salud/app/encuestas/{id}',[SaludappController::class,'encuestas'])->name('salud.app.encuestas');
+Route::get('/salud/app/psicologia/{id}',[SaludappController::class,'psicologia'])->name('salud.app.psicologia');
 Route::post('/salud/app/surveys/',[SaludappController::class,'surveys_store'])->name('salud.app.surveys.store');
 Route::get('/salud/app/surveys/{id}',[SaludappController::class,'surveys'])->name('salud.app.surveys');
 //CONTRALADOR PERSONALIZADO
 Route::resource('/salud/encuestas',SaludEncuestaController::class)
 ->names('salud.encuestas');
+Route::get('/salud/encuestas/{id}/download',[SaludEncuestaController::class,'download'])
+->name('salud.encuestas.download');
 Route::resource('/salud/preguntas',SaludPreguntaController::class)
 ->names('salud.preguntas');
 Route::resource('/salud/alternativas',SaludAlternativaController::class)
@@ -255,5 +258,7 @@ Route::get('/clear-cache', function () {
     echo Artisan::call('cache:clear');
     echo Artisan::call('route:clear');
  });
-
+Route::get('/privacidad',function(){
+    return view('privacidad.index');
+});
 

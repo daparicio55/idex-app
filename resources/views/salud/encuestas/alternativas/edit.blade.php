@@ -22,6 +22,10 @@
                         {!! Form::label('name_awa', 'Nombre - Awajum', [null]) !!}
                         {!! Form::text('name_awa', null, ['required','class'=>'form-control']) !!}
                     </div>
+                    <div class="col-sm-12 col-md-6">
+                        {!! Form::label('point', 'Puntos', [null]) !!}
+                        {!! Form::number('point', null, ['class'=>'form-control','required']) !!}
+                    </div>
                     <div class="col-sm-12 col-md-6 mt-3">
                         {!! Form::checkbox('required', 1, null, [null]) !!}
                         {!! Form::label('required', 'Requerido', [null]) !!}

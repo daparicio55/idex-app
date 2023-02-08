@@ -66,7 +66,7 @@ class CampaniaController extends Controller
     public function show(Request $request, $id)
     {
         //
-        dd($request);
+        dd($id);
     }
     public function csv(Request $request, $id){
         try {

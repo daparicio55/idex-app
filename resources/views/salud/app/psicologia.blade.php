@@ -3,11 +3,10 @@
 <div class="main-content flex-1 bg-gray-800 mt-10 md:mt-2 pb-24 md:pb-5">
     <div class="bg-gray-800 pt-1">
         <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
-            <h5 class="font-bold pl-2">Encuestas.</h5>
+            <h5 class="font-bold pl-2">Test de Psicologicos.</h5>
         </div>
         <div class="W3-animado-izquierda flex flex-wrap"> 
             <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-
                 @foreach ($surveys as $survey)
                     <div class="bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-xl p-5">
                         <p style="padding-bottom: 1rem">

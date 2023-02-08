@@ -26,6 +26,7 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Introduccion</th>
+                    <th>Tipo</th>
                     <th></th>
                 </tr>
             </thead>
@@ -34,7 +35,11 @@
                     <tr>
                         <td><b>Español:</b> {{ $survey->name_es }} <br> <b>Awajum:</b> {{ $survey->name_awa }}</td>
                         <td><b>Español:</b> {{ $survey->introduction_es }} <br> <b>Awajum:</b> {{ $survey->introduction_awa }}</td>
+                        <td>{{ $survey->type }}</td>
                         <td>
+                            <a class="btn btn-warning mb-1" title="descargar resultados" href="{{ route('salud.encuestas.download',$survey->id) }}">
+                                <i class="fas fa-download"></i>  
+                            </a>
                             <a href="{{ route('salud.encuestas.show',$survey->id) }}" class="btn btn-info mb-1" title="preguntas">
                                 <i class="fa fa-question"></i> 
                             </a>

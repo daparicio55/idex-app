@@ -13,6 +13,10 @@
               </div>
               <div class="card-body">
                 <div class="row">
+                    <div class="col-sm-12" style="margin-bottom: 1rem">
+                        {!! Form::label('type', 'Tipo', [null]) !!}
+                        {!! Form::select('type', $types, null, ['class'=>'form-control']) !!}
+                    </div>
                     <div class="col-sm-12 col-md-6">
                         {!! Form::label('name_es', 'Nombre - Español', [null]) !!}
                         {!! Form::textarea('name_es', null, ['required','class'=>'form-control','rows'=>5]) !!}

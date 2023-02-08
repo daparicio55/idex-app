@@ -20,4 +20,7 @@ class Estudiante extends Model
     public function pmedico(){
         return $this->hasOne(Pmedico::class);
     }
+    public function surveys(){
+        return $this->hasMany(Sdo::class);
+    }
 }

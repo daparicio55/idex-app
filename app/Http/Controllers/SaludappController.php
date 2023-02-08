@@ -8,6 +8,7 @@ use App\Models\Sddo;
 use App\Models\Sdo;
 use App\Models\Sqalternative;
 use App\Models\Survey;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -140,9 +141,18 @@ class SaludappController extends Controller
         return view('salud.app.resultados',compact('estudiante'));
     }
     public function encuestas($id){
-        $surveys = Survey::orderBy('id','desc')->get();
+        $surveys = Survey::orderBy('id','desc')
+        ->where('type','=','Encuesta')
+        ->get();
         $estudiante = Estudiante::findOrFail($id);
         return view('salud.app.encuestas',compact('estudiante','surveys'));
+    }
+    public function psicologia($id){
+        $surveys = Survey::orderBy('id','desc')
+        ->where('type','=','Psicologia')
+        ->get();
+        $estudiante = Estudiante::findOrFail($id);
+        return view('salud.app.psicologia',compact('estudiante','surveys'));
     }
     public function surveys($id){
         $dato = explode(':',$id);
@@ -161,6 +171,7 @@ class SaludappController extends Controller
             $sdo = new Sdo();
             $sdo->survey_id = $request->survey_id;
             $sdo->estudiante_id = $request->estudiante_id;
+            $sdo->date = Carbon::now();
             $sdo->save();
             //ahora guardamos los detalles del ingreso
             //buscamos las preguntas
@@ -181,10 +192,11 @@ class SaludappController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
-            return view('salud.app.encuestas',compact('estudiante','surveys'))
+            return Redirect::route('salud.app.encuestas',[$estudiante->id])
             ->with('error','error en la consulta');
         }
-        return view('salud.app.encuestas',compact('estudiante','surveys'))
+        return Redirect::route('salud.app.encuestas',[$estudiante->id])
         ->with('info','encuesta guardada correctamente');
     }
+    
 }

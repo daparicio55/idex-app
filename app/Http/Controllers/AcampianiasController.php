@@ -8,6 +8,7 @@ use App\Models\Campania;
 use App\Models\Cliente;
 use App\Models\Estudiante;
 use App\Models\Pmedico;
+use App\Models\Sdo;
 use Carbon\Carbon;
 use Facade\FlareClient\Http\Client;
 use Illuminate\Http\Request;
@@ -30,9 +31,20 @@ class AcampianiasController extends Controller
         $this->middleware('can:salud.acampanias.destroy')->only('destroy');
         $this->middleware('can:salud.acampanias.show')->only('show');
     }
-    public function index()
+    public function index(Request $request)
     {
         //
+        $searchText = null;
+        if(isset($request->searchText)){
+            $atenciones = Acampania::whereHas('estudiante.postulante.cliente',function($query) use($request){
+                $query->where('dniRuc','like','%'.$request->searchText.'%')
+                ->orWhere('apellido','like','%'.$request->searchText.'%')
+                ->orWhere('nombre','like','%'.$request->searchText.'%');
+            })->get();
+            $searchText = $request->searchText;
+        }else{
+            $atenciones = Acampania::orderBy('id','desc')->paginate(20);
+        }
         $sexos = [
             'Femenino'=>'Femenino',
             'Masculino'=>'Masculino'
@@ -48,8 +60,7 @@ class AcampianiasController extends Controller
             '-'=>'-'
         ];
         $campanias = Campania::orderBy('id','desc')->pluck('nombre','id')->toArray();
-        $atenciones = Acampania::orderBy('id','desc')->get();
-        return view('salud.acampanias.index',compact('atenciones','sexos','gss','fss','campanias'));
+        return view('salud.acampanias.index',compact('atenciones','sexos','gss','fss','campanias','searchText'));
     }
 
     /**
@@ -157,6 +168,8 @@ class AcampianiasController extends Controller
     public function show($id)
     {
         //
+        $sdo = Sdo::findOrFail($id);
+        return view('salud.acampanias.show',compact('sdo'));
     }
 
     /**

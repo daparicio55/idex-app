@@ -33,6 +33,7 @@
             <thead>
                 <tr>
                     <th>Nombre</th>
+                    <th>Puntos</th>
                     <th>Observacion Requerida</th>
                     <th></th>
                 </tr>
@@ -41,7 +42,14 @@
                 @foreach ($squestion->alternatives as $alternative)
                     <tr>
                         <td><b>Español:</b> {{ $alternative->name_es }} <br> <b>Awajum:</b> {{ $alternative->name_awa }}</td>
-                        <td>{{ $alternative->required }}</td>
+                        <td>{{ $alternative->point }}</td>
+                        <td>
+                            @if ($alternative->required == 0)
+                                No requiere Observacion
+                            @else
+                                Requiere Obsevacion
+                            @endif
+                        </td>
                         <td>
                             <a title="editar" href="{{ route('salud.alternativas.edit',$alternative->id) }}" class="btn btn-success mb-1" title="editar">
                                 <i class="fa fa-edit"></i> 
