@@ -142,7 +142,7 @@ class SaludappController extends Controller
     }
     public function encuestas($id){
         $surveys = Survey::orderBy('id','desc')
-        ->where('type','=','Encuesta')
+        ->where('type','=','Encuestas')
         ->get();
         $estudiante = Estudiante::findOrFail($id);
         return view('salud.app.encuestas',compact('estudiante','surveys'));
@@ -165,32 +165,66 @@ class SaludappController extends Controller
         try {
             //cremos que se lleno la encuesta
             DB::beginTransaction();
-            $surveys = Survey::orderBy('id','desc')->get();
-            $estudiante = Estudiante::findOrFail($request->estudiante_id);
-            $survey = Survey::findOrFail($request->survey_id);
-            $sdo = new Sdo();
-            $sdo->survey_id = $request->survey_id;
-            $sdo->estudiante_id = $request->estudiante_id;
-            $sdo->date = Carbon::now();
-            $sdo->save();
-            //ahora guardamos los detalles del ingreso
-            //buscamos las preguntas
-            foreach ($survey->questions as $question) {
-                # code...
-                $sddo = new Sddo();
-                $sddo->sqalternative_id = $request->get('rd-'.$question->id);
-                //verificamos si tiene la columna required para agregar la observacion
-                $alternavite = Sqalternative::findOrFail($sddo->sqalternative_id);
-                if ($alternavite->required == 1){
-                    //dd($request->get('txt-'.$sddo->sqalternative_id));
-                    $sddo->observation = $request->get('txt-'.$sddo->sqalternative_id);
-                }
-                $sddo->sdo_id = $sdo->id;
-                $sddo->save();
+            //buscamos la encuesta
+            $sdoCount = Sdo::where('estudiante_id','=',$request->estudiante_id)
+            ->where('survey_id','=',$request->survey_id)
+            ->count();
+                if ($sdoCount > 0){
+                    //ya esta la encuesta
+                    $estudiante = Estudiante::findOrFail($request->estudiante_id);
+                    $encuesta = Sdo::where('estudiante_id','=',$request->estudiante_id)
+                    ->where('survey_id','=',$request->survey_id)
+                    ->first();
+                    $sdo = Sdo::findOrFail($encuesta->id);
+                    $sdo->date = Carbon::now();
+                    $sdo->update();
+                    //borramos todos los detalles
+
+                    Sddo::where('sdo_id','=',$sdo->id)->delete();
+                    $survey = Survey::findOrFail($request->survey_id);
+                    foreach ($survey->questions as $question) {
+                        # code...
+                        $sddo = new Sddo();
+                        $sddo->sqalternative_id = $request->get('rd-'.$question->id);
+                        //verificamos si tiene la columna required para agregar la observacion
+                        $alternavite = Sqalternative::findOrFail($sddo->sqalternative_id);
+                        if ($alternavite->required == 1){
+                            //dd($request->get('txt-'.$sddo->sqalternative_id));
+                            $sddo->observation = $request->get('txt-'.$sddo->sqalternative_id);
+                        }
+                        $sddo->sdo_id = $sdo->id;
+                        $sddo->save();
+                    }
+
+
+                }else{
+                    $estudiante = Estudiante::findOrFail($request->estudiante_id);
+                    $survey = Survey::findOrFail($request->survey_id);
+                    $sdo = new Sdo();
+                    $sdo->survey_id = $request->survey_id;
+                    $sdo->estudiante_id = $request->estudiante_id;
+                    $sdo->date = Carbon::now();
+                    $sdo->save();
+                    //ahora guardamos los detalles del ingreso
+                    //buscamos las preguntas
+                    foreach ($survey->questions as $question) {
+                        # code...
+                        $sddo = new Sddo();
+                        $sddo->sqalternative_id = $request->get('rd-'.$question->id);
+                        //verificamos si tiene la columna required para agregar la observacion
+                        $alternavite = Sqalternative::findOrFail($sddo->sqalternative_id);
+                        if ($alternavite->required == 1){
+                            //dd($request->get('txt-'.$sddo->sqalternative_id));
+                            $sddo->observation = $request->get('txt-'.$sddo->sqalternative_id);
+                        }
+                        $sddo->sdo_id = $sdo->id;
+                        $sddo->save();
+                    }
             }
             DB::commit();
         } catch (\Throwable $th) {
             //throw $th;
+            dd($th->getMessage());
             DB::rollBack();
             return Redirect::route('salud.app.encuestas',[$estudiante->id])
             ->with('error','error en la consulta');

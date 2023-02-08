@@ -428,6 +428,7 @@ Highcharts.chart("container_colesterol", {
   
   // the value axis
   yAxis: {
+    
     min: 0,
     max: 400,
     tickPixelInterval: 72,

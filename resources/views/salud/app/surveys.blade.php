@@ -58,7 +58,7 @@
         {{-- <h4 class="card-title" id="title_awa">{{ $survey->name_awa }}</h4> --}}
       </div>
       <div class="card-footer">
-        <a name="" id="" class="btn btn-dark" href="#" role="button">
+        <a name="" id="" class="btn btn-dark" href="{{ route('salud.app.psicologia',$estudiante->id) }}" role="button">
             <i class="fas fa-backward"></i> Salir
         </a>
         <button class="btn btn-primary" type="submit">
