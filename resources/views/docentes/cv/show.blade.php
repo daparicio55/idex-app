@@ -43,10 +43,14 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
           <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-indigo"></i>{{ $personale->perCiudad }}, {{ $personale->perDepartamento }}</p>
           <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-indigo"></i>{{ $personale->correoInstitucional }}</p>
           <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-indigo"></i>{{ $personale->telefono }}</p>
+          <p><i class="fa fa-id-card fa-fw w3-margin-right w3-large w3-text-indigo"></i>{{ $personale->dni }}</p>
+          @isset($personale->ncolegiatura)
+            <p><i class="fa fa-code fa-fw w3-margin-right w3-large w3-text-indigo"></i>{{ $personale->ncolegiatura }}</p>
+          @endisset
           <hr>
             <p class="w3-large"><b><i class="fa fa-id-card fa-fw w3-margin-right w3-text-indigo"></i>Perfil</b></p>
-            <p>{{ $personale->perPerfil }}</p>
-            <hr>
+            <p style="text-align:justify">{{ $personale->perPerfil }}</p>
+            <hr>  
           <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-indigo"></i>Conocimientos</b></p>
           @isset($personale->conocimientos->ingles)
             <p>Inglés</p>
@@ -83,7 +87,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
                     <i class="fa fa-calendar fa-fw w3-margin-right"></i>
                     {{ \Carbon\Carbon::parse($experiencia->exFechaInicio)->formatLocalized('%B %Y') }} - @if ($experiencia->exActual == true) <span class="w3-tag w3-indigo w3-round">Actual</span> @else {{ \Carbon\Carbon::parse($experiencia->exFechaFin)->formatLocalized('%B %Y') }} @endif
                 </h6>
-                <p>{{ $experiencia->exTareas }}</p>
+                <p style="text-align:justify">{{ $experiencia->exTareas }}</p>
                 <hr>
           </div>
         @endforeach
@@ -97,18 +101,25 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
             <div class="w3-container">
                 <h5 class="w3-opacity"><b>{{ $estudio->esInstitucion }}</b></h5>
                 <h6 class="w3-text-indigo"><i class="fa fa-calendar fa-fw w3-margin-right"></i>{{ $estudio->esAnioInicio }} - {{ $estudio->esAnioFin }}</h6>
-                <p>{{ $estudio->esTitulo }}</p>
+                <p>{{ $estudio->esTitulo }} - {{ $estudio->esMencion }}</p>
+                <p>{{ $estudio->esDescripcion }}</p>
                 <hr>
           </div>
         @endforeach
       </div>
 
       <div class="w3-container w3-card w3-white">
-        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-book fa-fw w3-margin-right w3-xxlarge w3-text-indigo"></i>Unidades didácticas asignadas</h2>
+        <span class="w3-text-grey w3-padding-16">
+          <h2 class="w3-text-grey" style="display: inline-block">
+            <i class="fa fa-book fa-fw w3-margin-right w3-xxlarge w3-text-indigo"></i>
+            Unidades didácticas asignadas
+          </h2>
+          <small class="w3-text-grey"> periodo académico {{ $periodo->nombre }}</small>
+        </span>
         <ul class="w3-text-indigo">
             @foreach ($personale->user->unidades as $unidade)
               @if ($unidade->pmatricula_id == $periodo->id)
-                <li>
+                <li> 
                   <h5>{{ $unidade->unidad->nombre }} - {{ $unidade->unidad->modulo->carrera->nombreCarrera }}</h5>
                 </li>  
               @endif

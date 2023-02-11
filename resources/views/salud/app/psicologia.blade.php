@@ -18,6 +18,7 @@
                             $sdo = $survey->sdo()->where('estudiante_id','=',$estudiante->id)->first();
                             $points = 0;
                         @endphp
+                        @isset($sdo->id)
                         @foreach ($sdo->sddo as $sddo )
                             @php
                                 $points = number_format($points,2,'.','') + number_format($sddo->alternative->point,2,'.','');    
@@ -38,7 +39,7 @@
                                     'sufix'=>'puntos',
                                 ];
                         @endphp
-                        @isset($sdo->id)
+                        
                             <x-gauge>
                                 <x-slot name="datos">
                                     @php
@@ -60,7 +61,6 @@
                 @endforeach
             </div>
         </div>
-        {{-- ****************************************************************** --}}
     </div>
 </div>
 @stop

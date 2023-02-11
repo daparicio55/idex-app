@@ -6,7 +6,6 @@ use App\cvPersonales;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Requests\cvPersonalFrmRequest;
 use App\Models\cvPersonale;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -36,7 +35,6 @@ class cvPersonalController extends Controller
     {
         //verificamos primero si ya no tiene registrado sus datos si no editarlos
         $personal = cvPersonale::where('user_id','=',auth()->id())->first();
-
         //$personal = DB::table('cv_personales')->where('id','=',auth()->id())->first();
         if(isset($personal)){
             //editamos
@@ -67,6 +65,7 @@ class cvPersonalController extends Controller
             $personales->apellidos = $request->get('apellidos');
             $personales->nombres = $request->get('nombres');
             $personales->dni = $request->get('dni');
+            $personales->ncolegiatura = $request->get('ncolegiatura');
             $personales->telefono = $request->get('telefono');
             $personales->perDireccion = $request->get('direccion');
             $personales->perCiudad = $request->get('perCiudad');
@@ -125,6 +124,7 @@ class cvPersonalController extends Controller
             $personales->apellidos = $request->get('apellidos');
             $personales->nombres = $request->get('nombres');
             $personales->dni = $request->get('dni');
+            $personales->ncolegiatura = $request->get('ncolegiatura');
             $personales->telefono = $request->get('telefono');
             $personales->perDireccion = $request->get('direccion');
             $personales->perCiudad = $request->get('perCiudad');

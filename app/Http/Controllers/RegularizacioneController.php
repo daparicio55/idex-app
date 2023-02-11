@@ -8,6 +8,7 @@ use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
 use App\Models\Pmatricula;
 use App\Models\Udidactica;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -101,7 +102,17 @@ class RegularizacioneController extends Controller
             $ematricula_id = DB::table('ematriculas')
             ->where('estudiante_id','=',$request->estudiante_id)
             ->where('pmatricula_id','=',$request->pmatricula_id)
-            ->first()->id;
+            ->first();
+            if(!isset($ematricula_id->id)){
+                $ematricula_id = new Ematricula;
+                $ematricula_id->tipo = "Extra";
+                $ematricula_id->fecha = Carbon::now();
+                $ematricula_id->boleta = "000";
+                $ematricula_id->pmatricula_id = $request->pmatricula_id;
+                $ematricula_id->estudiante_id = $request->estudiante_id;
+                $ematricula_id->user_id = auth()->id();
+                $ematricula_id->save();
+            }
             //ahora tenemos que ingresar las convalidaciones.
             $filas = count($request->notas);
             for ($i=0; $i < $filas ; $i++) { 
@@ -109,7 +120,7 @@ class RegularizacioneController extends Controller
             $detalle = new EmatriculaDetalle;
             $detalle->tipo = $request->tipoMatricula;
             $detalle->udidactica_id = $request->idUniDidactica[$i];
-            $detalle->ematricula_id = $ematricula_id;
+            $detalle->ematricula_id = $ematricula_id->id;
             $detalle->nota = $request->notas[$i];
             $detalle->observacion = $request->resolucion;
             $detalle->save();
