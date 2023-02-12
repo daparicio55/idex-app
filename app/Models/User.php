@@ -54,4 +54,7 @@ class User extends Authenticatable
     public function unidades(){
         return $this->hasMany(Uasignada::class);
     }
+    public function personale(){
+        return $this->hasOne(cvPersonale::class,'user_id');
+    }
 }

@@ -22,7 +22,7 @@
                         {!! Form::textarea('name_es', null, ['required','class'=>'form-control','rows'=>5]) !!}
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        {!! Form::label('name_awa', 'Nombre - Awajum', [null]) !!}
+                        {!! Form::label('name_awa', 'Nombre - Awajun', [null]) !!}
                         {!! Form::textarea('name_awa', null, ['required','class'=>'form-control','rows'=>5]) !!}
                     </div>
                     <div class="col-sm-12 col-md-6">
@@ -30,7 +30,7 @@
                         {!! Form::textarea('introduction_es', null, ['required','class'=>'form-control','rows'=>5]) !!}
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        {!! Form::label('introduction_awa', 'Introduccion - Awajum', [null]) !!}
+                        {!! Form::label('introduction_awa', 'Introduccion - Awajun', [null]) !!}
                         {!! Form::textarea('introduction_awa', null, ['required','class'=>'form-control','rows'=>5]) !!}
                     </div>
                 </div>

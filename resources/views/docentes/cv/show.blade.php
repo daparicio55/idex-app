@@ -20,14 +20,11 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
   <p>"la unidad es la medalla que nos distingue"</p>
 </header>
 <!-- Page Container -->
-<div class="w3-content w3-margin-top" style="max-width:1400px;">
-
+<div class="w3-content" style="max-width:1400px;">
   <!-- The Grid -->
-  <div class="w3-row-padding">
-  
+  <div class="w3-row-padding w3-margin-top">
     <!-- Left Column -->
     <div class="w3-third">
-    
       <div class="w3-white w3-text-grey w3-card-4">
         <div class="w3-display-container">
           <img src="{{ Storage::url($personale->perFoto) }}" style="width:100%" alt="Avatar">
@@ -91,10 +88,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
                 <hr>
           </div>
         @endforeach
-        
-        
       </div>
-
       <div class="w3-container w3-card w3-white w3-margin-bottom">
         <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-indigo"></i>Formacion Profesional</h2>
         @foreach ($personale->estudios->sortByDesc('esAnioInicio') as $estudio)

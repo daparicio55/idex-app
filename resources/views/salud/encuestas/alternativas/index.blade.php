@@ -41,7 +41,7 @@
             <tbody>
                 @foreach ($squestion->alternatives as $alternative)
                     <tr>
-                        <td><b>Español:</b> {{ $alternative->name_es }} <br> <b>Awajum:</b> {{ $alternative->name_awa }}</td>
+                        <td><b>Español:</b> {{ $alternative->name_es }} <br> <b>Awajun:</b> {{ $alternative->name_awa }}</td>
                         <td>{{ $alternative->point }}</td>
                         <td>
                             @if ($alternative->required == 0)

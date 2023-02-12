@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-sm-2 mt-2">
                     <a class="btn btn-outline-primary" id="esp">ESPAÑOL</a>
-                    <a class="btn btn-outline-success" id="awa">AWAJUM</a>
+                    <a class="btn btn-outline-success" id="awa">AWAJUN</a>
                 </div>
             </div>
             <div class="row mt-3">
@@ -58,7 +58,7 @@
                         </p>
                     </div>                  
                     
-{{-- **********awajum****************** --}}
+{{-- **********awajun****************** --}}
                     <div id="contrato_awa" style="display: none">
                         <p style="text-align: justify">
                             Wi, ampímatin asan, shinchin suwajai IDEX Perú japon aentsjin takanuna, ampimaku takatai ainanuna emati tusan:

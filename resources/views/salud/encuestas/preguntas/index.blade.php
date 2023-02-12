@@ -36,8 +36,8 @@
             <tbody>
                 @foreach ($survey->questions()->orderBy('id','desc')->get() as $question)
                     <tr>
-                        <td><b>Español:</b> {{ $question->group_es }} <br> <b>Awajum:</b> {{ $question->group_awa }}</td>
-                        <td><b>Español:</b> {{ $question->name_es }} <br> <b>Awajum:</b> {{ $question->name_awa }}</td>
+                        <td><b>Español:</b> {{ $question->group_es }} <br> <b>Awajun:</b> {{ $question->group_awa }}</td>
+                        <td><b>Español:</b> {{ $question->name_es }} <br> <b>Awajun:</b> {{ $question->name_awa }}</td>
                         <td>
                             <a href="{{ route('salud.preguntas.show',$question->id) }}" class="btn btn-info mb-1" title="alternativas">
                                 <i class="fa fa-list"></i> 

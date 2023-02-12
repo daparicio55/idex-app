@@ -13,7 +13,7 @@
             </div>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="inlineRadioOptions" onclick="idioma('awa')" id="inlineRadio2" value="Awajum">
-                <label class="form-check-label" for="inlineRadio2">Awajum</label>
+                <label class="form-check-label" for="inlineRadio2">Awajun</label>
             </div>
         </div>
         <div class="card-header">

@@ -19,7 +19,7 @@
                         {!! Form::text('name_es', null, ['required','class'=>'form-control','rows'=>5]) !!}
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        {!! Form::label('name_awa', 'Nombre - Awajum', [null]) !!}
+                        {!! Form::label('name_awa', 'Nombre - Awajun', [null]) !!}
                         {!! Form::text('name_awa', null, ['required','class'=>'form-control','rows'=>5]) !!}
                     </div>
                     <div class="col-sm-12 col-md-6">
@@ -27,7 +27,7 @@
                         {!! Form::text('group_es', null, ['required','class'=>'form-control','rows'=>5]) !!}
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        {!! Form::label('group_awa', 'Grupo - Awajum', [null]) !!}
+                        {!! Form::label('group_awa', 'Grupo - Awajun', [null]) !!}
                         {!! Form::text('group_awa', null, ['required','class'=>'form-control','rows'=>5]) !!}
                     </div>
                 </div>

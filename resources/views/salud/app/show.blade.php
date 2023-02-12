@@ -40,7 +40,7 @@
         <div class="w-full md:w-1/2 xl:w-1/3 p-6">
             <!--Metric Card-->
             <div class="bg-gradient-to-b from-pink-200 to-pink-100 border-b-4 border-pink-500 rounded-lg shadow-xl p-5">
-                <h3 style="font-size: 2rem">Awajum</h3>  
+                <h3 style="font-size: 2rem">Awajun</h3>  
                 <p style="text-align: justify">Juu takatak nagkamnae wají autusa diyamu daáji: “herramienta informática con enfoque intercultural para seguimiento de los estudiantes de un instituto superior tecnológico Perú Japón, 2022”, aántsag émamkemas umigtatamujin: “determinar la relación de una herramienta informática con enfoque intercultural para seguimiento de los estudiantes de un Instituto Superior Tecnológico Perú Japón, 2022”, tecnologías digitales tawa nuunú awagki takaku aántsag interculturalidad iína jeén, papií augtainum augmatku, íina nugkee País taji nui instituciones educativas ayaá dushakam juna takatan diísa unuimagtinme tusa. 
                     Taji nuka, takat diísa emamaina nú, takamain ayanú ujantinme tamauwa nú pachisa, wají juwamua nú dukap awagmaunum, emamkesa takat aents takatai ainanui, shiíg anentaimja umiamu antsag dewamaina nú ujumak awasatatamau. 
                 </p>

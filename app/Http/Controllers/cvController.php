@@ -9,7 +9,7 @@ use App\Models\cvPersonale;
 use App\Models\Pmatricula;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-
+use PDF;
 class cvController extends Controller
 {
     /**
@@ -59,6 +59,8 @@ class cvController extends Controller
     {
         $periodo = Pmatricula::orderBy('nombre','desc')->first();
         $personale = cvPersonale::where('user_id','=',$id)->first();
+        //$pdf = PDF::loadview('docentes.cv.show',['personale'=>$personale,'periodo'=>$periodo]);
+        //return $pdf->download($personale->dni.'.pdf');
         return view('docentes.cv.show',compact('personale','periodo'));        
     }
 

@@ -33,8 +33,8 @@
             <tbody>
                 @foreach ($surveys as $survey)
                     <tr>
-                        <td><b>Español:</b> {{ $survey->name_es }} <br> <b>Awajum:</b> {{ $survey->name_awa }}</td>
-                        <td><b>Español:</b> {{ $survey->introduction_es }} <br> <b>Awajum:</b> {{ $survey->introduction_awa }}</td>
+                        <td><b>Español:</b> {{ $survey->name_es }} <br> <b>Awajun:</b> {{ $survey->name_awa }}</td>
+                        <td><b>Español:</b> {{ $survey->introduction_es }} <br> <b>Awajun:</b> {{ $survey->introduction_awa }}</td>
                         <td>{{ $survey->type }}</td>
                         <td>
                             <a class="btn btn-warning mb-1" title="descargar resultados" href="{{ route('salud.encuestas.download',$survey->id) }}">
