@@ -22,6 +22,9 @@
 <input type="hidden" id="url" value="{{ asset("") }}">
 <input type="hidden" name="estudiante_id" id="estudiante_id">
 <input type="hidden" name="cretotal" id="cretotal" value=0>
+@php
+    $estudiante_id = 0;
+@endphp
 {{-- programa de estudios --}}
 <div class="row">
     <div class="card col-lg-12">

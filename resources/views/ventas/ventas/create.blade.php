@@ -49,83 +49,240 @@
             </div>      
       @endif
 @endif
-<div class="row">
-    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <div class='form-group'>
-            <label for="apellido">Apellidos</label>
-            <input type="text" name="apellido" value="{{$apellido}}" required class="form-control">
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <div class='form-group'>
-            <label for="nombre">Nombres</label>
-            <input type="text" name="nombre" value="{{$nombre}}" required class="form-control">
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <div class='form-group'>
-            <label for="telefono">Telefono</label>
-            <input type="apellido" name="telefono" value="{{$telefono}}" required class="form-control">
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <div class='form-group'>
-            <label for="email">Correo</label>
-            <input type="text" name="email" value="{{$correo}}" required class="form-control">
-        </div>
-    </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class='form-group'>
-            <label for="apellido">Direccion</label>
-            <input type="text" name="direccion" value="{{$direccion}}" required class="form-control">
-        </div>
-    </div>
 
-    <!-- datos de la boleta -->
-    <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-        <div class='form-group'>
-            <label>Tipo Comprobante</label>
-            <select name="tipo" class='form-control'>
-                    <option value="Boleta">Boleta</option>
-                    <option value="Factura">Factura</option>
-            </select>
-        </div>
-    </div>
-    <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-        <div class='form-group'>
-            <label for="numero">Número Comprobante</label>
-            <input type="number" name="numero" required value="{{$numero->numero + 1}}" class="form-control" placeholder="Num. Comprobante ...">
-        </div>
-    </div>
-    <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-        <div class='form-group'>
-            <label for="fecha">Fecha</label>
-            <input type="date" name="fecha" required class="form-control" value="{{date('Y-m-d')}}">
-        </div>
-    </div>
-    <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-        <div class='form-group'>
-            <label>Tipo Pago</label>
-            <select name="tipoPago" class='form-control'>
-                    <option value="Contado">Contado</option>
-                    <option value="Transferencia">Transferencia</option>
-                    <option value="Credito">Credito</option>
-            </select>
-        </div>
-    </div>
-    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
-        <div class='form-group'>
-            <!--<label for="comentario">Observacion</label>
-            <input type="text" name="comentario" id="comentario" required class="form-control"> -->
-            <label for="comentario">Observacion</label>
-            <input type="search" name="comentario" id="comentario" list="listamodelos" required class="form-control">
-        </div>
-    </div>
+{{-- card para veriticar puestos --}}
+@isset($cliente->idCliente)
+      @foreach ($cliente->postulaciones as $postulacione)
+      @isset($postulacione->estudiante)
+      <div class="row">
+            <div class="card col-lg-12">
+            <div class="card-header bg-success">
+                  <i class="fas fa-graduation-cap"></i> {{ $postulacione->carrera->nombreCarrera }}
+            </div>
+            <div class="card-body">
+                  <table class="table table-striped">
+                        <thead>
+                        <th>Ciclo</th>
+                        <th>Nota</th>
+                        <th>Puesto</th>
+                        <th>Periodo</th>
+                        <th>Nota</th>
+                        <th>Puesto</th>
+                        <th>Periodo</th>
+                        <th>Nota</th>
+                        <th>Puesto</th>
+                        <th>Periodo</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                              <td>Ciclo I</td>
+                              @php
+                                    $cont = 0;
+                              @endphp
+                              @foreach (primeros($postulacione->estudiante->id,"I") as $item)
+                                    <td>{{ $item['nota'] }}</td>
+                                    <td>{{ $item['puesto'] }}</td>
+                                    <td>{{ $item['periodo'] }}</td>
+                                    @php
+                                        $cont ++;
+                                    @endphp
+                              @endforeach
+                              @for ($i = $cont; $i < 3; $i++)
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                              @endfor
+                        </tr>
+                        <tr>
+                              <td>Ciclo II</td>
+                              @php
+                                    $cont = 0;
+                              @endphp
+                              @foreach (primeros($postulacione->estudiante->id,"II") as $item)
+                                    <td>{{ $item['nota'] }}</td>
+                                    <td>{{ $item['puesto'] }}</td>
+                                    <td>{{ $item['periodo'] }}</td>
+                                    @php
+                                        $cont ++;
+                                    @endphp
+                              @endforeach
+                              @for ($i = $cont; $i < 3; $i++)
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                              @endfor
+                        </tr>
+                        <tr>
+                              <td>Ciclo III</td>
+                              @php
+                                    $cont = 0;
+                              @endphp
+                              @foreach (primeros($postulacione->estudiante->id,"III") as $item)
+                                    <td>{{ $item['nota'] }}</td>
+                                    <td>{{ $item['puesto'] }}</td>
+                                    <td>{{ $item['periodo'] }}</td>
+                                    @php
+                                        $cont ++;
+                                    @endphp
+                              @endforeach
+                              @for ($i = $cont; $i < 3; $i++)
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                              @endfor                   
+                        </tr>
+                        <tr>
+                              <td>Ciclo IV</td>
+                              @php
+                                    $cont = 0;
+                              @endphp
+                              @foreach (primeros($postulacione->estudiante->id,"IV") as $item)
+                                    <td>{{ $item['nota'] }}</td>
+                                    <td>{{ $item['puesto'] }}</td>
+                                    <td>{{ $item['periodo'] }}</td>
+                                    @php
+                                        $cont ++;
+                                    @endphp
+                              @endforeach
+                              @for ($i = $cont; $i < 3; $i++)
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                              @endfor
+                        </tr>
+                        <tr>
+                              <td>Ciclo V</td>
+                              @php
+                                    $cont = 0;
+                              @endphp
+                              @foreach (primeros($postulacione->estudiante->id,"V") as $item)
+                                    <td>{{ $item['nota'] }}</td>
+                                    <td>{{ $item['puesto'] }}</td>
+                                    <td>{{ $item['periodo'] }}</td>
+                                    @php
+                                        $cont ++;
+                                    @endphp
+                              @endforeach
+                              @for ($i = $cont; $i < 3; $i++)
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                              @endfor
+                        </tr>
+                        <tr>
+                              <td>Ciclo VI</td>
+                              @php
+                                    $cont = 0;
+                              @endphp
+                              @foreach (primeros($postulacione->estudiante->id,"VI") as $item)
+                                    <td>{{ $item['nota'] }}</td>
+                                    <td>{{ $item['puesto'] }}</td>
+                                    <td>{{ $item['periodo'] }}</td>
+                                    @php
+                                        $cont ++;
+                                    @endphp
+                              @endforeach
+                              @for ($i = $cont; $i < 3; $i++)
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                              @endfor
+                        </tr>
+                        </tbody>
+                  </table>
+            </div>
+            </div>
+      </div>
+      @endisset                
+      @endforeach
+@endisset
+
+{{-- datos peronsales --}}
+<div class="row">
+      <div class="card col-lg-12">
+            <div class="card-header bg-danger">
+                  <i class="fas fa-users"></i> Datos Personales
+            </div>
+            <div class="card-body">
+                  <div class="row">
+                  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <div class='form-group'>
+                              <label for="apellido">Apellidos</label>
+                              <input type="text" name="apellido" value="{{$apellido}}" required class="form-control">
+                        </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <div class='form-group'>
+                              <label for="nombre">Nombres</label>
+                              <input type="text" name="nombre" value="{{$nombre}}" required class="form-control">
+                        </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <div class='form-group'>
+                              <label for="telefono">Telefono</label>
+                              <input type="apellido" name="telefono" value="{{$telefono}}" required class="form-control">
+                        </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <div class='form-group'>
+                              <label for="email">Correo</label>
+                              <input type="text" name="email" value="{{$correo}}" required class="form-control">
+                        </div>
+                  </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class='form-group'>
+                              <label for="apellido">Direccion</label>
+                              <input type="text" name="direccion" value="{{$direccion}}" required class="form-control">
+                        </div>
+                  </div>
+                  <!-- datos de la boleta -->
+                  <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                        <div class='form-group'>
+                              <label>Tipo Comprobante</label>
+                              <select name="tipo" class='form-control'>
+                                    <option value="Boleta">Boleta</option>
+                                    <option value="Factura">Factura</option>
+                              </select>
+                        </div>
+                  </div>
+                  <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                        <div class='form-group'>
+                              <label for="numero">Número Comprobante</label>
+                              <input type="number" name="numero" required value="{{$numero->numero + 1}}" class="form-control" placeholder="Num. Comprobante ...">
+                        </div>
+                  </div>
+                  <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                        <div class='form-group'>
+                              <label for="fecha">Fecha</label>
+                              <input type="date" name="fecha" required class="form-control" value="{{date('Y-m-d')}}">
+                        </div>
+                  </div>
+                  <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                        <div class='form-group'>
+                              <label>Tipo Pago</label>
+                              <select name="tipoPago" class='form-control'>
+                                    <option value="Contado">Contado</option>
+                                    <option value="Transferencia">Transferencia</option>
+                                    <option value="Credito">Credito</option>
+                              </select>
+                        </div>
+                  </div>
+                  <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
+                        <div class='form-group'>
+                              <!--<label for="comentario">Observacion</label>
+                              <input type="text" name="comentario" id="comentario" required class="form-control"> -->
+                              <label for="comentario">Observacion</label>
+                              <input type="search" name="comentario" id="comentario" list="listamodelos" required class="form-control">
+                        </div>
+                  </div>
+                  </div>
+            </div>
+      </div>
 </div>
 <!-- Detalles de la Venta -->
 <div class="card card-primary">
       <div class="card-header">
-            Detalles de la Venta
+            <i class="fas fa-shopping-cart"></i> Detalles de la Venta
       </div>
       <div class="card-body">
             <div class="row">

@@ -6,9 +6,11 @@
             <div class="relative inline-block">
                 <button onclick="toggleDD('myDropdown')" class="drop-button text-white py-2 px-2"> <span class="pr-2"><i class="fas fa-users fa-2x"></i></span> Hola, {{ $estudiante->postulante->cliente->nombre }}</button>
                 <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30 invisible">
-                    <a href="{{ route('salud.app.profile',$estudiante->id) }}" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Perfli</a>
+                    <a href="{{ route('salud.app.profile',$estudiante->id) }}" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw fa-2x"></i> Perfil</a>
+                    <a href="https://carnetvacunacion.minsa.gob.pe/" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-syringe fa-2x"></i> Vacunas</a>
+                    <a href="{{ route('salud.app.herramientas',$estudiante->id) }}" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-balance-scale fa-2x"></i> Herramientas</a>
                     <div class="border border-gray-800"></div>
-                    <a href="{{ route('salud.app.index') }}" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-sign-out-alt fa-fw"></i> Cerrar</a>
+                    <a href="{{ route('salud.app.index') }}" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-sign-out-alt fa-fw fa-2x"></i> Cerrar</a>
                 </div>
             </div>
         </li>
@@ -17,6 +19,38 @@
 @stop
 @section('cuerpo')
 <div id="main" class="main-content flex-1 bg-gray-100 mt-12 md:mt-2 pb-24 md:pb-5">
+    @if($estudiante->acampanias->count()>0)
+    <div class="bg-gray-800 pt-14">
+        <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
+            <h5 class="font-bold pl-2">Perfil Médico.</h5>
+        </div>
+    </div>
+    <div class="flex flex-wrap"> 
+        <div class="w-full md:w-1/2 xl:w-1/3 p-6">
+            <!--Metric Card-->
+            <div class="bg-gradient-to-b from-red-200 to-red-100 border-b-4 border-red-600 rounded-lg shadow-xl p-5">
+                    <p class="mb-3">
+                        <i class="fas fa-balance-scale fa-2x"></i> <b>Peso</b> {{ $estudiante->acampanias[0]->nutri_peso }} Kg.
+                    </p>
+                    <p class="mb-3">
+                        <i class="fas fa-ruler-vertical fa-2x"></i> <b>Talla</b> {{ $estudiante->pmedico->nutri_talla }} cm.
+                    </p>
+                    <p class="mb-3">
+                        <i class="fas fa-circle-notch fa-2x"></i> <b>Perímetro Abdominal</b> {{ $estudiante->acampanias[0]->nutri_perimetro }} cm.
+                    </p>
+                    <p class="mb-3">
+                        <i class="fas fa-syringe fa-2x"></i> <b>Grupo Sanguineo</b> {{ $estudiante->pmedico->lab_gs }}
+                    </p>
+                    <p class="mb-3">
+                        <i class="fas fa-prescription fa-2x"></i> <b>Factor Sanguineo</b> {{ $estudiante->pmedico->lab_fs }}
+                    </p> 
+            </div>
+            <!--/Metric Card-->
+        </div>
+    </div>
+    @endif 
+
+    {{-- datos del alumno --}}
     <div class="bg-gray-800 pt-14">
         <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
             <h5 class="font-bold pl-2">Bienvenida IDEX.</h5>

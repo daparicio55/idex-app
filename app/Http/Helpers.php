@@ -479,6 +479,7 @@ function primeros($id,$ciclo){
         $listaPromedios=[];
         $lista=[];
         $suma=0;
+        $total =0;
         //voy a calcular todas las notas pertenecientes al ciclo
         //necesito el periodo de la matricula
         //necesito el ciclo de la matricula
@@ -547,7 +548,7 @@ function primeros($id,$ciclo){
                 $solo = array_values(array_unique($lista));
                 //busco la nota en el array
                 $puesto = array_search($total,$solo)+1;
-                array_push($array,['nota'=>$total,'puesto'=>$puesto]);
+                array_push($array,['nota'=>$total,'puesto'=>$puesto,'periodo'=>$matricula->matricula->nombre]);
                 $lista = [];
         }
         $objeto = (object)$array;

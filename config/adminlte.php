@@ -486,7 +486,7 @@ return [
                 ]
             ],
         ],
-        /* [
+        [
             'text'=>'Trámite Documentario',
             'icon'=>'far fa-file',
             'url'=>'#',
@@ -513,7 +513,7 @@ return [
                     'url'=>'tdocumentario/fdocumentos'
                 ]
             ]
-        ], */
+        ],
         [
             'text'    => 'Ventas',
             'icon'    => 'fab fa-sellsy',

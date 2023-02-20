@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Estudiante;
 use App\Models\Servicio;
 use App\Models\Venta;
 use App\Models\VentaDetalle;
@@ -207,7 +208,8 @@ class VentaController extends Controller
 				$telefono = $cliente->telefono;
 			}
 		}
-		return view("ventas.ventas.create",["dni"=>$dni,"apellido"=>$apellido,"nombre"=>$nombre,"direccion"=>$direccion,"correo"=>$correo,"telefono"=>$telefono,"idCliente"=>$idCliente,"numero"=>$numero,"servicios"=>$servicios]);
+		$cliente = Cliente::find($idCliente);
+		return view("ventas.ventas.create",["cliente"=>$cliente,"dni"=>$dni,"apellido"=>$apellido,"nombre"=>$nombre,"direccion"=>$direccion,"correo"=>$correo,"telefono"=>$telefono,"idCliente"=>$idCliente,"numero"=>$numero,"servicios"=>$servicios]);
     }
 
     /**

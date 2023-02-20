@@ -80,21 +80,16 @@
                         <p style="text-align: right" class="text-success">
                             Dr. Manuel Jesús Quispe Narváez	- CEP 67230
                         </p>
-                    </div>    
-
-                    
+                    </div>     
                 </div>
-
-                              
-                
             </div>
             </div>  
             <div class="d-grid mb-5">
                 <button class="btn btn-primary btn-lg fw-bold" id="btnIngresar" type="submit">
-                    <i class="fas fa-check"></i> Acepto
+                    <i class="fas fa-check"></i> <span id="si">Acepto los terminos</span>
                 </button>
-                <a href="{{ route('salud.app.index') }}" class="btn btn-danger mt-2 btn-lg fw-bold" id="btnIngresar">
-                    <i class="fas fa-times"></i> Salir
+                <a href="{{ route('salud.app.index') }}" id="btnSalir" class="btn btn-danger mt-2 btn-lg fw-bold" id="btnIngresar">
+                    <i class="fas fa-times"></i> <span id="no">Rechazo los terminos</span>
                 </a>
             </div>
             </div>
@@ -110,16 +105,22 @@
     let lema = document.getElementById('lema');
     let contrato_esp = document.getElementById('contrato_esp');
     let contrato_awa = document.getElementById('contrato_awa');
+    let si = document.getElementById('si');
+    let no = document.getElementById('no');
     esp.addEventListener('click',function(){
         lema.innerHTML="la unidad es la medalla que nos distingue..";
         contrato_esp.style.display="block";
         contrato_awa.style.display="none";
+        si.innerHTML="Acepto los terminos";
+        no.innerHTML="Rechazo los terminos";
         //contrato.innerHTML="La presente iniciativa nace en la investigación denominada: herramienta informática con enfoque intercultural para seguimiento de los estudiantes de un instituto superior tecnológico Perú Japón, 2022, la misma que mantiene como objetivo principal: determinar la relación de una herramienta informática con enfoque intercultural para seguimiento de los estudiantes de un Instituto Superior Tecnológico Perú Japón, 2022, planteando el reaprovechamiento del uso de las tecnologías digitales  y el fomento de la interculturalidad en nuestra casa de estudios siendo modelo a todas las instituciones educativas de nuestro País. Proponemos modelos de apertura de oportunidades, con aumento de la productividad, eficiencia de las actividades humanas, tomar decisiones acertadas y reducción de posibilidad de errores.";
     });
     awa.addEventListener('click',function(){
         lema.innerHTML= "juttí ijunmauwa nú iínag íman emapawai..";
         contrato_esp.style.display="none";
         contrato_awa.style.display="block";
+        si.innerHTML="ayu, papínak tsentsaktatjai";
+        no.innerHTML="ayu, papínak tsentsaktatjai";
         //contrato.innerHTML = "Juu takatak nagkamnae wají autusa diyamu daáji: “herramienta informática con enfoque intercultural para seguimiento de los estudiantes de un instituto superior tecnológico Perú Japón, 2022”, aántsag émamkemas umigtatamujin: “determinar la relación de una herramienta informática con enfoque intercultural para seguimiento de los estudiantes de un Instituto Superior Tecnológico Perú Japón, 2022”, tecnologías digitales tawa nuunú awagki takaku aántsag interculturalidad iína jeén, papií augtainum augmatku, íina nugkee País taji nui instituciones educativas ayaá dushakam juna takatan diísa unuimagtinme tusa. Taji nuka, takat diísa emamaina nú, takamain ayanú ujantinme tamauwa nú pachisa, wají juwamua nú dukap awagmaunum, emamkesa takat aents takatai ainanui, shiíg anentaimja umiamu antsag dewamaina nú ujumak awasatatamau.";
     });
 </script>

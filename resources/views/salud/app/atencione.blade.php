@@ -55,7 +55,7 @@
             <div class="bg-white border-transparent rounded-lg shadow-xl">
                 <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
                     <h5 class="font-bold uppercase text-red-600">
-                        <i class="fas fa-heartbeat"></i> Frecuencia Cardiaca
+                        <i class="fas fa-heartbeat"></i> Frecuencia Cardiaca {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
                     </h5>
                 </div>
                 <div class="p-0 chartjs">
@@ -75,7 +75,7 @@
           <div class="bg-white border-transparent rounded-lg shadow-xl">
               <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
                   <h5 class="font-bold uppercase text-blue-600">
-                    <i class="fas fa-lungs"></i> Frecuencia Respiratoria
+                    <i class="fas fa-lungs"></i> Frecuencia Respiratoria {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
                   </h5>
               </div>
               <div class="p-0 chartjs">
@@ -94,7 +94,7 @@
             <div class="bg-white border-transparent rounded-lg shadow-xl">
                 <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
                     <h5 class="font-bold uppercase text-red-600">
-                      <i class="fas fa-thermometer-half"></i> Temperatura
+                      <i class="fas fa-thermometer-half"></i> Temperatura {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
                     </h5>
                 </div>
                 <div class="p-0 chartjs">
@@ -113,7 +113,7 @@
             <div class="bg-white border-transparent rounded-lg shadow-xl">
                 <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
                     <h5 class="font-bold uppercase text-blue-600">
-                      <i class="fas fa-water"></i> Presión Arterial (Sis - Dia)
+                      <i class="fas fa-water"></i> Presión Arterial (Sis - Dia) {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
                     </h5>
                 </div>
                 <div class="p-0 chartjs">
@@ -137,7 +137,7 @@
             <div class="bg-white border-transparent rounded-lg shadow-xl">
                 <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
                     <h5 class="font-bold uppercase text-blue-600">
-                      <i class="fab fa-skyatlas"></i> Saturacion de Oxigeno
+                      <i class="fab fa-skyatlas"></i> Saturacion de Oxigeno {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
                     </h5>
                 </div>
                 <div class="p-0 chartjs">
@@ -157,7 +157,7 @@
             <div class="bg-white border-transparent rounded-lg shadow-xl">
                 <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
                     <h5 class="font-bold uppercase text-green-600">
-                      <i class="fas fa-balance-scale"></i> Indice de Masa Corporal
+                      <i class="fas fa-balance-scale"></i> Indice de Masa Corporal {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
                     </h5>
                 </div>
                 <div class="p-0 chartjs">

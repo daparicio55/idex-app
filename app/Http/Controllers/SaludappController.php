@@ -232,5 +232,8 @@ class SaludappController extends Controller
         return Redirect::route('salud.app.encuestas',[$estudiante->id])
         ->with('info','encuesta guardada correctamente');
     }
-    
+    public function herramientas($id){
+        $estudiante = Estudiante::findOrFail($id);
+        return view('salud.app.herramientas',compact('estudiante'));
+    }
 }

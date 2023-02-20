@@ -55,7 +55,7 @@
             <div class="bg-white border-transparent rounded-lg shadow-xl">
                 <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
                     <h5 class="font-bold uppercase text-red-600">
-                        <i class="fas fa-heartbeat"></i> Glucosa
+                        <i class="fas fa-heartbeat"></i> Glucosa {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
                     </h5>
                 </div>
                 <div class="p-0 chartjs">
@@ -76,7 +76,7 @@
             <div class="bg-white border-transparent rounded-lg shadow-xl">
                 <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
                     <h5 class="font-bold uppercase text-red-600">
-                        <i class="fas fa-heartbeat"></i> Triglicéridos
+                        <i class="fas fa-heartbeat"></i> Triglicéridos {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
                     </h5>
                 </div>
                 <div class="p-0 chartjs">
@@ -97,7 +97,7 @@
             <div class="bg-white border-transparent rounded-lg shadow-xl">
                 <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
                     <h5 class="font-bold uppercase text-red-600">
-                        <i class="fas fa-heartbeat"></i> Colesterol
+                        <i class="fas fa-heartbeat"></i> Colesterol {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
                     </h5>
                 </div>
                 <div class="p-0 chartjs">
@@ -118,7 +118,7 @@
           <div class="bg-white border-transparent rounded-lg shadow-xl">
               <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
                   <h5 class="font-bold uppercase text-red-600">
-                      <i class="fas fa-heartbeat"></i> HDL - Colesterol Positivo
+                      <i class="fas fa-heartbeat"></i> HDL - Colesterol Positivo {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
                   </h5>
               </div>
               <div class="p-0 chartjs">
@@ -139,7 +139,7 @@
           <div class="bg-white border-transparent rounded-lg shadow-xl">
               <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
                   <h5 class="font-bold uppercase text-red-600">
-                      <i class="fas fa-heartbeat"></i> LDL - Colesterol Negativo
+                      <i class="fas fa-heartbeat"></i> LDL - Colesterol Negativo {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
                   </h5>
               </div>
               <div class="p-0 chartjs">
@@ -162,7 +162,7 @@
             <div class="bg-white border-transparent rounded-lg shadow-xl">
                 <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
                     <h5 class="font-bold uppercase text-red-600">
-                        <i class="fas fa-heartbeat"></i> Hemoglobina
+                        <i class="fas fa-heartbeat"></i> Hemoglobina {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
                     </h5>
                 </div>
                 <div class="p-0 chartjs">
@@ -184,7 +184,7 @@
             <div class="bg-white border-transparent rounded-lg shadow-xl">
                 <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
                     <h5 class="font-bold uppercase text-red-600">
-                        <i class="fas fa-heartbeat"></i> Hematocrito
+                        <i class="fas fa-heartbeat"></i> Hematocrito {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
                     </h5>
                 </div>
                 <div class="p-0 chartjs">
