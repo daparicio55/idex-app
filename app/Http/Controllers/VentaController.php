@@ -483,11 +483,14 @@ class VentaController extends Controller
 			if ($datos[4]==0)
 			{
 				//cuando no tenemos servicio
-				$ventas=DB::table('ventas as v')
+				/* $ventas=DB::table('ventas as v')
 				->join('clientes as c','c.idCliente','=','v.idCliente')
 				->select('v.idVenta','v.tipo','v.numero','c.nombre','c.direccion','c.apellido','v.estado','v.total','v.tipoPago','v.fecha','v.comentario')
 				->whereBetween('v.fecha',[$datos[2],$datos[3]])
 				->orderBy('v.idVenta','asc')
+				->get(); */
+				$ventas = Venta::whereBetween('fecha',[$datos[2],$datos[3]])
+				->orderBy('idVenta','asc')
 				->get();
 				$sumaTotal=DB::table('ventas as v')
 				->join('clientes as c','c.idCliente','=','v.idCliente')
@@ -501,14 +504,20 @@ class VentaController extends Controller
 			else
 			{
 				//ahora cuando hay servicio
-				$ventas=DB::table('ventas as v')
+				/* $ventas=DB::table('ventas as v')
 				->join('clientes as c','c.idCliente','=','v.idCliente')
 				->join('ventasdetalles as vd','v.idVenta','=','vd.idVenta')
 				->select('v.idVenta','v.tipo','v.numero','c.nombre','c.direccion','c.apellido','v.estado','v.total','v.tipoPago','v.fecha','v.comentario')
 				->where('vd.idServicio','=',$datos[4])
 				->whereBetween('v.fecha',[$datos[2],$datos[3]])
 				->orderBy('v.idVenta','asc')
+				->get(); */
+				$ventas = Venta::whereBetween('fecha',[$datos[2],$datos[3]])
+				->whereHas('detalles.servicio',function($query) use($datos){
+					$query->where('idServicio','=',$datos[4]);
+				})->orderBy('idVenta','asc')
 				->get();
+
 				$sumaTotal=DB::table('ventas as v')
 				->join('clientes as c','c.idCliente','=','v.idCliente')
 				->join('ventasdetalles as vd','v.idVenta','=','vd.idVenta')

@@ -48,7 +48,9 @@
             <th style="width: 5%">T Pago</th>
             <th style="width: 5%">Comp.</th>
             <th style="width: 5%">Num</th>
+            <th style="width: 5%">DNI</th>
             <th>Nombre Cliente</th>
+            <th>Servicio</th>
             <th>Observacion</th>
             <th style="width: 10%">Fecha</th>
             <th style="width: 5%">Monto</th>
@@ -64,7 +66,13 @@
                 <td>{{ $vent->tipoPago}}</td>
                 <td>{{ $vent->tipo}}</td>
                 <td>{{ $vent->numero}}</td>
-                <td>{{ $vent->nombre.' '.$vent->apellido}}</td>
+                <td>{{ $vent->cliente->dniRuc }}</td>
+                <td>{{ $vent->cliente->apellido.' '.$vent->cliente->nombre}}</td>
+                <td>
+                    @foreach ($vent->detalles as $detalle)
+                        {{ $detalle->servicio->nombre }}
+                    @endforeach
+                </td>
                 <td>{{ $vent->comentario}}</td>
                 <td>{{ date('d-m-Y', strtotime($vent->fecha))}}</td>
                 <td>{{ $vent->total}}</td>
