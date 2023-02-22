@@ -26,19 +26,23 @@ role="dialog" tabindex="-1" id="modal-delete-{{$vent->idVenta}}">
 	{{Form::Open(array('route'=>array('ventas.ventas.destroy',$vent->idVenta.':'.'anular'),'method'=>'delete'))}}
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" 
-				aria-label="Close">
-                     <span aria-hidden="true">×</span>
+			<div class="modal-header bg-danger" style="opacity: 0.8">
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Anular Venta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Anular Venta</h4>
-			</div>
+            </div>
 			<div class="modal-body">
-				<p>Confirme si desea Anular a esta Venta</p>
+				<p>Confirme si desea anular la venta <span style="font-weight: 900">#{{ $vent->numero }}</span> </p>
+				<p><strong class="text-uppercase">{{$vent->apellido}}</strong>, <span class="text-capitalize">{{strtolower($vent->nombre)}}</span> </p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button type="submit" class="btn btn-primary">Confirmar</button>
+				<button type="button" class="btn btn-dark" data-dismiss="modal">
+					<i class="fas fa-times"></i> Cerrar
+				</button>
+				<button type="submit" class="btn btn-danger" style="opacity: 0.8">
+					<i class="fa fa-check"></i>	Anular
+				</button>
 			</div>
 		</div>
 	</div>

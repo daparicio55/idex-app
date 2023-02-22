@@ -6,7 +6,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
-              </div>
+            </div>
 			<div class="modal-body">
 				<table id="tb_unidades" class="table table-striped table-bordered table-condensed table-hover">
                     <thead style="background-color:#A9D0F5">

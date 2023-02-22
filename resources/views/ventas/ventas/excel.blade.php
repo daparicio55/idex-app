@@ -1,68 +1,70 @@
-<!DOCTYPE html>
-@php
-    header('Content-type:application/xls');
-    header('Content-Disposition: attachment; filename='.$filename);
-@endphp
-<html>
+<html lang="es">
 <head>
-    <title>Sistema IDEX Perú Japón</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
 </head>
 <body>
-<section>
-
-    <table class="table table-condensed">
+    <table>
         <thead>
-            <tr >
-                <td colspan="9">
-                    <h1>REPORTE DE VENTAS</h1>
-                </td>
+            <tr>
+                <th colspan="11"><h1>Reporte Sitema de Ventas</h1></th>
             </tr>
             <tr>
-                <td colspan="9">
-                    <h5><b>Fecha de Inicio:</b> {{date('d-m-y',strtotime($datos[2]))}} <b>Fecha de Fin: </b>{{date('d-m-y',strtotime($datos[3]))}} <b>T. Pago: </b>{{$datos[1]}}</h5>
-                </td>
+                <th colspan="11">
+                    Fechas de: {{ date('d-m-Y',strtotime($datos[2])) }} hasta: {{ date('d-m-Y',strtotime($datos[3])) }}
+                </th>
             </tr>
             <tr>
-                <td colspan="9">
-                    <h6><b>Servicios: </b>{{$servicio}}</h6>
-                </td>
+                <th colspan="11">
+                    @if ($datos[4]==0)
+                        Servicio: TODOS
+                    @else
+                        Servicio: {{ $servicio }}
+                    @endif
+                </th>
+            </tr>
+            <tr>
+                <th>#</th>
+                <th>T. Pago</th>
+                <th>Comp.</th>
+                <th>Num.</th>
+                <th>DNI</th>
+                <th>Cliente</th>
+                <th>Servicio</th>
+                <th>Observacion</th>
+                <th>Fecha</th>
+                <th>Monto</th>
+                <th>Estado</th>
             </tr>
         </thead>
-    <thead>
+        <tbody>
+        @foreach ($ventas as $key=>$venta)
         <tr>
-            <th style="width: 1%">#</th>
-            <th style="width: 5%">T Pago</th>
-            <th style="width: 5%">Comp.</th>
-            <th style="width: 5%">Num</th>
-            <th>Nombre Cliente</th>
-            <th>Observacion</th>
-            <th style="width: 10%">Fecha</th>
-            <th style="width: 5%">Monto</th>
-            <th style="width: 5%">Estado</th>
+            <td>{{ $key+1 }}</td>
+            <td>{{ $venta->tipoPago }}</td>
+            <td>{{ $venta->tipo }}</td>
+            <td>{{ $venta->numero }}</td>
+            <td>{{ $venta->cliente->dniRuc }}</td>
+            <td>{{ $venta->cliente->apellido }}, {{ $venta->cliente->nombre }}</td>
+            <td>
+                @foreach ($venta->detalles as $detalle)
+                    {{ $detalle->servicio->nombre }}
+                @endforeach
+            </td>
+            <td>{{ $venta->comentario }}</td>
+            <td>{{ date('d-m-Y',strtotime($venta->fecha)) }}</td>
+            <td>{{ $venta->total }}</td>
+            <td>{{ $venta->estado }}</td>
         </tr>
-    </thead>
-        <input type="hidden" value="{{$i=1}}">
-    <tbody>
-        @foreach ($ventas as $vent)
-            <tr>
-                <td>{{$i}} <input type="hidden" value="{{$i++}}"></td>
-                <td>{{ $vent->tipoPago}}</td>
-                <td>{{ $vent->tipo}}</td>
-                <td>{{ $vent->numero}}</td>
-                <td>{{ $vent->nombre.' '.$vent->apellido}}</td>
-                <td>{{ $vent->comentario}}</td>
-                <td>{{ date('d-m-Y', strtotime($vent->fecha))}}</td>
-                <td>{{ $vent->total}}</td>
-                <td>{{ $vent->estado}}</td>
-            </tr>
         @endforeach
-    </tbody>
-        
+        <tr>
+            <td colspan="8"></td>
+            <td>Total</td>
+            <td>{{ $sumaTotal->sumaTotal }}</td>
+        </tr>
+        </tbody>
     </table>
-
-</section>
-<footer>
-        <h3><b>Total</b> {{$sumaTotal->sumaTotal}}</h3>
-</footer>
 </body>
 </html>

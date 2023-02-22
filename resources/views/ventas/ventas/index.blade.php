@@ -81,7 +81,7 @@
 							<a @if (oficinaNombre() == 'Unidad Académica') hidden @endif href="{{route('ventas.ventas.imprimir',['id'=>$vent->idVenta])}}">
 								<button class="btn btn-success" title="imprimir"><i class="fa fa-print" aria-hidden="true"></i></button></a>
 							<a @if (oficinaNombre() == 'Unidad Académica') hidden @endif href="" data-target="#modal-anular-{{$vent->idVenta}}" data-toggle="modal">
-								<button class="btn btn-danger" title="anular"><i class="fa fa-ban" aria-hidden="true"></i></button></a>
+								<button class="btn btn-secondary" title="anular / activar"><i class="fa fa-ban" aria-hidden="true"></i></button></a>
 							<a @if (oficinaNombre() == 'Unidad Académica') hidden @endif href="" data-target="#modal-delete-{{$vent->idVenta}}" data-toggle="modal">
 								<button class="btn btn-danger" title="eliminar"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
 						</td>
