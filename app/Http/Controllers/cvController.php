@@ -12,49 +12,17 @@ use Illuminate\Support\Facades\Redirect;
 use PDF;
 class cvController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('can:docentes.cvs.index')->only('index');
+        $this->middleware('can:docentes.cvs.show')->only('show');
     }
     public function index()
     {
         //
         return view('docentes.cv.index');
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-        
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $periodo = Pmatricula::orderBy('nombre','desc')->first();
@@ -62,39 +30,5 @@ class cvController extends Controller
         //$pdf = PDF::loadview('docentes.cv.show',['personale'=>$personale,'periodo'=>$periodo]);
         //return $pdf->download($personale->dni.'.pdf');
         return view('docentes.cv.show',compact('personale','periodo'));        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

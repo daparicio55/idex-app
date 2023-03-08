@@ -73,10 +73,9 @@ class RdocumentoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         //aca finalizamos el documento;
-
         try {
             //code...
             DB::beginTransaction();
@@ -91,8 +90,8 @@ class RdocumentoController extends Controller
             $finalizado = new Dmove;
             $finalizado->fecha = $fecha;
             $finalizado->hora = $hora;
-            $finalizado->folios = 0;
-            $finalizado->observacion = 'sin observacion';
+            $finalizado->folios = $request->folios;
+            $finalizado->observacion = $request->observacion;
             $finalizado->envia_id = $movimiento->envia_id;
             $finalizado->recive_id = $movimiento->recive_id;
             $finalizado->tmove_id = $tmove->id;

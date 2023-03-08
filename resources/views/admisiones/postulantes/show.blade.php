@@ -213,7 +213,7 @@
                 <td style="width: 33%">_______________________</td><td style="width: 33%">&nbsp;</td><td style="width: 33%">_______________________</td>
             </tr>
             <tr style="text-align: center">
-                <td style="width: 33%">POSTULANTE</td><td style="width: 33%">&nbsp;</td><td style="width: 33%">DIRECTOR(A)</td>
+                <td style="width: 33%">POSTULANTE</td><td style="width: 33%">&nbsp;</td><td style="width: 33%">OF. ADMISIÓN </td>
             </tr>
             <tr style="text-align: center">
                 <td style="width: 33%">firma</td><td style="width: 33%">&nbsp;</td><td style="width: 33%">firma post firma y sello</td>

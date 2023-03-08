@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Dmove;
 use App\Models\Tmove;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class FdocumentoController extends Controller
 {
@@ -89,5 +92,24 @@ class FdocumentoController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function recepcion($id){       
+        try {
+            //code...
+            DB::beginTransaction();
+            $dmovimiento = Dmove::findOrFail($id);
+            $fecha = date('Y-m-d',strtotime(Carbon::now()));
+            $hora = date('H:i:s',strtotime(Carbon::now()));
+            $dmovimiento->rfecha = $fecha;
+            $dmovimiento->rhora = $hora;
+            $dmovimiento->revisado = 'SI';
+            $dmovimiento->update();
+            DB::commit();
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return Redirect::to('tdocumentario/fdocumentos')->with('error',$th->getMessage());
+        }
+        return Redirect::to('tdocumentario/fdocumentos')->with('info','se archivo el documento correctamente');
     }
 }

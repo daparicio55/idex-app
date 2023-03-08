@@ -7,6 +7,7 @@
 @section('content')
 {!! Form::open(['route'=>'tdocumentario.mesapartes.create','method'=>'GET','autocomplete'=>'on','role'=>'search']) !!}
 <div class='form-group'>
+    <label for="searchText" class="d-block">DNI/RUC</label>
     <div class="input-group">
         <input type="text" class="form-control" name="searchText" placeholder="Ingrese DNI o RUC a buscar ..." @if(isset($searchText)) value="{{$searchText}}" @endif >
         <span class="input-group-btn">
@@ -14,10 +15,28 @@
                 <i class="fas fa-search-plus"></i> Buscar
             </button>
         </span>
-
+    </div>
+</div>
+<div class="form-group">
+    <label for="">Nombre/Razon Social </label>
+    <div class="input-group">
+        {{-- <input type="text" class="form-control" name="searchText" placeholder="Ingrese DNI o RUC a buscar ..." @if(isset($searchText)) value="{{$searchText}}" @endif > --}}
+        @if(isset($cliente->idCliente))
+            {!! Form::select('idCliente', $clientes, $cliente->idCliente, ['class'=>'form-control selectpicker','data-live-search'=>'true','data-size'=>'7']) !!}    
+        @else
+        {!! Form::select('idCliente', $clientes, null, ['class'=>'form-control selectpicker','data-live-search'=>'true','data-size'=>'7']) !!}    
+        @endif       
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search-plus"></i> Buscar
+            </button>
+        </span>
     </div>
 </div>
 {!! Form::close() !!}
+
+
+
 {{-- fila de datos personales --}}
 @if (isset($cliente))
     {!! Form::open(['route'=>'tdocumentario.mesapartes.store','method'=>'post','id'=>'frm_datos']) !!}
@@ -89,11 +108,15 @@
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                         {!! Form::label('dnumero', 'N° Documento', [null]) !!}
-                        {!! Form::text('dnumero', null, ['class'=>'form-control']) !!}
+                        {!! Form::text('dnumero', null, ['class'=>'form-control','required']) !!}
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                         {!! Form::label('folios', 'Folios', [null]) !!}
-                        {!! Form::number('folios', null, ['class'=>'form-control']) !!}
+                        {!! Form::number('folios', null, ['class'=>'form-control','required']) !!}
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                        {!! Form::label('fecha', 'Fecha', [null]) !!}
+                        {!! Form::date('fecha', null, ['class'=>'form-control','required']) !!}
                     </div>
                 </div>
                 <div class="row">

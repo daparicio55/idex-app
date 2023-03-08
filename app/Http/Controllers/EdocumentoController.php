@@ -21,12 +21,12 @@ class EdocumentoController extends Controller
     {
         //
         $tmove = Tmove::where('nombre','=','Enviado')->first();
-        $recibidos = Dmove::where('envia_id','=',auth()->id())
+        $enviados = Dmove::where('envia_id','=',auth()->id())
         ->where('tmove_id','=',$tmove->id)
         ->orderBy('fecha','desc')
         ->orderBy('hora','desc')
         ->get();
-        return view('tdocumentario.enviados.index',compact('recibidos'));
+        return view('tdocumentario.enviados.index',compact('enviados'));
     }
 
     /**

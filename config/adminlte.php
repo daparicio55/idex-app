@@ -370,6 +370,7 @@ return [
         [
             'text'=>'Docentes',
             'icon'=>'fas fa-user-tie',
+            'can'=>'docentes.cvs.index',
             'submenu'=>[
                 [
                     'text'=>'Hoja de vida',
@@ -489,7 +490,7 @@ return [
         [
             'text'=>'Trámite Documentario',
             'icon'=>'far fa-file',
-            'url'=>'#',
+            'can'=>'tdocumentario.index',
             'submenu'=>[
                 [
                     'text'=>'Mesa de Partes',
@@ -511,6 +512,11 @@ return [
                     'text'=>'Finalizados',
                     'icon'=>'fas fa-stamp',
                     'url'=>'tdocumentario/fdocumentos'
+                ],
+                [
+                    'text'=>'Archivados',
+                    'icon'=>'fas fa-check-double',
+                    'url'=>'tdocumentario/adocumentos'
                 ]
             ]
         ],

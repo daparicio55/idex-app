@@ -1,5 +1,5 @@
+{!! Form::open(['route'=>['tdocumentario.rdocumentos.update',$recibido->id],'method'=>'put']) !!}
 <div class="modal fade" id="modal-enviar-{{$recibido->id}}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  {!! Form::open(['route'=>['tdocumentario.rdocumentos.update',$recibido->id],'method'=>'put']) !!}
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -35,46 +35,13 @@
           </button>
       </div>
     </div>
-  </div>
-  {!! Form::close() !!}
+  </div>  
 </div>
+{!! Form::close() !!}
 
-
-
-
-
-  <div class="modal fade" id="modal-recibido-{{$recibido->id}}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    {!! Form::open(['route'=>['tdocumentario.rdocumentos.recepcion',$recibido->id],'method'=>'get']) !!}
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title"><i class="fas fa-mail-bulk"></i> Confirmar Recepcion</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <div class="form-group">
-                <p>desea marcar este documento como recepcionado</p> 
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">
-                <i class="fas fa-power-off"></i> Cerrar
-            </button>
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-concierge-bell"></i> Aceptar
-            </button>
-        </div>
-      </div>
-    </div>
-    {!! Form::close() !!}
-  </div>
-
-  {{-- modal para finalizar el documento --}}
-
+{!! Form::open(['route'=>['tdocumentario.rdocumentos.edit',$recibido->id],'method'=>'get']) !!}    
   <div class="modal fade" id="modal-finalizar-{{$recibido->id}}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    {!! Form::open(['route'=>['tdocumentario.rdocumentos.edit',$recibido->id],'method'=>'get']) !!}    
+    
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -111,5 +78,5 @@
         </div>
       </div>
     </div>
-    {!! Form::close() !!}
   </div>
+  {!! Form::close() !!}

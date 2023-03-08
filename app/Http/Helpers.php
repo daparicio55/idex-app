@@ -9,6 +9,7 @@ use App\Models\CepreSumativoMarcada;
 use App\Models\Cliente;
 use App\Models\Deuda;
 use App\Models\DeudaDetalle;
+use App\Models\Dmove;
 use App\Models\Ematricula;
 use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
@@ -152,40 +153,64 @@ function BuscarDni($dni){
         else
         {
                 //si no hay vamos a buscar en la api
-                $cons = file_get_contents('https://dniruc.apisperu.com/api/v1/dni/'.$dni.'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImR3YXBhcmljaWNpb0BnbWFpbC5jb20ifQ.2AdhICiTyw6lpnrxtfK2ajSgfMGiMn-71RvrRGKd8Uk');
-                $arr = json_decode($cons,false);
-                if (isset($arr->success))
-		{
-			//$dni='INGRESE MANUAL';
-                        $cliente = ['idCliente'=>0,
-                        'dniRuc'=>$dni,
-                        'nombre'=>'INGRESO',
-                        'apellido'=>'MANUAL',
-                        'direccion'=>'-',
-                        'email'=>'sincorreo@gmail.com',
-                        'telefono'=>'999999999',
-                        'estado'=>0,
-                        'estudiante'=>'no',
-                        'telefono2'=>'999999999'
-                        ];
-                        $cliente = (object)$cliente;
-			return($cliente);
-		}
-                else
-                {
-                        $cliente = ['idCliente'=>0,
-                        'dniRuc'=>$dni,
-                        'nombre'=>$arr->nombres,
-                        'apellido'=>$arr->apellidoPaterno.' '.$arr->apellidoMaterno,
-                        'direccion'=>'-',
-                        'email'=>'sincorreo@gmail.com',
-                        'telefono'=>'999999999',
-                        'estado'=>0,
-                        'estudiante'=>'no',
-                        'telefono2'=>'999999999'
-                        ];
-                        $cliente = (object)$cliente;
-                        return($cliente);
+                //verificamos el largo del la cadena
+                if (strlen($dni) == 11){
+                        //es un ruc
+                        $cons = file_get_contents('https://dniruc.apisperu.com/api/v1/ruc/'.$dni.'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImR3YXBhcmljaWNpb0BnbWFpbC5jb20ifQ.2AdhICiTyw6lpnrxtfK2ajSgfMGiMn-71RvrRGKd8Uk');
+                        $arr = json_decode($cons,false);
+                        if (!isset($arr->success)){
+                                $cliente = [
+                                        'idCliente'=>0,
+                                        'dniRuc'=>$dni,
+                                        'nombre'=>$arr->razonSocial,
+                                        'apellido'=>'Inst./Emp.',
+                                        'direccion'=>$arr->direccion.' - '.$arr->distrito.' - '.$arr->provincia.' - '.$arr->departamento,
+                                        'email'=>'sincorreo@gmail.com',
+                                        'telefono'=>'999999999',
+                                        'estado'=>0,
+                                        'estudiante'=>'no',
+                                        'telefono2'=>'999999999'
+                                ];
+                                $cliente = (object)$cliente;
+                                return($cliente);
+                        }
+                }
+                if (strlen($dni) == 8){
+                        $cons = file_get_contents('https://dniruc.apisperu.com/api/v1/dni/'.$dni.'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImR3YXBhcmljaWNpb0BnbWFpbC5jb20ifQ.2AdhICiTyw6lpnrxtfK2ajSgfMGiMn-71RvrRGKd8Uk');
+                        $arr = json_decode($cons,false);
+                        if (isset($arr->success))
+                        {
+                                //$dni='INGRESE MANUAL';
+                                $cliente = ['idCliente'=>0,
+                                'dniRuc'=>$dni,
+                                'nombre'=>'INGRESO',
+                                'apellido'=>'MANUAL',
+                                'direccion'=>'-',
+                                'email'=>'sincorreo@gmail.com',
+                                'telefono'=>'999999999',
+                                'estado'=>0,
+                                'estudiante'=>'no',
+                                'telefono2'=>'999999999'
+                                ];
+                                $cliente = (object)$cliente;
+                                return($cliente);
+                        }
+                        else
+                        {
+                                $cliente = ['idCliente'=>0,
+                                'dniRuc'=>$dni,
+                                'nombre'=>$arr->nombres,
+                                'apellido'=>$arr->apellidoPaterno.' '.$arr->apellidoMaterno,
+                                'direccion'=>'-',
+                                'email'=>'sincorreo@gmail.com',
+                                'telefono'=>'999999999',
+                                'estado'=>0,
+                                'estudiante'=>'no',
+                                'telefono2'=>'999999999'
+                                ];
+                                $cliente = (object)$cliente;
+                                return($cliente);
+                        }
                 }
         }
         }
@@ -260,21 +285,30 @@ function sumativoPuntaje($dni,$id){
 }
 function sumativo($dni,$cepre){
         //buscar el resultado del primer sumativo
-        $sumativos = DB::table('cepre_sumativos')
-        ->select('id')
-        ->where('cepre_id','=',$cepre)
-        ->orderBy('id','asc')
-        ->get();
-        $primer = DB::table('cepre_sumativo_resultados')
-        ->where('cepre_sumativo_id','=',$sumativos[0]->id)
-        ->where('dni','=',$dni)
-        ->first();
-        $segundo = DB::table('cepre_sumativo_resultados')
-        ->where('cepre_sumativo_id','=',$sumativos[1]->id)
-        ->where('dni','=',$dni)
-        ->first();
-        $puntaje = [$primer->puntaje,$segundo->puntaje];
-        return ($puntaje);       
+        try {
+                //code...
+                $sumativos = DB::table('cepre_sumativos')
+                ->select('id')
+                ->where('cepre_id','=',$cepre)
+                ->orderBy('id','asc')
+                ->get();
+                $primer = DB::table('cepre_sumativo_resultados')
+                ->where('cepre_sumativo_id','=',$sumativos[0]->id)
+                ->where('dni','=',$dni)
+                ->first();
+                $segundo = DB::table('cepre_sumativo_resultados')
+                ->where('cepre_sumativo_id','=',$sumativos[1]->id)
+                ->where('dni','=',$dni)
+                ->first();
+                $puntaje = [$primer->puntaje,$segundo->puntaje];
+                return ($puntaje);   
+        } catch (\Throwable $th) {
+                //throw $th;
+                return $th->getMessage();
+        }
+
+
+            
 }
 //calcular vacantes
 function vacantes($admisione_id,$carrera_id){
@@ -586,4 +620,16 @@ function total_notas($estado,$carrera_id,$pmatricula_id){
         
 
         return $matriculas;
+}
+function fueenviado($move,$document){
+        $ultimo = Dmove::where('document_id','=',$document)
+        ->orderBy('id','desc')
+        ->first();
+        
+        if ($ultimo->id == $move){
+                return false;
+        }else{
+                return true;
+        }
+        
 }

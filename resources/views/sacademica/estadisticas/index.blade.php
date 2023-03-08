@@ -28,7 +28,13 @@
     <button class="btn btn-dark" type="submit">
         <i class="fas fa-eye"></i> Ver Reporte
     </button>
+    @if(isset($_GET['id']))
+        <a href="{{ route('sacademica.estadisticas.show',$_GET['id']) }}" class="btn btn-success">
+            <i class="far fa-file-excel"></i> Excel <i class="fas fa-download"></i>
+        </a>
+    @endif
 </div>
+
 {!! Form::close() !!}
 @php
     $json = null;

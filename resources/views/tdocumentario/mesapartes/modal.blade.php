@@ -3,7 +3,7 @@
     {!! Form::open(['route'=>['tdocumentario.mesapartes.update',$documento->id],'method'=>'put','id'=>'frm_enviar']) !!}    
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-info">
           <h5 class="modal-title"><i class="fas fa-mail-bulk"></i> Confirmar envio <i class="far fa-paper-plane"></i></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -75,9 +75,9 @@
 {{-- modal para eliminar un documento --}}
 <div class="modal fade" id="modal-delete-{{$documento->id}}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   {!! Form::open(['route'=>['tdocumentario.mesapartes.destroy',$documento->id],'method'=>'delete','id'=>'frm_eliminar']) !!}    
-  <div class="modal-dialog modal-dialog-centered modal-sm">
+  <div class="modal-dialog modal-dialog-centered modal-dm">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header bg-danger">
         <h5 class="modal-title"><i class="fas fa-sort-numeric-up-alt"></i> Eliminar Documento</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>

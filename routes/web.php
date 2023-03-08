@@ -9,6 +9,7 @@ use App\Http\Controllers\AdmisioneOrdinarioController;
 use App\Http\Controllers\AdmisionePostulanteController;
 use App\Http\Controllers\AdmisioneReporteController;
 use App\Http\Controllers\AdmisioneVacanteController;
+use App\Http\Controllers\AdocumentoController;
 use App\Http\Controllers\CampaniaController;
 use App\Http\Controllers\CargarNotaController;
 use App\Http\Controllers\CepreCarnetController;
@@ -72,7 +73,9 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VentaReporteController;
 use App\Http\Controllers\VerificacioneAvanzadoController;
 use App\Http\Controllers\VerificacioneController;
+use App\Models\Cliente;
 use App\Models\cvPersonale;
+use App\Models\Estudiante;
 use App\Models\Pmatricula;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
@@ -164,8 +167,11 @@ Route::resource('tdocumentario/mesapartes',MesaparteController::class)->names('t
 Route::resource('tdocumentario/rdocumentos',RdocumentoController::class)->names('tdocumentario.rdocumentos');
 Route::resource('tdocumentario/edocumentos',EdocumentoController::class)->names('tdocumentario.edocumentos');
 Route::resource('tdocumentario/fdocumentos',FdocumentoController::class)->names('tdocumentario.fdocumentos');
+Route::resource('tdocumentario/adocumentos',AdocumentoController::class)->names('tdocumentario.adocumentos');
 Route::get('tdocumentario/rdocumentos/recepcion/{id}',[RdocumentoController::class,'recepcion'])
 ->name('tdocumentario.rdocumentos.recepcion');
+Route::get('tdocumentario/fdocumentos/recepcion/{id}',[FdocumentoController::class,'recepcion'])
+->name('tdocumentario.fdocumentos.recepcion');
 
 
 
@@ -258,8 +264,24 @@ Route::get('/clear-cache', function () {
     echo Artisan::call('config:cache');
     echo Artisan::call('cache:clear');
     echo Artisan::call('route:clear');
- });
+ })->middleware('auth');
 Route::get('/privacidad',function(){
     return view('privacidad.index');
 });
-
+Route::get('/sacademica/correos',function(){
+    try {
+        //code...
+        $estudiantes = Estudiante::all();
+        foreach ($estudiantes as $estudiante) {
+            # code...
+            $cliente = Cliente::findOrFail($estudiante->postulante->cliente->idCliente);
+            $cliente->email = $cliente->dniRuc . '@idexperujapon.edu.pe';
+            $cliente->update();
+        }
+        return ('Actualizado');
+    } catch (\Throwable $th) {
+        //throw $th;
+        return ($th->getMessage());
+    }
+    
+})->middleware('auth');

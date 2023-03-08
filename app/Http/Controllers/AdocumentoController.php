@@ -2,37 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ReporteMatriculaExport;
-use App\Models\Carrera;
-use App\Models\Pmatricula;
+use App\Models\Dmove;
+use App\Models\Tmove;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 
-class EstadisticaController extends Controller
+class AdocumentoController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * 
      */
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('can:sacademica.estadisticas.index')->only('index');
-        $this->middleware('can:sacademica.estadisticas.create')->only('create','store');
-        $this->middleware('can:sacademica.estadisticas.edit')->only('edit','update');
-        $this->middleware('can:sacademica.estadisticas.destroy')->only('destroy');
-        $this->middleware('can:sacademica.estadisticas.show')->only('show');
     }
-    public function index(Request $request)
+    public function index()
     {
         //
-        $periodos = Pmatricula::orderBy('nombre','desc')->pluck('nombre','id')->toArray();
-        if(isset($request->id)){   
-            $carreras = Carrera::orderBy('nombreCarrera','asc')->get();
-            return view('sacademica.estadisticas.index',compact('periodos','carreras'));
-        }
-        return view('sacademica.estadisticas.index',compact('periodos'));
+        
+        $tmove = Tmove::where('nombre','=','Finalizado')->first();
+        $archivados = Dmove::where('recive_id','=',auth()->id())
+        ->where('tmove_id','=',$tmove->id)
+        ->orderBy('fecha','desc')
+        ->orderBy('hora','desc')
+        ->get();
+        return view('tdocumentario.archivados.index',compact('archivados'));
     }
 
     /**
@@ -43,7 +39,6 @@ class EstadisticaController extends Controller
     public function create()
     {
         //
-        
     }
 
     /**
@@ -66,9 +61,6 @@ class EstadisticaController extends Controller
     public function show($id)
     {
         //
-        //dd($id);
-        $periodo = Pmatricula::findOrFail($id);
-        return Excel::download(new ReporteMatriculaExport($id),'periodo-'.$periodo->nombre.'.xlsx');
     }
 
     /**

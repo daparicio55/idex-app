@@ -63,8 +63,9 @@ class ClienteController extends Controller
             $cons = file_get_contents('https://dniruc.apisperu.com/api/v1/ruc/'.$query.'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImR3YXBhcmljaWNpb0BnbWFpbC5jb20ifQ.2AdhICiTyw6lpnrxtfK2ajSgfMGiMn-71RvrRGKd8Uk');
             $consulta=json_decode($cons,true);
             $dnii=$consulta['ruc'];
+            /* 20348622812 */
             $nombress=$consulta['razonSocial'];
-            $apellidoss=$consulta['nombreComercial'];
+            $apellidoss='Inst./Emp.';
             $direccionn=$consulta['direccion'].' - '.$consulta['distrito'].' - '.$consulta['provincia'].' - '.$consulta['departamento'];
         }
         return view("ventas.clientes.create",["searchText"=>$query,"dnii"=>$dnii,"nombress"=>$nombress,"apellidoss"=>$apellidoss,"direccionn"=>$direccionn]);

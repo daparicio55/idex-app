@@ -29,14 +29,22 @@ class MesaparteController extends Controller
         $this->middleware('can:tdocumentario.mesapartes.destroy')->only('destroy');
         $this->middleware('can:tdocumentario.mesapartes.show')->only('show');
     }
-    public function index()
+    public function index(Request $request)
     {
         //
         $usuarios = User::pluck('name','id')->toArray();
         $documentos = Document::orderBy('anio','desc')
         ->orderBy('numero','desc')
-        ->get();
-        return view('tdocumentario.mesapartes.index',compact('documentos','usuarios'));
+        ->paginate(10);
+        if($request->buscar == 'si'){
+            $documentos = Document::whereBetween('fecha',[$request->finicio,$request->ffin])
+            ->Where('asunto','like','%'.$request->asunto.'%')
+            ->Where('observacion','like','%'.$request->observacion.'%')
+            ->whereHas('cliente',function($query) use($request){
+                $query->where('dniRuc','like','%'.$request->dniRuc.'%');
+            })->get();
+        }
+        return view('tdocumentario.mesapartes.index',compact('documentos','usuarios','request'));
     }
 
     /**
@@ -47,13 +55,22 @@ class MesaparteController extends Controller
     public function create(Request $request)
     {
         //
+        $clientes = Cliente::orderBy('apellido','desc')
+        ->selectRaw('concat_ws(", ",dniRuc,apellido,nombre) as apellidos, idCliente')
+        ->pluck('apellidos','idCliente')->toArray();
+        $tdocuments = Tdocument::pluck('nombre','id')->toArray();
         if(isset($request->searchText)){
             $searchText = $request->searchText;
             $cliente = BuscarDni($searchText);
-            $tdocuments = Tdocument::pluck('nombre','id')->toArray();
-            return view('tdocumentario.mesapartes.create',compact('tdocuments','searchText','cliente'));
+            return view('tdocumentario.mesapartes.create',compact('tdocuments','searchText','cliente','clientes'));
         }
-        return view('tdocumentario.mesapartes.create');
+        if (isset($request->idCliente)){
+            $cli = Cliente::findOrFail($request->idCliente);
+            $cliente = BuscarDni($cli->dniRuc);
+            $searchText = $cli->dniRuc;
+            return view('tdocumentario.mesapartes.create',compact('tdocuments','searchText','cliente','clientes'));
+        }
+        return view('tdocumentario.mesapartes.create',compact('clientes'));
     }
 
     /**
@@ -108,7 +125,7 @@ class MesaparteController extends Controller
             //vamos a guardar los datos en la tabla
             $document = new Document;
             $document->numero = $numero;
-            $document->fecha = $fecha;
+            $document->fecha = $request->fecha;
             $document->hora = $hora;
             $document->folios = $request->folios;
             $document->asunto = $request->asunto;
