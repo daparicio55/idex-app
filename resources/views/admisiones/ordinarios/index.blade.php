@@ -38,6 +38,9 @@
             <thead>
                 <tr>
                     <th colspan="4">
+                        <a href="" class="btn btn-danger">
+                            <i class="fas fa-download fa-2x"></i> Descargar
+                        </a>
                         <a data-target="#modal-bonificaciones-{{$admision->id}}" data-toggle="modal" href="" class="btn btn-warning" href="">
                             <i class="fas fa-binoculars fa-2x"> 1. </i> Bonos
                         </a>

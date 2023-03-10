@@ -13,9 +13,11 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'smtp'),
-
+    //'default' => env('MAIL_MAILER', 'smtp'),
+    'default' => 'smtp',
     /*
+    MAIL_MAILER=sendmail
+    
     |--------------------------------------------------------------------------
     | Mailer Configurations
     |--------------------------------------------------------------------------
@@ -31,16 +33,37 @@ return [
     | Supported: "smtp", "sendmail", "mailgun", "ses",
     |            "postmark", "log", "array", "failover"
     |
+
+    MAIL_HOST=smtp.googlemail.com
+    MAIL_PORT=465
+    MAIL_USERNAME=noreply@idexperujapon.edu.pe
+    MAIL_PASSWORD=@&q2ZeX*4EW*7jY@
+    MAIL_ENCRYPTION=ssl
+    MAIL_FROM_ADDRESS=noreply@idexperujapon.edu.pe
+    MAIL_FROM_NAME="${APP_NAME}"
+
     */
+    'stream' => [
+        'ssl' => [
+            'allow_self_signed' => true,
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+        ],
+    ],
 
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-            'port' => env('MAIL_PORT', 587),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+            //'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+            'host' => 'smtp.googlemail.com',
+            //'port' => env('MAIL_PORT', 587),
+            'port' => 465,
+            //'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'encryption' => 'ssl',
+            //'username' => env('MAIL_USERNAME'),
+            'username' => 'noreply@idexperujapon.edu.pe',
+            //'password' => env('MAIL_PASSWORD'),
+            'password' => 'fjwzllyxuqspvwbd',
             'timeout' => null,
             'auth_mode' => null,
         ],
@@ -92,11 +115,15 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        //'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'address' => 'noreply@idexperujapon.edu.pe',
+        //'name' => env('MAIL_FROM_NAME', 'Example'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
     /*
+    MAIL_FROM_ADDRESS=noreply@idexperujapon.edu.pe
+    MAIL_FROM_NAME="${APP_NAME}"
     |--------------------------------------------------------------------------
     | Markdown Mail Settings
     |--------------------------------------------------------------------------

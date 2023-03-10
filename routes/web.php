@@ -285,3 +285,6 @@ Route::get('/sacademica/correos',function(){
     }
     
 })->middleware('auth');
+Route::get('/info_php',function(){
+    echo phpinfo();
+});
