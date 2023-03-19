@@ -25,7 +25,7 @@ class AdmisioneOrdinarioController extends Controller
     public function index(Request $request)
     {
         //
-        $admisiones = Admisione::pluck('nombre','id');
+        $admisiones = Admisione::orderBy('nombre','desc')->pluck('nombre','id');
         if(isset($request->id)){
             $admision = Admisione::findOrFail($request->id);
             //cantidad de postulantes
@@ -161,9 +161,10 @@ class AdmisioneOrdinarioController extends Controller
         try {
             //code...
             set_time_limit(0);
-            DB::beginTransaction();
+            //DB::beginTransaction();
             //borramos las anteriores
             AdmisioneMarcada::where('admisione_id','=',$id)->delete();
+            
             //buscamos los datos del proceso de admision
             $admisione = Admisione::findOrFail($id);
             $preguntas = $admisione->preguntas;
@@ -174,7 +175,8 @@ class AdmisioneOrdinarioController extends Controller
                 while (($datos = fgetcsv($f,0,';')) !== false){
                     //ingresamos una nueva linea
                     if($linea != 0){
-                        for ($i=1; $i <=$preguntas ; $i++) { 
+                        
+                        /* for ($i=1; $i <=$preguntas ; $i++) { 
                             //ingresamos la primera
                             $respuesta = new AdmisioneMarcada;
                             $respuesta->dni = $datos[0];
@@ -182,7 +184,18 @@ class AdmisioneOrdinarioController extends Controller
                             $respuesta->marcada = $datos[$i];
                             $respuesta->admisione_id = $id;
                             $respuesta->save();
+                            
+                        } */
+                        $registros = [];
+                        for ($i = 1; $i <= $preguntas; $i++) {
+                            $registros[] = [
+                                'dni' => $datos[0],
+                                'pregunta' => $i,
+                                'marcada' => $datos[$i],
+                                'admisione_id' => $id,
+                            ];
                         }
+                        AdmisioneMarcada::insert($registros);
                     }
                     $linea ++;
                 }   
@@ -193,8 +206,11 @@ class AdmisioneOrdinarioController extends Controller
             $postulantes = AdmisionePostulante::where('admisione_id','=',$id)
             ->where('modalidadTipo','=','Ordinario')
             ->get();
-            
-            foreach ($postulantes as $postulante) {
+            $cantidad = count($postulantes);
+            //dd($cantidad);
+            $progress=0;
+            session()->put('progress', $progress);
+            foreach ($postulantes as $key=>$postulante) {
                 # code...
                 //vamos a seleccionar todos los campos de la tabla marcada
                 $respuestas = AdmisioneMarcada::where('dni','=',$postulante->cliente->dniRuc)
@@ -232,9 +248,10 @@ class AdmisioneOrdinarioController extends Controller
                 $postulante->puntaje = ($correctas*$admisione->puntos)-($incorrectas*$admisione->encontra);
                 $postulante->total = (($correctas*$admisione->puntos)-($incorrectas*$admisione->encontra)) + $postulante->bonificacion;
                 $postulante->update();
-                // ahora tenemos que guardar los datos en la tabla de postulantes;
+                // ahora tenemos que guardar los datos en la tabla de postulantes; */
+                $request->session()->put('progress', $key+1);
             }
-            DB::commit();
+            //DB::commit();
         } catch (\Throwable $th) {
             //throw $th;
             return Redirect::to('admisiones/ordinarios/?id='.$id)->with('error',$th->getMessage());

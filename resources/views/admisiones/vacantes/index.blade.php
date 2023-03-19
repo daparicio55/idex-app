@@ -26,6 +26,7 @@
 		<div class="table-responsive">
 			<table class="table table-striped table-bordered table-condensed table-hover">
                 <thead>
+                    <th>Proceso Admision</th>
                     <th>Programa de Estudios</th>
                     <th>Vacantes</th>
                     <th></th>
@@ -33,6 +34,7 @@
                 <tbody>
                     @foreach ($vacantes as $vacante)
                         <tr>
+                            <td>{{ $vacante->admision->nombre }}</td>
                             <td>{{ $vacante->carrera->nombreCarrera }}</td>
                             <td>{{ $vacante->cantidad }}</td>
                             <td style="width: 115px">

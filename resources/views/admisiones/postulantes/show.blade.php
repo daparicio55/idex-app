@@ -65,7 +65,7 @@
     </table>
     <h4><b>SISTEMA DE GESTION IDEX "Perú Japón"</b></h4>
     <h4><b>CONSTANCIA DE INSCRIPCION</b></h4>
-    <h5 style="text-align: center;">Proceso de admision {{$postulante->admisione->periodo}}</h5>
+    <h5 style="text-align: center;">Proceso de admision {{$postulante->admisione->periodo}} Exp. {{ $postulante->expediente }}</h5>
     <h5 style="text-align: right;">Fecha: <b>{{date('d-m-Y',strtotime($postulante->fecha))}}</b> Hora: <b>{{$postulante->hora}}</b> de emision | Usuario: {{$postulante->user->email}}</h5>
 </header>
 <body>
@@ -190,7 +190,7 @@
         </thead>
         <tbody>
             <tr>
-                <td style="text-align: center"><h3>{{strtoupper($postulante->carrera->nombreCarrera)}}</h3></td>
+                <td style="text-align: center; text-transform: uppercase;"><h3>{{$postulante->carrera->nombreCarrera}}</h3></td>
             </tr>
         </tbody>
     </table>
@@ -216,7 +216,7 @@
                 <td style="width: 33%">POSTULANTE</td><td style="width: 33%">&nbsp;</td><td style="width: 33%">OF. ADMISIÓN </td>
             </tr>
             <tr style="text-align: center">
-                <td style="width: 33%">firma</td><td style="width: 33%">&nbsp;</td><td style="width: 33%">firma post firma y sello</td>
+                <td style="width: 33%">firma y huella</td><td style="width: 33%">&nbsp;</td><td style="width: 33%">firma post firma y sello</td>
             </tr>
         </tbody>
     </table>

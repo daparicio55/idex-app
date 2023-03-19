@@ -21,4 +21,7 @@ class Udidactica extends Model
     public function modulo(){
         return $this->belongsTo(Mformativo::class,'mformativo_id');
     }
+    public function equivalencia(){
+        return $this->belongsTo(Udidactica::class,'udidactica_id');
+    }
 }

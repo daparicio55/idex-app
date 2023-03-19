@@ -16,4 +16,7 @@ class AdmisioneVacante extends Model
     public function carrera(){
         return $this->belongsTo(Carrera::class,'carrera_id');
     }
+    public function admision(){
+        return $this->belongsTo(Admisione::class,'admisione_id');
+    }
 }

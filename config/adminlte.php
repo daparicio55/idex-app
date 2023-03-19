@@ -385,6 +385,30 @@ return [
             'can'=>'sacademica.estadisticas.index',
             'submenu'=>[
                 [
+                    'text'=>'Unidades Didacticas',
+                    'icon'=>'fas fa-book',
+                    'url'=>'#',
+                    'submenu'=>[
+                        [
+                            'text'=>'Asignar U. Didacticas',
+                            'icon'=>'fas fa-book-open',
+                            'route'=>'sacademica.uasignadas.index',
+                            'can'=>'sacademica.uasignadas.index'
+                        ],
+                        [
+                            'text'=>'Modulos Formativos',
+                            'icon'=>'fas fa-shapes',
+                            'url'=>'sacademica/mformativos',
+                            'can'=>'sacademica.mformativos.index'
+                        ],
+                        [
+                            'text'=>'Equivalencias',
+                            'icon'=>'fas fa-equals',
+                            'route'=>'sacademica.equivalencias.index',
+                        ]
+                    ]
+                ],
+                [
                     'text'=>'Itinearios Formativos',
                     'icon'=>'fas fa-list',
                     'url'=>'sacademica/iformativos',
@@ -402,18 +426,8 @@ return [
                     'url'=>'sacademica/pmatriculas',
                     'can'=>'sacademica.pmatriculas.index'
                 ],
-                [
-                    'text'=>'Asignar U. Didacticas',
-                    'icon'=>'fas fa-book-open',
-                    'route'=>'sacademica.uasignadas.index',
-                    'can'=>'sacademica.uasignadas.index'
-                ],
-                [
-                    'text'=>'Modulos Formativos',
-                    'icon'=>'fas fa-shapes',
-                    'url'=>'sacademica/mformativos',
-                    'can'=>'sacademica.mformativos.index'
-                ],
+                
+                
                 [
                     'text'=>'Matrículas',
                     'icon'=>'fas fa-book-reader',

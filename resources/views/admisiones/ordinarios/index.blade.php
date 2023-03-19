@@ -38,9 +38,9 @@
             <thead>
                 <tr>
                     <th colspan="4">
-                        <a href="" class="btn btn-danger">
+                        {{-- <a href="" class="btn btn-danger">
                             <i class="fas fa-download fa-2x"></i> Descargar
-                        </a>
+                        </a> --}}
                         <a data-target="#modal-bonificaciones-{{$admision->id}}" data-toggle="modal" href="" class="btn btn-warning" href="">
                             <i class="fas fa-binoculars fa-2x"> 1. </i> Bonos
                         </a>
@@ -102,5 +102,16 @@
     $('#frm_modal').submit(function(event){
         $("#btn_subir").attr("disabled",true);
     });
-	</script>
+
+   /* function actualizar(){
+    var progress = {{ session('progress', 0) }};
+    var progressBar = document.getElementById('progress');
+    progressBar.value = progress;
+    console.log(progress);
+   }
+   function miFuncion() {
+        console.log("La función se está ejecutando cada 2 segundos.");
+    }
+    setInterval(actualizar, 2000); // 2000 milisegundos = 2 segundos */
+    </script>
 @stop

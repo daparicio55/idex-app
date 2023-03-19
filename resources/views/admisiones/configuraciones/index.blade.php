@@ -59,6 +59,9 @@
                                 <a href="{{ route('admisiones.alternativas.show',$admisione->id) }}" class="btn btn-primary" title="configuracion de respuestas">
                                     <i class="fas fa-question"></i>
                                 </a>
+                                <a href="{{ route('admisiones.configuraciones.show',$admisione->id) }}" class="btn btn-secondary" title="cruce de pagos">
+                                    <i class="fab fa-paypal"></i>
+                                </a>
                                 <a href="" data-target="#modal-delete-{{ $admisione->id }}" data-toggle="modal" class="btn btn-danger" title="eliminar proceso de admision">
                                     <i class="fas fa-trash-alt"></i>
                                 </a>

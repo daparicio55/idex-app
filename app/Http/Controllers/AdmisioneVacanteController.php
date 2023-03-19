@@ -29,7 +29,7 @@ class AdmisioneVacanteController extends Controller
     {
         //
         $admisione = Admisione::findOrFail($request->id);
-        $vacantes = AdmisioneVacante::all();
+        $vacantes = AdmisioneVacante::where('admisione_id','=',$admisione->id)->get();
         return view('admisiones.vacantes.index',compact('admisione','vacantes'));
     }
 
@@ -42,7 +42,7 @@ class AdmisioneVacanteController extends Controller
     {
         //
         $admisione = Admisione::findOrFail($request->id);
-        $carreras = Carrera::pluck('nombreCarrera','idCarrera')->toArray();
+        $carreras = Carrera::where('observacionCarrera','=','visible')->pluck('nombreCarrera','idCarrera')->toArray();
         return view('admisiones.vacantes.create',compact('carreras','admisione'));
     }
 

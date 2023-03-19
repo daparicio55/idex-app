@@ -3,7 +3,6 @@
 use App\Http\Controllers\AcampianiasController;
 use App\Http\Controllers\AdmisioneAlternativaController;
 use App\Http\Controllers\AdmisioneConfiguracionController;
-use App\Http\Controllers\AdmisioneEstudiante;
 use App\Http\Controllers\AdmisioneExoneradoController;
 use App\Http\Controllers\AdmisioneOrdinarioController;
 use App\Http\Controllers\AdmisionePostulanteController;
@@ -38,6 +37,7 @@ use App\Http\Controllers\DeudaController;
 use App\Http\Controllers\DocumentotipoController;
 use App\Http\Controllers\EdocumentoController;
 use App\Http\Controllers\EquipoController;
+use App\Http\Controllers\EquivalenciaController;
 use App\Http\Controllers\EstadisticaController;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\EstudiantePEstudioController;
@@ -73,6 +73,8 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VentaReporteController;
 use App\Http\Controllers\VerificacioneAvanzadoController;
 use App\Http\Controllers\VerificacioneController;
+use App\Models\Admisione;
+use App\Models\AdmisionePostulante;
 use App\Models\Cliente;
 use App\Models\cvPersonale;
 use App\Models\Estudiante;
@@ -142,6 +144,7 @@ Route::get('/cv/{mail}',function($mail){
     return view('docentes.cv.show',compact('personale','periodo'));
 })->name('cv');
 
+Route::resource('sacademica/equivalencias',EquivalenciaController::class)->names('sacademica.equivalencias');
 Route::resource('sacademica/iformativos',IformativoController::class)->names('sacademica.iformativos');
 Route::resource('sacademica/pmatriculas',PmatriculaController::class)->names('sacademica.pmatriculas');
 Route::resource('sacademica/mformativos', MformativoController::class)->names('sacademica.mformativos');

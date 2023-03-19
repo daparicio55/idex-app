@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admisione;
+use App\Models\AdmisionePostulante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -68,7 +69,9 @@ class AdmisioneConfiguracionController extends Controller
      */
     public function show($id)
     {
-        
+        $admision = Admisione::findOrFail($id);
+        $postulantes = AdmisionePostulante::where('admisione_id','=',$admision->id)->get();
+        return view('admisiones.configuraciones.cruce',compact('postulantes','admision'));
     }
 
     /**

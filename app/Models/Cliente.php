@@ -38,4 +38,7 @@ class Cliente extends Model
     public function postulaciones(){
         return $this->hasMany(AdmisionePostulante::class,'idCliente');
     }
+    public function ventas(){
+        return $this->hasMany(Venta::class,'idCliente');
+    }
 }

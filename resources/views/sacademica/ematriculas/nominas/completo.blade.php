@@ -127,6 +127,53 @@
                 $contador ++;
             @endphp
             @endforeach
+
+            @foreach ($eestudiantes as $estudiante)
+            <tr @if($estudiante->licencia == "SI") style="text-decoration : line-through; background : #F76A4C" @endif>
+                <td>{{ $contador }}</td>
+                <td>{{ $estudiante->dniRuc }}</td>
+                <td><strong>{{Str::upper($estudiante->apellido)}}</strong>, {{Str::title($estudiante->nombre)}}</td>
+                <td>{{ $estudiante->telefono }}</td>
+                <td>{{ $estudiante->telefono2 }}</td>
+                <td>{{ $estudiante->periodo }}</td>
+                <td>{{ edad($estudiante->fechaNacimiento) }}</td>
+                <td style="text-align: center">
+                    @if ($estudiante->sexo == 'Masculino')
+                        M
+                    @else
+                        F
+                    @endif
+                </td>
+                <td style="text-align: center">
+                    @if ($estudiante->discapacidad == 0)
+                        SI 
+                    @else
+                        NO
+                    @endif
+                </td>
+                @foreach ($modulos as $modulo)
+                    <td style="text-align: center">
+                        @if (checkUnidad($estudiante->id,$modulo->id) == "SI")
+                            <b style="color: blue">{{ checkUnidad($estudiante->id,$modulo->id) }}</b>
+                        @endif
+                        @if (checkUnidad($estudiante->id,$modulo->id) == "NM")
+                            <b style="color: black">{{ checkUnidad($estudiante->id,$modulo->id) }}</b>
+                        @endif
+                        @if (checkUnidad($estudiante->id,$modulo->id) == "RE")
+                            <b style="color: red">{{ checkUnidad($estudiante->id,$modulo->id) }}</b>
+                        @endif
+                        @if (checkUnidad($estudiante->id,$modulo->id) == "CV")
+                            <b style="color: green">{{ checkUnidad($estudiante->id,$modulo->id) }}</b>
+                        @endif
+                    </td>
+                @endforeach
+            </tr>
+            @php
+                $contador ++;
+            @endphp
+            @endforeach
+
+
         </tbody>
     </table>
 </body>
