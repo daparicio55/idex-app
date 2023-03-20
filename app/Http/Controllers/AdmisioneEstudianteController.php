@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
-class AdmisioneEstudiante extends Controller
+class AdmisioneEstudianteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,7 +31,7 @@ class AdmisioneEstudiante extends Controller
     {
         //
         
-        $admisiones = Admisione::pluck('nombre','id');
+        $admisiones = Admisione::orderBy('nombre','desc')->pluck('nombre','id');
         if(isset($request->id)){
             $admision = Admisione::findOrFail($request->id);
             //cantidad de postulantes

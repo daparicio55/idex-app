@@ -417,6 +417,32 @@ function checkUnidad($matricula,$unidad){
                 return "NM";
         }
 }
+function checkUnidadeq($matricula,$unidad){
+
+        //buscar la unidad equivalente
+        $udidactica = Udidactica::findOrFail($unidad);
+        if(isset($udidactica->old)){
+                $cantidad = DB::table('ematriculas as ema')
+                ->join('ematricula_detalles as emad','ema.id','=','emad.ematricula_id')
+                ->where('ema.id','=',$matricula)
+                ->where('emad.udidactica_id','=',$udidactica->old->id)
+                ->count();
+                //propiedades 
+                $respuesta = DB::table('ematriculas as ema')
+                ->select('emad.tipo')
+                ->join('ematricula_detalles as emad','ema.id','=','emad.ematricula_id')
+                ->where('ema.id','=',$matricula)
+                ->where('emad.udidactica_id','=',$udidactica->old->id)
+                ->first();
+                if ($cantidad == 1){
+                        return "EQ";
+                }else{
+                        return "NM";
+                }
+        }else{
+                return "NM";  
+        }
+}
 function detalle($matricula,$unidad){
         $detalle = EmatriculaDetalle::where('udidactica_id','=',$unidad)
         ->where('ematricula_id','=',$matricula)

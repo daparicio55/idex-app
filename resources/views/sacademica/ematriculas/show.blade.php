@@ -135,7 +135,12 @@
                 <td style="border: black 1px solid">{{$cont}}</td>
                 <td style="border: black 1px solid; text-align: center">{{$detalle->unidad->ciclo}}</td>
                 <td style="border: black 1px solid">{{$detalle->unidad->tipo}}</td>
-                <td style="border: black 1px solid">{{$detalle->unidad->nombre}}</td>
+                <td style="border: black 1px solid">
+                    {{$detalle->unidad->nombre}}
+                    @if(isset($detalle->unidad->equivalencia->nombre))
+                        <span style="color: red">Equivalencia:</span> {{ $detalle->unidad->equivalencia->nombre }} Ciclo: {{ $detalle->unidad->equivalencia->ciclo }}
+                    @endif 
+                </td>
                 <td style="border: black 1px solid">{{$detalle->unidad->horas}}</td>    
                 <td style="border: black 1px solid">{{$detalle->tipo}}</td>
                 <td style="border: black 1px solid">{{$detalle->unidad->creditos}}</td>
@@ -181,7 +186,7 @@
                 <td style="border: black 1px solid">
                     {{$detalle->unidad->nombre}} 
                     @if(isset($detalle->unidad->equivalencia->nombre))
-                        Equivalencia: {{ $detalle->unidad->equivalencia->nombre }} Ciclo: {{ $detalle->unidad->equivalencia->ciclo }}
+                        <span style="color: red">Equivalencia:</span> {{ $detalle->unidad->equivalencia->nombre }} Ciclo: {{ $detalle->unidad->equivalencia->ciclo }}
                     @endif 
                 </td>
                 <td style="border: black 1px solid">{{$detalle->unidad->horas}}</td>    

@@ -82,7 +82,7 @@ class NominaController extends Controller
                 ->orderBy('cli.nombre','asc')
                 ->get();
 
-
+                //dd($eestudiantes);
                 return view('sacademica.ematriculas.nominas.completo',compact('carr','ciclo','estudiantes','modulos','periodo','eestudiantes'));
             }else{
                 //aca vamos separado

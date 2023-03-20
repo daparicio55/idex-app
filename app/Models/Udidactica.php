@@ -24,4 +24,7 @@ class Udidactica extends Model
     public function equivalencia(){
         return $this->belongsTo(Udidactica::class,'udidactica_id');
     }
+    public function old(){
+        return $this->hasOne(Udidactica::class,'udidactica_id');
+    }
 }

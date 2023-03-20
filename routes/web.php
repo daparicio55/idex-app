@@ -3,6 +3,7 @@
 use App\Http\Controllers\AcampianiasController;
 use App\Http\Controllers\AdmisioneAlternativaController;
 use App\Http\Controllers\AdmisioneConfiguracionController;
+use App\Http\Controllers\AdmisioneEstudianteController;
 use App\Http\Controllers\AdmisioneExoneradoController;
 use App\Http\Controllers\AdmisioneOrdinarioController;
 use App\Http\Controllers\AdmisionePostulanteController;
@@ -73,8 +74,6 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VentaReporteController;
 use App\Http\Controllers\VerificacioneAvanzadoController;
 use App\Http\Controllers\VerificacioneController;
-use App\Models\Admisione;
-use App\Models\AdmisionePostulante;
 use App\Models\Cliente;
 use App\Models\cvPersonale;
 use App\Models\Estudiante;
@@ -224,7 +223,7 @@ Route::resource('admisiones/vacantes',AdmisioneVacanteController::class)->names(
 Route::resource('admisiones/exonerados',AdmisioneExoneradoController::class)->names('admisiones.exonerados');
 Route::resource('admisiones/ordinarios',AdmisioneOrdinarioController::class)->names('admisiones.ordinarios');
 Route::resource('admisiones/alternativas',AdmisioneAlternativaController::class)->names('admisiones.alternativas');
-Route::resource('admisiones/estudiantes',AdmisioneEstudiante::class)->names('admisiones.estudiantes');
+Route::resource('admisiones/estudiantes',AdmisioneEstudianteController::class)->names('admisiones.estudiantes');
 Route::get('admisiones/postulantes/anular/{id}',[AdmisionePostulanteController::class,'anular'])
 ->name('admisiones.postulantes.anular');
 Route::post('admisiones/ordinarios/csv/{id}',[AdmisioneOrdinarioController::class,'subircsv'])

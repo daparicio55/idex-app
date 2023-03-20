@@ -153,17 +153,12 @@
                 </td>
                 @foreach ($modulos as $modulo)
                     <td style="text-align: center">
-                        @if (checkUnidad($estudiante->id,$modulo->id) == "SI")
-                            <b style="color: blue">{{ checkUnidad($estudiante->id,$modulo->id) }}</b>
+                        {{-- {{ checkUnidadeq($estudiante->id,$modulo->id) }} --}}
+                        @if (checkUnidadeq($estudiante->id,$modulo->id) == "EQ")
+                            <b style="color:purple">{{ checkUnidadeq($estudiante->id,$modulo->id) }}</b>
                         @endif
-                        @if (checkUnidad($estudiante->id,$modulo->id) == "NM")
-                            <b style="color: black">{{ checkUnidad($estudiante->id,$modulo->id) }}</b>
-                        @endif
-                        @if (checkUnidad($estudiante->id,$modulo->id) == "RE")
-                            <b style="color: red">{{ checkUnidad($estudiante->id,$modulo->id) }}</b>
-                        @endif
-                        @if (checkUnidad($estudiante->id,$modulo->id) == "CV")
-                            <b style="color: green">{{ checkUnidad($estudiante->id,$modulo->id) }}</b>
+                        @if (checkUnidadeq($estudiante->id,$modulo->id) == "NM")
+                            <b style="color: black">{{ checkUnidadeq($estudiante->id,$modulo->id) }}</b>
                         @endif
                     </td>
                 @endforeach
