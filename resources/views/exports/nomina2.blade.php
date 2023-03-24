@@ -92,6 +92,43 @@
                 @endphp
 
             @endforeach
+
+            @foreach ($eestudiantes as $estudiante)
+                    @isset($unidad->old->nombre)
+                        @if ($estudiante->unidad == $unidad->old->nombre)
+                            <tr @if($estudiante->licencia == "SI") style="text-decoration : line-through; background : #F76A4C" @endif>
+                                <td>{{ $contador }}</td>
+                                <td>{{ $estudiante->dniRuc }}</td>
+                                <td><strong>{{Str::upper($estudiante->apellido)}}</strong>, {{Str::title($estudiante->nombre)}}</td>
+                                <td>{{ $estudiante->telefono }}</td>
+                                <td>{{ $estudiante->telefono2 }}</td>
+                                <td>{{ $estudiante->periodo }}</td>
+                                <td>{{ edad($estudiante->fechaNacimiento) }}</td>
+                                <td style="text-align: center">
+                                    @if ($estudiante->sexo == 'Masculino')
+                                        M
+                                    @else
+                                        F
+                                    @endif
+                                </td>
+                                <td style="text-align: center">
+                                    @if ($estudiante->discapacidad == 0)
+                                        SI 
+                                    @else
+                                        NO
+                                    @endif
+                                </td>
+                            </tr>
+                            @php
+                                $contador ++;
+                            @endphp
+                        @endif
+                    @endisset
+                @endforeach
+
+
+
+
         </tbody>
     </table>
 </body>

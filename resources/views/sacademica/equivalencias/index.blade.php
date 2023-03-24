@@ -34,6 +34,12 @@
                     <td>{{ $key + 1 }}</td>
                     <td>Ciclo: {{ $unidad->ciclo }} - {{ $unidad->nombre }} - {{ $unidad->modulo->carrera->nombreCarrera }}</td>
                     <td>Ciclo: {{ $unidad->equivalencia->ciclo }} - {{ $unidad->equivalencia->nombre }} - {{ $unidad->equivalencia->modulo->carrera->nombreCarrera }}</td>
+                    <td>
+                        <a data-toggle="modal" data-target="#eliminar-{{ $unidad->id }}" class="btn btn-danger" title="eliminar">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                        @include('sacademica.equivalencias.modal')
+                    </td>
                 </tr>
             @endforeach
         </tbody>

@@ -76,6 +76,23 @@ class Nomina1Export implements FromView, WithStyles, ShouldAutoSize, WithColumnW
         ->orderBy('cli.apellido','asc')
         ->orderBy('cli.nombre','asc')
         ->get();
-        return view('exports.nomina1',['carr'=>$carr,'periodo'=>$periodo,'modulos'=>$modulos,'ciclo'=>$this->ciclo,'estudiantes'=>$estudiantes]);
+        $eestudiantes = DB::table('ematriculas as ema')
+        ->select('ema.licencia','adm.periodo','cli.apellido','cli.nombre','cli.dniRuc','ema.id','cli.telefono','cli.telefono2','pos.fechaNacimiento','pos.sexo','pos.discapacidad')
+        ->join('ematricula_detalles as emad','emad.ematricula_id','=','ema.id')
+        ->join('udidacticas as ud','ud.id','=','emad.udidactica_id')
+        ->join('mformativos as mf','mf.id','=','ud.mformativo_id')
+        ->join('estudiantes as es','es.id','=','ema.estudiante_id')
+        ->join('admisione_postulantes as pos','pos.id','=','es.admisione_postulante_id')
+        ->join('admisiones as adm','adm.id','=','pos.admisione_id')
+        ->join('clientes as cli','cli.idCliente','=','pos.idCliente')
+        ->where('ema.pmatricula_id','=',$periodo->id)
+        ->where('ud.ciclo','<>','V')
+        ->where('ud.ciclo','<>','VI')
+        ->where('mf.carrera_id','=',$carr->ccarrera_id)
+        ->groupBy('ema.licencia','adm.periodo','cli.apellido','cli.nombre','cli.dniRuc','ema.id','cli.telefono','cli.telefono2','pos.fechaNacimiento','pos.sexo','pos.discapacidad')
+        ->orderBy('cli.apellido','asc')
+        ->orderBy('cli.nombre','asc')
+        ->get();
+        return view('exports.nomina1',['carr'=>$carr,'eestudiantes'=>$eestudiantes,'periodo'=>$periodo,'modulos'=>$modulos,'ciclo'=>$this->ciclo,'estudiantes'=>$estudiantes]);
     }
 }

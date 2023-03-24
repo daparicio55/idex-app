@@ -129,46 +129,58 @@
             @endforeach
 
             @foreach ($eestudiantes as $estudiante)
-            <tr @if($estudiante->licencia == "SI") style="text-decoration : line-through; background : #F76A4C" @endif>
-                <td>{{ $contador }}</td>
-                <td>{{ $estudiante->dniRuc }}</td>
-                <td><strong>{{Str::upper($estudiante->apellido)}}</strong>, {{Str::title($estudiante->nombre)}}</td>
-                <td>{{ $estudiante->telefono }}</td>
-                <td>{{ $estudiante->telefono2 }}</td>
-                <td>{{ $estudiante->periodo }}</td>
-                <td>{{ edad($estudiante->fechaNacimiento) }}</td>
-                <td style="text-align: center">
-                    @if ($estudiante->sexo == 'Masculino')
-                        M
-                    @else
-                        F
-                    @endif
-                </td>
-                <td style="text-align: center">
-                    @if ($estudiante->discapacidad == 0)
-                        SI 
-                    @else
-                        NO
-                    @endif
-                </td>
-                @foreach ($modulos as $modulo)
+            {{-- comprobar si no tiene matricula --}}
+            @php
+                $bandera = false;
+            @endphp
+            @foreach ($modulos as $modulo)
+                @if (checkUnidadeq($estudiante->id,$modulo->id) == "EQ")
+                    @php
+                        $bandera = true;
+                    @endphp
+                @endif
+            @endforeach
+            @if($bandera == true)
+            {{-- fin de la coprobacion --}}
+                <tr @if($estudiante->licencia == "SI") style="text-decoration : line-through; background : #F76A4C" @endif>
+                    <td>{{ $contador }}</td>
+                    <td>{{ $estudiante->dniRuc }}</td>
+                    <td><strong>{{Str::upper($estudiante->apellido)}}</strong>, {{Str::title($estudiante->nombre)}}</td>
+                    <td>{{ $estudiante->telefono }}</td>
+                    <td>{{ $estudiante->telefono2 }}</td>
+                    <td>{{ $estudiante->periodo }}</td>
+                    <td>{{ edad($estudiante->fechaNacimiento) }}</td>
                     <td style="text-align: center">
-                        {{-- {{ checkUnidadeq($estudiante->id,$modulo->id) }} --}}
-                        @if (checkUnidadeq($estudiante->id,$modulo->id) == "EQ")
-                            <b style="color:purple">{{ checkUnidadeq($estudiante->id,$modulo->id) }}</b>
-                        @endif
-                        @if (checkUnidadeq($estudiante->id,$modulo->id) == "NM")
-                            <b style="color: black">{{ checkUnidadeq($estudiante->id,$modulo->id) }}</b>
+                        @if ($estudiante->sexo == 'Masculino')
+                            M
+                        @else
+                            F
                         @endif
                     </td>
-                @endforeach
-            </tr>
-            @php
-                $contador ++;
-            @endphp
+                    <td style="text-align: center">
+                        @if ($estudiante->discapacidad == 0)
+                            SI 
+                        @else
+                            NO
+                        @endif
+                    </td>
+                    @foreach ($modulos as $modulo)
+                        <td style="text-align: center">
+                            {{-- {{ checkUnidadeq($estudiante->id,$modulo->id) }} --}}
+                            @if (checkUnidadeq($estudiante->id,$modulo->id) == "EQ")
+                                <b style="color:purple">{{ checkUnidadeq($estudiante->id,$modulo->id) }}</b>
+                            @endif
+                            @if (checkUnidadeq($estudiante->id,$modulo->id) == "NM")
+                                <b style="color: black">{{ checkUnidadeq($estudiante->id,$modulo->id) }}</b>
+                            @endif
+                        </td>
+                    @endforeach
+                </tr>
+                @php
+                    $contador ++;
+                @endphp
+                @endif
             @endforeach
-
-
         </tbody>
     </table>
 </body>

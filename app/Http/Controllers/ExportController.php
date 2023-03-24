@@ -28,7 +28,8 @@ class ExportController extends Controller
         $carrera = Carrera::findOrFail($request->carrera);
         $periodo = Pmatricula::findOrFail($request->periodo_id);
         $unidad = Udidactica::findOrFail($request->udidactica_id);
-        $vista = new Nomina2Export($request->periodo_id,$request->udidactica_id,$request->carrera);
+        $ciclo = $request->ciclo;
+        $vista = new Nomina2Export($request->periodo_id,$request->udidactica_id,$request->carrera,$ciclo);
         return Excel::download($vista,$periodo->nombre.'-'.$unidad->nombre.'.xlsx');
     }
 }

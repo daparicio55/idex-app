@@ -15,12 +15,14 @@
             <tr>
                 <th>#</th>
                 <th><b>APELLIDOS,</b> Nombres</th>
+                <th>Sexo</th>
                 {{-- preguintas --}}
                 @foreach ($survey->questions as $question )
                     <th>
                         {{ $question->name_es }}
                     </th>
                 @endforeach
+                <th>Puntos</th>
             </tr>
         </thead>
         <tbody>
@@ -30,11 +32,23 @@
                     <td>
                         <b class="text-uppercase">{{ strtoupper($sdo->estudiante->postulante->cliente->apellido) }}, </b> <span>{{ ucwords(strtolower($sdo->estudiante->postulante->cliente->nombre)) }}</span>
                     </td>
+                    <td>
+                        {{ $sdo->estudiante->postulante->sexo }}
+                    </td>
+                    @php
+                        $puntos = 0;
+                    @endphp
                     @foreach ($sdo->sddo as $sddo )
                         <td>
                             {{ $sddo->alternative->name_es }} {{ $sddo->observation }}
+                            @php
+                                $puntos = $puntos + $sddo->alternative->point;
+                            @endphp
                         </td>
                     @endforeach
+                    <td>
+                        {{ $puntos }}
+                    </td>
                 </tr>
             @endforeach
         </tbody>

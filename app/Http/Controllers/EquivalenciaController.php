@@ -102,5 +102,9 @@ class EquivalenciaController extends Controller
     public function destroy($id)
     {
         //
+        $unidad = Udidactica::findOrFail($id);
+        $unidad->udidactica_id = NULL;
+        $unidad->update();
+        return Redirect::route('sacademica.equivalencias.index')->with('info','se elimino la equivalencia correctamente');
     }
 }

@@ -43,6 +43,7 @@
             <div class="p-0 chartjs">
                 <figure class="highcharts-figure">
                     <div id="container"></div>
+                    <p id='estado' style="text-align: center"></p>
                 </figure>
             </div>
 
@@ -53,6 +54,29 @@
                     let peso = document.getElementById('txt_peso');
                     let imc = peso.value / ((talla.value/100) * (talla.value/100));
                     imc = parseFloat(imc.toFixed(2));
+                    let estado = document.getElementById('estado');
+                    //estado.innerHTML="aca estamos";
+                    if (imc < 18.5){
+                        estado.innerHTML="Bajo Peso";
+                    }else{
+                        if (imc < 24.9){
+                            estado.innerHTML="Adecuado";
+                        }else{
+                            if (imc < 29.9){
+                                estado.innerHTML="Sobre Peso";
+                            }else{
+                                if (imc < 34.9){
+                                    estado.innerHTML="Obesidad grado 1";
+                                }else{
+                                    if (imc < 39.9){
+                                        estado.innerHTML="Obesidad grado 2";
+                                    }else{
+                                        estado.innerHTML="Obesidad grado 3";
+                                    }
+                                }
+                            }
+                        }
+                    }
                     Highcharts.chart('container', {
                     chart: {
                         type: 'gauge',
