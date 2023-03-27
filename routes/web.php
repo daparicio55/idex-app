@@ -68,6 +68,7 @@ use App\Http\Controllers\SaludController;
 use App\Http\Controllers\SaludEncuestaController;
 use App\Http\Controllers\SaludPreguntaController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TdocumentarioController;
 use App\Http\Controllers\UasignadaController;
 use App\Http\Controllers\UdidacticaController;
 use App\Http\Controllers\UsuarioController;
@@ -174,8 +175,7 @@ Route::get('tdocumentario/rdocumentos/recepcion/{id}',[RdocumentoController::cla
 ->name('tdocumentario.rdocumentos.recepcion');
 Route::get('tdocumentario/fdocumentos/recepcion/{id}',[FdocumentoController::class,'recepcion'])
 ->name('tdocumentario.fdocumentos.recepcion');
-
-
+Route::resource('tdocumentario/check/',TdocumentarioController::class)->names('tdocumentario.check');
 
 Route::resource('soporte/insidencias',InsidenciaController::class)->names('soporte.insidencias');
 Route::resource('soporte/equipos',EquipoController::class)->names('soporte.equipos');

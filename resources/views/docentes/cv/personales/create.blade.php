@@ -69,9 +69,9 @@
     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
         <div class="form-group">
             <label for="perTitulo">N. Colegiatura</label>
-            <input type="text" name='ncolegiatura' value="{{ $personal->ncolegiatura }}" class="form-control">
+            <input type="text" name='ncolegiatura' class="form-control">
         </div>
-    </div>2
+    </div>
     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
         <div class='form-group'>
             <label for="file">Foto de Perfil</label>
