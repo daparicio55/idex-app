@@ -30,7 +30,7 @@
                         @endif
                     </div>
                     <div class="col-sm-12 col-md-3">
-                        <i class="fas fa-id-card"></i> {!! Form::label('dni', 'Número de DNI.', [null]) !!}
+                        <i class="fas fa-id-card"></i> {!! Form::label('dni', 'Número de DNI/RUC', [null]) !!}
                         @if(isset($_GET['dni']))
                             {!! Form::text('dni', $_GET['dni'], ['class'=>'form-control','required']) !!}
                         @else
@@ -68,6 +68,12 @@
                                 <b>Infomación</b>
                             </h5>
                             <div class="row">
+                                <div class="col-sm-6" style="text-align:right">
+                                    <b class="text-right">Usuario / Institución:</b>
+                                </div>
+                                <div class="col-sm-6">
+                                    {{ $documento->cliente->apellido }} {{ $documento->cliente->nombre }}
+                                </div>
                                 <div class="col-sm-6" style="text-align:right">
                                     <b class="text-right">Asunto:</b>
                                 </div>

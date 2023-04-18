@@ -50,7 +50,7 @@
                         <b><i class="fas fa-copy"></i> Observacion:</b> {{ $enviado->observacion }}
                     </div>
                     <div class="col-sm-12 col-md-2">
-                        <b><i class="fas fa-file-medical"></i> Folios:</b> {{ $enviado->folios }}
+                        <b><i class="fas fa-file-medical"></i> Folios Agregados:</b> {{ $enviado->folios }} <b> Total: </b> {{ totalfolios($enviado->id) }} 
                     </div>
                     <div class="col-sm-12 col-md-2" style="text-align:right">
                         <button class="btn btn-link bg-info" data-toggle="collapse" data-target="#collapse-{{ $enviado->id }}" aria-expanded="true" aria-controls="collapse-{{ $enviado->id }}">

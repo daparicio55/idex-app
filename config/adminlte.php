@@ -376,6 +376,11 @@ return [
                     'text'=>'Hoja de vida',
                     'icon'=>'far fa-sticky-note',
                     'route'=>'docentes.cvs.index'
+                ],
+                [
+                    'text'=>'Cursos',
+                    'icon'=>'fas fa-book-reader',
+                    'route'=>'docentes.cursos.index'
                 ]
             ]
         ],

@@ -7,12 +7,15 @@ use App\Models\CepreSumativo;
 use App\Models\CepreSumativoAlternativa;
 use App\Models\CepreSumativoMarcada;
 use App\Models\Cliente;
+use App\Models\CriterioDetalle;
 use App\Models\Deuda;
 use App\Models\DeudaDetalle;
 use App\Models\Dmove;
+use App\Models\Document;
 use App\Models\Ematricula;
 use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
+use App\Models\IndicadoreDetalle;
 use App\Models\Mformativo;
 use App\Models\Udidactica;
 use Carbon\Carbon;
@@ -658,4 +661,27 @@ function fueenviado($move,$document){
                 return true;
         }
         
+}
+function totalfolios($id){
+        $dmove = Dmove::findOrFail($id);
+        $movimientos = Dmove::where('id','<=',$id)
+        ->where('document_id','=',$dmove->documento->id)
+        ->get();
+        $cantidad = $dmove->documento->folios;
+        foreach ($movimientos as $key => $movimiento) {
+                # code...
+                $cantidad = $cantidad + $movimiento->folios;
+        }
+        return $cantidad;
+}
+function notacriterio($indicadore_id,$ematricula_detalle_id){
+        try {
+                //code...
+                $indicadore_detalle = IndicadoreDetalle::where('ematricula_detalle_id','=',$ematricula_detalle_id)
+                ->where('indicadore_id',$indicadore_id)->first();
+                return $indicadore_detalle->nota;
+        } catch (\Throwable $th) {
+                //throw $th;
+                return 0;
+        }
 }

@@ -33,8 +33,19 @@
                 @foreach ($periodos as $periodo)
                     <tr>
                         <td>{{ $periodo->nombre }}</td>
-                        <td>{{ $periodo->finicio }}</td>
-                        <td>{{ $periodo->ffin }}</td>
+                        <td>{{ date('d-m-Y',strtotime($periodo->finicio)) }}</td>
+                        <td>{{ date('d-m-Y',strtotime($periodo->ffin)) }}</td>
+                        <td style="text-align: center">
+                            @if ($periodo->plan_cerrado == false)
+                            <a data-toggle="modal" data-target="#modal-plan-{{ $periodo->id }}" class="btn btn-primary" title="cerrar planeacion">
+                                <i class="fas fa-lock"></i>
+                            </a>
+                            @else
+                            <a data-toggle="modal" data-target="#modal-plan-{{ $periodo->id }}" class="btn btn-warning text-white" title="abrir planeacion">
+                                <i class="fas fa-lock-open"></i>
+                            </a> 
+                            @endif
+                        </td>
                         <td style="width: 210px; text-align: center">
                             <a class="btn btn-success" title="editar modulo formativo" href="{{ route('sacademica.pmatriculas.edit',$periodo->id) }}">
                                 <i class="fas fa-edit"></i> Editar
@@ -43,6 +54,7 @@
                                 <i class="fas fa-trash-alt"></i> Borrar
                             </a>
                         </td>
+                        @include('sacademica.pmatriculas.plan')
                         @include('sacademica.pmatriculas.modal')
                     </tr>
                 @endforeach

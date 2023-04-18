@@ -51,7 +51,7 @@
 					<tr @if(estadoDeuda($deu->idDeuda)== "en deuda") style="color: red" @endif>
 						<td>{{$deu->numero}}</td>
 						<td>{{$deu->cliente->dniRuc}}</td>
-						<td><strong class="text-uppercase">{{$deu->cliente->apellido}}</strong>, <span class="text-capitalize">{{ Str::lower($deu->nombre)}}</span></td>
+						<td><strong class="text-uppercase">{{$deu->cliente->apellido}}</strong>, <span class="text-capitalize">{{ Str::lower($deu->cliente->nombre)}}</span></td>
 						<td>{{$deu->cliente->telefono}}</td>
 						<td>
 							@foreach ($deu->cliente->postulaciones as $postulacion)

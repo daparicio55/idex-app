@@ -11,6 +11,7 @@ use App\Http\Controllers\AdmisioneReporteController;
 use App\Http\Controllers\AdmisioneVacanteController;
 use App\Http\Controllers\AdocumentoController;
 use App\Http\Controllers\CampaniaController;
+use App\Http\Controllers\CapacidadeController;
 use App\Http\Controllers\CargarNotaController;
 use App\Http\Controllers\CepreCarnetController;
 use App\Http\Controllers\CepreCruzeController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\CepreSumativoConsolidadoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ColegioController;
 use App\Http\Controllers\ConvalidacioneController;
+use App\Http\Controllers\CriterioController;
 use App\Http\Controllers\cvCapacitacionController;
 use App\Http\Controllers\cvConocimientoController;
 use App\Http\Controllers\cvController;
@@ -35,6 +37,7 @@ use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\DeudaController;
+use App\Http\Controllers\DocenteCursoController;
 use App\Http\Controllers\DocumentotipoController;
 use App\Http\Controllers\EdocumentoController;
 use App\Http\Controllers\EquipoController;
@@ -46,6 +49,7 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FdocumentoController;
 
 use App\Http\Controllers\IformativoController;
+use App\Http\Controllers\IndicadoreController;
 use App\Http\Controllers\InsidenciaController;
 use App\Http\Controllers\LicenciaController;
 use App\Http\Controllers\MatriculaController;
@@ -136,6 +140,21 @@ Route::resource('docentes/cv/personales',cvPersonalController::class)->names('do
 Route::resource('docentes/cv/estudios',cvEstudioController::class)->names('docentes.cv.estudios');
 Route::resource('docentes/cv/reportes',cvReporteController::class)->names('docentes.cv.reportes');
 Route::resource('docentes/cv/conocimientos',cvConocimientoController::class)->names('docentes.cv.conocimientos');
+Route::resource('docentes/cursos',DocenteCursoController::class)->names('docentes.cursos');
+Route::resource('docentes/cursos/capacidades',CapacidadeController::class)->names('docentes.cursos.capacidades');
+Route::resource('docentes/cursos/capacidades/indicadores',IndicadoreController::class)->names('docentes.cursos.capacidades.indicadores');
+Route::get('docentes/cursos/capacidades/indicadores/calificar/{id}',[IndicadoreController::class,'calificar'])
+->name('docentes.cursos.capacidades.indicadores.calificar');
+Route::post('docentes/cursos/capacidades/indicadores/calificar/{id}',[IndicadoreController::class,'calificarstore'])
+->name('docentes.cursos.capacidades.indicadores.calificarstore');
+
+//aca otro forma de cambiar las capacidades//
+Route::resource('docentes/cursos/criterios',CriterioController::class)->names('docentes.cursos.criterios');
+Route::get('docentes/cursos/criterios/calificar/{id}',[CriterioController::class,'calificar'])
+->name('docentes.cursos.criterios.calificar');
+Route::post('docentes/cursos/criterios/calificar/{id}',[CriterioController::class,'calificarstore'])
+->name('docentes.cursos.criterios.calificarstore');
+//fin de capacidades
 //servicios de de hojas de vida
 Route::get('/cv/{mail}',function($mail){
     $user = User::where('email','=',$mail)->first();
@@ -147,6 +166,7 @@ Route::get('/cv/{mail}',function($mail){
 Route::resource('sacademica/equivalencias',EquivalenciaController::class)->names('sacademica.equivalencias');
 Route::resource('sacademica/iformativos',IformativoController::class)->names('sacademica.iformativos');
 Route::resource('sacademica/pmatriculas',PmatriculaController::class)->names('sacademica.pmatriculas');
+Route::get('sacademica/pmatriculas/{id}/plancierre/',[PmatriculaController::class,'plancierre'])->name('sacademica.pmatriculas.plancierre');
 Route::resource('sacademica/mformativos', MformativoController::class)->names('sacademica.mformativos');
 Route::resource('sacademica/udidacticas',UdidacticaController::class)->names('sacademica.udidacticas');
 Route::resource('sacademica/matriculas',MatriculaController::class)->names('sacademica.matriculas');

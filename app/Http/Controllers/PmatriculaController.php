@@ -126,4 +126,22 @@ class PmatriculaController extends Controller
         }
         return Redirect::to('sacademica/pmatriculas/')->with('info','se elimino correctamente el periodo academico');
     }
+    public function plancierre($id){
+        try {
+            //code...
+            $periodo = Pmatricula::findOrFail($id);
+            if($periodo->plan_cerrado == true){
+                $periodo->plan_cerrado = false;
+                $periodo->save();
+            }else{
+                $periodo->plan_cerrado = true;
+                $periodo->save();
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return Redirect::to('sacademica/pmatriculas/')->with('error',$th->getMessage());
+        }
+        return Redirect::to('sacademica/pmatriculas/')->with('info','se cambio correctamente el estado del periodo academico');
+        dd($id);
+    }
 }
