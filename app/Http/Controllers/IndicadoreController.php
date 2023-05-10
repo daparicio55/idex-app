@@ -17,6 +17,11 @@ class IndicadoreController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('can:docentes.cursos.capacidades.indicadores.index')->only('index');
+        $this->middleware('can:docentes.cursos.capacidades.indicadores.create')->only('create','store');
+        $this->middleware('can:docentes.cursos.capacidades.indicadores.edit')->only('edit','update');
+        $this->middleware('can:docentes.cursos.capacidades.indicadores.destroy')->only('destroy');
+        $this->middleware('can:docentes.cursos.capacidades.indicadores.show')->only('show');
     }
     public function create(Request $request){
         $capacidade = Capacidade::findOrFail($request->capacidade_id);

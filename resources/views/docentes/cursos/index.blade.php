@@ -32,8 +32,14 @@
                         <td>{{ $asignacione->unidad->modulo->carrera->nombreCarrera }}</td>
                         <td>
                             <!-- vamos a mostrar las capacidades -->
-                            <a href="{{ route('docentes.cursos.show',$asignacione->id) }}" class="btn btn-info">
+                            <a href="{{ route('docentes.cursos.show',$asignacione->id) }}" class="btn btn-info mb-1">
                                 <i class="fas fa-sort-numeric-up-alt"></i> Capacidades
+                            </a>
+                            <a href="{{ route('docentes.cursos.imprimir',$asignacione->id) }}" class="btn btn-warning mb-1">
+                                <i class="fas fa-print"></i> Acta Regular
+                            </a>
+                            <a href="{{ route('docentes.cursos.equivalencia',$asignacione->id) }}" class="btn btn-success mb-1">
+                                <i class="fas fa-print"></i> Equilancias
                             </a>
                         </td>
                     </tr>

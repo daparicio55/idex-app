@@ -11,7 +11,7 @@ class ApiUserController extends Controller
     //
     public function __construct()
     {
-        return $this->middleware('auth:sanctum');
+        $this->middleware('auth:sanctum');
     }
     /* public function usuario(Request $request){
         $usuario = null;

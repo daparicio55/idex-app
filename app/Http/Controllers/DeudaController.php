@@ -29,8 +29,9 @@ class DeudaController extends Controller
     {
         $query = $request->get('searchText');
         $estado = $request->get('estado');
-        if(isset($query)){
-            $deudas = Deuda::whereRelation('cliente','dniRuc','=',$query)
+        if(isset($request->estado)){
+            
+            $deudas = Deuda::whereRelation('cliente','dniRuc','like','%'.$query.'%')
             ->where('estado','=',$estado)
             ->orderBy('numero','desc')
             ->get();
@@ -315,6 +316,7 @@ class DeudaController extends Controller
         $deudasDetalles = DB::table('deudas_detalles')
         ->where('idDeuda','=',$id)
         ->get();
+        return view('ventas.deudas.imprimir',compact('deudas','deudasDetalles'));
 		$pdf = PDF::loadview("ventas.deudas.imprimir",['deudas'=>$deudas,'deudasDetalles'=>$deudasDetalles]);
 		$pdf->setPaper('a4','landscape');
 		return $pdf->download('deuda-'.$deudas->numero.'-'.$deudas->dniRuc.'.pdf');

@@ -151,7 +151,7 @@
                                 <td style="width: 33%">_______________________</td><td style="width: 33%">&nbsp;</td><td style="width: 33%">_____________</td>
                             </tr>
                             <tr style="text-align: center">
-                                <td style="width: 33%">IDEX "PJ"<</td><td style="width: 33%">&nbsp;</td><td style="width: 33%">ESTUDIANTE</td>
+                                <td style="width: 33%">IDEX "PJ"</td><td style="width: 33%">&nbsp;</td><td style="width: 33%">ESTUDIANTE</td>
                             </tr>
                             <tr style="text-align: center">
                                 <td style="width: 33%">firma post firma y sello</td><td style="width: 33%">&nbsp;</td><td style="width: 33%">firma</td>

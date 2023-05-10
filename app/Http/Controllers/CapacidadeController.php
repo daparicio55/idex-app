@@ -15,6 +15,11 @@ class CapacidadeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('can:docentes.cursos.capacidades.index')->only('index');
+        $this->middleware('can:docentes.cursos.capacidades.create')->only('create','store');
+        $this->middleware('can:docentes.cursos.capacidades.edit')->only('edit','update');
+        $this->middleware('can:docentes.cursos.capacidades.destroy')->only('destroy');
+        $this->middleware('can:docentes.cursos.capacidades.show')->only('show');
     }
     public function show($id){
         $capacidade = Capacidade::findOrFail($id);

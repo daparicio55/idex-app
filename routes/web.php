@@ -10,6 +10,7 @@ use App\Http\Controllers\AdmisionePostulanteController;
 use App\Http\Controllers\AdmisioneReporteController;
 use App\Http\Controllers\AdmisioneVacanteController;
 use App\Http\Controllers\AdocumentoController;
+use App\Http\Controllers\AperturaController;
 use App\Http\Controllers\CampaniaController;
 use App\Http\Controllers\CapacidadeController;
 use App\Http\Controllers\CargarNotaController;
@@ -141,6 +142,8 @@ Route::resource('docentes/cv/estudios',cvEstudioController::class)->names('docen
 Route::resource('docentes/cv/reportes',cvReporteController::class)->names('docentes.cv.reportes');
 Route::resource('docentes/cv/conocimientos',cvConocimientoController::class)->names('docentes.cv.conocimientos');
 Route::resource('docentes/cursos',DocenteCursoController::class)->names('docentes.cursos');
+Route::get('docentes/cursos/imprimir/{id}',[DocenteCursoController::class,'imprimir'])->name('docentes.cursos.imprimir');
+Route::get('docentes/cursos/equivalencia/{id}',[DocenteCursoController::class,'equivalencia'])->name('docentes.cursos.equivalencia');
 Route::resource('docentes/cursos/capacidades',CapacidadeController::class)->names('docentes.cursos.capacidades');
 Route::resource('docentes/cursos/capacidades/indicadores',IndicadoreController::class)->names('docentes.cursos.capacidades.indicadores');
 Route::get('docentes/cursos/capacidades/indicadores/calificar/{id}',[IndicadoreController::class,'calificar'])
@@ -209,6 +212,7 @@ Route::resource('ventas/clientes', ClienteController::class)->names('ventas.clie
 Route::resource('ventas/ventas', VentaController::class)->names('ventas.ventas');
 Route::resource('ventas/deudas', DeudaController::class)->names('ventas.deudas');
 Route::resource('ventas/reportes',VentaReporteController::class)->names('ventas.reportes');
+Route::resource('ventas/aperturas',AperturaController::class)->names('ventas.aperturas');
 
 Route::resource('cepres/estudiantes', CepreEstudianteController::class)->names('cepres.estudiantes');
 Route::resource('cepres/pagos', CeprePagoController::class)->names('cepres.pagos');

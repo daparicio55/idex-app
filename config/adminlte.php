@@ -380,6 +380,7 @@ return [
                 [
                     'text'=>'Cursos',
                     'icon'=>'fas fa-book-reader',
+                    'can'=>'docentes.cursos.index',
                     'route'=>'docentes.cursos.index'
                 ]
             ]
@@ -568,6 +569,12 @@ return [
                     'text'=>'Reportes',
                     'icon'=>'fas fa-chart-line',
                     'url'=>'ventas/reportes'
+                ],
+                [
+                    'text'=>'Aperturas',
+                    'icon'=>'fas fa-lock-open',
+                    'can'=>'ventas.aperturas.index',
+                    'route'=>'ventas.aperturas.index'
                 ]
             ],
         ],

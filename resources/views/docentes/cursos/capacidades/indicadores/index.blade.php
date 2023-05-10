@@ -9,7 +9,7 @@
             <i class="fas fa-long-arrow-alt-left"></i>
         </a>
         <input type="hidden" name="capacidade_id" value="{{ $capacidade->id }}">        
-        <button type="submit" class="btn btn-info" @if($capacidade->uasignada->periodo->plan_cerrado == true) disabled @endif>
+        <button type="submit" class="btn btn-info" @if(capacidad_cerrado($capacidade->uasignada->id) == true) disabled @endif>
             <i class="fas fa-plus-square"></i> Nuevo Indicador
         </button>
     </div>
@@ -48,10 +48,10 @@
                             <a href="#" class="btn btn-warning">
                                 <i class="fas fa-lock"></i> Cerrar
                             </a>
-                            <button data-toggle="modal" @if($capacidade->uasignada->periodo->plan_cerrado == true) disabled @endif  data-target="#modal-delete-{{ $indicadore->id }}" class="btn btn-danger">
+                            <button data-toggle="modal" @if(capacidad_cerrado($capacidade->uasignada->id) == true) disabled @endif  data-target="#modal-delete-{{ $indicadore->id }}" class="btn btn-danger">
                                 <i class="fas fa-trash-alt"></i> Eliminar
                             </button>
-                            <a href="{{ route('docentes.cursos.capacidades.indicadores.edit',$indicadore->id) }}" class="btn btn-success @if($capacidade->uasignada->periodo->plan_cerrado == true) disabled @endif">
+                            <a href="{{ route('docentes.cursos.capacidades.indicadores.edit',$indicadore->id) }}" class="btn btn-success @if(capacidad_cerrado($capacidade->uasignada->id) == true) disabled @endif">
                                 <i class="fas fa-edit"></i> Editar
                             </a>
                             <a href="{{ route('docentes.cursos.capacidades.indicadores.calificar',$indicadore->id) }}" class="btn btn-info">

@@ -17,6 +17,7 @@ use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
 use App\Models\IndicadoreDetalle;
 use App\Models\Mformativo;
+use App\Models\Uasignada;
 use App\Models\Udidactica;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -684,4 +685,65 @@ function notacriterio($indicadore_id,$ematricula_detalle_id){
                 //throw $th;
                 return 0;
         }
+}
+function capacidad_cerrado($id){
+        $uasignada = Uasignada::findOrFail($id);
+        if ($uasignada->periodo->plan_cerrado == true)
+                if(isset($uasignada->apertura->fecha)){
+                $fecha_hora = Carbon::create(date('Y',strtotime($uasignada->apertura->fecha)),date('m',strtotime($uasignada->apertura->fecha)),date('d',strtotime($uasignada->apertura->fecha)),date('h',strtotime($uasignada->apertura->fecha)),date('i',strtotime($uasignada->apertura->fecha)),date('s',strtotime($uasignada->apertura->fecha)));
+                $diferencia = Carbon::now()->diffInHours($fecha_hora);
+                        if($diferencia<25){
+                                return false;
+                        }else{
+                                return true;
+                        }
+                }else{
+                        return true;
+                }
+        else{
+                return false;
+        }
+}
+function indicador_calificacion($indicador_id,$ematricula_detalle_id){
+        try {
+                //code...
+                $indicadore_detalle = IndicadoreDetalle::where('indicadore_id','=',$indicador_id)
+                ->where('ematricula_detalle_id','=',$ematricula_detalle_id)
+                ->first();
+                if(isset($indicadore_detalle->nota)){
+                        return $indicadore_detalle->nota;
+                }else{
+                        return 0;
+                }
+                
+        } catch (\Throwable $th) {
+                //throw $th;
+                return $th->getMessage();
+        }
+}
+function letras($num){
+        $letras = [
+                0=>'cero',
+                1=>'uno',
+                2=>'dos',
+                3=>'tres',
+                4=>'cuatro',
+                5=>'cinco',
+                6=>'seis',
+                7=>'siete',
+                8=>'ocho',
+                9=>'nueve',
+                10=>'diez',
+                11=>'once',
+                12=>'doce',
+                13=>'trece',
+                14=>'catorce',
+                15=>'quince',
+                16=>'dieciséis',
+                17=>'diecisiete',
+                18=>'dieciocho',
+                19=>'diecinueve',
+                20=>'veiente'
+        ];
+        return $letras[$num];
 }
