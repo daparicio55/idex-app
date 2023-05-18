@@ -12,4 +12,8 @@ class Campania extends Model
     public function atenciones(){
         return $this->hasMany(Acampania::class);
     }
+    public $fillable = [
+        'nombre',
+        'fecha'
+    ];
 }

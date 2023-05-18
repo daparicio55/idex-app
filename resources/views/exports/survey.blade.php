@@ -13,9 +13,12 @@
     <table class="table">
         <thead>
             <tr>
-                <th>#</th>
+                <th><b>#</b></th>
+                <th><b>DNI</b></th>
                 <th><b>APELLIDOS,</b> Nombres</th>
-                <th>Sexo</th>
+                <th><b>Telefonos</b></th>
+                <th><b>P. Estudios</b></th>
+                <th><b>Sexo</b></th>
                 {{-- preguintas --}}
                 @foreach ($survey->questions as $question )
                     <th>
@@ -29,8 +32,15 @@
             @foreach ($survey->sdo as $key=>$sdo )
                 <tr>
                     <td>{{ $key+1 }}</td>
+                    <td>{{ $sdo->estudiante->postulante->cliente->dniRuc }}</td>
                     <td>
                         <b class="text-uppercase">{{ strtoupper($sdo->estudiante->postulante->cliente->apellido) }}, </b> <span>{{ ucwords(strtolower($sdo->estudiante->postulante->cliente->nombre)) }}</span>
+                    </td>
+                    <td>
+                        {{ $sdo->estudiante->postulante->cliente->telefono  }} / {{ $sdo->estudiante->postulante->cliente->telefono2  }}
+                    </td>
+                    <td>
+                        {{ $sdo->estudiante->postulante->carrera->nombreCarrera }}
                     </td>
                     <td>
                         {{ $sdo->estudiante->postulante->sexo }}

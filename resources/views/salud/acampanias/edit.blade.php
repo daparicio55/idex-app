@@ -103,6 +103,10 @@
                     <b><i class="fas fa-brain"></i> Mental - Psicologia...</b>
                 </h4>
             </div>
+            <div class="col-sm-12 col-md-6">
+                {!! Form::label('psi_resultado', 'Resultado', [null]) !!}
+                {!! Form::select('psi_resultado', $psi, null, ['class'=>'form-control']) !!}
+            </div>
             <div class="col-sm-12 mb-2 mt-3">
                 <h4 class="card-title text-info">
                     <b><i class="fas fa-utensils"></i> Nutricional - Area Nutrición...</b>

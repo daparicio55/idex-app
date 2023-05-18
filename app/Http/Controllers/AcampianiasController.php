@@ -50,17 +50,25 @@ class AcampianiasController extends Controller
             'Masculino'=>'Masculino'
         ];
         $gss = [
+            'ND'=>'ND',
             'A'=>'A',
             'B'=>'B',
             'O'=>'O',
             'AB'=>'AB'
         ];
         $fss = [
+            'ND'=>'ND',
             '+'=>'+',
             '-'=>'-'
         ];
+        $psi = [
+            'Sin diagnostico'=>'Sin diagnostico',
+            'Necesita tarapia psicológica'=>'Necesita tarapia psicológica',
+            'Necesita consejo y orientación psicológica'=>'Necesita consejo y orientación psicológica',
+            'Paciente estable'=>'Paciente estable'
+        ];
         $campanias = Campania::orderBy('id','desc')->pluck('nombre','id')->toArray();
-        return view('salud.acampanias.index',compact('atenciones','sexos','gss','fss','campanias','searchText'));
+        return view('salud.acampanias.index',compact('atenciones','sexos','gss','fss','campanias','searchText','psi'));
     }
 
     /**
@@ -76,14 +84,22 @@ class AcampianiasController extends Controller
             'Masculino'=>'Masculino'
         ];
         $gss = [
+            'ND'=>'ND',
             'A'=>'A',
             'B'=>'B',
             'O'=>'O',
             'AB'=>'AB'
         ];
         $fss = [
+            'ND'=>'ND',
             '+'=>'+',
             '-'=>'-'
+        ];
+        $psi = [
+            'Sin diagnostico'=>'Sin diagnostico',
+            'Necesita tarapia psicológica'=>'Necesita tarapia psicológica',
+            'Necesita consejo y orientación psicológica'=>'Necesita consejo y orientación psicológica',
+            'Paciente estable'=>'Paciente estable'
         ];
         $campanias = Campania::orderBy('id','desc')->pluck('nombre','id')->toArray();
         if(isset($request->buscar_dni)){
@@ -91,7 +107,7 @@ class AcampianiasController extends Controller
             $estudiante = Estudiante::whereHas('postulante.cliente',function($query) use($dni) {
                 $query->where('dniRuc','=',$dni);
             })->first();
-            return view('salud.acampanias.create',compact('estudiante','sexos','campanias','gss','fss'));
+            return view('salud.acampanias.create',compact('estudiante','sexos','campanias','gss','fss','psi'));
         }
         return view('salud.acampanias.create');
     }
@@ -125,6 +141,7 @@ class AcampianiasController extends Controller
             //creamos le atencion de la campaña
             $acampania = new Acampania();
             $acampania->numero = $numero;
+            $acampania->psi_resultado = $request->psi_resultado;
             $acampania->estudiante_id = $request->estudiante_id;
             $acampania->campania_id = $request->campania_id;
             $acampania->vitales_temperatura = $request->vitales_temperatura;
@@ -144,12 +161,8 @@ class AcampianiasController extends Controller
             $acampania->fecha = Carbon::now();
             $acampania->save();
             //creamos el perfil
-            Pmedico::updateOrCreate([
-                'estudiante_id' => $request->estudiante_id,
-                'lab_gs' => $request->lab_gs,
-                'lab_fs' => $request->lab_fs,
-                'nutri_talla' => $request->nutri_talla,
-            ]);
+            Pmedico::updateOrCreate(['estudiante_id' => $request->estudiante_id],
+            ['lab_gs' => $request->lab_gs,'lab_fs' => $request->lab_fs,'nutri_talla' => $request->nutri_talla]);
             DB::commit();
         } catch (\Throwable $th) {
             //throw $th;
@@ -186,18 +199,26 @@ class AcampianiasController extends Controller
             'Masculino'=>'Masculino'
         ];
         $gss = [
+            'ND'=>'ND',
             'A'=>'A',
             'B'=>'B',
             'O'=>'O',
             'AB'=>'AB'
         ];
         $fss = [
+            'ND'=>'ND',
             '+'=>'+',
             '-'=>'-'
         ];
+        $psi = [
+            'Sin diagnostico'=>'Sin diagnostico',
+            'Necesita tarapia psicológica'=>'Necesita tarapia psicológica',
+            'Necesita consejo y orientación psicológica'=>'Necesita consejo y orientación psicológica',
+            'Paciente estable'=>'Paciente estable'
+        ];
         $campanias = Campania::orderBy('id','desc')->pluck('nombre','id')->toArray();
         $acampania = Acampania::findOrFail($id);
-        return view('salud.acampanias.edit',compact('sexos','gss','fss','acampania','campanias'));
+        return view('salud.acampanias.edit',compact('sexos','gss','fss','acampania','campanias','psi'));
     }
 
     /**
@@ -228,6 +249,7 @@ class AcampianiasController extends Controller
             $postulante->save();
             //actualizamos la atencion de la campaña
             $acampania = Acampania::findOrFail($id);
+            $acampania->psi_resultado = $request->psi_resultado;
             $acampania->estudiante_id = $request->estudiante_id;
             $acampania->campania_id = $request->campania_id;
             $acampania->vitales_temperatura = $request->vitales_temperatura;

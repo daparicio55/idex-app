@@ -6,6 +6,7 @@
         <i class="fas fa-hospital"></i> Nueva Campaña
     </a>
 </h1>
+<p class="mt-2">puede subir los datos de forma masiva, recuerde respetar las columnas.. descarge el modelo desde <a target="_blank" href="https://drive.google.com/file/d/1-DsuhJj_gqClVh-XVtaQ4UurEVR0rV-0/view?usp=share_link">aca</a></p>
 @stop
 @section('content')
 @if (session('info'))

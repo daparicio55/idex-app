@@ -44,6 +44,7 @@ class CampaniaController extends Controller
     public function create()
     {
         //
+        return view('salud.campanias.create');
     }
 
     /**
@@ -55,6 +56,15 @@ class CampaniaController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            //code...
+            $campania = new Campania();
+            $campania->create($request->all());
+        } catch (\Throwable $th) {
+            //throw $th;
+            return Redirect::route('salud.campanias.index')->with('error',$th->getMessage());
+        }
+        return Redirect::route('salud.campanias.index')->with('info','se guardo la informacion correctamente');
     }
 
     /**
@@ -108,8 +118,8 @@ class CampaniaController extends Controller
                             $acampania->campania_id=$campania->id;
                             $acampania->fecha=Carbon::now();
                             $acampania->user_id=auth()->id();
-                            $acampania->vitales_fc=0;
-                            $acampania->vitales_fr=0;
+                            $acampania->vitales_fc=$datos[15];
+                            $acampania->vitales_fr=$datos[16];
                             $acampania->vitales_sys=$datos[5];
                             $acampania->vitales_dia=$datos[6];
                             $acampania->vitales_temperatura=$datos[1];
@@ -147,6 +157,8 @@ class CampaniaController extends Controller
     public function edit($id)
     {
         //
+        $campania = Campania::findOrFail($id);
+        return view('salud.campanias.edit',compact('campania'));
     }
 
     /**
@@ -159,6 +171,15 @@ class CampaniaController extends Controller
     public function update(Request $request, $id)
     {
         //
+        try {
+            //code...
+            $campania = Campania::findOrFail($id);
+            $campania->update($request->all());
+        } catch (\Throwable $th) {
+            //throw $th;
+            return Redirect::route('salud.campanias.index')->with('error',$th->getMessage());
+        }
+        return Redirect::route('salud.campanias.index')->with('info','se actualizo la informacion correctamente');
     }
 
     /**

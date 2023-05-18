@@ -91,6 +91,10 @@
                                 <b><i class="fas fa-brain"></i> Mental - Psicologia...</b>
                             </h4>
                         </div>
+                        <div class="col-sm-12 col-md-6">
+                            {!! Form::label('psi_resultado', 'Resultado', [null]) !!}
+                            {!! Form::select('psi_resultado', $psi, $atencione->psi_resultado, ['class'=>'form-control','disabled']) !!}
+                        </div>
                         <div class="col-sm-12 mb-2 mt-3">
                             <h4 class="card-title text-info">
                                 <b><i class="fas fa-utensils"></i> Nutricional - Area Nutrición...</b>
@@ -114,8 +118,11 @@
                         </div>
                         @php
                             $pmetros = number_format($atencione->estudiante->pmedico->nutri_talla / 100,2,'.','');
-                            $imc = number_format($atencione->nutri_peso  / ($pmetros * $pmetros),2,'.','');
-                            //$imc = 11;
+                            if ($pmetros>0){
+                                $imc = number_format($atencione->nutri_peso  / ($pmetros * $pmetros),2,'.','');
+                            }else{
+                                $imc = 0;
+                            }
                         @endphp
                         <div class="col-sm-12 col-md-2">
                             {!! Form::label('nutri_imc', 'IMC', [null]) !!}
