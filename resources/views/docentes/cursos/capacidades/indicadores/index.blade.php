@@ -45,17 +45,17 @@
                         <td>{{ $indicadore->descripcion }}</td>
                         <td>{{ date('d-m-Y',strtotime($indicadore->fecha)) }}</td>
                         <td>
-                            <a href="#" class="btn btn-warning">
+                            {{-- <a href="#" class="btn btn-warning">
                                 <i class="fas fa-lock"></i> Cerrar
-                            </a>
-                            <button data-toggle="modal" @if(capacidad_cerrado($capacidade->uasignada->id) == true) disabled @endif  data-target="#modal-delete-{{ $indicadore->id }}" class="btn btn-danger">
+                            </a> --}}
+                            <button data-toggle="modal" data-target="#modal-delete-{{ $indicadore->id }}" class="btn btn-danger mt-2 @if(capacidad_cerrado($capacidade->uasignada->id) == true) disabled @endif">
                                 <i class="fas fa-trash-alt"></i> Eliminar
                             </button>
-                            <a href="{{ route('docentes.cursos.capacidades.indicadores.edit',$indicadore->id) }}" class="btn btn-success @if(capacidad_cerrado($capacidade->uasignada->id) == true) disabled @endif">
+                            <a href="{{ route('docentes.cursos.capacidades.indicadores.edit',$indicadore->id) }}" class="btn btn-success mt-2 @if(capacidad_cerrado($capacidade->uasignada->id) == true) disabled @endif">
                                 <i class="fas fa-edit"></i> Editar
                             </a>
-                            <a href="{{ route('docentes.cursos.capacidades.indicadores.calificar',$indicadore->id) }}" class="btn btn-info">
-                                <i class="fas fa-sort-numeric-up-alt"></i> Calificaciones
+                            <a href="{{ route('docentes.cursos.capacidades.indicadores.calificar',$indicadore->id) }}" class="btn btn-primary mt-2 @if(calificacion_cerrado($indicadore->id) == true) disabled @endif">
+                                <i class="fas fa-sort-numeric-up-alt"></i> Calificaciones {{ calificacion_cerrado($indicadore->id) }}
                             </a>
                             @include('docentes.cursos.capacidades.indicadores.modal')
                         </td>

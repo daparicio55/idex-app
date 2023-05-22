@@ -113,6 +113,7 @@ class DocenteCursoController extends Controller
         ->join('admisione_postulantes','admisione_postulantes.id','=','estudiantes.admisione_postulante_id')
         ->join('admisiones','admisione_postulantes.admisione_id','=','admisiones.id')
         ->join('clientes','admisione_postulantes.idCliente','=','clientes.idCliente')
+        ->where('ematricula_detalles.tipo','<>','Convalidacion')
         ->where('ematricula_detalles.udidactica_id','=',$uasignada->udidactica_id)
         ->where('ematriculas.pmatricula_id','=',$uasignada->pmatricula_id)
         ->orderBy('clientes.apellido')

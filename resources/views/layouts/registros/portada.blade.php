@@ -31,7 +31,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 mt-3 text-center">
-                    <h6>FAMILIA TECNOLÓGICA: "UNIDAD ES LA MEDALLA QUE NOS DISTINGUE"</h6>
+                    <h6>FAMILIA TECNOLÓGICA: "LA UNIDAD ES LA MEDALLA QUE NOS DISTINGUE"</h6>
                 </div>
                 <div class="col-sm-12 d-flex justify-content-between mt-3">
                     <img src="https://titulosinstitutos.minedu.gob.pe/Content/img/logo-minedu.png" width="200px" alt="a">

@@ -39,7 +39,7 @@
                                 <i class="fas fa-print"></i> Acta Regular
                             </a>
                             <a href="{{ route('docentes.cursos.equivalencia',$asignacione->id) }}" class="btn btn-success mb-1">
-                                <i class="fas fa-print"></i> Equilancias
+                                <i class="fas fa-print"></i> Equivalencias
                             </a>
                         </td>
                     </tr>

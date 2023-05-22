@@ -15,6 +15,7 @@ use App\Models\Document;
 use App\Models\Ematricula;
 use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
+use App\Models\Indicadore;
 use App\Models\IndicadoreDetalle;
 use App\Models\Mformativo;
 use App\Models\Uasignada;
@@ -691,7 +692,8 @@ function capacidad_cerrado($id){
         if ($uasignada->periodo->plan_cerrado == true)
                 if(isset($uasignada->apertura->fecha)){
                 $fecha_hora = Carbon::create(date('Y',strtotime($uasignada->apertura->fecha)),date('m',strtotime($uasignada->apertura->fecha)),date('d',strtotime($uasignada->apertura->fecha)),date('h',strtotime($uasignada->apertura->fecha)),date('i',strtotime($uasignada->apertura->fecha)),date('s',strtotime($uasignada->apertura->fecha)));
-                $diferencia = Carbon::now()->diffInHours($fecha_hora);
+                $diferencia = Carbon::now()->greaterThan($fecha_hora);
+                return ($diferencia); 
                         if($diferencia<25){
                                 return false;
                         }else{
@@ -702,6 +704,18 @@ function capacidad_cerrado($id){
                 }
         else{
                 return false;
+        }
+}
+function calificacion_cerrado($id){
+        try {
+                //code...                
+                $indicador = Indicadore::findOrFail($id);
+                $actual = Carbon::now();
+                $fecha = Carbon::parse($indicador->fecha);
+                return $actual->greaterThan($fecha);
+        } catch (\Throwable $th) {
+                //throw $th;
+                return $th->getMessage();
         }
 }
 function indicador_calificacion($indicador_id,$ematricula_detalle_id){

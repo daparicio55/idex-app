@@ -87,7 +87,7 @@
                 $contador = 0;
             @endphp
                 @foreach ($capacidade->indicadores as $indicadore)
-                    <td class="p-0 text-center">{{ number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','') }}</td>    
+                    <td class="p-0 text-center @if(number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','')>12) text-primary @else text-danger @endif">{{ number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','') }}</td>    
                     @php
                         /* if(indicador_calificacion($indicadore->id, $estudiante->id) <> "NC"){ */
                             $suma = $suma + number_format(indicador_calificacion($indicadore->id, $estudiante->id),2,'.','');

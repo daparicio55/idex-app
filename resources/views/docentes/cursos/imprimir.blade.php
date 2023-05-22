@@ -56,7 +56,6 @@
 @section('notas_cuerpo')
     @foreach ($estudiantes as $key=>$estudiante)
     @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
-
         @php
             $colu = 0;
         @endphp
@@ -85,19 +84,17 @@
                 $contador = 0;
             @endphp
                 @foreach ($capacidade->indicadores as $indicadore)
-                    <td class="p-0 text-center">{{ number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','') }}</td>    
+                    <td class="p-0 text-center @if(number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','')>12) text-primary @else text-danger @endif">{{ number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','') }}</td>    
                     @php
                         /* if(indicador_calificacion($indicadore->id, $estudiante->id) <> "NC"){ */
-                            $suma = $suma + number_format(indicador_calificacion($indicadore->id, $estudiante->id),2,'.','');
+                            $suma = $suma + number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','');
                             $contador ++;
                         /* } */
                     @endphp
                 @endforeach
                 @php
-                    if(indicador_calificacion($indicadore->id, $estudiante->id) <> "NC"){
-                        $nota = $suma / $contador;
-                        $nota = round(number_format($nota,2,'.',''),0);
-                    }
+                    $nota = $suma / $contador;
+                    $nota = round(number_format($nota,2,'.',''),0);
                 @endphp
                 
             <td class="p-0 text-center bg-light border @if($nota>12) text-primary @else text-danger @endif" >{{ $nota }}</td>
