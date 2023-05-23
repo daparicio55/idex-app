@@ -72,12 +72,15 @@
                         {!! Form::hidden('tipo', $tipo, [null]) !!}
                         {!! Form::hidden('uasignada', $uasignada->id, [null]) !!}
                             <tr>
+                                @php
+                                    $id = $uasignada->id;
+                                @endphp
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $uasignada->unidad->nombre }}</td>
                                 <td>{{ $uasignada->unidad->ciclo }}</td>
                                 <td>{{ $uasignada->unidad->modulo->carrera->nombreCarrera }}</td>
                                 <td>
-                                    <a data-toggle="modal" data-target="#open-{{ $uasignada->id }}" class="btn btn-warning" title="abrir planeación">
+                                    <a data-toggle="modal" data-target="#open-{{ $id }}" class="btn btn-warning" title="abrir planeación">
                                         <i class="fas fa-lock-open"></i>
                                     </a>
                                 </td>
@@ -88,6 +91,45 @@
                     </tbody>
                 </table>
             </div>
+        @endisset
+        @isset($indicadores)
+        <div class="row mt-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>P. Estudios</th>
+                        <th>Unidad Didáctica</th>
+                        <th>Ciclo</th>
+                        <th>Indicador</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($indicadores as $key => $indicadore )
+                    {!! Form::open(['route'=>'ventas.aperturas.store','method'=>'post','id'=>'frm']) !!}
+                    {!! Form::hidden('tipo', $tipo, [null]) !!}
+                    {!! Form::hidden('uasignada', $indicadore->id, [null]) !!}
+                        <tr>
+                            @php
+                                $id = $indicadore->id;
+                            @endphp
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $indicadore->capacidade->uasignada->unidad->modulo->carrera->nombreCarrera }}</td>
+                            <td>{{ $indicadore->capacidade->uasignada->unidad->nombre }}</td>
+                            <td>{{ $indicadore->capacidade->uasignada->unidad->ciclo }}</td>
+                            <td>{{ $indicadore->nombre }}</td>
+                            <td>
+                                <a data-toggle="modal" data-target="#open-{{ $id }}" class="btn btn-warning" title="abrir planeación">
+                                    <i class="fas fa-lock-open"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        @include('ventas.aperturas.modal')
+                        {!! Form::close() !!}
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
         @endisset
         {{-- {!! Form::hidden('uasignada_id', $uasignada->id, [null]) !!}
         <div class="row">

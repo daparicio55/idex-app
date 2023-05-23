@@ -46,16 +46,16 @@
                         <td>{{ $capacidade->descripcion }}</td>
                         <td>{{ date('d-m-Y',strtotime($capacidade->fecha)) }}</td>
                         <td>
-                            <a href="#" class="btn btn-warning">
+                            {{-- <a href="#" class="btn btn-warning">
                                 <i class="fas fa-lock"></i> Cerrar
-                            </a>
-                            <button data-toggle="modal" @if(capacidad_cerrado($asignacione->id) == true) disabled @endif data-target="#modal-delete-{{ $capacidade->id }}" class="btn btn-danger">
+                            </a> --}}
+                            <button data-toggle="modal" @if(capacidad_cerrado($asignacione->id) == true) disabled @endif data-target="#modal-delete-{{ $capacidade->id }}" class="btn btn-danger mt-2">
                                 <i class="fas fa-trash-alt"></i> Eliminar
                             </button>
-                            <a href="{{ route('docentes.cursos.capacidades.edit',$capacidade->id) }}" class="btn btn-success @if(capacidad_cerrado($asignacione->id) == true) disabled @endif">
+                            <a href="{{ route('docentes.cursos.capacidades.edit',$capacidade->id) }}" class="btn btn-success mt-2 @if(capacidad_cerrado($asignacione->id) == true) disabled @endif">
                                 <i class="fas fa-edit"></i> Editar
                             </a>
-                            <a href="{{ route('docentes.cursos.capacidades.show',$capacidade->id) }}" class="btn btn-info">
+                            <a href="{{ route('docentes.cursos.capacidades.show',$capacidade->id) }}" class="btn btn-info mt-2">
                                 <i class="fas fa-sort-numeric-up-alt"></i> Indicadores
                             </a>
                             @include('docentes.cursos.capacidades.modal')

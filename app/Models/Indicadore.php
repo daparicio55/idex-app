@@ -18,4 +18,7 @@ class Indicadore extends Model
     public function capacidade(){
         return $this->belongsTo(Capacidade::class);
     }
+    public function aperturas(){
+        return $this->morphMany(Apertura::class,'aperturable');
+    }
 }

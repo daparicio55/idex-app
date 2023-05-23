@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CalificarStoreRequest;
 use App\Models\Capacidade;
 use App\Models\Ematricula;
 use App\Models\Indicadore;
@@ -106,7 +107,7 @@ class IndicadoreController extends Controller
         //dd($criterio->asignacione->unidad->old->id);
         return view('docentes.cursos.capacidades.indicadores.calificar',compact('estudiantes','equivalencias','indicadore'));
     }
-    public function calificarStore(Request $request,$indicadore_id){
+    public function calificarStore(CalificarStoreRequest $request,$indicadore_id){
         try {
             //code...
             DB::beginTransaction();

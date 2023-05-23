@@ -2,12 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Uasignada;
-use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
-use Maatwebsite\Excel\Concerns\ToArray;
 
-class CapacidadeStoreRequest extends FormRequest
+class CalificarStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,7 +13,11 @@ class CapacidadeStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return !capacidad_cerrado($this->request->get('uasignada_id'));
+         if (calificacion_cerrado($this->route('id')) == true){
+            return false;
+         }else{
+            return true;
+         }
     }
 
     /**
@@ -26,10 +27,8 @@ class CapacidadeStoreRequest extends FormRequest
      */
     public function rules()
     {
-        $uasignada = Uasignada::findOrFail($this->request->get('uasignada_id'));
         return [
             //
-            'fecha'=>'before_or_equal:'.$uasignada->periodo->ffin,
         ];
     }
 }

@@ -18,8 +18,8 @@ class Uasignada extends Model
     public function user(){
         return $this->belongsTo(User::class,'user_id');
     }
-    public function apertura(){
-        return $this->morphOne(Apertura::class,'aperturable');
+    public function aperturas(){
+        return $this->morphMany(Apertura::class,'aperturable');
     }
     public function capacidades(){
         return $this->hasMany(Capacidade::class);

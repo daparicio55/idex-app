@@ -22,6 +22,7 @@ use App\Models\Uasignada;
 use App\Models\Udidactica;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use LDAP\Result;
 
 function oficinaNombre(){
     $oficina=DB::table('users')
@@ -689,20 +690,19 @@ function notacriterio($indicadore_id,$ematricula_detalle_id){
 }
 function capacidad_cerrado($id){
         $uasignada = Uasignada::findOrFail($id);
-        if ($uasignada->periodo->plan_cerrado == true)
-                if(isset($uasignada->apertura->fecha)){
-                $fecha_hora = Carbon::create(date('Y',strtotime($uasignada->apertura->fecha)),date('m',strtotime($uasignada->apertura->fecha)),date('d',strtotime($uasignada->apertura->fecha)),date('h',strtotime($uasignada->apertura->fecha)),date('i',strtotime($uasignada->apertura->fecha)),date('s',strtotime($uasignada->apertura->fecha)));
-                $diferencia = Carbon::now()->greaterThan($fecha_hora);
-                return ($diferencia); 
-                        if($diferencia<25){
-                                return false;
-                        }else{
-                                return true;
+        if ($uasignada->periodo->plan_cerrado == true){
+                //verificar si tienen apertura
+                $resultado = true;
+                foreach($uasignada->aperturas as $apertura){
+                        $fecha_hora = Carbon::create(date('Y',strtotime($apertura->fecha)),date('m',strtotime($apertura->fecha)),date('d',strtotime($apertura->fecha)),date('H',strtotime($apertura->hora)),date('i',strtotime($apertura->hora)),date('s',strtotime($apertura->hora)));
+                        $actual = Carbon::now();
+                        $diferencia = $actual->diffInHours($fecha_hora);
+                        if ($diferencia<25){
+                                $resultado = false;
                         }
-                }else{
-                        return true;
                 }
-        else{
+                return $resultado;
+        }else{
                 return false;
         }
 }
@@ -712,7 +712,23 @@ function calificacion_cerrado($id){
                 $indicador = Indicadore::findOrFail($id);
                 $actual = Carbon::now();
                 $fecha = Carbon::parse($indicador->fecha);
-                return $actual->greaterThan($fecha);
+                if($actual->greaterThan($fecha) == true){
+                        $resultado = $actual->greaterThan($fecha);
+                        //revizar si tenemos apertura
+                        foreach ($indicador->aperturas as $apertura) {
+                                # code...
+                                $fecha_hora = Carbon::create(date('Y',strtotime($apertura->fecha)),date('m',strtotime($apertura->fecha)),date('d',strtotime($apertura->fecha)),date('H',strtotime($apertura->hora)),date('i',strtotime($apertura->hora)),date('s',strtotime($apertura->hora)));
+                                $actual = Carbon::now();
+                                $diferencia = $actual->diffInHours($fecha_hora);
+                                if($diferencia<25){
+                                        $resultado = false;
+                                }
+                        }
+                        //tenemos que retornar un false para que este activado
+                        return $resultado;
+                }else{
+                        return false;
+                }
         } catch (\Throwable $th) {
                 //throw $th;
                 return $th->getMessage();

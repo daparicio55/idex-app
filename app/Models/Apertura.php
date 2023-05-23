@@ -9,8 +9,9 @@ class Apertura extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    
     public function aperturable(){
         return $this->morphTo();
     }
-
+    
 }

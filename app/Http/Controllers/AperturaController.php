@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\VentaExport;
 use App\Models\Apertura;
+use App\Models\Indicadore;
 use App\Models\Pmatricula;
 use App\Models\Uasignada;
 use App\Models\User;
@@ -51,13 +52,22 @@ class AperturaController extends Controller
             //tenemos que buscar las unidades asignadas
             if ($request->tipo == 1){
                 $tipo = "plan";
+                $uasignadas = Uasignada::where('user_id',$request->docente)
+                ->where('pmatricula_id',$request->pmatricula)
+                ->get();
+                return view('ventas.aperturas.create',compact('docentes','periodos','uasignadas','tipo'));
             }else{
+                //dd("hola");
+                $fecha_actual = Carbon::now();
                 $tipo = "indicador";
+                $indicadores = Indicadore::WhereHas('capacidade.uasignada',function($query)use($request){
+                    $query->where('user_id',$request->docente)
+                    ->where('pmatricula_id',$request->pmatricula);
+                })->where('fecha','<',$fecha_actual)
+                ->get();
+                return view('ventas.aperturas.create',compact('docentes','periodos','indicadores','tipo'));
             }
-            $uasignadas = Uasignada::where('user_id',$request->docente)
-            ->where('pmatricula_id',$request->pmatricula)
-            ->get();
-            return view('ventas.aperturas.create',compact('docentes','periodos','uasignadas','tipo'));
+            
             /* "docente" => "36"
             "pmatricula" => "68"
             "tipo" => "2" */
@@ -89,7 +99,7 @@ class AperturaController extends Controller
             $apertura->aperturable_id = $request->uasignada;
             $apertura->aperturable_type = $modelo;
             $apertura->fecha = date('Y-m-d',strtotime($now));
-            $apertura->hora = date('h:i:s',strtotime($now));
+            $apertura->hora = date('H:i:s',strtotime($now));
             $apertura->venta_id = $venta->idVenta;
             $apertura->user_id = auth()->id();
             $apertura->save();
@@ -98,13 +108,8 @@ class AperturaController extends Controller
             //throw $th;
             DB::rollBack();
             return Redirect::route('ventas.aperturas.index')->with('error','se produjo un error cuando se intento guardar la apertura del plan/indicador');
-            dd($th->getMessage());
         }
         return Redirect::route('ventas.aperturas.index')->with('info','se guardo la apertura del plan/indicador');
-        /* "boleta" => "123"
-        "_token" => "EHCO5PfcLLLklxVk9ehQI7g1ZmGV6YEcKVOQqOsp"
-        "tipo" => "plan"
-        "uasignada" => "31" */
     }
     
     /**
