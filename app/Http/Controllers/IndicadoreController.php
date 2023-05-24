@@ -82,7 +82,7 @@ class IndicadoreController extends Controller
         $indicadore = Indicadore::findOrFail($id);
         //tengo que poner la unidad didactica de equivalencia.
                
-        $estudiantes = Ematricula::select('clientes.nombre','clientes.apellido','ematricula_detalles.tipo','ematricula_detalles.observacion','ematricula_detalles.id')
+        $estudiantes = Ematricula::select('clientes.nombre','clientes.dniRuc','clientes.apellido','ematricula_detalles.tipo','ematricula_detalles.observacion','ematricula_detalles.id')
         ->join('ematricula_detalles','ematriculas.id','=','ematricula_detalles.ematricula_id')
         ->join('estudiantes','estudiantes.id','ematriculas.estudiante_id')
         ->join('admisione_postulantes','admisione_postulantes.id','=','estudiantes.admisione_postulante_id')
@@ -92,7 +92,7 @@ class IndicadoreController extends Controller
         ->orderBy('clientes.apellido')
         ->orderBy('clientes.nombre')
         ->get();
-        $equivalencias = Ematricula::select('clientes.nombre','clientes.apellido','ematricula_detalles.tipo','ematricula_detalles.observacion','ematricula_detalles.id')
+        $equivalencias = Ematricula::select('clientes.nombre','clientes.dniRuc','clientes.apellido','ematricula_detalles.tipo','ematricula_detalles.observacion','ematricula_detalles.id')
         ->join('ematricula_detalles','ematriculas.id','=','ematricula_detalles.ematricula_id')
         ->join('estudiantes','estudiantes.id','ematriculas.estudiante_id')
         ->join('admisione_postulantes','admisione_postulantes.id','=','estudiantes.admisione_postulante_id')
