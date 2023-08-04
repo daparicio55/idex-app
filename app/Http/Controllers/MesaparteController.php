@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\Dmove;
 use App\Models\Document;
+use App\Models\Stramite;
 use App\Models\Tdocument;
 use App\Models\Tmove;
 use App\Models\User;
@@ -55,6 +56,7 @@ class MesaparteController extends Controller
     public function create(Request $request)
     {
         //
+        $stramites = Stramite::orderBy('nombre','asc')->pluck('nombre','id')->toArray();
         $clientes = Cliente::orderBy('apellido','desc')
         ->selectRaw('concat_ws(", ",dniRuc,apellido,nombre) as apellidos, idCliente')
         ->pluck('apellidos','idCliente')->toArray();
@@ -62,13 +64,13 @@ class MesaparteController extends Controller
         if(isset($request->searchText)){
             $searchText = $request->searchText;
             $cliente = BuscarDni($searchText);
-            return view('tdocumentario.mesapartes.create',compact('tdocuments','searchText','cliente','clientes'));
+            return view('tdocumentario.mesapartes.create',compact('stramites','tdocuments','searchText','cliente','clientes'));
         }
         if (isset($request->idCliente)){
             $cli = Cliente::findOrFail($request->idCliente);
             $cliente = BuscarDni($cli->dniRuc);
             $searchText = $cli->dniRuc;
-            return view('tdocumentario.mesapartes.create',compact('tdocuments','searchText','cliente','clientes'));
+            return view('tdocumentario.mesapartes.create',compact('stramites','tdocuments','searchText','cliente','clientes'));
         }
         return view('tdocumentario.mesapartes.create',compact('clientes'));
     }
@@ -95,7 +97,7 @@ class MesaparteController extends Controller
                 $cliente->direccion = $request->direccion;
                 $cliente->email = $request->email;
                 $cliente->telefono = $request->telefono;
-                $cliente->telefono2 = $request->telefono2;
+                //$cliente->telefono2 = $request->telefono2;
                 $cliente->save();
             }else{
                 $cliente = Cliente::findOrFail($request->idCliente);
@@ -105,7 +107,7 @@ class MesaparteController extends Controller
                 $cliente->direccion = $request->direccion;
                 $cliente->email = $request->email;
                 $cliente->telefono = $request->telefono;
-                $cliente->telefono2 = $request->telefono2;
+                //$cliente->telefono2 = $request->telefono2;
                 $cliente->update();
             }
             $anio = Carbon::now()->year;
@@ -134,6 +136,8 @@ class MesaparteController extends Controller
             $document->cliente_id = $cliente->idCliente;
             $document->tdocument_id = $request->tdocument_id;
             $document->anio = $anio;
+            $document->telefono = $request->telefono2;
+            $document->stramite_id = $request->tramite;
             $document->user_id = auth()->id();
             $document->save();
             DB::commit();

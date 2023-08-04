@@ -103,8 +103,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
-                        {!! Form::label('stramite', 'Servicios de Trámite Documentario', ['class'=>'mt-2']) !!}
-                        {{-- {!! Form::select('stramite', null, null, ['class'=>'form-control selectpicker']) !!} --}}
+                        {!! Form::label('tramite', 'Servicios de Trámite Documentario', ['class'=>'mt-2']) !!}
+                        {!! Form::select('tramite', $stramites, null, ['class'=>'form-control selectpicker','data-live-search'=>'true','data-size'=>10]) !!}
                     </div>
                 </div>
                 <div class="row">

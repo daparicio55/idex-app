@@ -45,7 +45,6 @@ class VentaController extends Controller
 			$ventas=DB::table('ventas as v')
 			->join('clientes as c','c.idCliente','=','v.idCliente')
 			->select('v.idVenta','v.tipo','v.numero','c.nombre','c.dniRuc','c.direccion','c.apellido','v.estado','v.total','v.tipoPago','v.fecha')
-			->where('estado','=',1)
 			->orderBy('v.fecha','desc')
 			->orderBy('v.numero','desc')
 			->paginate(7);
