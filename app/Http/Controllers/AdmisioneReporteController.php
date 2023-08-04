@@ -40,15 +40,14 @@ class AdmisioneReporteController extends Controller
             })->get();
 
             $programas = DB::table('admisione_postulantes as ap')
-            ->select('c.nombreCarrera as programa',DB::raw("count(*) as cantidad"))
+            ->select('c.idCarrera','c.nombreCarrera as programa',DB::raw("count(*) as cantidad"))
             ->join('ccarreras as c','c.idCarrera','=','ap.idCarrera')
             ->where('ap.admisione_id',$admisione->id)
             ->where('ap.anulado','=','NO')
             ->where('c.observacionCarrera','=','visible')
-            ->groupBy('c.nombreCarrera')
+            ->groupBy('c.idCarrera','c.nombreCarrera')
             ->get();
-           
-
+           //dd($programas);
 
             //extraordinario ahora exonerados
             $postulantesX = AdmisionePostulante::whereHas('carrera',function ($query) use($admisione){
@@ -96,7 +95,13 @@ class AdmisioneReporteController extends Controller
             ->where('c.observacionCarrera','=','visible')
             ->groupBy('c.nombreCarrera')
             ->get();
-            return view('admisiones.reportes.index',compact('postulantesO','anuladosO','programasO','postulantesX','anuladosX','programasX','admisiones','anulados','admisione','postulantes','programas'));
+            
+
+            $totalpostulantes = AdmisionePostulante::where('admisione_id','=',$admisione->id)
+            ->where('anulado','=','NO')
+            ->get();
+
+            return view('admisiones.reportes.index',compact('totalpostulantes','postulantesO','anuladosO','programasO','postulantesX','anuladosX','programasX','admisiones','anulados','admisione','postulantes','programas'));
         }
         return view('admisiones.reportes.index',compact('admisiones'));
     }

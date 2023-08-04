@@ -117,20 +117,112 @@
         <div class="col-sm-12">
             <table class="table">
                 <thead class="bg-info">
-                    <th>Programa de Estudios --Notas-- </th>
-                    <th>Aprobados</th>
-                    <th>Desaprobados</th>
-                    <th>Total</th>
+                    <tr>
+                        <th>Programa de Estudios</th>
+                        <th>Hombres</th>
+                        <th>Mujeres</th>
+                        <th>Total</th>
+                    </tr>
                 </thead>
                 <tbody>
                     @foreach ($carreras as $carrera)
-                    <tr>
-                        <td>{{ $carrera->nombreCarrera }}</td>
-                        <td>{{ total_notas('aprobados',$carrera->idCarrera,$_GET['id']) }}</td>
-                    </tr>
+                        <tr class="bg-success">
+                            <td colspan="4">{{ $carrera->nombreCarrera }}</td>
+                        </tr>
+                        @foreach ($ciclos as $ciclo)
+                        @php
+                            $id = $_GET['id'];
+                            $masculino = App\Models\Ematricula::whereHas('detalles.unidad.modulo',function($query) use($id,$ciclo,$carrera){
+                                $query->where('ematricula_detalles.tipo','=','Regular')
+                                ->where('pmatricula_id','=',$id)
+                                ->where('ciclo','=',$ciclo)
+                                ->where('carrera_id','=',$carrera->idCarrera);
+                            })->whereHas('estudiante.postulante',function($sql){
+                                $sql->where('admisione_postulantes.sexo','=','Masculino');
+                            })->count();
+                            
+                            $femenino = App\Models\Ematricula::whereHas('detalles.unidad.modulo',function($query) use($id,$ciclo,$carrera){
+                                $query->where('ematricula_detalles.tipo','=','Regular')
+                                ->where('pmatricula_id','=',$id)
+                                ->where('ciclo','=',$ciclo)
+                                ->where('carrera_id','=',$carrera->idCarrera);
+                            })->whereHas('estudiante.postulante',function($sql){
+                                $sql->where('admisione_postulantes.sexo','=','Femenino');
+                            })->count();
+                        @endphp
+                        @if ($masculino + $femenino != 0)
+                            <tr>
+                                <td>Ciclo {{ $ciclo }}</td>
+                                <td>
+                                    {{ $masculino }}
+                                </td>
+                                <td>
+                                    {{ $femenino }}
+                                </td>
+                                <td>
+                                    {{ $masculino + $femenino }}
+                                </td>
+                            </tr>     
+                        @endif
+                        @endforeach
                     @endforeach
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header bg-info">
+                    Equivalencias
+                </div>
+                <div class="card-body">
+                    @php
+                        $id = $_GET['id'];
+                        $detalles = App\Models\EmatriculaDetalle::whereHas('matricula',function($query) use($id){
+                            $query->where('pmatricula_id','=',$id);
+                        })->get();
+                    @endphp
+                    <div class="responsive-table">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Programa de Estudios</th>
+                                    <th>DNI</th>
+                                    <th>Alumno</th>
+                                    <th>Unidad Didactica</th>
+                                    <th>Ciclo</th>
+                                    <th>Equivalencia</th>
+                                    <th>Ciclo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($detalles as $detalle)
+                                @if($detalle->tipo == "Regular" || $detalle->tipo == "Repitencia")
+                                    @isset($detalle->unidad->equivalencia->nombre)
+                                    <tr>
+                                        <td>{{ $detalle->matricula->estudiante->postulante->carrera->nombreCarrera }}</td>
+                                        <td>{{ $detalle->matricula->estudiante->postulante->cliente->dniRuc }}</td>
+                                        <td>{{ $detalle->matricula->estudiante->postulante->cliente->apellido }}, {{ $detalle->matricula->estudiante->postulante->cliente->nombre }}</td>
+                                        <td>{{ $detalle->unidad->nombre }}</td>
+                                        <td>{{ $detalle->unidad->ciclo }}</td>
+                                        <td>{{ $detalle->unidad->equivalencia->nombre }}</td>
+                                        <td>{{ $detalle->unidad->equivalencia->ciclo }}</td>
+                                    </tr>
+                                    @endisset
+                                @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+                <div class="card-footer">
+                    Sistema SIGE.
+                </div>
+            </div>
         </div>
     </div>
 </div>

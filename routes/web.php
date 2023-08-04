@@ -72,6 +72,7 @@ use App\Http\Controllers\SaludappController;
 use App\Http\Controllers\SaludController;
 use App\Http\Controllers\SaludEncuestaController;
 use App\Http\Controllers\SaludPreguntaController;
+use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TdocumentarioController;
 use App\Http\Controllers\UasignadaController;
@@ -314,3 +315,4 @@ Route::get('/sacademica/correos',function(){
 Route::get('/info_php',function(){
     echo phpinfo();
 });
+Route::get('statistics/website',[StatisticController::class,'website'])->name('statistics.website');

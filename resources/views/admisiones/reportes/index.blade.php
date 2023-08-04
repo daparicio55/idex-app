@@ -89,15 +89,17 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th colspan="3" class="h4" style="text-align: center; background:lightgray"><b>TOTAL DE POSTULANTES</b></th>
+                    <th colspan="5" class="h4" style="text-align: center; background:lightgray"><b>TOTAL DE POSTULANTES</b></th>
                 </tr>
                 <tr>
                     <th class="text-right text-primary"><strong>Total expedientes activos:</strong> {{count($postulantes)}}</th>
-                    <th class="text-right text-danger" colspan="2"><strong>Total expedientes anulados:</strong> {{count($anulados)}}</th>
+                    <th class="text-right text-danger" colspan="4"><strong>Total expedientes anulados:</strong> {{count($anulados)}}</th>
                 </tr>
               <tr>
                 <th scope="col">Programa de Estudios</th>
-                <th scope="col"  class="text-center">Alumnos</th>
+                <th scope="col">Hombres</th>
+                <th scope="col">Mujeres</th>
+                <th scope="col"  class="text-center">TOTAL</th>
                 <th scope="col"  class="text-center">%</th>
               </tr>
             </thead>
@@ -105,6 +107,8 @@
                 @foreach ($programas as $programa)
                     <tr>
                         <td>{{$programa->programa}}</td>
+                        <td>{{ $totalpostulantes->where('idCarrera','=',$programa->idCarrera)->where('sexo','=','Masculino')->count() }}</td>
+                        <td>{{ $totalpostulantes->where('idCarrera','=',$programa->idCarrera)->where('sexo','=','Femenino')->count() }}</td>
                         <td class="text-center">{{$programa->cantidad}}</td>
                         <td class="text-center">{{round(($programa->cantidad / count($postulantes)*100),0)}}%</td>
                     </tr>

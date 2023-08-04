@@ -17,8 +17,8 @@
                         <th>Unidad Didáctiva</th>
                         <th>Cre.</th>
                     </thead>
-                    <tbody>
-                        @foreach($unidades as $uni)
+                    <tbody id="modal-unidades-body">
+                        {{-- @foreach($unidades as $uni)
                         <tr id="fila{{$uni->id}}">
                             <td>{{$uni->id}}</td>
                             <td style="text-align: center">{{$uni->ciclo}}</td>
@@ -28,7 +28,7 @@
                             <td>{{$uni->creditos}}</td>
                             <td><button class="btn btn-primary" type="button" onclick="modalAgregar({{$uni->id}})">+</button></td>
                         </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                     <tfoot>
                           

@@ -38,9 +38,11 @@
                             <a href="{{ route('docentes.cursos.imprimir',$asignacione->id) }}" class="btn btn-warning mb-1">
                                 <i class="fas fa-print"></i> Acta Regular
                             </a>
-                            <a href="{{ route('docentes.cursos.equivalencia',$asignacione->id) }}" class="btn btn-success mb-1">
-                                <i class="fas fa-print"></i> Equivalencias
-                            </a>
+                            @isset($asignacione->unidad->old->id)
+                                <a href="{{ route('docentes.cursos.equivalencia',$asignacione->id) }}" class="btn btn-success mb-1">
+                                    <i class="fas fa-print"></i> Equivalencias
+                                </a>    
+                            @endisset
                         </td>
                     </tr>
                 @endforeach

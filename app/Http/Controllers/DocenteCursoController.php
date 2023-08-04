@@ -119,34 +119,25 @@ class DocenteCursoController extends Controller
         ->orderBy('clientes.apellido')
         ->orderBy('clientes.nombre')
         ->get();
-
-
-        $equivalencias = Ematricula::select('ematriculas.licencia','ematriculas.licenciaObservacion','clientes.nombre','clientes.apellido','clientes.dniRuc','admisiones.periodo','ematricula_detalles.tipo','ematricula_detalles.observacion','ematricula_detalles.id')
-        ->join('ematricula_detalles','ematriculas.id','=','ematricula_detalles.ematricula_id')
-        ->join('estudiantes','estudiantes.id','ematriculas.estudiante_id')
-        ->join('admisione_postulantes','admisione_postulantes.id','=','estudiantes.admisione_postulante_id')
-        ->join('admisiones','admisione_postulantes.admisione_id','=','admisiones.id')
-        ->join('clientes','admisione_postulantes.idCliente','=','clientes.idCliente')
-        ->where('ematricula_detalles.udidactica_id','=',$uasignada->unidad->old->id)
-        ->where('ematriculas.pmatricula_id','=',$uasignada->pmatricula_id)
-        ->orderBy('clientes.apellido')
-        ->orderBy('clientes.nombre')
-        ->get();
         return view('docentes.cursos.imprimir',compact('uasignada','estudiantes'));
     }
     public function equivalencia($id){
         $uasignada = Uasignada::findOrFail($id);
-        $estudiantes = Ematricula::select('ematriculas.licencia','ematriculas.licenciaObservacion','clientes.nombre','clientes.apellido','clientes.dniRuc','admisiones.periodo','ematricula_detalles.tipo','ematricula_detalles.observacion','ematricula_detalles.id')
-        ->join('ematricula_detalles','ematriculas.id','=','ematricula_detalles.ematricula_id')
-        ->join('estudiantes','estudiantes.id','ematriculas.estudiante_id')
-        ->join('admisione_postulantes','admisione_postulantes.id','=','estudiantes.admisione_postulante_id')
-        ->join('admisiones','admisione_postulantes.admisione_id','=','admisiones.id')
-        ->join('clientes','admisione_postulantes.idCliente','=','clientes.idCliente')
-        ->where('ematricula_detalles.udidactica_id','=',$uasignada->unidad->old->id)
-        ->where('ematriculas.pmatricula_id','=',$uasignada->pmatricula_id)
-        ->orderBy('clientes.apellido')
-        ->orderBy('clientes.nombre')
-        ->get();
+        if(isset($uasignada->unidad->old->id)){
+            $estudiantes = Ematricula::select('ematriculas.licencia','ematriculas.licenciaObservacion','clientes.nombre','clientes.apellido','clientes.dniRuc','admisiones.periodo','ematricula_detalles.tipo','ematricula_detalles.observacion','ematricula_detalles.id')
+            ->join('ematricula_detalles','ematriculas.id','=','ematricula_detalles.ematricula_id')
+            ->join('estudiantes','estudiantes.id','ematriculas.estudiante_id')
+            ->join('admisione_postulantes','admisione_postulantes.id','=','estudiantes.admisione_postulante_id')
+            ->join('admisiones','admisione_postulantes.admisione_id','=','admisiones.id')
+            ->join('clientes','admisione_postulantes.idCliente','=','clientes.idCliente')
+            ->where('ematricula_detalles.udidactica_id','=',$uasignada->unidad->old->id)
+            ->where('ematriculas.pmatricula_id','=',$uasignada->pmatricula_id)
+            ->orderBy('clientes.apellido')
+            ->orderBy('clientes.nombre')
+            ->get();
+        }else{
+            $estudiantes = null;
+        }
         return view('docentes.cursos.equivalencia',compact('uasignada','estudiantes'));
     }
 }

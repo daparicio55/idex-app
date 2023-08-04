@@ -81,6 +81,7 @@ class CampaniaController extends Controller
     public function csv(Request $request, $id){
         try {
             //code...
+            
             DB::beginTransaction();
             $numero=0;
             $error = 0;
@@ -97,12 +98,21 @@ class CampaniaController extends Controller
                         })->first();
                         if(isset($estudiante->id)){
                             //insertamos perfil médico
-                            $pmedico = new Pmedico();
-                            $pmedico->lab_gs = $datos[12];
-                            $pmedico->lab_fs = $datos[13];
-                            $pmedico->nutri_talla = $datos[14];
-                            $pmedico->estudiante_id = $estudiante->id;
-                            $pmedico->save();
+                            //verificamos si tenemos ya el perfil en la base de datos.
+                            //dd($estudiante->pmedico);
+                            if(isset($estudiante->pmedico->id)){
+                                $pmedico = Pmedico::findOrFail($estudiante->pmedico->id);
+                                $pmedico->lab_gs = $datos[12];
+                                $pmedico->lab_fs = $datos[13];
+                                $pmedico->update();
+                            }else{
+                                $pmedico = new Pmedico();
+                                $pmedico->lab_gs = $datos[12];
+                                $pmedico->lab_fs = $datos[13];
+                                $pmedico->nutri_talla = $datos[14];
+                                $pmedico->estudiante_id = $estudiante->id;
+                                $pmedico->save();
+                            }
                             //insertamos la atencion
                             //vamos a sacar la numeracion
                             $ultima_atencion = Acampania::orderBy('numero','desc')->first();
@@ -112,26 +122,57 @@ class CampaniaController extends Controller
                                 $numero=1;
                             }
                             //registro la atencion de la campaña
-                            $acampania = new Acampania();
-                            $acampania->numero=$numero;
-                            $acampania->estudiante_id=$estudiante->id;
-                            $acampania->campania_id=$campania->id;
-                            $acampania->fecha=Carbon::now();
-                            $acampania->user_id=auth()->id();
-                            $acampania->vitales_fc=$datos[15];
-                            $acampania->vitales_fr=$datos[16];
-                            $acampania->vitales_sys=$datos[5];
-                            $acampania->vitales_dia=$datos[6];
-                            $acampania->vitales_temperatura=$datos[1];
-                            $acampania->vitales_saturacion=$datos[2];
-                            $acampania->nutri_peso=$datos[3];
-                            $acampania->nutri_perimetro=$datos[4];
-                            $acampania->lab_glicemia=$datos[7];
-                            $acampania->lab_trigliceridos=$datos[9];
-                            $acampania->lab_colesterol=$datos[8];
-                            $acampania->lab_hto=$datos[10];
-                            $acampania->lab_hemoglobina=$datos[11];
-                            $acampania->save();
+                            //verificamos si ya hay una atencion para este dni o de lo contrario la creamos
+                            //3-1079
+                            //76478425-75616654
+                            //dd($estudiante->acampanias->where('campania_id',$campania->id)->first());
+
+                            if(isset($estudiante->acampanias->where('campania_id',$campania->id)->first()->id)){
+                                $acampania = Acampania::findOrFail($estudiante->acampanias->where('campania_id',$campania->id)->first()->id);
+                                $acampania->numero=$numero;
+                                $acampania->estudiante_id=$estudiante->id;
+                                $acampania->fecha=Carbon::now();
+                                $acampania->user_id=auth()->id();
+                                //$acampania->vitales_fc=$datos[15];
+                                //$acampania->vitales_fr=$datos[16];
+                                $acampania->vitales_sys=$datos[5];
+                                $acampania->vitales_dia=$datos[6];
+                                //$acampania->vitales_temperatura=$datos[1];
+                                //$acampania->vitales_saturacion=$datos[2];
+                                $acampania->nutri_peso=$datos[3];
+                                $acampania->nutri_perimetro=$datos[4];
+                                $acampania->lab_glicemia=$datos[7];
+                                $acampania->lab_trigliceridos=$datos[9];
+                                $acampania->lab_colesterol=$datos[8];
+                                //$acampania->lab_hto=$datos[10];
+                                $acampania->lab_hemoglobina=$datos[11];
+                                $acampania->lab_hdl=$datos[17];
+                                $acampania->lab_ldl=$datos[18];
+                                $acampania->update();
+                            }else{
+                                $acampania = new Acampania();
+                                $acampania->numero=$numero;
+                                $acampania->estudiante_id=$estudiante->id;
+                                $acampania->campania_id=$campania->id;
+                                $acampania->fecha=Carbon::now();
+                                $acampania->user_id=auth()->id();
+                                //$acampania->vitales_fc=$datos[15];
+                                //$acampania->vitales_fr=$datos[16];
+                                $acampania->vitales_sys=$datos[5];
+                                $acampania->vitales_dia=$datos[6];
+                                //$acampania->vitales_temperatura=$datos[1];
+                                //$acampania->vitales_saturacion=$datos[2];
+                                $acampania->nutri_peso=$datos[3];
+                                $acampania->nutri_perimetro=$datos[4];
+                                $acampania->lab_glicemia=$datos[7];
+                                $acampania->lab_trigliceridos=$datos[9];
+                                $acampania->lab_colesterol=$datos[8];
+                                //$acampania->lab_hto=$datos[10];
+                                $acampania->lab_hemoglobina=$datos[11];
+                                $acampania->lab_hdl=$datos[17];
+                                $acampania->lab_ldl=$datos[18];
+                                $acampania->save();
+                            }
                         }else{
                             $error++;
                         }

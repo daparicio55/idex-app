@@ -92,16 +92,21 @@ class IndicadoreController extends Controller
         ->orderBy('clientes.apellido')
         ->orderBy('clientes.nombre')
         ->get();
-        $equivalencias = Ematricula::select('clientes.nombre','clientes.dniRuc','clientes.apellido','ematricula_detalles.tipo','ematricula_detalles.observacion','ematricula_detalles.id')
-        ->join('ematricula_detalles','ematriculas.id','=','ematricula_detalles.ematricula_id')
-        ->join('estudiantes','estudiantes.id','ematriculas.estudiante_id')
-        ->join('admisione_postulantes','admisione_postulantes.id','=','estudiantes.admisione_postulante_id')
-        ->join('clientes','admisione_postulantes.idCliente','=','clientes.idCliente')
-        ->where('ematricula_detalles.udidactica_id','=',$indicadore->capacidade->uasignada->unidad->old->id)
-        ->where('ematriculas.pmatricula_id','=',$indicadore->capacidade->uasignada->pmatricula_id)
-        ->orderBy('clientes.apellido')
-        ->orderBy('clientes.nombre')
-        ->get();
+        
+        if(isset($indicadore->capacidade->uasignada->unidad->old->id)){
+            $equivalencias = Ematricula::select('clientes.nombre','clientes.dniRuc','clientes.apellido','ematricula_detalles.tipo','ematricula_detalles.observacion','ematricula_detalles.id')
+            ->join('ematricula_detalles','ematriculas.id','=','ematricula_detalles.ematricula_id')
+            ->join('estudiantes','estudiantes.id','ematriculas.estudiante_id')
+            ->join('admisione_postulantes','admisione_postulantes.id','=','estudiantes.admisione_postulante_id')
+            ->join('clientes','admisione_postulantes.idCliente','=','clientes.idCliente')
+            ->where('ematricula_detalles.udidactica_id','=',$indicadore->capacidade->uasignada->unidad->old->id)
+            ->where('ematriculas.pmatricula_id','=',$indicadore->capacidade->uasignada->pmatricula_id)
+            ->orderBy('clientes.apellido')
+            ->orderBy('clientes.nombre')
+            ->get();
+        }else{
+            $equivalencias = null;
+        }
         //dd($equivalencias);
         //dd($estudiantes->toSql());
         //dd($criterio->asignacione->unidad->old->id);

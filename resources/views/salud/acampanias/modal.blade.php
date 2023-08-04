@@ -147,11 +147,11 @@
                         </div>
                         <div class="col-sm-12 col-md-2">
                             {!! Form::label('lab_hdl', 'HDL', [null]) !!}
-                            {!! Form::number('lab_hdl', null, ['class'=>'form-control','step'=>'0.01','readonly']) !!}                
+                            {!! Form::number('lab_hdl', $atencione->lab_hdl, ['class'=>'form-control','step'=>'0.01','readonly']) !!}                
                         </div>
                         <div class="col-sm-12 col-md-2">
                             {!! Form::label('lab_ldl', 'LDL', [null]) !!}
-                            {!! Form::number('lab_ldl', null, ['class'=>'form-control','step'=>'0.01','readonly']) !!}                
+                            {!! Form::number('lab_ldl', $atencione->lab_ldl, ['class'=>'form-control','step'=>'0.01','readonly']) !!}                
                         </div>
                         <div class="col-sm-12 col-md-2">
                             {!! Form::label('lab_hto', 'Hematocrito', [null]) !!}

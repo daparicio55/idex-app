@@ -48,26 +48,30 @@
                         </td>
                     </tr>
                 @endforeach
-                @foreach ($equivalencias as $equivalencia)
-                    <tr>
-                        <td>
-                            <input type="hidden" name="ematricula_detalle_id[]" value="{{ $equivalencia->id }}">
-                            {{ $key+1 }}
-                        </td>
-                        <td>                            
-                            <span class="text-uppercase">{{ $equivalencia->apellido }}, </span><span class="text-capitalize">{{ strtolower($equivalencia->nombre) }}</span>
-                        </td>
-                        <td>
-                            <input type="hidden" name="tipo[]" value="Equivalencia">
-                            Equivalencia
-                        </td>
-                        <td>{{ $equivalencia->observacion }}</td>
-                        <td>
-                            
-                            <input type="number" @if($equivalencia->tipo == "Convalidacion") readonly @endif value="{{ notacriterio($indicadore->id,$equivalencia->id) }}" max=20 min=0 step=1 name="notas[]" class="form-control">
-                        </td>
-                    </tr>
-                @endforeach
+                @isset($equivalencias)
+                    @foreach ($equivalencias as $equivalencia)
+                        <tr>
+                            <td>
+                                <input type="hidden" name="ematricula_detalle_id[]" value="{{ $equivalencia->id }}">
+                                {{ $key+1 }}
+                            </td>
+                            <td>                            
+                                <span class="text-uppercase">{{ $equivalencia->apellido }}, </span><span class="text-capitalize">{{ strtolower($equivalencia->nombre) }}</span>
+                            </td>
+                            <td>
+                                <input type="hidden" name="tipo[]" value="Equivalencia">
+                                Equivalencia
+                            </td>
+                            <td>{{ $equivalencia->observacion }}</td>
+                            <td>
+                                
+                                <input type="number" @if($equivalencia->tipo == "Convalidacion") readonly @endif value="{{ notacriterio($indicadore->id,$equivalencia->id) }}" max=20 min=0 step=1 name="notas[]" class="form-control">
+                            </td>
+                        </tr>
+                    @endforeach
+                @endisset
+
+                
             </tbody>
         </table>
     </div>

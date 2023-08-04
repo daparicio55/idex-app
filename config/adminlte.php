@@ -578,6 +578,17 @@ return [
                 ]
             ],
         ],
+        [
+            'text'=>'Estadisticas',
+            'icon'=>'far fa-chart-bar',
+            'submenu'=>[
+                [
+                    'text'=>'Inicio',
+                    'icon'=>'far fa-circle',
+                    'route'=>'statistics.website',
+                ]
+            ]
+        ],
         /* ['header' => 'OTROS'],
         [
             'text'       => 'Repositorio',
@@ -651,22 +662,22 @@ return [
             ],
         ],
         'bootstrapSlider'=>[
-            'active'=>true,
+            'active'=>false,
             'files'=>[
                 [
                     'type'=>'css',
                     'asset'=>true,
-                    'location'=>'/vendor/bootstrap-slider/css/bootstrap-slider.css'
+                    'location'=>'/vendor/bootstrap-slider/css/bootstrap-slider.min.css'
                 ],
                 [
                     'type'=>'js',
                     'asset'=>true,
-                    'location'=>'/vendor/bootstrap-slider/bootstrap-slider.js'
+                    'location'=>'/vendor/bootstrap-slider/bootstrap-slider.min.js'
                 ]
             ],
         ],
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -693,11 +704,6 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js',
                 ],
                 [
                     'type' => 'css',

@@ -56,57 +56,59 @@
 @endsection
 <!-- Resumen de Notas con los Indicadores -->
 @section('notas_cuerpo')
-    @foreach ($estudiantes as $key=>$estudiante)
-    @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
+    @isset($uasignada->unidad->old->id)
+        @foreach ($estudiantes as $key=>$estudiante)
+        @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
 
-        @php
-            $colu = 0;
-        @endphp
-        @foreach ($uasignada->capacidades as $capacidade)
-            @foreach ($capacidade->indicadores as $indicadore)
-                @php
-                    $colu ++;
-                @endphp
-            @endforeach
-        @endforeach
-        <tr>
-            <td class="p-0 text-center border">{{ $key+1 }}</td>
-            @if($estudiante->licencia == "SI")
-                <td class="p-0 text-center border" colspan="{{ $colu + 2 }}">Licencia - {{ $estudiante->licenciaObservacion }}</td>
-            @else
-                <td class="p-0 text-center border" colspan="{{ $colu + 2 }}">{{ $estudiante->tipo }} - {{ $estudiante->observacion }}</td>
-            @endif
-        </tr>
-    @else
-        <tr>
-            <td class="p-0 text-center border">{{ $key+1 }}</td>
-            @foreach ($uasignada->capacidades as $capacidade)
             @php
-                $nota = 0;
-                $suma = 0;
-                $contador = 0;
+                $colu = 0;
             @endphp
+            @foreach ($uasignada->capacidades as $capacidade)
                 @foreach ($capacidade->indicadores as $indicadore)
-                    <td class="p-0 text-center @if(number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','')>12) text-primary @else text-danger @endif">{{ number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','') }}</td>    
                     @php
-                        /* if(indicador_calificacion($indicadore->id, $estudiante->id) <> "NC"){ */
-                            $suma = $suma + number_format(indicador_calificacion($indicadore->id, $estudiante->id),2,'.','');
-                            $contador ++;
-                        /* } */
+                        $colu ++;
                     @endphp
                 @endforeach
-                @php
-                    if(indicador_calificacion($indicadore->id, $estudiante->id) <> "NC"){
-                        $nota = $suma / $contador;
-                        $nota = round(number_format($nota,2,'.',''),0);
-                    }
-                @endphp
-                
-            <td class="p-0 text-center bg-light border @if($nota>12) text-primary @else text-danger @endif" >{{ $nota }}</td>
             @endforeach
-        </tr>
-    @endif
-    @endforeach
+            <tr>
+                <td class="p-0 text-center border">{{ $key+1 }}</td>
+                @if($estudiante->licencia == "SI")
+                    <td class="p-0 text-center border" colspan="{{ $colu + 2 }}">Licencia - {{ $estudiante->licenciaObservacion }}</td>
+                @else
+                    <td class="p-0 text-center border" colspan="{{ $colu + 2 }}">{{ $estudiante->tipo }} - {{ $estudiante->observacion }}</td>
+                @endif
+            </tr>
+        @else
+            <tr>
+                <td class="p-0 text-center border">{{ $key+1 }}</td>
+                @foreach ($uasignada->capacidades as $capacidade)
+                @php
+                    $nota = 0;
+                    $suma = 0;
+                    $contador = 0;
+                @endphp
+                    @foreach ($capacidade->indicadores as $indicadore)
+                        <td class="p-0 text-center @if(number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','')>12) text-primary @else text-danger @endif">{{ number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','') }}</td>    
+                        @php
+                            /* if(indicador_calificacion($indicadore->id, $estudiante->id) <> "NC"){ */
+                                $suma = $suma + number_format(indicador_calificacion($indicadore->id, $estudiante->id),2,'.','');
+                                $contador ++;
+                            /* } */
+                        @endphp
+                    @endforeach
+                    @php
+                        if(indicador_calificacion($indicadore->id, $estudiante->id) <> "NC"){
+                            $nota = $suma / $contador;
+                            $nota = round(number_format($nota,2,'.',''),0);
+                        }
+                    @endphp
+                    
+                <td class="p-0 text-center bg-light border @if($nota>12) text-primary @else text-danger @endif" >{{ $nota }}</td>
+                @endforeach
+            </tr>
+        @endif
+        @endforeach
+    @endisset
 @endsection
 <!-- Resumen de Notas -->
 @section('resumen_header_capacidades')
@@ -115,55 +117,58 @@
     @endforeach
 @endsection
 @section('resumen_cuerpo_notas')
-    @foreach ($estudiantes as $key=>$estudiante)
-    <tr>
-        <td class="p-0 text-center border">{{ $key + 1  }}</td>
-        <td class="p-0 border"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
-        @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
+    @isset($uasignada->unidad->old->id)
+        @foreach ($estudiantes as $key=>$estudiante)
+        <tr>
+            <td class="p-0 text-center border">{{ $key + 1  }}</td>
+            <td class="p-0 border border-1">{{ $estudiante->dniRuc }}</td>
+            <td class="p-0 border"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
+            @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
 
-            @if($estudiante->licencia == "SI")
-                <td class="p-0 border text-center" colspan="{{ count($uasignada->capacidades) + 1 }}">
-                    Licencia - {{ $estudiante->licenciaObservacion }}
-                </td>
+                @if($estudiante->licencia == "SI")
+                    <td class="p-0 border text-center" colspan="{{ count($uasignada->capacidades) + 1 }}">
+                        Licencia - {{ $estudiante->licenciaObservacion }}
+                    </td>
+                @else
+                    <td class="p-0 border text-center" colspan="{{ count($uasignada->capacidades) + 1 }}">
+                        {{ $estudiante->tipo }} - {{ $estudiante->observacion }}
+                    </td>
+                @endif
             @else
-                <td class="p-0 border text-center" colspan="{{ count($uasignada->capacidades) + 1 }}">
-                    {{ $estudiante->tipo }} - {{ $estudiante->observacion }}
-                </td>
-            @endif
-        @else
-            @php
-                $cont=0;
-                $sum=0;
-                $pro=0;
-            @endphp
-            @foreach ($uasignada->capacidades as $capacidade)
                 @php
-                    $nota = 0;
-                    $suma = 0;
-                    $contador = 0;
+                    $cont=0;
+                    $sum=0;
+                    $pro=0;
                 @endphp
-                @foreach ($capacidade->indicadores as $indicadore)
+                @foreach ($uasignada->capacidades as $capacidade)
                     @php
-                        $suma = $suma + number_format(indicador_calificacion($indicadore->id, $estudiante->id),2,'.','');
-                        $contador ++;
+                        $nota = 0;
+                        $suma = 0;
+                        $contador = 0;
                     @endphp
+                    @foreach ($capacidade->indicadores as $indicadore)
+                        @php
+                            $suma = $suma + number_format(indicador_calificacion($indicadore->id, $estudiante->id),2,'.','');
+                            $contador ++;
+                        @endphp
+                    @endforeach
+                    @php
+                        $nota = $suma / $contador;
+                        $nota = round(number_format($nota,2,'.',''),0);
+                        $sum = $sum + $nota;
+                        $cont++;
+                    @endphp
+                    <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ $nota }}</td>
                 @endforeach
                 @php
-                    $nota = $suma / $contador;
-                    $nota = round(number_format($nota,2,'.',''),0);
-                    $sum = $sum + $nota;
-                    $cont++;
+                    $pro = $sum/$cont;
+                    $pro = round(number_format($pro,2,'.',''),0);
                 @endphp
-                <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ $nota }}</td>
-            @endforeach
-            @php
-                $pro = $sum/$cont;
-                $pro = round(number_format($pro,2,'.',''),0);
-            @endphp
-            <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ $pro }}</td>
-        @endif
-    </tr>
-    @endforeach
+                <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ $pro }}</td>
+            @endif
+        </tr>
+        @endforeach
+    @endisset
 @endsection
 <!-- ACTA FINAL -->
 @section('acta_carrera')
@@ -188,56 +193,59 @@
     {{ $uasignada->unidad->old->ciclo }}
 @endsection
 @section('acta_notas')
-    @foreach ($estudiantes as $key=>$estudiante)
-    <tr>
-        <td class="p-0 border text-center">{{ $key+1 }}</td>
-        <td class="p-0 border"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
-        <td class="p-0 border text-center">{{ $estudiante->periodo }}</td>
-            @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
+    @isset($uasignada->unidad->old->id)
+        @foreach ($estudiantes as $key=>$estudiante)
+        <tr>
+            <td class="p-0 border text-center">{{ $key+1 }}</td>
+            <td class="p-0 border border-1">{{ $estudiante->dniRuc }}</td>
+            <td class="p-0 border"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
+            <td class="p-0 border text-center">{{ $estudiante->periodo }}</td>
+                @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
 
-                @if($estudiante->licencia == "SI")
-                    <td class="p-0 border text-center" colspan="3">
-                        Licencia - {{ $estudiante->licenciaObservacion }}
-                    </td>
+                    @if($estudiante->licencia == "SI")
+                        <td class="p-0 border text-center" colspan="3">
+                            Licencia - {{ $estudiante->licenciaObservacion }}
+                        </td>
+                    @else
+                        <td class="p-0 border text-center" colspan="3">
+                            {{ $estudiante->tipo }} - {{ $estudiante->observacion }}
+                        </td>
+                    @endif
                 @else
-                    <td class="p-0 border text-center" colspan="3">
-                        {{ $estudiante->tipo }} - {{ $estudiante->observacion }}
-                    </td>
-                @endif
-            @else
-                @php
-                $cont=0;
-                $sum=0;
-                $pro=0;
-                @endphp
-                @foreach ($uasignada->capacidades as $capacidade)
                     @php
-                        $nota = 0;
-                        $suma = 0;
-                        $contador = 0;
+                    $cont=0;
+                    $sum=0;
+                    $pro=0;
                     @endphp
-                    @foreach ($capacidade->indicadores as $indicadore)
+                    @foreach ($uasignada->capacidades as $capacidade)
                         @php
-                            $suma = $suma + number_format(indicador_calificacion($indicadore->id, $estudiante->id),2,'.','');
-                            $contador ++;
+                            $nota = 0;
+                            $suma = 0;
+                            $contador = 0;
                         @endphp
+                        @foreach ($capacidade->indicadores as $indicadore)
+                            @php
+                                $suma = $suma + number_format(indicador_calificacion($indicadore->id, $estudiante->id),2,'.','');
+                                $contador ++;
+                            @endphp
+                        @endforeach
+                        @php
+                            $nota = $suma / $contador;
+                            $nota = round(number_format($nota,2,'.',''),0);
+                            $sum = $sum + $nota;
+                            $cont++;
+                        @endphp
+                        
                     @endforeach
                     @php
-                        $nota = $suma / $contador;
-                        $nota = round(number_format($nota,2,'.',''),0);
-                        $sum = $sum + $nota;
-                        $cont++;
+                        $pro = $sum/$cont;
+                        $pro = round(number_format($pro,2,'.',''),0);
                     @endphp
-                    
-                @endforeach
-                @php
-                    $pro = $sum/$cont;
-                    $pro = round(number_format($pro,2,'.',''),0);
-                @endphp
-                <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ $pro }}</td>
-                <td class="p-0 text-center">{{ letras($pro) }}</td>
-                <td class="p-0 text-center">{{ $pro * $uasignada->unidad->old->creditos }}</td>
-            @endif
-    </tr>
-    @endforeach
+                    <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ $pro }}</td>
+                    <td class="p-0 text-center">{{ letras($pro) }}</td>
+                    <td class="p-0 text-center">{{ $pro * $uasignada->unidad->old->creditos }}</td>
+                @endif
+        </tr>
+        @endforeach
+    @endisset
 @endsection

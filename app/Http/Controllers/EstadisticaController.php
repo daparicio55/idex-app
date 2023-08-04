@@ -27,10 +27,18 @@ class EstadisticaController extends Controller
     public function index(Request $request)
     {
         //
+        $ciclos = ["I","II","III","IV","V","VI"];
+        
+        $ciclos = (object)$ciclos;
+        ///dd($ciclos);
         $periodos = Pmatricula::orderBy('nombre','desc')->pluck('nombre','id')->toArray();
-        if(isset($request->id)){   
+        if(isset($request->id)){
+            
             $carreras = Carrera::orderBy('nombreCarrera','asc')->get();
-            return view('sacademica.estadisticas.index',compact('periodos','carreras'));
+            //$matriculas = Ematricula::where('pmatricula_id','=',$request->id)->get();
+            
+            //dd($matriculas);
+            return view('sacademica.estadisticas.index',compact('periodos','carreras','ciclos'));
         }
         return view('sacademica.estadisticas.index',compact('periodos'));
     }

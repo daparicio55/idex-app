@@ -113,6 +113,7 @@
     @foreach ($estudiantes as $key=>$estudiante)
     <tr>
         <td class="p-0 text-center border">{{ $key + 1  }}</td>
+        <td class="p-0 border border-1">{{ $estudiante->dniRuc }}</td>
         <td class="p-0 border"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
         @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
 
@@ -186,6 +187,7 @@
     @foreach ($estudiantes as $key=>$estudiante)
     <tr>
         <td class="p-0 border text-center">{{ $key+1 }}</td>
+        <td class="p-0 border border-1">{{ $estudiante->dniRuc }}</td>
         <td class="p-0 border"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
         <td class="p-0 border text-center">{{ $estudiante->periodo }}</td>
             @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
@@ -231,7 +233,7 @@
                 @endphp
                 <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ $pro }}</td>
                 <td class="p-0 text-center">{{ letras($pro) }}</td>
-                <td class="p-0 text-center">{{ $pro * $uasignada->unidad->creditos }}</td>
+                <td class="p-0 border text-center">{{ $pro * $uasignada->unidad->creditos }}</td>
             @endif
     </tr>
     @endforeach

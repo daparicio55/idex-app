@@ -63,7 +63,7 @@ return [
             //'username' => env('MAIL_USERNAME'),
             'username' => 'noreply@idexperujapon.edu.pe',
             //'password' => env('MAIL_PASSWORD'),
-            'password' => 'fjwzllyxuqspvwbd',
+            'password' => '@&q2ZeX*4EW*7jY@',
             'timeout' => null,
             'auth_mode' => null,
         ],
@@ -118,7 +118,7 @@ return [
         //'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'address' => 'noreply@idexperujapon.edu.pe',
         //'name' => env('MAIL_FROM_NAME', 'Example'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'name' => env('MAIL_FROM_NAME', 'SisGE IEST Perú Japón'),
     ],
 
     /*

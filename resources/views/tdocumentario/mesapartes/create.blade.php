@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 @section('title', 'Servicios Crear')
 @section('content_header')
-    <h1><i class="fas fa-address-book"></i> Registrar Documento en el Sistema</h1>
+    <h1><i class="fas fa-address-book"></i> Registrar Nuevo Trámite</h1>
 @stop
 
 @section('content')
@@ -46,7 +46,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card sm-12">
                 <div class="card-header">
-                    <h4><i class="fa fa-user" aria-hidden="true"></i> Datos Personales.</h4>
+                    <h4><i class="fa fa-user" aria-hidden="true"></i> Datos de Contacto.</h4>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -64,13 +64,13 @@
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                             <div class='form-group'>
-                                <label for="telefono">Tel. Llamadas</label>
+                                <label for="telefono">Tel. General</label>
                                 {!! Form::text('telefono', $cliente->telefono, ['class'=>'form-control','required']) !!}
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                             <div class='form-group'>
-                                <label for="telefono2">Tel. WhatsApp</label>
+                                <label for="telefono2">Tel. Notificaciones</label>
                                 {!! Form::text('telefono2', $cliente->telefono2, ['class'=>'form-control','required']) !!}
                             </div>
                         </div>
@@ -102,6 +102,12 @@
             </div>
             <div class="card-body">
                 <div class="row">
+                    <div class="col-md-12">
+                        {!! Form::label('stramite', 'Servicios de Trámite Documentario', ['class'=>'mt-2']) !!}
+                        {{-- {!! Form::select('stramite', null, null, ['class'=>'form-control selectpicker']) !!} --}}
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                         {!! Form::label('tdocument_id', 'Tipo de Documento', [null]) !!}
                         {!! Form::select('tdocument_id', $tdocuments, null, ['class'=>'form-control']) !!}
@@ -117,6 +123,19 @@
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                         {!! Form::label('fecha', 'Fecha', [null]) !!}
                         {!! Form::date('fecha', null, ['class'=>'form-control','required']) !!}
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        {!! Form::label('nboleta', 'N° Boleta', [null]) !!}
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">
+                                <span class="px-1">Sin boleta</span><input type="checkbox" aria-label="Checkbox for following text input" id="chkboleta">
+                              </div>
+                            </div>
+                            <input type="text" id="nboleta" name="nboleta" class="form-control" aria-label="Text input with checkbox">
+                        </div>
+                        {{-- {!! Form::text('nboleta', null, ['class'=>'form-control','required']) !!} --}}
+                        
                     </div>
                 </div>
                 <div class="row">
@@ -162,6 +181,18 @@
         setTimeout(() => {
         $("#error").hide();
       }, 12000);
+    });
+    document.getElementById('chkboleta').addEventListener('change',function(){
+        let nboleta = document.getElementById('nboleta');
+        if(this.checked == true){
+            console.log(this.checked);
+            nboleta.value = "";
+            nboleta.setAttribute('readonly',true);
+        }else{
+            console.log(this.checked);
+            nboleta.value = "";
+            nboleta.removeAttribute('readonly');
+        }
     });
 </script>
 @stop

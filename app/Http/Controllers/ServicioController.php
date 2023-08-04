@@ -20,16 +20,8 @@ class ServicioController extends Controller
     }
     public function index(Request $request)
     {
-        if ($request)
-        {
-            $query=trim($request->get('searchText'));
-            $servicios=DB::table('servicios')
-            ->where('nombre','LIKE','%'.$query.'%')
-            ->where('estado','=','1')
-            ->orderBy('idServicio','desc')
-            ->paginate(7);
-            return view('ventas.servicios.index',["servicios"=>$servicios,"searchText"=>$query]);
-        }
+        $servicios = Servicio::get();
+        return view('ventas.servicios.index',compact('servicios'));
     }
     public function create()
     {
@@ -67,7 +59,11 @@ class ServicioController extends Controller
     public function destroy($id)
     {
         $servicio = Servicio::findOrFail($id);
-        $servicio->estado=0;
+        if($servicio->estado==1){
+            $servicio->estado=0;
+        }else{
+            $servicio->estado=1;
+        }
         $servicio->update();
         return Redirect::to('ventas/servicios');
     }

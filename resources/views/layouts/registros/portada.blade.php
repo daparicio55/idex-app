@@ -158,6 +158,7 @@
         <thead>
             <tr>
                 <th style="width: 50px" class="p-0 text-center border">#</th>
+                <th class="p-0 border">DNI</th>
                 <th class="p-0 border">APELLIDOS y Nombres</th>
                 @yield('resumen_header_capacidades')
                 <th class="p-0 text-center border">NOTA FINAL</th>
@@ -228,6 +229,7 @@
         <thead>
             <tr>
                 <td class="p-0 border text-center" rowspan="3">N°</td>
+                <td class="p-0 border text-center" rowspan="3">DNI</td>
                 <td class="p-0 border text-center" rowspan="3">APELLIDOS Y NOMBRES</td>
                 <td class="p-0 border text-center" rowspan="3">INGRESO</td>
                 <td class="p-0 border text-center" colspan="3">Evaluación FINAL</td>
