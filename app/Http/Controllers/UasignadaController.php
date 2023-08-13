@@ -30,7 +30,9 @@ class UasignadaController extends Controller
     {
         //
         $text = $request->searchText;
-        $uasignadas = Uasignada::orderBy('id','desc')->get();
+        $uasignadas = Uasignada::whereHas('periodo',function($query){
+            $query->where('plan_cerrado','=',0);
+        })->orderBy('id','desc')->get();
         if (isset($request->searchText)){
             $uasignadas = Uasignada::orderBy('id','desc')
             ->whereHas('user',function($query) use($text){
@@ -51,7 +53,13 @@ class UasignadaController extends Controller
         //$users = User::orderBy('name','desc')->pluck('name','id')->toArray();
         $users = User::orderBy('name','asc')->get();
         $periodos = Pmatricula::orderBy('nombre','desc')->get();
-        $unidades = Udidactica::orderBy('nombre','asc')->get();
+        //devemos de obiar las unidades del plan de estudio antiguo;
+        
+        /* $unidades = Udidactica::orderBy('nombre','asc')->get(); */
+        $unidades = Udidactica::whereHas('modulo',function($query){
+            $query->where('iformativo_id','=',4);
+        })->orderBy('nombre','desc')->get();
+        //dd($unidades);
         return view('sacademica.uasignadas.create',compact('users','unidades','periodos'));
     }
 

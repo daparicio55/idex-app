@@ -51,11 +51,11 @@
                 <div class="col-sm-12">
                     <div class="input-group mb-3">
                         {{-- <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2"> --}}
-                        <select name="udidactica_id" id="udidactica_id" class="form-control selectpicker" data-live-search="true" data-size=5>
+                        <select name="udidactica_id" id="udidactica_id" class="form-control selectpicker" data-live-search="true" data-size=10>
                             {{-- <option value="0">Seleccione</option> --}}
                             @foreach ($unidades as $unidad)
                                 <option value="{{ $unidad->id }}">
-                                    {{ $unidad->nombre  }} - {{ $unidad->modulo->carrera->nombreCarrera }} - {{ $unidad->horas }} - {{ $unidad->creditos }}
+                                    {{ $unidad->nombre  }} - {{ $unidad->modulo->carrera->nombreCarrera }} - {{ $unidad->ciclo }} - {{ $unidad->horas }} - {{ $unidad->creditos }}
                                 </option>
                             @endforeach
                         </select>
@@ -131,9 +131,9 @@
             let td_unidad = document.createElement("td");
             td_unidad.innerHTML=datos[0].trim() + " - "+datos[1];
             let td_hora = document.createElement("td");
-            td_hora.innerHTML=datos[2].trim();
+            td_hora.innerHTML=datos[3].trim();
             let td_credito = document.createElement("td");
-            td_credito.innerHTML=datos[3].trim();
+            td_credito.innerHTML=datos[4].trim();
             let td_button = document.createElement("td");
             let a = document.createElement("a");
             a.setAttribute("onClick","eliminar("+id+")");

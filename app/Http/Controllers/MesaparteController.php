@@ -136,6 +136,9 @@ class MesaparteController extends Controller
             $document->cliente_id = $cliente->idCliente;
             $document->tdocument_id = $request->tdocument_id;
             $document->anio = $anio;
+            if($request->nboleta != null){
+                $document->boleta = $request->nboleta;
+            }
             $document->telefono = $request->telefono2;
             $document->stramite_id = $request->tramite;
             $document->user_id = auth()->id();

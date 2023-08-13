@@ -25,6 +25,31 @@
 @php
     $estudiante_id = 0;
 @endphp
+<!-- verificamos si tiene deuda -->
+<div class="row" id="deudas" style="display: none">
+    <div class="card col-sm-12">
+        <div class="card-header bg-danger mt-2">
+            <h4><i class="fas fa-credit-card"></i> Pagos Pendientes.</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>Fecha</td>
+                            <td>Servicio</td>
+                            <td>Observacion</td>
+                        </tr>
+                    </thead>
+                    <tbody id="table_deudas">
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 {{-- programa de estudios --}}
 <div class="row">
     <div class="card col-lg-12">
@@ -133,7 +158,7 @@
                                 <th>Unidad Didáctica</th>
                                 <th style="width: 90px">Cre</th>
                                 <th style="width: 90px">Nota</th>
-                                
+                                <th>Horario</th>
                             </thead>
                             <tbody id="unidades">
 
@@ -169,6 +194,7 @@
         if (dni.trim() == ""){
             alert('Ingrese un texto para buscar');
         }else{
+            document.getElementById('deudas').style.display = "none";
             /* limpiar la tabla */
             $('#cprogramas tr').each(function(){ 
                 this.remove();
@@ -183,6 +209,7 @@
                     var td3 = document.createElement('td');
                     var td4 = document.createElement('td');
                     var td5 = document.createElement('td');
+                    var td6 = document.createElement('td');
                     /* vamos asignar los valores */
                     td1.appendChild(document.createTextNode(programa.idCliente));
                     td2.appendChild(document.createTextNode(programa.dniRuc));
@@ -204,6 +231,7 @@
                     HTMLResponse.appendChild(tr);
                 });
             });
+            
             $('#modal-pestudios').modal('show');
         }
     }
@@ -244,6 +272,52 @@
                 var carrera_id = dato.idCarrera;
             });
         });
+        //para agregar las filas a las deudas
+        DEUDA_URL = URL+"ventas/deudas/"+id;
+        
+        fetch(DEUDA_URL).then((response)=>response.json()).then((deudas)=>{
+            
+            deudas.forEach(deuda=>{
+                //mostrar el card con las deudas
+                document.getElementById('deudas').style.display = "flex";
+                //vamos a crear la fila con las deudas
+                let filadeuda = document.createElement('tr');
+                let colnumero = document.createElement('td');
+                let colfecha = document.createElement('td');
+                let colservicio = document.createElement('td');
+                let colobservacion = document.createElement('td');
+                colnumero.innerHTML=deuda.numero;
+                colfecha.innerHTML=deuda.fecha;
+                colservicio.innerHTML=deuda.servicio;
+                colobservacion.innerHTML=deuda.observacion;
+                filadeuda.appendChild(colnumero);
+                filadeuda.appendChild(colfecha);
+                filadeuda.appendChild(colservicio);
+                filadeuda.appendChild(colobservacion);
+                //console.log(deuda);
+                document.getElementById('table_deudas').appendChild(filadeuda);
+                //aca mismo tengo que agregar la fila con los detalles:
+                let filadeuda2 = document.createElement('tr');
+                let coldetalles = document.createElement('td');
+                coldetalles.setAttribute('colspan',4);
+                //coldetalles.setAttribute('id','detalle'+deuda.numero);
+                let lista = document.createElement('ul');
+                lista.setAttribute('id','lista'+deuda.numero);
+                coldetalles.appendChild(lista);
+                filadeuda2.appendChild(coldetalles);
+                document.getElementById('table_deudas').appendChild(filadeuda2);
+                console.log(deuda.detalles);
+                deuda.detalles.forEach(detalle=>{
+                    let item = document.createElement('li');
+                    item.innerHTML = "#: "+detalle.orden + " | Fecha Pago: "+detalle.fprogramada+" | Estado: "+detalle.estado+" | Monto: "+detalle.monto +" | Boleta: "+detalle.boleta;
+                    document.getElementById('lista'+deuda.numero).appendChild(item);
+                });
+            });
+            
+        });
+        //agrego todo a la tabla
+        
+
         $('#unidades tr').each(function(){ 
             this.remove();
         });
@@ -271,6 +345,18 @@
                 var td4 = document.createElement('td');
                 var td5 = document.createElement('td');
                 var td6 = document.createElement('td');
+                var td7 = document.createElement('td');
+                //inicio de TD
+                    //console.log(unidad.horarios);
+                    let ul = document.createElement('ul');
+                    ul.setAttribute('id',"ul"+unidad.id);
+                    unidad.horarios.forEach(horario=>{
+                        let li = document.createElement('li');
+                        li.innerHTML= horario.dia+"-"+horario.hinicio+"-"+horario.hfin;
+                        ul.appendChild(li);
+                    });
+                    td7.appendChild(ul);
+                //fin TD
                 td0.appendChild(txt);
                 td0.appendChild(txtid);
                 td1.appendChild(document.createTextNode(unidad.ciclo));
@@ -287,7 +373,7 @@
                 tr.appendChild(td3);
                 tr.appendChild(td4);
                 tr.appendChild(td5);
-                
+                tr.appendChild(td7);
                 HTMLResponse1.appendChild(tr);
             });
         });
@@ -299,26 +385,95 @@
         });
     });
     }
-    function creditos(creditos,unidad){
-        var maximo = $('#cretotal').val();
-        var valor = $('#txtunidades'+unidad).val();
-        var total = $('#txtcreditos').val();
-        total = parseFloat(total);
-        if (valor == 'SI'){
-            $('#txtunidades'+unidad).val('NO');
-            /* quitar creditos */
-            total = total - creditos;
-        }else{
-            /* aca verificamos el maximo */
-            if(total+creditos>maximo){
-                alert('no se puede superar el maximo de: '+maximo+' creditos');   
-            }else{
-                $('#txtunidades'+unidad).val('SI');
-                /* aumentar creditos */
-                total = total + creditos;    
+    function tohour(cadena){
+        let partes = cadena.split(":");
+        let hora = parseInt(partes[0]);
+        let minutos = parseInt(partes[1]);
+        let fecha = new Date(0);
+        fecha.setHours(hora);
+        fecha.setMinutes(minutos);
+        return fecha;
+    }
+    function cruce(id){
+        let respuesta = true;
+        let lis = document.querySelectorAll("#ul"+id+" li");
+        //tengo que crear un array con los horarios
+        let parabuscar=[];
+        lis.forEach(li=>{
+            let data = li.innerHTML.split('-');
+            parabuscar.push({
+                 id: id,
+                dia: data[0],
+                inicio: data[1],
+                fin: data[2]
+            });
+        });
+        //parabuscar es el array que vamos a comprar.
+        //AHORA TENGO QUE CREAR EL ARRAY dondebuscar.
+        let dondebuscar=[];
+        let ulElements = document.querySelectorAll('#unidades ul[id^="ul"]');
+        ulElements.forEach(ul=>{
+            let lis = ul.children;
+            if (lis.length > 0){
+                for (let $i = 0; $i < lis.length; $i++) {
+                    let data = lis[$i].innerHTML.split('-');
+                    //evitar poner el array 
+                    if(ul.id !== "ul"+id){
+                        if(document.getElementById('txtunidades'+ul.id.slice(2)).value == "SI"){
+                            dondebuscar.push({
+                            id: ul.id,
+                            dia: data[0],
+                            inicio: data[1],
+                            fin: data[2]
+                        });
+                        }
+                    }
+                }
             }
+        });
+        //console.log(parabuscar);
+        //console.log(dondebuscar);
+        //ahora vamos a verificar
+        parabuscar.forEach(para=>{
+            dondebuscar.forEach(donde=>{
+                if(para.dia == donde.dia){
+                    if(tohour(para.inicio) >= tohour(donde.inicio) && tohour(para.inicio) < tohour(donde.fin)){
+                        respuesta = false;
+                    }else{
+                        if( tohour(para.inicio) < tohour(donde.inicio) && tohour(para.fin)>tohour(donde.inicio)){
+                            respuesta = false;
+                        }
+                    }
+                }
+            });
+        });
+        return respuesta;
+    }
+    function creditos(creditos,unidad){
+        if (cruce(unidad)){
+            //alert(cruce(unidad));
+            var maximo = $('#cretotal').val();
+            var valor = $('#txtunidades'+unidad).val();
+            var total = $('#txtcreditos').val();
+            total = parseFloat(total);
+            if (valor == 'SI'){
+                $('#txtunidades'+unidad).val('NO');
+                /* quitar creditos */
+                total = total - creditos;
+            }else{
+                /* aca verificamos el maximo */
+                if(total+creditos>maximo){
+                    alert('no se puede superar el maximo de: '+maximo+' creditos');   
+                }else{
+                    $('#txtunidades'+unidad).val('SI');
+                    /* aumentar creditos */
+                    total = total + creditos;    
+                }
+            }
+            $('#txtcreditos').val(total);
+        }else{
+            alert("Existe un cruce de horarios con esta unidad didactica");
         }
-        $('#txtcreditos').val(total);
     }
     </script>
 @stop

@@ -34,9 +34,12 @@
                 <td>{{ $uasignada->unidad->nombre }} - {{ $uasignada->unidad->modulo->carrera->nombreCarrera }}</td>
                 <td>{{ $uasignada->user->name }}</td>
                 <td>{{ $uasignada->periodo->nombre }}</td>
-                <td>
+                <td style="width: 130px">
                     <a data-toggle="modal" data-target="#modal-delete-{{ $uasignada->id }}" class="btn btn-danger" title="eliminar">
                         <i class="fa fa-trash"></i>
+                    </a>
+                    <a href="{{ route('sacademica.uasignadas.horarios.show',$uasignada->id) }}" class="btn btn-info" title="agregar horarios">
+                        <i class="fas fa-calendar-alt"></i>
                     </a>
                 </td>
             </tr>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\Deuda;
 use App\Models\DeudaDetalle;
+use App\Models\Estudiante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -196,6 +197,33 @@ class DeudaController extends Controller
     public function show($id)
     {
         //
+        $estudiante = Estudiante::findOrFail($id);
+        $deudas = Deuda::where('estado','=','deuda')
+        ->where('idCliente','=',$estudiante->postulante->cliente->idCliente)->get();
+        $array=[];
+        foreach ($deudas as $key => $deuda) {
+            # code...
+            $deta = [];
+            foreach ($deuda->deudadetalles()->orderBy('orden','asc')->get() as $llave => $detalle) {
+                # code...
+                $deta[] = [
+                    'orden'=>$detalle->orden,
+                    'fprogramada'=>$detalle->fechaPrograma,
+                    'monto'=>$detalle->monto,
+                    'estado'=>$detalle->estado,
+                    'boleta'=>$detalle->boletaNumero
+                ];
+            }
+            $array[] = [
+                'numero'=>$deuda->numero,
+                'estado'=>$deuda->estado,
+                'observacion'=>$deuda->observacion,
+                'servicio'=>$deuda->servicio->nombre,
+                'fecha'=>$deuda->fDeuda,
+                'detalles'=>$deta,
+            ];
+        }
+        return json_encode($array);
     }
 
     /**

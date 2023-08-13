@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Capacidade;
 use App\Models\Criterio;
 use App\Models\Ematricula;
+use App\Models\Pmatricula;
 use App\Models\Uasignada;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -30,8 +31,19 @@ class DocenteCursoController extends Controller
     }
     public function index()
     {
-        $asignaciones = Uasignada::where('user_id','=',auth()->id())
+        //seleccionamos las unidades que sea del ultimo periodo.
+        $pmatricula = Pmatricula::select('id')->orderBy('nombre','desc')
+        ->where('plan_cerrado','=',0)
+        ->get();     
+        
+        /* $asignaciones = Uasignada::where('user_id','=',auth()->id())
+        ->get(); */
+        $asignaciones = Uasignada::whereHas('periodo',function($query){
+            $query->where('plan_cerrado','=',0);
+        })->where('user_id','=',auth()->id())
+        ->orderBy('pmatricula_id','desc')
         ->get();
+//        dd($asignaciones);
         return view('docentes.cursos.index',compact('asignaciones'));
     }
 

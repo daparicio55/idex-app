@@ -222,6 +222,7 @@ function BuscarDni($dni){
         }
 }
 //vamos a verificar las deudas pe bateria
+
 function estadoDeuda($id)
 {
         $fechaActual = Carbon::now();

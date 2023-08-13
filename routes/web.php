@@ -48,7 +48,7 @@ use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\EstudiantePEstudioController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FdocumentoController;
-
+use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\IformativoController;
 use App\Http\Controllers\IndicadoreController;
 use App\Http\Controllers\InsidenciaController;
@@ -187,6 +187,9 @@ Route::resource('sacademica/estudiantes',EstudianteController::class)->names('sa
 Route::resource('sacademica/licencias',LicenciaController::class)->names('sacademica.licencias');
 Route::resource('sacademica/cargarnotas',CargarNotaController::class)->names('sacademica.cargarnotas');
 Route::resource('sacademica/uasignadas',UasignadaController::class)->names('sacademica.uasignadas');
+Route::resource('sacademica/uasigandas/horarios',HorarioController::class)->names('sacademica.uasignadas.horarios');
+
+
 /* rutas para students */
 Route::resource('students',StudentController::class)->names('students');
 /* fin ruta students */

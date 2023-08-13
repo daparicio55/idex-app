@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use App\Models\Estudiante;
+use App\Models\Horario;
+use App\Models\Uasignada;
 use App\Models\Udidactica;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -57,15 +60,6 @@ class EstudiantePEstudioController extends Controller
         ->join('admisione_postulantes as ad_post','ad_post.id','=','est.admisione_postulante_id')
         ->where('est.id','=',$id)
         ->first();
-        /* $unidades = DB::table('mformativos as mfor')
-        ->select('udida.nombre','udida.creditos','udida.ciclo','udida.tipo','udida.id','udida.udidactica_id')
-        ->join('iformativos as ifor','ifor.id','=','mfor.iformativo_id')
-        ->join('udidacticas as udida','udida.mformativo_id','=','mfor.id')
-        ->where('mfor.carrera_id','=',$estudiante->idCarrera)
-        ->orderBy('udida.ciclo','asc')
-        ->orderBy('udida.tipo','asc')
-        ->orderBy('udida.nombre','asc')
-        ->get(); */
         $unis = Udidactica::whereHas('modulo',function($query) use($estudiante){
             $query->where('carrera_id','=',$estudiante->idCarrera);
         })->get();
@@ -73,13 +67,47 @@ class EstudiantePEstudioController extends Controller
         $unidades = [];
         foreach ($unis as $uni) {
             # code...
+            $horarios = [];
+            if(isset($uni->equivalencia->id)){
+                $uasignada = Uasignada::where('udidactica_id','=',$uni->equivalencia->id)
+                ->where('pmatricula_id','=',91)
+                ->first();
+            }else{
+                $uasignada = Uasignada::where('udidactica_id','=',$uni->id)
+                ->where('pmatricula_id','=',91)
+                ->first();
+            }
+            //return $uni->equivalencia->id;
+            //dd($uasignada->horarios);
+            if(isset($uasignada->horarios)){
+                foreach ($uasignada->horarios as $key => $horario) {
+                    # code...
+                    array_push($horarios,[
+                        'dia'=>$horario->day,
+                        'hinicio'=>$horario->hinicio,
+                        'hfin'=>$horario->hfin
+                    ]);
+                }                
+            }
+            //-------
+            /* if(isset($uasignada->equivalencia->nombre)){
+                $horarios = array_push($horarios,[
+                    'dia'=>'Lunes',
+                    'hinicio'=>"10:00:00",
+                    'hfin'=>"12:00:00"
+                ]);
+            } */
+            //-----
             if (isset($uni->equivalencia->nombre)){
+                //tenemos equivalencia y vamos a mandar el horario de la equivalencia
+
                 array_push($unidades,[
                     'id'=>$uni->id,
                     'tipo'=>$uni->tipo,
                     'ciclo'=>$uni->ciclo,
                     'nombre'=>$uni->nombre.' - Equivalencia: '.$uni->equivalencia->nombre.' Ciclo: '.$uni->equivalencia->ciclo,
-                    'creditos'=>$uni->creditos
+                    'creditos'=>$uni->creditos,
+                    'horarios'=>$horarios
                 ]);
             }else{
                 array_push($unidades,[
@@ -87,7 +115,8 @@ class EstudiantePEstudioController extends Controller
                     'ciclo'=>$uni->ciclo,
                     'tipo'=>$uni->tipo,
                     'nombre'=>$uni->nombre,
-                    'creditos'=>$uni->creditos
+                    'creditos'=>$uni->creditos,
+                    'horarios'=>$horarios
                 ]);
             }
         }
