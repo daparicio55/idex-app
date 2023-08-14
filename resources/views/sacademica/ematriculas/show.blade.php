@@ -6,14 +6,23 @@
     <meta charset="utf-8">
     <style>
         body{
-            font-size: 11px;
+            font-size: 10px;
             font-family: Verdana, Geneva, Tahoma, sans-serif;
         }
         h2{
             text-align: center;
+            margin: 0;
         }
         h4{
             text-align: center;
+            /* margin: 0; */
+        }
+        ul, li {
+            line-height: 1.2; /* Puedes ajustar el valor según tus necesidades */
+            margin: 0;
+            font-size: 10px;
+            list-style: none;
+            padding:0px;
         }
         .cabezera{
             width: 100%;
@@ -26,23 +35,24 @@
             width: 100%;
             border-collapse: collapse;
             border: black 1px solid;
+            margin-top: 1rem;
         }
         .filaInformacion{
             width: 20%;
             border: black 1px solid;
-            font-size: 11px;
+            font-size: 10px;
             background:lightgray;
         }
         .filaDatos{
             width: 30%;
             border: black 1px solid;
-            font-size: 11px;
+            font-size: 10px;
         }
         .tbCuerpo{
             width: 100%;
             border: black 1px solid;
             border-collapse: collapse;
-            font-size: 12px;
+            font-size: 10px;
         }
     </style>
 </head>
@@ -125,9 +135,10 @@
                     <td>Ciclo</td>
                     <td>Tipo</td>
                     <td>Unidad Didáctica</td>
-                    <td>Horas</td>
-                    <td>T. Matrícula</td>
-                    <td>Créditos</td>
+                    <td>Horario</td>
+                    {{-- <td>Horas</td> --}}
+                    <td>Tipo M.</td>
+                    <td>Ho. Cré.</td>
             </tr>
             @foreach ($matricula->detalles as $detalle)
             @if ($detalle->tipo == 'Regular')
@@ -136,14 +147,42 @@
                 <td style="border: black 1px solid; text-align: center">{{$detalle->unidad->ciclo}}</td>
                 <td style="border: black 1px solid">{{$detalle->unidad->tipo}}</td>
                 <td style="border: black 1px solid">
-                    {{$detalle->unidad->nombre}}
-                    @if(isset($detalle->unidad->equivalencia->nombre))
-                        <span style="color: red">Equivalencia:</span> {{ $detalle->unidad->equivalencia->nombre }} Ciclo: {{ $detalle->unidad->equivalencia->ciclo }}
-                    @endif 
+                    
+                    @if(isset($detalle->unidad->equivalencia->nombre))                        
+                        @php
+                            $uasignada = App\Models\Uasignada::where('pmatricula_id','=',$matricula->pmatricula_id)
+                            ->where('udidactica_id','=',$detalle->unidad->equivalencia->id)
+                            ->first();
+                        @endphp
+                        {{$detalle->unidad->nombre}} <span style="color: red">Equivalencia:</span> {{ $detalle->unidad->equivalencia->nombre }} Ciclo: {{ $detalle->unidad->equivalencia->ciclo }}
+                        <b>Docente: </b> {{ $uasignada->user->name }}
+                    @else
+                        
+                        @php
+                            $uasignada = App\Models\Uasignada::where('pmatricula_id','=',$matricula->pmatricula_id)
+                            ->where('udidactica_id','=',$detalle->unidad->id)
+                            ->first();
+                        @endphp
+                        @if ($uasignada !== null)
+                            {{$detalle->unidad->nombre}} <b>Docente: </b> {{ $uasignada->user->name }}
+                        @else
+                            {{$detalle->unidad->nombre}}
+                        @endif
+                        
+                    @endif
                 </td>
-                <td style="border: black 1px solid">{{$detalle->unidad->horas}}</td>    
+                <td>
+                    @if($uasignada !== null)
+                    <ul>
+                        @foreach ($uasignada->horarios as $horario)
+                            <li>{{ $horario->day }}-{{ $horario->hinicio }}-{{ $horario->hfin }}</li>
+                        @endforeach
+                    </ul>
+                    @endif
+                </td>
+                {{-- <td style="border: black 1px solid">{{$detalle->unidad->horas}}</td>  --}}   
                 <td style="border: black 1px solid">{{$detalle->tipo}}</td>
-                <td style="border: black 1px solid">{{$detalle->unidad->creditos}}</td>
+                <td style="border: black 1px solid">{{$detalle->unidad->horas}}/{{$detalle->unidad->creditos}}</td>
             </tr>
             @php
                 $horas=$horas+$detalle->unidad->horas;
@@ -169,13 +208,14 @@
                 $creditos=0;
             @endphp
             <tr style="font-weight:bold; background:lightgray">
-                    <td>N°</td>
-                    <td>Ciclo</td>
-                    <td>Tipo</td>
-                    <td>Unidad Didáctica</td>
-                    <td>Horas</td>
-                    <td>T. Matrícula</td>
-                    <td>Créditos</td>
+                <td>N°</td>
+                <td>Ciclo</td>
+                <td>Tipo</td>
+                <td>Unidad Didáctica</td>
+                <td>Horario</td>
+                {{-- <td>Horas</td> --}}
+                <td>Tipo M.</td>
+                <td>Ho. Cré.</td>
             </tr>
             @foreach ($matricula->detalles as $detalle)
             @if ($detalle->tipo == 'Repitencia')
@@ -183,15 +223,44 @@
                 <td style="border: black 1px solid">{{$cont}}</td>
                 <td style="border: black 1px solid; text-align: center">{{$detalle->unidad->ciclo}}</td>
                 <td style="border: black 1px solid">{{$detalle->unidad->tipo}}</td>
+                
                 <td style="border: black 1px solid">
-                    {{$detalle->unidad->nombre}} 
-                    @if(isset($detalle->unidad->equivalencia->nombre))
-                        <span style="color: red">Equivalencia:</span> {{ $detalle->unidad->equivalencia->nombre }} Ciclo: {{ $detalle->unidad->equivalencia->ciclo }}
-                    @endif 
+                    
+                    @if(isset($detalle->unidad->equivalencia->nombre))                        
+                        @php
+                            $uasignada = App\Models\Uasignada::where('pmatricula_id','=',$matricula->pmatricula_id)
+                            ->where('udidactica_id','=',$detalle->unidad->equivalencia->id)
+                            ->first();
+                        @endphp
+                        {{$detalle->unidad->nombre}} <span style="color: red">Equivalencia:</span> {{ $detalle->unidad->equivalencia->nombre }} Ciclo: {{ $detalle->unidad->equivalencia->ciclo }}
+                        <b>Docente: </b> {{ $uasignada->user->name }}
+                    @else
+                        
+                        @php
+                            $uasignada = App\Models\Uasignada::where('pmatricula_id','=',$matricula->pmatricula_id)
+                            ->where('udidactica_id','=',$detalle->unidad->id)
+                            ->first();
+                        @endphp
+                        @if ($uasignada !== null)
+                            {{$detalle->unidad->nombre}} <b>Docente: </b> {{ $uasignada->user->name }}
+                        @else
+                            {{$detalle->unidad->nombre}}
+                        @endif
+                        
+                    @endif
                 </td>
-                <td style="border: black 1px solid">{{$detalle->unidad->horas}}</td>    
+                <td>
+                    @if($uasignada !== null)
+                    <ul>
+                        @foreach ($uasignada->horarios as $horario)
+                            <li>{{ $horario->day }}-{{ $horario->hinicio }}-{{ $horario->hfin }}</li>
+                        @endforeach
+                    </ul>
+                    @endif
+                </td>>
+                {{-- <td style="border: black 1px solid">{{$detalle->unidad->horas}}</td>   --}}  
                 <td style="border: black 1px solid">{{$detalle->tipo}}</td>
-                <td style="border: black 1px solid">{{$detalle->unidad->creditos}}</td>
+                <td style="border: black 1px solid">{{$detalle->unidad->horas}}/{{$detalle->unidad->creditos}}</td>
             </tr>
             @php
                 $horas=$horas+$detalle->unidad->horas;
@@ -207,48 +276,6 @@
             </tr>
         </tbody>
     </table>
-    {{-- <h4>UNIDADES DIDACTICAS DE REPITENCIA</h4>
-    <table class="tbCuerpo">
-        <tbody style="border: black 1px solid">
-            @php
-                $cont=1;
-                $horas=0;
-                $creditos=0;
-            @endphp
-            <tr style="font-weight:bold; background:lightgray">
-                    <td>N°</td>
-                    <td>Ciclo</td>
-                    <td>Unidad Didáctica</td>
-                    <td>Tipo</td>
-                    <td>Horas</td>
-                    <td>T. Matrícula</td>
-                    <td>Créditos</td>
-            </tr>
-            @foreach ($matriculas as $mat)
-            @if ($mat->tipoMatricula == 'Repitencia')
-            <tr style="border: black 1px solid">
-                <td style="border: black 1px solid">{{$cont}}</td>
-                <td style="border: black 1px solid; text-align: center">{{$mat->ciclo}}</td>
-                <td style="border: black 1px solid">{{$mat->unidadDidactica}}</td>
-                <td style="border: black 1px solid">{{$mat->tipoModulo}}</td>
-                <td style="border: black 1px solid">{{$mat->horas}}</td>    
-                <td style="border: black 1px solid">{{$mat->tipoMatricula}}</td>
-                <td style="border: black 1px solid">{{$mat->creditos}}</td>
-            </tr>
-            @php
-                $horas=$horas+$mat->horas;
-                $creditos=$creditos+$mat->creditos;
-                $cont++;
-            @endphp
-            @endif
-            @endforeach
-            <tr>
-                <td colspan="3"></td>
-                <td style="text-align: center" colspan="2"><b>Total Horas Semanales: {{$horas}}</b></td>
-                <td colspan="2" style="text-align: center"><b>Total Creditos: {{$creditos}}</b></td>
-            </tr>
-        </tbody>
-    </table> --}}
     <br>
     <br>
     <br>
