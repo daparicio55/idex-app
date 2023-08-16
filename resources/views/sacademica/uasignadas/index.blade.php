@@ -23,6 +23,7 @@
     <thead>
         <tr>
             <th>Unidad</th>
+            <th>Horario</th>
             <th>Docente</th>
             <th>Periodo</th>
         </tr>
@@ -31,7 +32,14 @@
         @foreach ($uasignadas as $uasignada)
             <tr>
                 
-                <td>{{ $uasignada->unidad->nombre }} - {{ $uasignada->unidad->modulo->carrera->nombreCarrera }}</td>
+                <td>{{ $uasignada->unidad->nombre }} - {{ $uasignada->unidad->modulo->carrera->nombreCarrera }} - {{ $uasignada->unidad->ciclo }} </td>
+                <td style="width: 280px">
+                    <ul>
+                        @foreach ($uasignada->horarios as $horario)
+                            <li>{{ $horario->day }} - {{ $horario->hinicio }} - {{ $horario->hfin }}</li>
+                        @endforeach
+                    </ul>
+                </td>
                 <td>{{ $uasignada->user->name }}</td>
                 <td>{{ $uasignada->periodo->nombre }}</td>
                 <td style="width: 130px">
