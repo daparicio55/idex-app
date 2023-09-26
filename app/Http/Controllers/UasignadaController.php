@@ -39,7 +39,8 @@ class UasignadaController extends Controller
                 $query->where('name','like','%'.$text.'%');
             })->get();
         }
-        return view('sacademica.uasignadas.index',compact('uasignadas','text'));
+        $users = User::role('Docentes')->orderBy('name','asc')->get();
+        return view('sacademica.uasignadas.index',compact('uasignadas','text','users'));
     }
 
     /**
@@ -57,7 +58,7 @@ class UasignadaController extends Controller
         
         /* $unidades = Udidactica::orderBy('nombre','asc')->get(); */
         $unidades = Udidactica::whereHas('modulo',function($query){
-            $query->where('iformativo_id','=',4);
+            $query->where('iformativo_id','=',5);
         })->orderBy('nombre','desc')->get();
         //dd($unidades);
         return view('sacademica.uasignadas.create',compact('users','unidades','periodos'));
@@ -121,6 +122,20 @@ class UasignadaController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $request->validate([
+            'user'=>'required'
+        ]);
+        try {
+            //code...
+            $uasignada = Uasignada::findOrFail($id);
+            $user = User::findOrFail($request->user);
+            $uasignada->user_id = $user->id;
+            $uasignada->update();
+        } catch (\Throwable $th) {
+            //throw $th;
+            dd($th->getMessage());
+        }
+        return Redirect::route('sacademica.uasignadas.index')->with('info','se actualizo correctamente al docente');
     }
 
     /**

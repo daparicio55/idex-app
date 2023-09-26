@@ -39,10 +39,16 @@
                         <td>{{ $modulo->itinerario->nombre }}</td>
                         <td>{{ $modulo->horas }}</td>
                         <td>{{ $modulo->creditos }}</td>
-                        <td style="width: 160px; text-align: center">
+                        <td style="width: 230px; text-align: center">
                             <a class="btn btn-success" title="editar modulo formativo" href="{{ route('sacademica.mformativos.edit',$modulo->id) }}">
                                 <i class="fas fa-edit"></i>
                             </a>
+                            {!! Form::open(['route'=>'sacademica.ability.index','method'=>'get','class'=>'d-inline']) !!}
+                                <input type="hidden" name="mformativo_id" value="{{ $modulo->id }}">
+                                <button type="submit" title="Capacidades" class="btn btn-warning">
+                                    <i class="fas fa-list-ol"></i>
+                                </button>
+                            {!! Form::close() !!}
                             <a class="btn btn-primary" title="unidades didacticas" href="{{ route('sacademica.mformativos.show',$modulo->id) }}">
                                 <i class="fas fa-book"></i>
                             </a>

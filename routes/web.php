@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbilityController;
 use App\Http\Controllers\AcampianiasController;
 use App\Http\Controllers\AdmisioneAlternativaController;
 use App\Http\Controllers\AdmisioneConfiguracionController;
@@ -64,6 +65,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermisoController;
 
 use App\Http\Controllers\PmatriculaController;
+use App\Http\Controllers\PracticaController;
 use App\Http\Controllers\RdocumentoController;
 use App\Http\Controllers\RegularizacioneController;
 use App\Http\Controllers\RepositorioController;
@@ -81,6 +83,8 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VentaReporteController;
 use App\Http\Controllers\VerificacioneAvanzadoController;
 use App\Http\Controllers\VerificacioneController;
+use App\Http\Controllers\VmatriculaController;
+
 use App\Models\Cliente;
 use App\Models\cvPersonale;
 use App\Models\Estudiante;
@@ -166,13 +170,18 @@ Route::get('/cv/{mail}',function($mail){
     $personale = cvPersonale::where('user_id','=',$user->id)->first();
     return view('docentes.cv.show',compact('personale','periodo'));
 })->name('cv');
-
+//ruta para PRACTICAS
+Route::resource('/sacademica/practicas',PracticaController::class)->names('sacademica.practicas');
+Route::get('/sacademica/practicas/{id}/conjunto',[PracticaController::class,'conjunto'])->name('sacedemica.practicas.conjunto');
+Route::get('/sacademica/precticas/{id}/constancia',[PracticaController::class,'constancia'])->name('sacademica.practicas.constancia');
+//FIN
 Route::resource('sacademica/equivalencias',EquivalenciaController::class)->names('sacademica.equivalencias');
 Route::resource('sacademica/iformativos',IformativoController::class)->names('sacademica.iformativos');
 Route::resource('sacademica/pmatriculas',PmatriculaController::class)->names('sacademica.pmatriculas');
 Route::get('sacademica/pmatriculas/{id}/plancierre/',[PmatriculaController::class,'plancierre'])->name('sacademica.pmatriculas.plancierre');
 Route::resource('sacademica/mformativos', MformativoController::class)->names('sacademica.mformativos');
 Route::resource('sacademica/udidacticas',UdidacticaController::class)->names('sacademica.udidacticas');
+Route::resource('sacademica/ability',AbilityController::class)->names('sacademica.ability');
 Route::resource('sacademica/matriculas',MatriculaController::class)->names('sacademica.matriculas');
 Route::resource('sacademica/matriculasdetalles',MatriculaDetalleController::class)
 ->names('sacademica.matriculasdetalles');
@@ -274,7 +283,7 @@ Route::get('estudiantepestudio/unidades/{id}',[EstudiantePEstudioController::cla
 Route::get('estudiantepestudio/notas/',[EstudiantePEstudioController::class,'notas'])
 ->name('estudiantepestudio.notas');
 //fin de rutas API
-
+Route::resource('ventas/vmatriculas/',VmatriculaController::class)->names('ventas.vmatriculas');
 Route::get('ventas/deudas/imprimir/{id}',[DeudaController::class,'imprimir'])
 ->where('id','[0-9]+')->name('ventas.deudas.imprimir');
 Route::get('ventas/deudas/pagar/{id}',[DeudaController::class,'pagar'])

@@ -25,5 +25,7 @@ class Carrera extends Model
     public function postulantes(){
         return $this->hasMany(AdmisionePostulante::class,'idCarrera');
     }
-    
+    public function itinerario(){
+        return $this->belongsTo(Iformativo::class,'iformativo_id','id');
+    }
 }

@@ -77,7 +77,7 @@ class NominaController extends Controller
                 ->join('clientes as cli','cli.idCliente','=','pos.idCliente')
                 ->where('ema.pmatricula_id','=',$matricula)
                 ->where('ud.ciclo','<>','V')
-                ->where('ud.ciclo','<>','VI')
+                /* ->where('ud.ciclo','<>','VI') */
                 ->where('mf.carrera_id','=',$carr->ccarrera_id)
                 ->groupBy('ema.licencia','adm.periodo','cli.apellido','cli.nombre','cli.dniRuc','ema.id','cli.telefono','cli.telefono2','pos.fechaNacimiento','pos.sexo','pos.discapacidad')
                 ->orderBy('cli.apellido','asc')

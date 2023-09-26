@@ -24,4 +24,10 @@ class Mformativo extends Model
     public function unidades(){
         return $this->hasMany(Udidactica::class,'mformativo_id');
     }
+    public function practica(){
+        return $this->hasOne(Practica::class);
+    }
+    public function abilitys(){
+        return $this->hasMany(Ability::class);
+    }
 }

@@ -43,10 +43,13 @@
                 <td>{{ $uasignada->user->name }}</td>
                 <td>{{ $uasignada->periodo->nombre }}</td>
                 <td style="width: 130px">
-                    <a data-toggle="modal" data-target="#modal-delete-{{ $uasignada->id }}" class="btn btn-danger" title="eliminar">
+                    <a data-toggle="modal" data-target="#modal-update-{{ $uasignada->id }}" class="btn btn-warning mt-1" title="cambiar docente">
+                        <i class="fas fa-users"></i>
+                    </a>
+                    <a data-toggle="modal" data-target="#modal-delete-{{ $uasignada->id }}" class="btn btn-danger mt-1" title="eliminar">
                         <i class="fa fa-trash"></i>
                     </a>
-                    <a href="{{ route('sacademica.uasignadas.horarios.show',$uasignada->id) }}" class="btn btn-info" title="agregar horarios">
+                    <a href="{{ route('sacademica.uasignadas.horarios.show',$uasignada->id) }}" class="btn btn-info mt-1" title="agregar horarios">
                         <i class="fas fa-calendar-alt"></i>
                     </a>
                 </td>

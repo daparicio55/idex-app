@@ -62,7 +62,7 @@ class EstudiantePEstudioController extends Controller
         ->first();
         $unis = Udidactica::whereHas('modulo',function($query) use($estudiante){
             $query->where('carrera_id','=',$estudiante->idCarrera);
-        })->get();
+        })->orderBy('ciclo','asc')->get();
         
         $unidades = [];
         foreach ($unis as $uni) {

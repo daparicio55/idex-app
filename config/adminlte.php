@@ -427,18 +427,21 @@ return [
                     'can'=>'sacademica.estudiantes.index'
                 ],
                 [
-                    'text'=>'Periodos',
-                    'icon'=>'fas fa-hourglass-end',
-                    'url'=>'sacademica/pmatriculas',
-                    'can'=>'sacademica.pmatriculas.index'
-                ],
-                
-                
-                [
                     'text'=>'Matrículas',
                     'icon'=>'fas fa-book-reader',
                     'url'=>'sacademica/matriculas',
                     'can'=>'sacademica.matriculas.index'
+                ],
+                [
+                    'text'=>'Exp. Formativas',
+                    'icon'=>'fas fa-business-time',
+                    'route'=>'sacademica.practicas.index',
+                ],
+                [
+                    'text'=>'Periodos',
+                    'icon'=>'fas fa-hourglass-end',
+                    'url'=>'sacademica/pmatriculas',
+                    'can'=>'sacademica.pmatriculas.index'
                 ],
                 [
                     'text'=>'Nominas',
@@ -569,6 +572,11 @@ return [
                     'text'=>'Reportes',
                     'icon'=>'fas fa-chart-line',
                     'url'=>'ventas/reportes'
+                ],
+                [
+                    'text'=>'Matricula Rapida',
+                    'icon'=>'fas fa-shipping-fast',
+                    'route'=>'ventas.vmatriculas.index'
                 ],
                 [
                     'text'=>'Aperturas',
@@ -748,18 +756,13 @@ return [
                 ],
             ],
         ],
-        'Pace' => [
-            'active' => false,
+        'Personal' => [
+            'active' => true,
             'files' => [
                 [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-center-radar.min.css',
-                ],
-                [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                    'asset' => true,
+                    'location' => '/js/main.js',
                 ],
             ],
         ],
