@@ -19,6 +19,7 @@
         <strong>{{session('error')}}</strong>
     </div>
 @endif
+@include('sacademica.practicas.search')
    <div class="row">
     <div class="col-sm-12">
         <div class="table-responsive">
@@ -75,9 +76,11 @@
                     @endforeach
                 </tbody>
                 <tfoot>
-                    <tr>
-                        <td colspan="5">{{ $estudiantes->links() }} </td>
-                    </tr>
+                    @if(method_exists($estudiantes,'links'))
+                        <tr>
+                            <td colspan="5">{{ $estudiantes->links() }} </td>
+                        </tr>
+                    @endif
                 </tfoot>
             </table>
         </div>

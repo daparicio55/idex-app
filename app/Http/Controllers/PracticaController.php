@@ -22,13 +22,19 @@ class PracticaController extends Controller
      */
     public function __construct()
     {
-        
         $this->middleware('auth');
     }
-    public function index()
+    public function index(Request $request)
     {
         //
-        $estudiantes = Estudiante::orderBy('id','desc')->paginate(10);
+        if(isset($request->searchdni)){
+            //vamos a buscar por dni
+            $estudiantes = Estudiante::whereHas('postulante.cliente',function($query) use($request){
+                $query->where('dniRuc','like','%'.$request->searchdni.'%');
+            })->get();
+        }else{
+            $estudiantes = Estudiante::orderBy('id','desc')->paginate(10);
+        }
         return view('sacademica.practicas.index',compact('estudiantes'));
     }
 
