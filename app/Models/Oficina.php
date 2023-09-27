@@ -14,9 +14,13 @@ class Oficina extends Model
 
     protected $fillable = [
         'nombre',
-        'estado'
+        'estado',
+        'user_id'
     ];
     public function users(){
         return $this->hasMany('App\Models\User','id');
+    }
+    public function responsable(){
+        return $this->belongsTo(User::class,'user_id','id');
     }
 }

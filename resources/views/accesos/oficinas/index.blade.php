@@ -25,11 +25,13 @@
 			<table class="table table-striped table-bordered table-condensed table-hover">
 				<thead>
 					<th>Nombre Oficina</th>
+					<th>Responsable</th>
 				</thead>
 				<tbody>
 				@foreach ($oficinas as $oficina)
 					<tr>
-                        <td>{{$oficina->nombre}}</td>
+                        <td>{{ $oficina->nombre }}</td>
+						<td>@isset($oficina->responsable->name) {{ $oficina->responsable->name }} @endisset</td>
 						<td style="width: 125px; text-align: center">
 							<a title="editar oficina" class="btn btn-info" href="{{route('accesos.oficinas.edit',['oficina'=>$oficina->idOficina])}}">
 								<i class="far fa-edit"></i>

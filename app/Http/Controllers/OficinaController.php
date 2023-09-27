@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Oficina;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -37,7 +38,8 @@ class OficinaController extends Controller
     public function create()
     {
         //
-        return view('accesos.oficinas.create');
+        $users = User::orderBy('name','asc')->pluck('name','id')->toArray();
+        return view('accesos.oficinas.create',compact('users'));
     }
 
     /**
@@ -79,7 +81,8 @@ class OficinaController extends Controller
     public function edit(Oficina $oficina)
     {
         //
-        return view('accesos.oficinas.edit',compact('oficina'));
+        $users = User::orderBy('name','asc')->pluck('name','id')->toArray();
+        return view('accesos.oficinas.edit',compact('oficina','users'));
     }
 
     /**

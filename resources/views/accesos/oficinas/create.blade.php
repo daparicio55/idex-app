@@ -14,6 +14,12 @@
             <input type="hidden" name="estado" value=1>
         </div>
     </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="form-group">
+            {!! Form::label('user_id', 'Responsable', [null]) !!}
+            {!! Form::select('user_id', $users, null, ['class'=>'form-control selectpicker','data-live-search'=>'true']) !!}
+        </div>
+    </div>
 </div>
 <div class="form-group">
     <button class="btn btn-primary btn-lg" type="submit">
