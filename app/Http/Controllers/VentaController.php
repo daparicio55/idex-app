@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Exports\VentaExport;
 use App\Models\Cliente;
-use App\Models\Estudiante;
 use App\Models\Servicio;
 use App\Models\Venta;
 use App\Models\VentaDetalle;
@@ -171,34 +170,58 @@ class VentaController extends Controller
 			->count();
 			if ($cantidad == 0)
 			{
-				$cons = file_get_contents('https://dniruc.apisperu.com/api/v1/dni/'.$dni.'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImR3YXBhcmljaWNpb0BnbWFpbC5jb20ifQ.2AdhICiTyw6lpnrxtfK2ajSgfMGiMn-71RvrRGKd8Uk');
-				$arr = json_decode($cons,false);
-				if (isset($arr->success))
-				{
-					//$dni='INGRESE MANUAL';
-					$nombre=NULL;
-					$apellido="INGRESE MANUAL";
-
-				}
-				else
-				{
-					if ($cons =='"success":false,"message":"No se encontraron resultados."')
+				//ahora verificamos si es de 8
+				if (strlen($dni)==8){
+					$cons = file_get_contents('https://dniruc.apisperu.com/api/v1/dni/'.$dni.'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImR3YXBhcmljaWNpb0BnbWFpbC5jb20ifQ.2AdhICiTyw6lpnrxtfK2ajSgfMGiMn-71RvrRGKd8Uk');
+					$arr = json_decode($cons,false);
+					if (!isset($arr->success))
 					{
 						//$dni='INGRESE MANUAL';
 						$nombre=NULL;
 						$apellido="INGRESE MANUAL";
+
 					}
 					else
 					{
-						$consulta=json_decode($cons,true);
-						$dni=$consulta['dni'];
-						$nombre=$consulta['nombres'];
-						$apellido=$consulta['apellidoPaterno'].' '.$consulta['apellidoMaterno'];
+						if ($cons =='"success":false,"message":"No se encontraron resultados."')
+						{
+							//$dni='INGRESE MANUAL';
+							$nombre=NULL;
+							$apellido="INGRESE MANUAL";
+						}
+						else
+						{
+							$consulta=json_decode($cons,true);
+							$dni=$consulta['dni'];
+							$nombre=$consulta['nombres'];
+							$apellido=$consulta['apellidoPaterno'].' '.$consulta['apellidoMaterno'];
+						}
 					}
+					$direccion='sin direccion';
+					$correo='sincorreo@gmail.com';
+					$telefono=NULL;
 				}
-				$direccion=NULL;
-				$correo=NULL;
-				$telefono=NULL;
+				//verificamos si es de 11 caracteres
+				if (strlen($dni)==11){
+					$cons = file_get_contents('https://dniruc.apisperu.com/api/v1/ruc/'.$dni.'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImR3YXBhcmljaWNpb0BnbWFpbC5jb20ifQ.2AdhICiTyw6lpnrxtfK2ajSgfMGiMn-71RvrRGKd8Uk');
+					$arr = json_decode($cons,false);
+					if (!isset($arr->ruc))
+					{
+						//$dni='INGRESE MANUAL';
+						$nombre=NULL;
+						$apellido="INGRESE MANUAL";
+
+					}else{
+						$consulta=json_decode($cons,true);
+						$dni=$consulta['ruc'];
+						$nombre='-';
+						$apellido=$consulta['razonSocial'];
+						$direccion=$consulta['direccion'];
+					}
+					$correo='sincorreo@gmail.com';
+					$telefono=NULL;
+				}	
+				
 			}
 			else
 			{
