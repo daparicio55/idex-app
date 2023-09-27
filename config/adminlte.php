@@ -393,7 +393,6 @@ return [
                 [
                     'text'=>'Unidades Didacticas',
                     'icon'=>'fas fa-book',
-                    'url'=>'#',
                     'submenu'=>[
                         [
                             'text'=>'Asignar U. Didacticas',
@@ -436,6 +435,7 @@ return [
                     'text'=>'Exp. Formativas',
                     'icon'=>'fas fa-business-time',
                     'route'=>'sacademica.practicas.index',
+                    'can'=>'sacademica.practicas.index'
                 ],
                 [
                     'text'=>'Periodos',

@@ -23,6 +23,13 @@ class PracticaController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('can:sacademica.practicas.index')->only('index');
+        $this->middleware('can:sacademica.practicas.create')->only('create','store');
+        $this->middleware('can:sacademica.practicas.edit')->only('edit','update');
+        $this->middleware('can:sacademica.practicas.destroy')->only('destroy');
+        $this->middleware('can:sacademica.practicas.show')->only('show');
+        $this->middleware('can:sacademica.practicas.conjunto')->only('conjunto');
+        $this->middleware('can:sacademica.practicas.constancia')->only('constancia');
     }
     public function index(Request $request)
     {
@@ -30,7 +37,9 @@ class PracticaController extends Controller
         if(isset($request->searchdni)){
             //vamos a buscar por dni
             $estudiantes = Estudiante::whereHas('postulante.cliente',function($query) use($request){
-                $query->where('dniRuc','like','%'.$request->searchdni.'%');
+                $query->where('dniRuc','like','%'.$request->searchdni.'%')
+                ->orWhere('apellido','like','%'.$request->searchdni.'%')
+                ->orWhere('nombre','like','%'.$request->searchdni.'%');
             })->get();
         }else{
             $estudiantes = Estudiante::orderBy('id','desc')->paginate(10);
