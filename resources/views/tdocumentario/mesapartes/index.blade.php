@@ -81,7 +81,7 @@
                         <td>{{ date('d-m-Y',strtotime($documento->fecha)) }}</td>
                         <td>{{ $documento->cliente->dniRuc }}</td>
                         <td>{{ Str::upper($documento->cliente->apellido) }}, {{ Str::title($documento->cliente->nombre) }}</td>
-                        <td>{{ $documento->tipo->nombre }}</td>
+                        <td>{{ $documento->tipo->nombre }}: {{ $documento->dnumero }}</td>
                         <td style="text-align: center">{{ $documento->folios }}</td>
                     </tr>
                     <tr>
@@ -90,11 +90,13 @@
                                 <i class="fas fa-trash-alt"></i>
                             </a>
                         </td>
-                        <td><b>Asunto</b></td>
-                        <td colspan="3">
-                            {{ $documento->asunto }}
+                        
+                        <td colspan="5">
+                            <p class="m-0"><b>Asunto: </b>{{ $documento->asunto }}</p>
+                            <p class="m-0"><b>Trámite: </b>{{ $documento->servicio->nombre }}</p>
+                            <p class="m-0"><b>Observacion: </b> {{ $documento->observacion }}</p>
                         </td>
-                        <td colspan="2" style="text-align: center">
+                        <td style="text-align: center">
                             @if($documento->enviado == "NO")
                                 <a href="" data-target="#modal-enviar-{{$documento->id}}" data-toggle="modal" class="btn btn-primary">
                                     <i class="fas fa-file-import"></i> enviar

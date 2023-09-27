@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\Dmove;
 use App\Models\Document;
+use App\Models\Servicio;
 use App\Models\Stramite;
 use App\Models\Tdocument;
 use App\Models\Tmove;
@@ -56,7 +57,8 @@ class MesaparteController extends Controller
     public function create(Request $request)
     {
         //
-        $stramites = Stramite::orderBy('nombre','asc')->pluck('nombre','id')->toArray();
+        $stramites = Servicio::orderBy('nombre','asc')->pluck('nombre','idServicio')->toArray();
+
         $clientes = Cliente::orderBy('apellido','desc')
         ->selectRaw('concat_ws(", ",dniRuc,apellido,nombre) as apellidos, idCliente')
         ->pluck('apellidos','idCliente')->toArray();
@@ -140,7 +142,7 @@ class MesaparteController extends Controller
                 $document->boleta = $request->nboleta;
             }
             $document->telefono = $request->telefono2;
-            $document->stramite_id = $request->tramite;
+            $document->servicio_id = $request->tramite;
             $document->user_id = auth()->id();
             $document->save();
             DB::commit();

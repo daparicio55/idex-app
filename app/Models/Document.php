@@ -17,4 +17,7 @@ class Document extends Model
     public function movimientos(){
         return $this->hasMany(Dmove::class,'document_id');
     }
+    public function servicio(){
+        return $this->belongsTo(Servicio::class,'servicio_id','idServicio');
+    }
 }
