@@ -127,24 +127,16 @@
 @stop
 @section('js')
     <script>
-	$(document).ready(function(){
-    setTimeout(() => {
-        $("#info").hide();
-    }, 12000);
-    });
-    $(document).ready(function(){
+        $(document).ready(function(){
         setTimeout(() => {
-        $("#error").hide();
-      }, 12000);
-    });
-    $('#frm_eliminar').submit(function(event){
-        $("#btn_eliminar").attr("disabled",true);
-    });
-    $('#frm_cambiar').submit(function(event){
-        $("#btn_cambiar").attr("disabled",true);
-    });
-    $('#frm_enviar').submit(function(event){
-        $("#btn_enviar").attr("disabled",true);
-    });
+            $("#info").hide();
+        }, 12000);
+        });
+        $(document).ready(function(){
+            setTimeout(() => {
+            $("#error").hide();
+        }, 12000);
+        });
+        
 	</script>
 @stop

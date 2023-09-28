@@ -20,4 +20,10 @@ class Document extends Model
     public function servicio(){
         return $this->belongsTo(Servicio::class,'servicio_id','idServicio');
     }
+    public function responsable(){
+        return $this->belongsTo(User::class,'responsable_id','id');
+    }
+    public function usuario(){
+        return $this->belongsTo(User::class,'user_id','id');
+    }
 }

@@ -6,12 +6,12 @@ use App\Models\Cliente;
 use App\Models\Dmove;
 use App\Models\Document;
 use App\Models\Servicio;
-use App\Models\Stramite;
 use App\Models\Tdocument;
 use App\Models\Tmove;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
@@ -144,6 +144,7 @@ class MesaparteController extends Controller
             $document->telefono = $request->telefono2;
             $document->servicio_id = $request->tramite;
             $document->user_id = auth()->id();
+            $document->responsable_id = Auth::user()->oficina->responsable->id;
             $document->save();
             DB::commit();
         } catch (\Throwable $th) {
@@ -216,7 +217,23 @@ class MesaparteController extends Controller
                 $movimiento->folios = $request->folios;
                 $movimiento->observacion = $request->observacion;
                 $movimiento->envia_id = auth()->id();
+                //como es el movimiento de mesa de partes entonces es desde la oficina de mesa de partes y hay que registrar
+                $userEnvia = User::findOrFail(auth()->id());
+                if($userEnvia->hasRole('Oficina')){
+                    //en etonces el usuario que envia pertenece a una ofcina
+                    $movimiento->enviaresponsable_id = $userEnvia->oficina->responsable->id;
+                }else{
+                    $movimiento->enviaresponsable_id = auth()->id();
+                }
                 $movimiento->recive_id = $request->user_id;
+                //ahora revizamos si al que enviamos es una oficina o un usuario
+                $userRecive = User::findOrFail($request->user_id);
+                if($userRecive->hasRole('Oficina')){
+                    //en etonces el usuario que envia pertenece a una ofcina
+                    $movimiento->reciveresponsable_id = $userRecive->oficina->responsable->id;
+                }else{
+                    $movimiento->reciveresponsable_id = $request->user_id;
+                }
                 $movimiento->tmove_id = $tmove->id;
                 $movimiento->document_id = $id;
                 $movimiento->save();

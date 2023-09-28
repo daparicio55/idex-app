@@ -1,6 +1,6 @@
 {{-- modal para enviar el documento --}}
 <div class="modal fade" id="modal-enviar-{{$documento->id}}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    {!! Form::open(['route'=>['tdocumentario.mesapartes.update',$documento->id],'method'=>'put','id'=>'frm_enviar']) !!}    
+    {!! Form::open(['route'=>['tdocumentario.mesapartes.update',$documento->id],'method'=>'put','id'=>'frm_enviar'.$documento->id]) !!}    
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header bg-info">
@@ -30,7 +30,7 @@
             <button type="button" class="btn btn-danger" data-dismiss="modal">
                 <i class="fas fa-power-off"></i> Cerrar
             </button>
-            <button type="submit" class="btn btn-primary" id="btn_enviar">
+            <button type="submit" class="btn btn-primary" onclick="desactivar({{ $documento->id }},'btn_enviar')"  id="btn_enviar-{{ $documento->id }}">
                 <i class="fas fa-share"></i> Enviar
             </button>
         </div>

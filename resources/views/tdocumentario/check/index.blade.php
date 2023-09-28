@@ -104,6 +104,12 @@
                                 <div class="col-sm-6">
                                     {{ $documento->finalizado }}
                                 </div>
+                                <div class="col-sm-6" style="text-align:right">
+                                    <b class="text-right">Oficina de Atencion / Responsable:</b>
+                                </div>
+                                <div class="col-sm-6">
+                                    {{ $documento->usuario->oficina->nombre }} / {{ $documento->usuario->oficina->responsable->name }}
+                                </div>
                             </div>
                             <h5 class="card-title text-danger mt-2" style="text-align: center">
                                 <b>Movimientos</b>
@@ -112,10 +118,12 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>fecha</th>
-                                        <th>hora</th>
+                                        {{-- <th>fecha</th>
+                                        <th>hora</th> --}}
+                                        <th>enviado</th>
+                                        <th>de</th>
                                         <th>para</th>
-                                        <th>oficina</th>
+                                        <th>recepcionado</th>
                                         <th>observación</th>
                                         <th>Folios</th>
                                     </tr>
@@ -128,13 +136,27 @@
                                         <tr @if($documento->finalizado == "SI") class='text-primary' @else @if($movimiento->revisado == 'NO') class='text-danger' @else class='text-success' @endif @endif>
                                             <td>{{ $key+1 }}</td>
                                             <td>
+                                                {{ date('d-m-Y H:i:s',strtotime($movimiento->created_at)) }}
+                                            </td>
+                                            {{-- <td>
                                                 @isset($movimiento->rfecha)
                                                     {{ date('d-m-Y',strtotime($movimiento->rfecha)) }}
                                                 @endisset
                                             </td>
-                                            <td>{{ $movimiento->rhora }}</td>
-                                            <td>{{ $movimiento->receptor->email }}</td>
-                                            <td>{{ $movimiento->receptor->oficina->nombre }}</td>
+                                            <td>{{ $movimiento->rhora }}</td> --}}
+                                            <td>
+                                                {{ $movimiento->envia->oficina->nombre }} / {{ $movimiento->enviaresponsable->name }}
+                                            </td>
+                                            <td>
+                                                {{ $movimiento->receptor->oficina->nombre }} / {{ $movimiento->reciberesponsable->name }}
+                                            </td>
+                                            {{-- <td>{{ $movimiento->receptor->email }}</td> --}}
+                                            {{-- <td>{{ $movimiento->receptor->oficina->nombre }}</td> --}}
+                                            <td>
+                                                @isset($movimiento->rfecha)
+                                                    {{ date('d-m-Y',strtotime($movimiento->rfecha)) }} {{ $movimiento->rhora }}
+                                                @endisset
+                                            </td>
                                             <td>{{ $movimiento->observacion }}</td>
                                             <td>{{ $movimiento->folios }}</td>
                                         </tr>

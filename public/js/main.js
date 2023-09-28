@@ -6,9 +6,14 @@ function validar(dni){
     }
     return true;
 }
-document.getElementById('formulario').addEventListener('submit',function(){
-    document.getElementById('button_save').setAttribute('disabled',true);
+
+
+document.addEventListener('submit',function(event){
+    //event.preventDefault();
+    event.submitter.setAttribute('disabled',true)
+    //console.log(event.submitter.setAttribute('disabled',true));
 });
+
 $(document).ready(function(){
 setTimeout(() => {
     $("#info").hide();
@@ -19,3 +24,4 @@ $(document).ready(function(){
     $("#error").hide();
   }, 12000);
 });
+

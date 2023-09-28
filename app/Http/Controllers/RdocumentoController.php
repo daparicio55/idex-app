@@ -93,7 +93,24 @@ class RdocumentoController extends Controller
             $finalizado->folios = $request->folios;
             $finalizado->observacion = $request->observacion;
             $finalizado->envia_id = $movimiento->envia_id;
+            //como es el movimiento de mesa de partes entonces es desde la oficina de mesa de partes y hay que registrar
+            $userEnvia = User::findOrFail($movimiento->envia_id);
+            if($userEnvia->hasRole('Oficina')){
+                //en etonces el usuario que envia pertenece a una ofcina
+                $finalizado->enviaresponsable_id = $userEnvia->oficina->responsable->id;
+            }else{
+                $finalizado->enviaresponsable_id = $movimiento->envia_id;
+            }
             $finalizado->recive_id = $movimiento->recive_id;
+            //ahora revizamos si al que enviamos es una oficina o un usuario
+            $userRecive = User::findOrFail($movimiento->recive_id);
+            if($userRecive->hasRole('Oficina')){
+                //en etonces el usuario que envia pertenece a una ofcina
+                $finalizado->reciveresponsable_id = $userRecive->oficina->responsable->id;
+            }else{
+                $finalizado->reciveresponsable_id = $movimiento->recive_id;
+            }
+
             $finalizado->tmove_id = $tmove->id;
             $finalizado->document_id = $documento->id;
             $finalizado->save();
@@ -130,7 +147,24 @@ class RdocumentoController extends Controller
             $movimiento->folios = $request->folios;
             $movimiento->observacion = $request->observacion;
             $movimiento->envia_id = auth()->id();
+            //como es el movimiento de mesa de partes entonces es desde la oficina de mesa de partes y hay que registrar
+            $userEnvia = User::findOrFail(auth()->id());
+            if($userEnvia->hasRole('Oficina')){
+                //en etonces el usuario que envia pertenece a una ofcina
+                $movimiento->enviaresponsable_id = $userEnvia->oficina->responsable->id;
+            }else{
+                $movimiento->enviaresponsable_id = auth()->id();
+            }
             $movimiento->recive_id = $request->user_id;
+            //ahora revizamos si al que enviamos es una oficina o un usuario
+            $userRecive = User::findOrFail($request->user_id);
+            if($userRecive->hasRole('Oficina')){
+                //en etonces el usuario que envia pertenece a una ofcina
+                $movimiento->reciveresponsable_id = $userRecive->oficina->responsable->id;
+            }else{
+                $movimiento->reciveresponsable_id = $request->user_id;
+            }
+
             $movimiento->tmove_id = $tmove->id;
             $movimiento->document_id = $dmovimiento->document_id;
             $movimiento->save();

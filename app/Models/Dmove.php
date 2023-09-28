@@ -17,4 +17,10 @@ class Dmove extends Model
     public function envia(){
         return $this->belongsTo(User::class,'envia_id');
     }
+    public function enviaresponsable(){
+        return $this->belongsTo(User::class,'enviaresponsable_id','id');
+    }
+    public function reciberesponsable(){
+        return $this->belongsTo(User::class,'reciveresponsable_id','id');
+    }
 }
