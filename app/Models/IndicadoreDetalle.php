@@ -16,4 +16,7 @@ class IndicadoreDetalle extends Model
         'ematricula_detalle_id',
         'indicadore_id'
     ];
+    public function indicador(){
+        return $this->belongsTo(Indicadore::class,'indicadore_id','id');
+    }
 }

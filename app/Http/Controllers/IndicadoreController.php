@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CalificarStoreRequest;
 use App\Models\Capacidade;
 use App\Models\Ematricula;
+use App\Models\EmatriculaDetalle;
 use App\Models\Indicadore;
 use App\Models\IndicadoreDetalle;
+use App\Models\Uasignada;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -120,17 +122,45 @@ class IndicadoreController extends Controller
             //$criterio = Criterio::findOrFail($criterio_id);
             $cantidad = count($request->ematricula_detalle_id);
             for($i=0;$i<$cantidad;$i++){
-                IndicadoreDetalle::updateOrCreate(
+                $detalle = IndicadoreDetalle::updateOrCreate(
                     ['ematricula_detalle_id'=>$request->ematricula_detalle_id[$i],'indicadore_id'=>$indicadore_id],
                     ['nota'=>$request->notas[$i],'fecha'=>Carbon::now(),'user_id'=>auth()->id()]
                 );
+                $uasignada = Uasignada::findOrFail($detalle->indicador->capacidade->uasignada->id);
+                $contadorcapacidades = 0;
+                $sumacapacidades = 0;
+                foreach ($uasignada->capacidades as $capacidade) {
+                    # code...
+                    //recorremos las capacidades
+                    $promediodetalles = 0;
+                    foreach ($capacidade->indicadores as $indicadore) {
+                        # recorremos los indicadores
+                        $details = $indicadore->detalles()->where('ematricula_detalle_id','=',$request->ematricula_detalle_id[$i])->get();
+                        $sumadetalles = 0;
+                        $cantidaddetalles = 0;
+                        foreach ($details as $detail) {
+                            //aca tenemos las notas
+                            $sumadetalles = $sumadetalles + intval($detail->nota);
+                            //dd($sumadetalles);
+                            $cantidaddetalles ++;
+                        }
+                        $promediodetalles = round($sumadetalles / (($cantidaddetalles == 0) ? 1 : $cantidaddetalles),0);
+                        $sumacapacidades = $sumacapacidades + $promediodetalles;
+                        $contadorcapacidades ++;
+                    }
+                }
+                $promediocapacidades = round($sumacapacidades / $contadorcapacidades,0);
+                $ematricula = EmatriculaDetalle::findOrFail($request->ematricula_detalle_id[$i]);
+                $ematricula->nota = $promediocapacidades;
+                $ematricula->update();
             }
+            //vamos a actualizar las notas de ese indicador
             DB::commit();
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
             //return Redirect::route('docentes.cursos.show',$criterio->uasignada_id)->with('error',$th->getMessage());
-            return Redirect::route('docentes.cursos.capacidades.show',$indicadore->capacidade_id)->with('error',$th->getMessage());
+            return Redirect::route('docentes.cursos.capacidades.show',$indicadore->capacidade_id)->with('error',$th->getLine());
         }
         return Redirect::route('docentes.cursos.capacidades.show',$indicadore->capacidade_id)->with('info','se actualizo el indicador correctamente');
         //return Redirect::route('docentes.cursos.show',$criterio->uasignada_id)->with('info','se gardaron las notas correctamente');

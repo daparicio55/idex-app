@@ -106,7 +106,12 @@
                                         @endphp
                                         @foreach (notas($unidad->id,$postulacion->estudiante->id) as $nota)
                                             <td @if($nota->nota<13) class="text-danger" @else class="text-primary" @endif>@if(Str::length($nota->nota)==1) 0{{ $nota->nota }} @else {{ $nota->nota }} @endif</td>
-                                            <td>{{ Str::limit($nota->tipo,7,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}</td>
+                                            <td>
+                                                <a href="" data-toggle="modal" data-target="#capacidades-{{ $unidad->id }}">
+                                                    {{ Str::limit($nota->tipo,13,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}
+                                                </a>
+                                                @include('students.modal')
+                                            </td>
                                             @if($nota->nota<13)
                                                 @isset($nota->nota)
                                                     @php
@@ -197,7 +202,13 @@
                                         @endphp
                                         @foreach (notas($unidad->id,$postulacion->estudiante->id) as $nota)
                                             <td @if($nota->nota<13) class="text-danger" @else class="text-primary" @endif>@if(Str::length($nota->nota)==1) 0{{ $nota->nota }} @else {{ $nota->nota }} @endif</td>
-                                            <td>{{ Str::limit($nota->tipo,7,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}</td>
+                                            <td>
+                                                <!--  -->
+                                                <a href="" data-toggle="modal" data-target="#capacidades-{{ $unidad->id }}">
+                                                    {{ Str::limit($nota->tipo,13,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}
+                                                </a>
+                                                @include('students.modal')
+                                            </td>
                                             @if($nota->nota<13)
                                                 @isset($nota->nota)
                                                     @php
@@ -288,7 +299,13 @@
                                         @endphp
                                         @foreach (notas($unidad->id,$postulacion->estudiante->id) as $nota)
                                             <td @if($nota->nota<13) class="text-danger" @else class="text-primary" @endif>@if(Str::length($nota->nota)==1) 0{{ $nota->nota }} @else {{ $nota->nota }} @endif</td>
-                                            <td>{{ Str::limit($nota->tipo,7,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}</td>
+                                            {{-- <td>{{ Str::limit($nota->tipo,13,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}</td> --}}
+                                            <td>
+                                                <a href="" data-toggle="modal" data-target="#capacidades-{{ $unidad->id }}">
+                                                    {{ Str::limit($nota->tipo,13,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}
+                                                </a>
+                                                @include('students.modal')
+                                            </td>
                                             @if($nota->nota<13)
                                                 @isset($nota->nota)
                                                     @php
@@ -379,7 +396,13 @@
                                         @endphp
                                         @foreach (notas($unidad->id,$postulacion->estudiante->id) as $nota)
                                             <td @if($nota->nota<13) class="text-danger" @else class="text-primary" @endif>@if(Str::length($nota->nota)==1) 0{{ $nota->nota }} @else {{ $nota->nota }} @endif</td>
-                                            <td>{{ Str::limit($nota->tipo,7,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}</td>
+                                            {{-- <td>{{ Str::limit($nota->tipo,13,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}</td> --}}
+                                            <td>
+                                                <a href="" data-toggle="modal" data-target="#capacidades-{{ $unidad->id }}">
+                                                    {{ Str::limit($nota->tipo,13,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}
+                                                </a>
+                                                @include('students.modal')
+                                            </td>
                                             @if($nota->nota<13)
                                                 @isset($nota->nota)
                                                     @php
@@ -470,7 +493,13 @@
                                         @endphp
                                         @foreach (notas($unidad->id,$postulacion->estudiante->id) as $nota)
                                             <td @if($nota->nota<13) class="text-danger" @else class="text-primary" @endif>@if(Str::length($nota->nota)==1) 0{{ $nota->nota }} @else {{ $nota->nota }} @endif</td>
-                                            <td>{{ Str::limit($nota->tipo,7,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}</td>
+                                            {{-- <td>{{ Str::limit($nota->tipo,13,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}</td> --}}
+                                            <td>
+                                                <a href="" data-toggle="modal" data-target="#capacidades-{{ $unidad->id }}">
+                                                    {{ Str::limit($nota->tipo,13,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}
+                                                </a>
+                                                @include('students.modal')
+                                            </td>
                                             @if($nota->nota<13)
                                                 @isset($nota->nota)
                                                     @php
@@ -561,7 +590,13 @@
                                         @endphp
                                         @foreach (notas($unidad->id,$postulacion->estudiante->id) as $nota)
                                             <td @if($nota->nota<13) class="text-danger" @else class="text-primary" @endif>@if(Str::length($nota->nota)==1) 0{{ $nota->nota }} @else {{ $nota->nota }} @endif</td>
-                                            <td>{{ Str::limit($nota->tipo,7,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}</td>
+                                            {{-- <td>{{ Str::limit($nota->tipo,13,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}</td> --}}
+                                            <td>
+                                                <a href="" data-toggle="modal" data-target="#capacidades-{{ $unidad->id }}">
+                                                    {{ Str::limit($nota->tipo,13,'.') }} {{ date('d/m/y',strtotime($nota->ffin)) }}
+                                                </a>
+                                                @include('students.modal')
+                                            </td>
                                             @if($nota->nota<13)
                                                 @isset($nota->nota)
                                                     @php

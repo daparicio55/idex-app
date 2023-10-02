@@ -21,4 +21,7 @@ class Indicadore extends Model
     public function aperturas(){
         return $this->morphMany(Apertura::class,'aperturable');
     }
+    public function detalles(){
+        return $this->hasMany(IndicadoreDetalle::class);
+    }
 }

@@ -464,13 +464,19 @@ function modulos($id){
 //vamos a devolver las notas por unidad didactica
 function notas($unidad,$estudiante){
         $notas = DB::table('ematricula_detalles as md')
-        ->select('md.nota','md.tipo','pm.ffin','md.observacion')
+        ->select('md.nota','md.tipo','pm.ffin','md.observacion','pm.id as matricula','md.id as ematricula')
         ->join('ematriculas as m','m.id','=','md.ematricula_id')
         ->join('pmatriculas as pm','pm.id','=','m.pmatricula_id')
         ->where('md.udidactica_id','=',$unidad)
         ->where('m.estudiante_id','=',$estudiante)
         ->get();
         return $notas;
+}
+function capacidades($pmatricula_id,$unidad){
+        $uasignada = Uasignada::where('pmatricula_id','=',$pmatricula_id)
+        ->where('udidactica_id','=',$unidad)
+        ->first();
+        return $uasignada;
 }
 function edad($nacimiento){
         //$actual = Carbon::now();

@@ -11,4 +11,4 @@ class DeudaDetalle extends Model
     protected $table = 'deudas_detalles';
     public $timestamps = false;
     protected $primaryKey = 'idDeDe';
-}
+} 
