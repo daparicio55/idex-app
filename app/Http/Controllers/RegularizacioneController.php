@@ -96,6 +96,20 @@ class RegularizacioneController extends Controller
     public function store(Request $request)
     {
         //
+        /* "_token" => "8qZAoEnBtg2f0yZG0M0hUANDvpFViorqJcS4im6e"
+        "estudiante_id" => "893"
+        "telefono" => "910858734"
+        "telefono2" => "910858734"
+        "email" => "76135545@idexperujapon.edu.pe"
+        "direccion" => "San carlos de Murcia"
+        "pmatricula_id" => "91"
+        "tipo" => "Regularizacion"
+        "fecha" => "2023-10-03"
+        "resolucion" => "-"
+        "estado" => array:1
+        "notas" => array:1
+        "unidades" => array: 1 */
+        
         try {
             //code...
             DB::beginTransaction();
@@ -117,13 +131,15 @@ class RegularizacioneController extends Controller
             $filas = count($request->notas);
             for ($i=0; $i < $filas ; $i++) { 
             //matricula detalle
-            $detalle = new EmatriculaDetalle;
-            $detalle->tipo = $request->tipoMatricula;
-            $detalle->udidactica_id = $request->idUniDidactica[$i];
-            $detalle->ematricula_id = $ematricula_id->id;
-            $detalle->nota = $request->notas[$i];
-            $detalle->observacion = $request->resolucion;
-            $detalle->save();
+            if($request->estado[$i] == "SI"){
+                $detalle = new EmatriculaDetalle;
+                $detalle->tipo = $request->tipo;
+                $detalle->udidactica_id = $request->unidades[$i];
+                $detalle->ematricula_id = $ematricula_id->id;
+                $detalle->nota = $request->notas[$i];
+                $detalle->observacion = $request->resolucion;
+                $detalle->save();
+            }
             }
             DB::commit();
         } catch (\Throwable $th) {

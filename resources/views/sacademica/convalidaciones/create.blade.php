@@ -201,10 +201,6 @@
         $('#btn_guardar').attr('disabled',true);
     });
     $('#btn_unidades').click(function(){
-        
-
-
-
         modalUnidades();
     });
     function modalAgregar(index){

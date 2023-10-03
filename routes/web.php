@@ -282,6 +282,8 @@ Route::get('estudiantepestudio/unidades/{id}',[EstudiantePEstudioController::cla
 ->where('id','[0-9]+')->name('estudiantepestudio.unidades');
 Route::get('estudiantepestudio/notas/',[EstudiantePEstudioController::class,'notas'])
 ->name('estudiantepestudio.notas');
+Route::get('estudiantepestudio/unidadesfaltantes/{id}',[EstudiantePEstudioController::class,'unidadesfaltantes'])
+->name('estudiantepestudio.unidadesfaltantes');
 //fin de rutas API
 Route::resource('ventas/vmatriculas/',VmatriculaController::class)->names('ventas.vmatriculas');
 Route::get('ventas/deudas/imprimir/{id}',[DeudaController::class,'imprimir'])

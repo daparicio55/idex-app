@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Ematricula;
+use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
 use App\Models\Horario;
 use App\Models\Uasignada;
@@ -54,6 +56,50 @@ class EstudiantePEstudioController extends Controller
         ->get();
         return $datos;
     }
+    public function unidadesfaltantes($id){
+        $estudiante = Estudiante::findOrFail($id);
+        //tengo que sacar todas las unidades
+        $unidades = Udidactica::whereHas('modulo',function($query) use($estudiante){
+            $query->where('carrera_id','=',$estudiante->postulante->carrera->idCarrera);
+        })->get();
+        $notas_unidades = [];
+        foreach ($unidades as $unidade) {
+            # code...
+            //puedo buscar si esta unidad esta presente en el estudiante:
+            $notas = EmatriculaDetalle::whereHas('matricula',function($query) use($unidade,$estudiante){
+                $query->where('udidactica_id','=',$unidade->id)
+                ->where('estudiante_id','=',$estudiante->id);
+            })->get();
+            //tengo que recorrer las notas
+            $filas = EmatriculaDetalle::whereHas('matricula',function($query) use($unidade,$estudiante){
+                $query->where('udidactica_id','=',$unidade->id)
+                ->where('estudiante_id','=',$estudiante->id);
+            })->count();
+            $calificaciones = [];
+            $salto = false;
+            foreach ($notas as $nota) {
+                if($nota->nota >12){
+                    $salto = true;
+                    break;
+                }
+                array_push($calificaciones,$nota->nota);
+            }
+            if($salto == false){
+                array_push($notas_unidades,[
+                    'id'=>$unidade->id,
+                    'nombre'=>$unidade->nombre,
+                    'tipo'=>$unidade->tipo,
+                    'ciclo'=>$unidade->ciclo,
+                    'creditos'=>$unidade->creditos,
+                    'calificaciones'=>$calificaciones,
+                ]);
+            }
+        }
+
+        return  $notas_unidades;
+        //tengo que sacar todas las unidades didacticas del la carrera
+
+    }
     public function unidades($id){
         //
         $estudiante = DB::table('estudiantes as est')
@@ -77,8 +123,6 @@ class EstudiantePEstudioController extends Controller
                 ->where('pmatricula_id','=',91)
                 ->first();
             }
-            //return $uni->equivalencia->id;
-            //dd($uasignada->horarios);
             if(isset($uasignada->horarios)){
                 foreach ($uasignada->horarios as $key => $horario) {
                     # code...
@@ -89,18 +133,8 @@ class EstudiantePEstudioController extends Controller
                     ]);
                 }                
             }
-            //-------
-            /* if(isset($uasignada->equivalencia->nombre)){
-                $horarios = array_push($horarios,[
-                    'dia'=>'Lunes',
-                    'hinicio'=>"10:00:00",
-                    'hfin'=>"12:00:00"
-                ]);
-            } */
-            //-----
             if (isset($uni->equivalencia->nombre)){
                 //tenemos equivalencia y vamos a mandar el horario de la equivalencia
-
                 array_push($unidades,[
                     'id'=>$uni->id,
                     'tipo'=>$uni->tipo,
