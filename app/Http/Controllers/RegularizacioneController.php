@@ -63,7 +63,7 @@ class RegularizacioneController extends Controller
         //
         try {
             //code...
-            $tipo = ['Regularizacion'=>'Regularizacion','Extraordinario'=>'Extraordinario'];
+            $tipo = ['Regularizacion'=>'Regularizacion','Extraordinario'=>'Extraordinario','Regular'=>'Regular'];
             $searchText=null;
             $estudiante=null;
             $unidades=null;
@@ -95,21 +95,7 @@ class RegularizacioneController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        /* "_token" => "8qZAoEnBtg2f0yZG0M0hUANDvpFViorqJcS4im6e"
-        "estudiante_id" => "893"
-        "telefono" => "910858734"
-        "telefono2" => "910858734"
-        "email" => "76135545@idexperujapon.edu.pe"
-        "direccion" => "San carlos de Murcia"
-        "pmatricula_id" => "91"
-        "tipo" => "Regularizacion"
-        "fecha" => "2023-10-03"
-        "resolucion" => "-"
-        "estado" => array:1
-        "notas" => array:1
-        "unidades" => array: 1 */
-        
+                
         try {
             //code...
             DB::beginTransaction();
