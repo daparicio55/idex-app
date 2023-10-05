@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AbilityController;
 use App\Http\Controllers\AcampianiasController;
+use App\Http\Controllers\AdministradorController;
 use App\Http\Controllers\AdmisioneAlternativaController;
 use App\Http\Controllers\AdmisioneConfiguracionController;
 use App\Http\Controllers\AdmisioneEstudianteController;
@@ -87,8 +88,10 @@ use App\Http\Controllers\VmatriculaController;
 
 use App\Models\Cliente;
 use App\Models\cvPersonale;
+use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
 use App\Models\Pmatricula;
+use App\Models\Udidactica;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -309,6 +312,12 @@ Route::get('/clear-cache', function () {
 Route::get('/privacidad',function(){
     return view('privacidad.index');
 });
+//RUTAS DE ADMINISTRADOR:
+    Route::get('/administrador/checknotas',[AdministradorController::class,'checknotas'])->name('administrador.checknotas');
+    Route::get('/administrador',[AdministradorController::class,'index'])->name('administrador.index');
+    Route::get('/administrador/reporteingresantes/{id}',[AdministradorController::class,'reporteingresantes'])->name('administrador.reporteingresantes');
+//
+
 Route::get('/sacademica/correos',function(){
     try {
         //code...

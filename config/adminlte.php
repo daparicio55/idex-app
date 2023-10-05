@@ -251,6 +251,12 @@ return [
         ], */
         //Menus
         [
+            'text' => 'Administrador',
+            'icon' => 'fas fa-users-cog',
+            'route' => 'administrador.index',
+            'can'=>'administrador.index',
+        ],
+        [
             'text'    => 'Accesos',
             'icon'    => 'fab fa-galactic-republic',
             'can'     => 'accesos.permisos.index',

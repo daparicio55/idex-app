@@ -71,7 +71,8 @@ class AdmisionePostulanteController extends Controller
             'Titulados'=>'Titulados',
             'Reingresantes'=>'Reingresantes',
             'Traslado Interno'=>'Traslado Interno',
-            'Traslado Externo'=>'Traslado Externo'
+            'Traslado Externo'=>'Traslado Externo',
+            'Historico'=>'Historico',
         ];
         $cliente = BuscarDni('vacio');
         $searchText = null;
@@ -203,7 +204,8 @@ class AdmisionePostulanteController extends Controller
             'Titulados'=>'Titulados',
             'Reingresantes'=>'Reingresantes',
             'Traslado Interno'=>'Traslado Interno',
-            'Traslado Externo'=>'Traslado Externo'
+            'Traslado Externo'=>'Traslado Externo',
+            'Historico'=>'Historico',
         ];
         $carreras = Carrera::pluck('nombreCarrera','idCarrera')->toArray();
         $admisiones = Admisione::orderBy('periodo','desc')
