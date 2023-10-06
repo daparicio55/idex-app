@@ -59,11 +59,14 @@
                             <td>{{ date('d-m-Y',strtotime($matricula->fecha)) }}</td>
                             <td>{{ $matricula->matricula->nombre }}</td>
                             <td style="width: 120px; text-align: center">
-                                <a target="_blank" href="{{ route('sacademica.matriculas.show',['matricula'=>$matricula->id]) }}" class="btn btn-warning">
+                                <a target="_blank" href="{{ route('sacademica.matriculas.show',['matricula'=>$matricula->id]) }}" class="btn btn-warning mt-1">
                                     <i class="fas fa-print"></i>
                                 </a>
-                                <a data-target="#modal-delete-{{$matricula->id}}" data-toggle="modal" href="" class="btn btn-danger" title="eliminar matricula">
+                                <a data-target="#modal-delete-{{$matricula->id}}" data-toggle="modal" href="" class="btn btn-danger mt-1" title="eliminar matricula">
                                     <i class="fas fa-trash-alt"></i>
+                                </a>
+                                <a data-target="#modal-unidades-{{ $matricula->id }}" data-toggle="modal" class=" btn btn-info mt-1">
+                                    <i class="fas fa-list-ol"></i>
                                 </a>
                             </td>                        
                         </tr>

@@ -64,10 +64,10 @@
                                     @endif
                                 @endforeach
                                 @if ($estudiante->practicas()->where('estudiante_id',$estudiante->id)->get()->count() == $estudiante->postulante->carrera->modulos()->count())
-                                    <a href="{{ route('sacedemica.practicas.conjunto',$estudiante->id) }}"class="btn btn-success mt-1" title="imprimir conjunto">
+                                    <a href="{{ route('sacedemica.practicas.conjunto',$estudiante->id) }}" class="btn btn-success mt-1" target="_blank" title="imprimir conjunto">
                                         <i class="fas fa-layer-group"></i> Conjunto
                                     </a>
-                                    <a href="{{ route('sacademica.practicas.constancia',$estudiante->id) }}" class="btn btn-primary mt-1">
+                                    <a href="{{ route('sacademica.practicas.constancia',$estudiante->id) }}" target="_blank" class="btn btn-primary mt-1">
                                         <i class="far fa-address-card"></i> Constancia
                                     </a>
                                 @endif   

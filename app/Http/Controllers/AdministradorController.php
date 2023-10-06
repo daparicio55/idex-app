@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Admisione;
 use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
+use App\Models\Mformativo;
+use App\Models\Practica;
 use App\Models\Udidactica;
 use Illuminate\Http\Request;
 
@@ -41,7 +43,32 @@ class AdministradorController extends Controller
         return view('administrador.reporteingresantes',compact('estudiantes','admisione'));
     }
     public function checkeformativas(){
-        
+        set_time_limit(0);
+        $array=[];
+        foreach (Estudiante::get() as $estudiante) {
+            # code...
+            $modulos = Mformativo::where('carrera_id','=',$estudiante->postulante->carrera->idCarrera)->get();
+            /* $modules = []; */
+            $completo = "SI";
+            foreach ($modulos as $modulo) {
+                # code...
+                $practica = Practica::where('estudiante_id','=',$estudiante->id)->where('mformativo_id','=',$modulo->id)->count();
+                /* array_push($modules,[
+                    'nombre'=>$modulo->nombre,
+                    'practica'=>$practica,
+                ]); */
+                if ($practica == 0){
+                    $completo = "NO";
+                }
+            }
+            array_push($array,[
+                'estudiante_id'=>$estudiante->id,
+                'estudiante'=>$estudiante->postulante->cliente->dniRuc,
+                /* 'modulos'=>$modules, */
+                'completo' => $completo,
+            ]);
+        }
+        return $array;
     }
     public function checknotas(){
         set_time_limit(0);

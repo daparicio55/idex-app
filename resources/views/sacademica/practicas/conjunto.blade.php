@@ -15,7 +15,11 @@
             <img src="https://intranet.idexperujapon.edu.pe/img/pjHeader.jpg" style="width: 260px" alt="Este es el ejemplo de un texto alternativo">
         </div>
         <div class="col-sm-8 text-right">
-            <div class="pt-4">{{ $estudiante->postulante->carrera->itinerario->nombre }}</div>
+            <div class="pt-4">
+                <p class="m-0">{{ $estudiante->postulante->carrera->itinerario->nombre }}</p>
+                <b>{{ $estudiante->postulante->admisione->periodo }}</b>
+            </div>
+            
         </div>
         <div class="col-sm-12 mt-1">
             <h3 class="text-center">FICHA DE SEGUIMIENTO DE LAS EXPERIENCIAS FORMATIVAS EN SITUACIONES REALES DE TRABAJO DE LOS MODULOS FORMATIVOS</h3>

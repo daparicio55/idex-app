@@ -15,6 +15,9 @@
         <li class="nav-item">
           <button class="btn btn-outline-success" id="btn-notas" type="button">Revisar Notas</button>
         </li>
+        <li>
+          <button type="button" class="btn btn-outline-info ml-2">Revisar Ex. Formativas</button>
+        </li>
         {{--
         <li class="nav-item">
           <a class="nav-link" href="#">Features</a>

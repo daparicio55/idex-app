@@ -314,6 +314,7 @@ Route::get('/privacidad',function(){
 });
 //RUTAS DE ADMINISTRADOR:
     Route::get('/administrador/checknotas',[AdministradorController::class,'checknotas'])->name('administrador.checknotas');
+    Route::get('/administrador/checkeformativas',[AdministradorController::class,'checkeformativas'])->name('administrador.checkeformativas');
     Route::get('/administrador',[AdministradorController::class,'index'])->name('administrador.index');
     Route::get('/administrador/reporteingresantes/{id}',[AdministradorController::class,'reporteingresantes'])->name('administrador.reporteingresantes');
 //
