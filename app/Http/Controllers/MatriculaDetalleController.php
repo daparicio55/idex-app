@@ -16,6 +16,7 @@ class MatriculaDetalleController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('can:sacademica.matriculasdetalles.destroy')->only('destroy');
     }
     public function index()
     {
