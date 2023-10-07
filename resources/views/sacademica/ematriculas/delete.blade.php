@@ -97,10 +97,12 @@
         <div class="modal-body">
           <ul>
             @foreach ($matricula->detalles as $detalle)
-              {!! Form::open(['route'=>['sacademica.matriculasdetalles.destroy',$detalle->id],'method'=>'delete']) !!}
-                <input type="hidden" name="origen" value="matriculas">
-                <li class="mb-1"><button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>  {{ $detalle->unidad->nombre }}</li>
-              {!! Form::close() !!}
+              @if ($detalle->tipo == 'Regular' || $detalle->tipo == 'Repitencia' )
+                {!! Form::open(['route'=>['sacademica.matriculasdetalles.destroy',$detalle->id],'method'=>'delete']) !!}
+                  <input type="hidden" name="origen" value="matriculas">
+                  <li class="mb-1"><button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>  {{ $detalle->unidad->nombre }}</li>
+                {!! Form::close() !!}
+              @endif
             @endforeach
           </ul>
            

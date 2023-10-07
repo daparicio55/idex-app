@@ -50,8 +50,8 @@ class MatriculaController extends Controller
                 ->orWhere('nombre','like','%'.$this->buscar.'%');
             })->get();
         }else{
-            $matriculas = Ematricula::whereHas('matricula',function($query){
-                $query->where('plan_cerrado',0);
+            $hola = $matriculas = Ematricula::whereHas('matricula',function($query){
+                $query->where('plan_cerrado',0)->whereNot('ematriculas.tipo','=',"Extra");
             })->orderBy('id','desc')->paginate(10);
         }
         return view('sacademica.ematriculas.index',compact('matriculas','searchText'));
