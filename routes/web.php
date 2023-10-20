@@ -317,6 +317,7 @@ Route::get('/privacidad',function(){
     Route::get('/administrador/checkeformativas',[AdministradorController::class,'checkeformativas'])->name('administrador.checkeformativas');
     Route::get('/administrador',[AdministradorController::class,'index'])->name('administrador.index');
     Route::get('/administrador/reporteingresantes/{id}',[AdministradorController::class,'reporteingresantes'])->name('administrador.reporteingresantes');
+    Route::get('/administrador/reportedeudas',[AdministradorController::class,'reportedeudas'])->name('administrador.reportedeudas');
 //
 
 Route::get('/sacademica/correos',function(){

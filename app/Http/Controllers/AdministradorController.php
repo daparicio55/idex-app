@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ReporteDeudaAdministradorExport;
 use App\Models\Admisione;
+use App\Models\Deuda;
 use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
 use App\Models\Mformativo;
 use App\Models\Practica;
 use App\Models\Udidactica;
-use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdministradorController extends Controller
 {
@@ -28,6 +30,10 @@ class AdministradorController extends Controller
     public function index(){
         $admisiones = Admisione::orderBy('periodo','desc')->take(10)->get();
         return view('administrador.index',compact('admisiones'));
+    }
+    public function reportedeudas(){
+        $reporte = new ReporteDeudaAdministradorExport;
+        return Excel::download($reporte,"Reportedeudas.xlsx"); 
     }
     public function reporteingresantes($id){
         try {

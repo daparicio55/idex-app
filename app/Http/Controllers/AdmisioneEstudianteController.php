@@ -30,7 +30,6 @@ class AdmisioneEstudianteController extends Controller
     public function index(Request $request)
     {
         //
-        
         $admisiones = Admisione::orderBy('nombre','desc')->pluck('nombre','id');
         if(isset($request->id)){
             $admision = Admisione::findOrFail($request->id);

@@ -18,6 +18,9 @@
         <li>
           <button type="button" class="btn btn-outline-info ml-2">Revisar Ex. Formativas</button>
         </li>
+        <li>
+          <a href="{{ route('administrador.reportedeudas') }}" class="btn btn-outline-primary ml-2">Reporte Deudas</a>
+        </li>
         {{--
         <li class="nav-item">
           <a class="nav-link" href="#">Features</a>
