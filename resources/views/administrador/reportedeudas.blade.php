@@ -13,7 +13,8 @@
                     <th>N°</th>
                     <th>DNI</th>
                     <th>APELLIDOS, Nombres</th>
-                    <th></th>
+                    <th>Telefonos</th>
+                    <th>Programa de Estudios</th>
                     <th>Fecha Registro</th>
                     <th>Servicio</th>
                     <th>Observacion</th>
@@ -27,6 +28,13 @@
                         <td>{{ $deuda->cliente->dniRuc }}</td>
                         <td>{{ Str::upper($deuda->cliente->apellido) }}, {{ Str::title($deuda->cliente->nombre) }}</td>
                         <td>{{ $deuda->cliente->telefono }} / {{ $deuda->cliente->telefono2 }}</td>
+                        <td>
+                            @foreach ($deuda->cliente->postulaciones as $postulacion)
+                                @isset($postulacion->estudiante->postulante)
+                                    {{ $postulacion->estudiante->postulante->carrera->nombreCarrera }}	
+                                @endisset
+                            @endforeach
+                        </td>
                         <td>{{ date('d-m-Y',strtotime($deuda->fDeuda)) }}</td>
                         <td>{{ $deuda->servicio->nombre }}</td>
                         <td>{{ $deuda->observacion }}</td>

@@ -32,6 +32,10 @@ class AdministradorController extends Controller
         return view('administrador.index',compact('admisiones'));
     }
     public function reportedeudas(){
+        $deudas = Deuda::orderBy('numero','desc')
+        ->where('estado','=','deuda')
+        ->get();
+        return view('administrador.reportedeudas',compact('deudas'));
         $reporte = new ReporteDeudaAdministradorExport;
         return Excel::download($reporte,"Reportedeudas.xlsx"); 
     }
