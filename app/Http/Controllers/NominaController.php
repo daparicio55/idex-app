@@ -79,10 +79,15 @@ class NominaController extends Controller
                 ->where('ud.ciclo','<>','V')
                 /* ->where('ud.ciclo','<>','VI') */
                 ->where('mf.carrera_id','=',$carr->ccarrera_id)
+                ->where(function($query){
+                    $query->where('emad.tipo','Regular')->orWhere('emad.tipo','Repitencia')->orWhere('emad.tipo','Convalidacion');
+                })
                 ->groupBy('ema.licencia','adm.periodo','cli.apellido','cli.nombre','cli.dniRuc','ema.id','cli.telefono','cli.telefono2','pos.fechaNacimiento','pos.sexo','pos.discapacidad')
                 ->orderBy('cli.apellido','asc')
                 ->orderBy('cli.nombre','asc')
                 ->get();
+                //return $eestudiantes;
+                //dd($eestudiantes);
                 $ee = EmatriculaDetalle::whereHas('matricula',function($query) use($matricula){
                     $query->where('pmatricula_id','=',$matricula);
                 })->whereHas('unidad.modulo',function($sql) use($ciclo,$carr){
@@ -129,7 +134,10 @@ class NominaController extends Controller
                 ->join('clientes as cli','cli.idCliente','=','pos.idCliente')
                 ->where('ema.pmatricula_id','=',$matricula)
                 //->where('ud.ciclo','=',$ciclo)
-                ->where('emad.tipo','!=','Convalidacion')
+                //->where('emad.tipo','!=','Convalidacion')
+                ->where(function($query){
+                    $query->where('emad.tipo','Regular')->orWhere('emad.tipo','Repitencia');
+                })
                 ->where('mf.carrera_id','=',$carr->ccarrera_id)
                 ->groupBy('ema.licencia','adm.periodo','cli.apellido','cli.nombre','cli.dniRuc','ema.id','cli.telefono','cli.telefono2','pos.fechaNacimiento','pos.sexo','pos.discapacidad','ud.nombre')
                 ->orderBy('unidad','asc')

@@ -75,7 +75,9 @@ class Nomina2Export implements FromView, ShouldAutoSize, WithStyles
         ->join('clientes as cli','cli.idCliente','=','pos.idCliente')
         ->where('ema.pmatricula_id','=',$this->matricula_id)
         //->where('ud.ciclo','=',$ciclo)
-        ->where('emad.tipo','!=','Convalidacion')
+        ->where(function($query){
+            $query->where('emad.tipo','Regular')->orWhere('emad.tipo','Repitencia');
+        })
         ->where('mf.carrera_id','=',$carrera->ccarrera_id)
         ->groupBy('ema.licencia','adm.periodo','cli.apellido','cli.nombre','cli.dniRuc','ema.id','cli.telefono','cli.telefono2','pos.fechaNacimiento','pos.sexo','pos.discapacidad','ud.nombre')
         ->orderBy('unidad','asc')
