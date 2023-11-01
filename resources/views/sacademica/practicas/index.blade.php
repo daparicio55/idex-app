@@ -43,12 +43,15 @@
                         <tr>
                             <td colspan="4" class="p-1">
                                 @foreach ($estudiante->postulante->carrera->modulos as $key=>$modulo)
-                                    @if($estudiante->practicas()->where('mformativo_id',$modulo->id)->get()->count() == 1)
-                                        {!! Form::open(['route'=>['sacademica.practicas.edit',$modulo->practica->id],'method'=>'get','class'=>'d-inline']) !!}
+                                    @if($estudiante->practicas()->where('mformativo_id',$modulo->id)->where('estudiante_id',$estudiante->id)->get()->count() == 1)
+                                        @php
+                                            $practica_id = $estudiante->practicas()->where('mformativo_id',$modulo->id)->where('estudiante_id',$estudiante->id)->first()->id;
+                                        @endphp
+                                        {!! Form::open(['route'=>['sacademica.practicas.edit',$practica_id],'method'=>'get','class'=>'d-inline']) !!}
                                             <button type="submit" class="btn btn-info mt-1" title="{{ $modulo->nombre }}">
                                                 Módulo {{ $key+1 }} 
                                             </button>
-                                            <a href="{{ route('sacademica.practicas.show',$modulo->practica->id) }}" class="btn btn-warning mt-1">
+                                            <a href="{{ route('sacademica.practicas.show',$practica_id) }}" class="btn btn-warning mt-1">
                                                 <i class="fas fa-print"></i>
                                             </a>
                                         {!! Form::close() !!}

@@ -49,12 +49,13 @@
                     </tr>
                 @endforeach
                 @isset($equivalencias)
-                    @foreach ($equivalencias as $equivalencia)
+                    @foreach ($equivalencias as $key=>$equivalencia)
                         <tr>
                             <td>
                                 <input type="hidden" name="ematricula_detalle_id[]" value="{{ $equivalencia->id }}">
                                 {{ $key+1 }}
                             </td>
+                            <td>{{ $estudiante->dniRuc }}</td>
                             <td>                            
                                 <span class="text-uppercase">{{ $equivalencia->apellido }}, </span><span class="text-capitalize">{{ strtolower($equivalencia->nombre) }}</span>
                             </td>
