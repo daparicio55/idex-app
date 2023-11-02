@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-sm-12 d-flex justify-content-between mt-3">
                     <img src="https://titulosinstitutos.minedu.gob.pe/Content/img/logo-minedu.png" width="200px" alt="a">
-                    <img src="https://idexperujapon.edu.pe/wp-content/uploads/2023/04/logo-300x93.png" width="150px" alt="b">
+                    <img src="https://idexperujapon.edu.pe/wp-content/uploads/2023/08/cropped-logo-300x93.png" width="150px" alt="b">
                 </div>
                 <div class="col-sm-12 text-center mt-3">
                     <h5><b> INSTITO SUPERIOR TECNOLÓGICO DE EXCELENCIA</b></h5>
@@ -109,7 +109,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-4 mt-2 mx-auto text-center">
-                    <p class="d-block mx-auto border border-secondary border-2 border-end-0 border-start-0 border-bottom-0" style="width: 50%">firma del docente</p>
+                    <p class="d-block mx-auto border border-secondary border-2 border-end-0 border-start-0 border-bottom-0" style="width: 80%">firma del docente</p>
                 </div>
             </div>
         </div>
@@ -179,7 +179,7 @@
             </div>
             <div class="col-sm-12 d-flex justify-content-between mt-3">
                 <img src="https://titulosinstitutos.minedu.gob.pe/Content/img/logo-minedu.png" width="200px" alt="a">
-                <img src="https://idexperujapon.edu.pe/wp-content/uploads/2023/04/logo-300x93.png" width="150px" alt="b">
+                <img src="https://idexperujapon.edu.pe/wp-content/uploads/2023/08/cropped-logo-300x93.png" width="150px" alt="b">
             </div>
             <div class="col-sm-12 text-center mt-3">
                 <h5 class="p-0">ACTA DE EVALUACIÓN FINAL DE LA UNIDAD DIDÁCTICA</h5>
@@ -252,7 +252,7 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-sm-4 mx-auto text-center">
-                <p class="d-block mx-auto border border-secondary border-2 border-end-0 border-start-0 border-bottom-0" style="width: 50%">firma del docente</p>
+                <p class="d-block mx-auto border border-secondary border-2 border-end-0 border-start-0 border-bottom-0" style="width: 80%">firma del docente</p>
             </div>
         </div>
     </div>

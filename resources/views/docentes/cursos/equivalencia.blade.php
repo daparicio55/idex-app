@@ -30,7 +30,7 @@
 @section('alumnos')
     @foreach ($estudiantes as $key=>$estudiante)
         <tr>
-            <td class="p-0 text-center border border-1">{{ $key +1 }}</td>
+            <td class="p-0 text-center border border-1">{{ cero($key +1) }}</td>
             <td class="p-0 border border-1">{{ $estudiante->dniRuc }}</td>
             <td class="p-0 border border-1"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
             <td class="p-0 border border-1">{{ $estudiante->periodo }}</td>
@@ -71,7 +71,7 @@
                 @endforeach
             @endforeach
             <tr>
-                <td class="p-0 text-center border">{{ $key+1 }}</td>
+                <td class="p-0 text-center border">{{ cero($key+1) }}</td>
                 @if($estudiante->licencia == "SI")
                     <td class="p-0 text-center border" colspan="{{ $colu + 2 }}">Licencia - {{ $estudiante->licenciaObservacion }}</td>
                 @else
@@ -80,7 +80,7 @@
             </tr>
         @else
             <tr>
-                <td class="p-0 text-center border">{{ $key+1 }}</td>
+                <td class="p-0 text-center border">{{ cero($key+1) }}</td>
                 @foreach ($uasignada->capacidades as $capacidade)
                 @php
                     $nota = 0;
@@ -88,7 +88,7 @@
                     $contador = 0;
                 @endphp
                     @foreach ($capacidade->indicadores as $indicadore)
-                        <td class="p-0 text-center @if(number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','')>12) text-primary @else text-danger @endif">{{ number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','') }}</td>    
+                        <td class="p-0 text-center @if(number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','')>12) text-primary @else text-danger @endif">{{ cero(number_format(indicador_calificacion($indicadore->id, $estudiante->id),0,'.','')) }}</td>    
                         @php
                             /* if(indicador_calificacion($indicadore->id, $estudiante->id) <> "NC"){ */
                                 $suma = $suma + number_format(indicador_calificacion($indicadore->id, $estudiante->id),2,'.','');
@@ -103,7 +103,7 @@
                         }
                     @endphp
                     
-                <td class="p-0 text-center bg-light border @if($nota>12) text-primary @else text-danger @endif" >{{ $nota }}</td>
+                <td class="p-0 text-center bg-light border @if($nota>12) text-primary @else text-danger @endif" >{{ cero($nota) }}</td>
                 @endforeach
             </tr>
         @endif
@@ -120,7 +120,7 @@
     @isset($uasignada->unidad->old->id)
         @foreach ($estudiantes as $key=>$estudiante)
         <tr>
-            <td class="p-0 text-center border">{{ $key + 1  }}</td>
+            <td class="p-0 text-center border">{{ cero($key + 1)  }}</td>
             <td class="p-0 border border-1">{{ $estudiante->dniRuc }}</td>
             <td class="p-0 border"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
             @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
@@ -158,13 +158,13 @@
                         $sum = $sum + $nota;
                         $cont++;
                     @endphp
-                    <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ $nota }}</td>
+                    <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ cero($nota) }}</td>
                 @endforeach
                 @php
                     $pro = $sum/$cont;
                     $pro = round(number_format($pro,2,'.',''),0);
                 @endphp
-                <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ $pro }}</td>
+                <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ cero($pro) }}</td>
             @endif
         </tr>
         @endforeach
@@ -196,7 +196,7 @@
     @isset($uasignada->unidad->old->id)
         @foreach ($estudiantes as $key=>$estudiante)
         <tr>
-            <td class="p-0 border text-center">{{ $key+1 }}</td>
+            <td class="p-0 border text-center">{{ cero($key+1) }}</td>
             <td class="p-0 border border-1">{{ $estudiante->dniRuc }}</td>
             <td class="p-0 border"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
             <td class="p-0 border text-center">{{ $estudiante->periodo }}</td>
@@ -241,9 +241,9 @@
                         $pro = $sum/$cont;
                         $pro = round(number_format($pro,2,'.',''),0);
                     @endphp
-                    <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ $pro }}</td>
+                    <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ cero($pro) }}</td>
                     <td class="p-0 text-center">{{ letras($pro) }}</td>
-                    <td class="p-0 text-center">{{ $pro * $uasignada->unidad->old->creditos }}</td>
+                    <td class="p-0 text-center">{{ cero($pro * $uasignada->unidad->old->creditos) }}</td>
                 @endif
         </tr>
         @endforeach

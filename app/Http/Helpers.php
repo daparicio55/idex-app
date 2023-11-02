@@ -543,6 +543,14 @@ function ceros($numero){
         }
         return $ceros.$numero;
 }
+function cero($numero){
+        $largo = strlen($numero);
+        $ceros=null;
+        for($i=$largo;$i<2;$i++){
+                $ceros=$ceros."0";
+        }
+        return $ceros.$numero; 
+}
 function primeros($id,$ciclo){
         //$ciclo = 'IV';
         $array = [];
