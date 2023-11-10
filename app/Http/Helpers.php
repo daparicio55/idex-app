@@ -792,3 +792,117 @@ function letras($num){
         ];
         return $letras[$num];
 }
+function getdni($dni){
+        try {
+                
+                //token... apis-token-6373.QVY2G0dg0tW7su3VMT-tYzQVUIITQrOY
+                //verificamos el largo de la cadena
+
+                /* $cliente = (object)$cliente;
+                return($cliente); */
+
+                /* $cliente = ['idCliente'=>0,
+                                'dniRuc'=>$dni,
+                                'nombre'=>'INGRESO',
+                                'apellido'=>'MANUAL',
+                                'direccion'=>'-',
+                                'email'=>'sincorreo@gmail.com',
+                                'telefono'=>'999999999',
+                                'estado'=>0,
+                                'estudiante'=>'no',
+                                'telefono2'=>'999999999'
+                                ]; */
+                if( strlen($dni) == 8 || strlen($dni) == 11){
+                        $cantidad = Cliente::where('dniruc','=',$dni)->count();
+                        if ($cantidad == 1){
+                                $cliente = Cliente::where('dniruc','=',$dni)->first();
+                                return $cliente;
+                        }else{
+                                //no hay y lo buscamos en la api
+                                //SI ES DNI
+                                $token = 'apis-token-6373.QVY2G0dg0tW7su3VMT-tYzQVUIITQrOY';
+                                if(strlen($dni) == 8){
+                                        
+                                        $curl = curl_init();
+                                        curl_setopt_array($curl, array(
+                                        CURLOPT_URL => 'https://api.apis.net.pe/v2/reniec/dni?numero=' . $dni,
+                                        CURLOPT_RETURNTRANSFER => true,
+                                        CURLOPT_SSL_VERIFYPEER => 0,
+                                        CURLOPT_ENCODING => '',
+                                        CURLOPT_MAXREDIRS => 2,
+                                        CURLOPT_TIMEOUT => 0,
+                                        CURLOPT_FOLLOWLOCATION => true,
+                                        CURLOPT_CUSTOMREQUEST => 'GET',
+                                        CURLOPT_HTTPHEADER => array(
+                                                'Referer: https://apis.net.pe/consulta-dni-api',
+                                                'Authorization: Bearer ' . $token
+                                        ),
+                                        ));
+                                        $response = curl_exec($curl);
+                                        curl_close($curl);
+                                        $data = json_decode($response,true);
+                                        //return $data;
+                                        $cliente = [
+                                                'idCliente'=>0,
+                                                'dniRuc'=>$dni,
+                                                'nombre'=>$data['nombres'],
+                                                'apellido'=>$data['apellidoPaterno'].' '.$data['apellidoMaterno'],
+                                                'direccion'=>'sin dirección',
+                                                'email'=>'sincorreo@gmail.com',
+                                                'telefono'=>'999999999',
+                                                'estado'=>0,
+                                                'estudiante'=>'no',
+                                                'telefono2'=>'999999999'
+                                        ];
+                                        return $cliente = (object)$cliente;
+                                }else{
+                                        $ruc = $dni;
+                                        // Iniciar llamada a API
+                                        $curl = curl_init();
+                                        // Buscar ruc sunat
+                                        curl_setopt_array($curl, array(
+                                        // para usar la versión 2
+                                        CURLOPT_URL => 'https://api.apis.net.pe/v2/sunat/ruc?numero=' . $ruc,
+                                        // para usar la versión 1
+                                        // CURLOPT_URL => 'https://api.apis.net.pe/v1/ruc?numero=' . $ruc,
+                                        CURLOPT_RETURNTRANSFER => true,
+                                        CURLOPT_SSL_VERIFYPEER => 0,
+                                        CURLOPT_ENCODING => '',
+                                        CURLOPT_MAXREDIRS => 10,
+                                        CURLOPT_TIMEOUT => 0,
+                                        CURLOPT_FOLLOWLOCATION => true,
+                                        CURLOPT_CUSTOMREQUEST => 'GET',
+                                        CURLOPT_HTTPHEADER => array(
+                                        'Referer: http://apis.net.pe/api-ruc',
+                                        'Authorization: Bearer ' . $token
+                                        ),
+                                        ));
+                                        $response = curl_exec($curl);
+                                        curl_close($curl);
+                                        // Datos de empresas según padron reducido
+                                        $data = json_decode($response,true);
+                                        //return $data;
+                                        $cliente = [
+                                                'idCliente'=>0,
+                                                'dniRuc'=>$dni,
+                                                'nombre'=>$data['razonSocial'],
+                                                'apellido'=>'Inst./Emp.',
+                                                'direccion'=>$data['direccion'].' '.$data['distrito'].' '.$data['provincia'].' '.$data['departamento'],
+                                                'email'=>'sincorreo@gmail.com',
+                                                'telefono'=>'999999999',
+                                                'estado'=>0,
+                                                'estudiante'=>'no',
+                                                'telefono2'=>'999999999'
+                                        ];
+                                        return $cliente = (object)$cliente;
+                                }
+                        }
+                        
+
+                }
+                 
+        } catch (\Throwable $th) {
+                //throw $th;
+                return $th->getMessage();
+        }
+}

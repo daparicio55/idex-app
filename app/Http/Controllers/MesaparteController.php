@@ -65,7 +65,7 @@ class MesaparteController extends Controller
         $tdocuments = Tdocument::pluck('nombre','id')->toArray();
         if(isset($request->searchText)){
             $searchText = $request->searchText;
-            $cliente = BuscarDni($searchText);
+            $cliente = getdni($searchText);
             return view('tdocumentario.mesapartes.create',compact('stramites','tdocuments','searchText','cliente','clientes'));
         }
         if (isset($request->idCliente)){
