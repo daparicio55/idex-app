@@ -34,7 +34,7 @@ class MesaparteController extends Controller
     public function index(Request $request)
     {
         //
-        $usuarios = User::pluck('name','id')->toArray();
+        $usuarios = User::where('visibility_tramite','=',true)->pluck('name','id')->toArray();
         $documentos = Document::orderBy('anio','desc')
         ->orderBy('numero','desc')
         ->paginate(10);

@@ -222,6 +222,8 @@ Route::resource('inicio', InicioController::class)->names('inicio');
 Route::resource('accesos/permisos',PermisoController::class)->names('accesos.permisos');
 Route::resource('accesos/roles', RoleController::class)->names('accesos.roles');
 Route::resource('accesos/usuarios', UsuarioController::class)->names('accesos.usuarios');
+Route::get('accesos/usuarios/{id}/visibility',[UsuarioController::class,'visibility'])
+->name('accesos.usuarios.visibility');
 Route::resource('accesos/oficinas', OficinaController::class)->names('accesos.oficinas');
 Route::resource('ventas/servicios',ServicioController::class)->names('ventas.servicios');
 Route::resource('ventas/clientes', ClienteController::class)->names('ventas.clientes');

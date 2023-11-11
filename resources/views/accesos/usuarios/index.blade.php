@@ -43,10 +43,19 @@
 						<td>{{$usuario->name}}</td>
                         <td>{{$usuario->email}}</td>
                         <td>{{$usuario->oficina->nombre}}</td>
-						<td style="width: 160px; text-align: center">
+						<td style="width: 230px; text-align: center">
 							<a href="{{ route('accesos.usuarios.show',['usuario'=>$usuario->id]) }}" class="btn btn-warning" title="personal token">
 								<i class="fas fa-key"></i>
 							</a>
+                            @if ($usuario->visibility_tramite == true)
+                                <a href="{{ route('accesos.usuarios.visibility',$usuario->id) }}" class="btn btn-secondary">
+                                    <i class="fas fa-eye-slash"></i>
+                                </a>
+                            @else
+                                <a href="{{ route('accesos.usuarios.visibility',$usuario->id) }}" class="btn btn-secondary">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            @endif
 							<a title="editar usuario" class="btn btn-info" href="{{route('accesos.usuarios.edit',['usuario'=>$usuario->id])}}">
 								<i class="far fa-edit"></i>
 							</a>

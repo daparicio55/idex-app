@@ -24,6 +24,7 @@ class UsuarioController extends Controller
         $this->middleware('can:accesos.usuarios.edit')->only('edit','update');
         $this->middleware('can:accesos.usuarios.destroy')->only('destroy');
         $this->middleware('can:accesos.usuarios.show')->only('show');
+        /* $this->middleware('can:accesos.usuarios.visibilty')->only('visibility'); */
     } 
     public function index(Request $request)
     {
@@ -155,6 +156,22 @@ class UsuarioController extends Controller
             return Redirect::to('accesos/usuarios/')->with('error','el  usuario no se elimino correctamente, error: '.$th->getMessage());
         }
         return Redirect::to('accesos/usuarios/')->with('info','el  usuario se elimino correctamente');
+    }
+    public function visibility($id){
+        try {
+            //code...
+            $usuario = User::findOrFail($id);
+            if($usuario->visibility_tramite == true){
+               $usuario->visibility_tramite = false; 
+            }else{
+                $usuario->visibility_tramite = true;
+            }
+            $usuario->update();
+            return Redirect::route('accesos.usuarios.index')->with('info','se cambio el estado de usuario correctamente');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return Redirect::route('accesos.usuarios.index')->with('error','no se cambio el estado del usuario');
+        }
     }
     
 }
