@@ -205,6 +205,10 @@ Route::resource('sacademica/uasigandas/horarios',HorarioController::class)->name
 /* rutas para students */
 Route::resource('students',StudentController::class)->names('students');
 /* fin ruta students */
+Route::get('tdocumentario/mesapartes/{id}/editar',[MesaparteController::class,'editar'])
+->name('tdocumentario.mesapartes.editar');
+Route::put('tdocumentario/mesapartes/{id}/actualizar',[MesaparteController::class,'actualizar'])
+->name('tdocumentario.mesapartes.actualizar');
 Route::resource('tdocumentario/mesapartes',MesaparteController::class)->names('tdocumentario.mesapartes');
 Route::resource('tdocumentario/rdocumentos',RdocumentoController::class)->names('tdocumentario.rdocumentos');
 Route::resource('tdocumentario/edocumentos',EdocumentoController::class)->names('tdocumentario.edocumentos');

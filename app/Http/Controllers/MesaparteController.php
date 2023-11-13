@@ -6,6 +6,7 @@ use App\Models\Cliente;
 use App\Models\Dmove;
 use App\Models\Document;
 use App\Models\Servicio;
+use App\Models\Stramite;
 use App\Models\Tdocument;
 use App\Models\Tmove;
 use App\Models\User;
@@ -41,7 +42,7 @@ class MesaparteController extends Controller
         if($request->buscar == 'si'){
             $documentos = Document::whereBetween('fecha',[$request->finicio,$request->ffin])
             ->Where('asunto','like','%'.$request->asunto.'%')
-            ->Where('observacion','like','%'.$request->observacion.'%')
+            ->Where('numero','like','%'.$request->numero.'%')
             ->whereHas('cliente',function($query) use($request){
                 $query->where('dniRuc','like','%'.$request->dniRuc.'%');
             })->get();
@@ -198,6 +199,69 @@ class MesaparteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function editar($id){
+        try {
+            $documento = Document::findOrFail($id);
+            $tdocuments = Tdocument::pluck('nombre','id')->toArray();
+            $stramites = Servicio::orderBy('nombre','asc')->pluck('nombre','idServicio')->toArray();
+            return view('tdocumentario.mesapartes.edit',compact('documento','stramites','tdocuments'));
+        } catch (\Throwable $th) {
+            //throw $th;
+            return Redirect::route('tdocumentario.mesapartes.index')->with('error','no se pudo editar el documento correctamente');
+        }
+        return ($id);
+    }
+    public function actualizar(Request $request,$id){
+        try {
+            //code...
+            DB::beginTransaction();
+            //vamos a hacer update del cliente
+            $document = Document::findOrFail($id);
+            $cliente = Cliente::findOrFail($document->cliente->idCliente);
+            $cliente->nombre = $request->nombre;
+            $cliente->apellido = $request->apellido;
+            $cliente->direccion = $request->direccion;
+            $cliente->email = $request->email;
+            $cliente->telefono = $request->telefono;
+            $cliente->update();
+         
+            $anio = Carbon::now()->year;
+            $fecha = date('Y-m-d',strtotime(Carbon::now()));
+            $hora = date('H:i:s',strtotime(Carbon::now()));
+            $ultimo = Document::where('anio','=',$anio)
+            ->orderBy('numero','desc')
+            ->first();
+            $numero = 0;
+            if(isset($ultimo->id)){
+                $numero = $ultimo->numero;
+                $numero ++;
+            }else{
+                //no hay numero
+                $numero ++;
+            }
+            //vamos a guardar los datos en la tabla
+            $document->folios = $request->folios;
+            $document->asunto = $request->asunto;
+            $document->dnumero = $request->dnumero;
+            $document->observacion = $request->observacion;
+            $document->tdocument_id = $request->tdocument_id;
+            $document->anio = $anio;
+            if($request->nboleta != null){
+                $document->boleta = $request->nboleta;
+            }
+            $document->telefono = $request->telefono2;
+            $document->servicio_id = $request->tramite;
+            $document->user_id = auth()->id();
+            $document->responsable_id = Auth::user()->oficina->responsable->id;
+            $document->update();
+            DB::commit();
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return Redirect::to('tdocumentario/mesapartes')->with('error',$th->getMessage());
+        }
+        return Redirect::to('tdocumentario/mesapartes')->with('info','se guardo el documento correctamente');
+    }
     public function update(Request $request, $id)
     {
         //

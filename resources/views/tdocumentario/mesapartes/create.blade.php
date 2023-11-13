@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Servicios Crear')
+@section('title', 'Registrar Documento')
 @section('content_header')
     <h1><i class="fas fa-address-book"></i> Registrar Nuevo Trámite</h1>
 @stop

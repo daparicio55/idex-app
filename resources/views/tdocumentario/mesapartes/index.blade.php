@@ -28,12 +28,12 @@
         {!! Form::text('dniRuc', null, ['class'=>'form-control']) !!}
     </div>
     <div class="col-sm-12 col-md-3">
-        {!! Form::label('asunto', 'Asunto', [null]) !!}
-        {!! Form::text('asunto', null, ['class'=>'form-control']) !!}
+        {!! Form::label('numero', 'N. Expediente', [null]) !!}
+        {!! Form::text('numero', null, ['class'=>'form-control']) !!}
     </div>
     <div class="col-sm-12 col-md-3">
-        {!! Form::label('observacion', 'Observacion', [null]) !!}
-        {!! Form::text('observacion', null, ['class'=>'form-control']) !!}
+        {!! Form::label('asunto', 'Asunto', [null]) !!}
+        {!! Form::text('asunto', null, ['class'=>'form-control']) !!}
     </div>
     <div class="col-sm-12 col-md-2">
         {!! Form::label('finicio','F. Inicio', [null]) !!}
@@ -88,6 +88,9 @@
                         <td style="text-align: center">
                             <a href="" data-target="#modal-delete-{{$documento->id}}" data-toggle="modal" title="eliminar este documento" class="btn btn-danger">
                                 <i class="fas fa-trash-alt"></i>
+                            </a>
+                            <a href="{{ route('tdocumentario.mesapartes.editar',$documento->id) }}" class="btn btn-success mt-1" title="editar documento">
+                                <i class="fas fa-file-alt"></i>
                             </a>
                         </td>
                         

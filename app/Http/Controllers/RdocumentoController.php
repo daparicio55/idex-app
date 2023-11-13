@@ -25,7 +25,7 @@ class RdocumentoController extends Controller
     }
     public function index()
     {
-        $usuarios = User::pluck('name','id')->toArray();
+        $usuarios = User::where('visibility_tramite','=',true)->pluck('name','id')->toArray();
         $tmove = Tmove::where('nombre','=','Enviado')->first();
         $recibidos = Dmove::where('recive_id','=',auth()->id())
         ->where('tmove_id','=',$tmove->id)
