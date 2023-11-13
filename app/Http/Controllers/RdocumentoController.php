@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Symfony\Component\VarDumper\VarDumper;
 
 class RdocumentoController extends Controller
 {
@@ -23,16 +24,50 @@ class RdocumentoController extends Controller
         $this->middleware('auth');
         /* tdocumentario.mesapartes */
     }
-    public function index()
+    public function index(Request $request)
     {
-        $usuarios = User::where('visibility_tramite','=',true)->pluck('name','id')->toArray();
+        $users = User::where('visibility_tramite','=',true)->orderBy('name','asc')->get();
+        $usuarios = User::where('visibility_tramite','=',true)->orderBy('name','asc')->pluck('name','id')->toArray();
         $tmove = Tmove::where('nombre','=','Enviado')->first();
         $recibidos = Dmove::where('recive_id','=',auth()->id())
         ->where('tmove_id','=',$tmove->id)
         ->orderBy('fecha','desc')
         ->orderBy('hora','desc')
-        ->get();
-        return view('tdocumentario.recibidos.index',compact('recibidos','usuarios'));
+        ->paginate(10);
+        if($request->buscar == 'si'){
+            if($request->oficinas == 0){
+                $recibidos = Dmove::where('recive_id','=',auth()->id())
+                ->whereBetween('rfecha',[$request->finicio,$request->ffin])
+                ->where('tmove_id','=',$tmove->id)
+                ->whereHas('documento.cliente',function($query) use($request){
+                    $query->where('asunto','like','%'.$request->asunto.'%')
+                    ->where('numero','like','%'.$request->numero.'%')
+                    ->where('dniRuc','like','%'.$request->dniRuc.'%');
+                })
+                ->orderBy('fecha','desc')
+                ->orderBy('hora','desc')
+                ->get();
+            }else{        
+                $user = User::findOrFail($request->oficinas);
+                $u = $user->id;
+                if(isset($user->oficina->responsable->id)){
+                    $u= $user->oficina->responsable->id;
+                }
+                $recibidos = Dmove::where('recive_id','=',auth()->id())
+                ->whereBetween('rfecha',[$request->finicio,$request->ffin])
+                ->where('tmove_id','=',$tmove->id)
+                ->where('enviaresponsable_id','=',$u)
+                ->whereHas('documento.cliente',function($query) use($request){
+                    $query->where('asunto','like','%'.$request->asunto.'%')
+                    ->where('numero','like','%'.$request->numero.'%')
+                    ->where('dniRuc','like','%'.$request->dniRuc.'%');
+                })
+                ->orderBy('fecha','desc')
+                ->orderBy('hora','desc')
+                ->get();
+            }
+        }
+        return view('tdocumentario.recibidos.index',compact('recibidos','usuarios','request','users'));
     }
 
     /**

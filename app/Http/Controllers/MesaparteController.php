@@ -35,19 +35,30 @@ class MesaparteController extends Controller
     public function index(Request $request)
     {
         //
+        $servicios = Servicio::orderBy('nombre','asc')->get();
         $usuarios = User::where('visibility_tramite','=',true)->pluck('name','id')->toArray();
         $documentos = Document::orderBy('anio','desc')
         ->orderBy('numero','desc')
         ->paginate(10);
         if($request->buscar == 'si'){
-            $documentos = Document::whereBetween('fecha',[$request->finicio,$request->ffin])
-            ->Where('asunto','like','%'.$request->asunto.'%')
-            ->Where('numero','like','%'.$request->numero.'%')
-            ->whereHas('cliente',function($query) use($request){
-                $query->where('dniRuc','like','%'.$request->dniRuc.'%');
-            })->get();
+            if($request->servicios == 0){
+                $documentos = Document::whereBetween('fecha',[$request->finicio,$request->ffin])
+                ->Where('asunto','like','%'.$request->asunto.'%')
+                ->Where('numero','like','%'.$request->numero.'%')
+                ->whereHas('cliente',function($query) use($request){
+                    $query->where('dniRuc','like','%'.$request->dniRuc.'%');
+                })->get();
+            }else{
+                $documentos = Document::whereBetween('fecha',[$request->finicio,$request->ffin])
+                ->Where('asunto','like','%'.$request->asunto.'%')
+                ->Where('numero','like','%'.$request->numero.'%')
+                ->where('servicio_id','=',$request->servicios)
+                ->whereHas('cliente',function($query) use($request){
+                    $query->where('dniRuc','like','%'.$request->dniRuc.'%');
+                })->get();
+            }
         }
-        return view('tdocumentario.mesapartes.index',compact('documentos','usuarios','request'));
+        return view('tdocumentario.mesapartes.index',compact('documentos','usuarios','request','servicios'));
     }
 
     /**
