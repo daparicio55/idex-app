@@ -63,7 +63,7 @@ return [
             //'username' => env('MAIL_USERNAME'),
             'username' => 'noreply@idexperujapon.edu.pe',
             //'password' => env('MAIL_PASSWORD'),
-            'password' => '@&q2ZeX*4EW*7jY@',
+            'password' => 'MYDjNSbqG7A58bA<',
             'timeout' => null,
             'auth_mode' => null,
         ],

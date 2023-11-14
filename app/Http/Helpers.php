@@ -23,7 +23,7 @@ use App\Models\Udidactica;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use LDAP\Result;
-
+use Twilio\Rest\Client;
 function oficinaNombre(){
     $oficina=DB::table('users')
     ->join('oficinas','oficinas.idOficina','=','users.idOficina')
@@ -906,3 +906,32 @@ function getdni($dni){
                 return $th->getMessage();
         }
 }
+
+
+function sendSMS($number,$message)
+    {
+        try {
+                //code...
+                $sid = config('services.twilio.sid');
+                $token = config('services.twilio.token');
+                $twilioPhoneNumber = config('services.twilio.phone_number');
+        
+                
+                $twilio = new Client($sid, $token);
+
+                $message = $twilio->messages
+                ->create("+51".$number, // to
+                        array(
+                        "from" => $twilioPhoneNumber,
+                        "body" => $message,
+                        )
+                );
+                return true;
+        } catch (\Throwable $th) {
+                //throw $th;
+                return $th->getMessage();
+        }
+        
+        // Puedes imprimir el SID del mensaje si lo deseas
+        
+    }

@@ -60,6 +60,9 @@ class NominaController extends Controller
                 ->where('ema.pmatricula_id','=',$matricula)
                 ->where('ud.ciclo','=',$ciclo)
                 ->where('mf.carrera_id','=',$carrera)
+                ->where(function($query){
+                    $query->where('emad.tipo','Regular')->orWhere('emad.tipo','Repitencia')->orWhere('emad.tipo','Convalidacion');
+                })
                 ->groupBy('ema.licencia','adm.periodo','cli.apellido','cli.nombre','cli.dniRuc','ema.id','cli.telefono','cli.telefono2','pos.fechaNacimiento','pos.sexo','pos.discapacidad')
                 ->orderBy('cli.apellido','asc')
                 ->orderBy('cli.nombre','asc')
@@ -115,6 +118,9 @@ class NominaController extends Controller
                 ->where('ema.pmatricula_id','=',$matricula)
                 ->where('ud.ciclo','=',$ciclo)
                 ->where('emad.tipo','!=','Convalidacion')
+                ->where(function($query){
+                    $query->where('emad.tipo','Regular')->orWhere('emad.tipo','Repitencia');
+                })
                 ->where('mf.carrera_id','=',$carrera)
                 ->groupBy('ema.licencia','adm.periodo','cli.apellido','cli.nombre','cli.dniRuc','ema.id','cli.telefono','cli.telefono2','pos.fechaNacimiento','pos.sexo','pos.discapacidad','ud.nombre')
                 ->orderBy('unidad','asc')

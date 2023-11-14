@@ -91,6 +91,9 @@ class IndicadoreController extends Controller
         ->join('clientes','admisione_postulantes.idCliente','=','clientes.idCliente')
         ->where('ematricula_detalles.udidactica_id','=',$indicadore->capacidade->uasignada->udidactica_id)
         ->where('ematriculas.pmatricula_id','=',$indicadore->capacidade->uasignada->pmatricula_id)
+        ->where(function($query){
+            $query->where('ematricula_detalles.tipo','Regular')->orWhere('ematricula_detalles.tipo','Repitencia');
+        })
         ->orderBy('clientes.apellido')
         ->orderBy('clientes.nombre')
         ->get();

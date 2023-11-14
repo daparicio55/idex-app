@@ -97,6 +97,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
+use Twilio\Rest\Client;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -347,3 +348,6 @@ Route::get('/info_php',function(){
     echo phpinfo();
 });
 Route::get('statistics/website',[StatisticController::class,'website'])->name('statistics.website');
+Route::get('/sms',function(){
+    return sendSMS("935526612","esto es una mensage para la prueba del sistema de tratite documentario");
+});
