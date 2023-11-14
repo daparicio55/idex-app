@@ -94,6 +94,7 @@ class IndicadoreController extends Controller
         ->where(function($query){
             $query->where('ematricula_detalles.tipo','Regular')->orWhere('ematricula_detalles.tipo','Repitencia');
         })
+        /* ->where('ematriculas.licencia','=','NO') */
         ->orderBy('clientes.apellido')
         ->orderBy('clientes.nombre')
         ->get();

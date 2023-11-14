@@ -2,12 +2,12 @@
 @section('title', 'Calificar Indicadores')
 @section('content_header')
 <h4 class="h4">Lista de Alumnos</h4>
-<button class="btn btn-success" title="descargar plantilla">
+{{-- <button class="btn btn-success" title="descargar plantilla">
     <i class="fas fa-download"></i> Plantilla <i class="fas fa-file-excel"></i>
 </button>
 <button class="btn btn-primary" title="subir plantilla">
     <i class="fas fa-upload"></i> Plantilla <i class="fas fa-file-excel"></i>
-</button>
+</button> --}}
 @stop
 @section('content')
 {!! Form::open(['route'=>['docentes.cursos.capacidades.indicadores.calificarstore',$indicadore->id],'method'=>'post']) !!}
@@ -26,7 +26,10 @@
             </thead>
             <tbody>
                 @foreach ($estudiantes as $key=>$estudiante)
-                    <tr>
+                    @php
+                        $detalle = \App\Models\EmatriculaDetalle::findOrFail($estudiante->id);
+                    @endphp
+                    <tr @if($detalle->matricula->licencia == "SI") class="bg-info" style="text-decoration-line:line-through" @endif >
                         <td>
                             <input type="hidden" name="ematricula_detalle_id[]" value="{{ $estudiante->id }}">
                             {{ $key+1 }}
@@ -39,12 +42,21 @@
                         </td>
                         <td>
                             <input type="hidden" name="tipo[]" value="{{ $estudiante->tipo }}">
-                            {{ $estudiante->tipo }}
+                            @if($detalle->matricula->licencia == "SI")
+                                <span>Licencia</span>
+                            @else    
+                                {{ $estudiante->tipo }}
+                            @endif
                         </td>
-                        <td>{{ $estudiante->observacion }}</td>
+                        @if($detalle->matricula->licencia == "SI")
+                            <td>{{ $detalle->matricula->licenciaObservacion }}</td>
+                        @else
+                            <td>
+                                {{ $detalle->observacion }}
+                            </td>
+                        @endif
                         <td>
-                            
-                            <input type="number" @if($estudiante->tipo == "Convalidacion") readonly @endif value="{{ notacriterio($indicadore->id,$estudiante->id) }}" max=20 min=0 step=1 name="notas[]" class="form-control">
+                            <input type="number" @if($estudiante->tipo == "Convalidacion" || $detalle->matricula->licencia == "SI") readonly @endif value="{{ notacriterio($indicadore->id,$estudiante->id) }}" max=20 min=0 step=1 name="notas[]" class="form-control">
                         </td>
                     </tr>
                 @endforeach
