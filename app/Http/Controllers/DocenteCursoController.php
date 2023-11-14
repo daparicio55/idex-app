@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Capacidade;
-use App\Models\Criterio;
+
 use App\Models\Ematricula;
 use App\Models\Pmatricula;
 use App\Models\Uasignada;
+use PDF;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 
 class DocenteCursoController extends Controller
 {
@@ -134,6 +134,10 @@ class DocenteCursoController extends Controller
         ->orderBy('clientes.apellido')
         ->orderBy('clientes.nombre')
         ->get();
+        $data = [
+            'uasignada'=>$uasignada,
+            'estudiantes'=>$estudiantes
+        ];
         return view('docentes.cursos.imprimir',compact('uasignada','estudiantes'));
     }
     public function equivalencia($id){

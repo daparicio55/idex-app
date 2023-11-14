@@ -238,3 +238,10 @@
     </tr>
     @endforeach
 @endsection
+<script> 
+    console.log('Hi!');
+    window.onload = function() {
+            window.print();
+        }
+</script>
+
