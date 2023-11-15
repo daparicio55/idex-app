@@ -726,7 +726,7 @@ function calificacion_cerrado($id){
                 //code...                
                 $indicador = Indicadore::findOrFail($id);
                 $actual = Carbon::now();
-                $fecha = Carbon::parse($indicador->fecha);
+                $fecha = Carbon::parse(date('Y-m-d 23:59:00',strtotime($indicador->fecha)));
                 if($actual->greaterThan($fecha) == true){
                         $resultado = $actual->greaterThan($fecha);
                         //revizar si tenemos apertura

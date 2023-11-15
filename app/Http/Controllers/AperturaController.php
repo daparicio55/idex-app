@@ -58,7 +58,7 @@ class AperturaController extends Controller
                 return view('ventas.aperturas.create',compact('docentes','periodos','uasignadas','tipo'));
             }else{
                 //dd("hola");
-                $fecha_actual = Carbon::now();
+                $fecha_actual = date('Y-m-d',strtotime(Carbon::now()));
                 $tipo = "indicador";
                 $indicadores = Indicadore::WhereHas('capacidade.uasignada',function($query)use($request){
                     $query->where('user_id',$request->docente)
