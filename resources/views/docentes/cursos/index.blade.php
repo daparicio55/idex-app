@@ -22,6 +22,8 @@
                     <th>Periodo</th>
                     <th>Curso</th>
                     <th>Programa de Estudios</th>
+                    <th>Estructura</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -30,6 +32,28 @@
                         <td>{{ $asignacione->periodo->nombre }}</td>
                         <td>{{ $asignacione->unidad->nombre }}</td>
                         <td>{{ $asignacione->unidad->modulo->carrera->nombreCarrera }}</td>
+                        <td>
+                            <table class="table border p-0 m-0">
+                                <tbody class="text-center border p-0 m-0">
+                                    <tr class="border p-0 m-0">
+                                        @foreach ($asignacione->capacidades as $key => $capacidade)
+                                            <td class="border p-0 m-0" colspan="{{ $capacidade->indicadores()->count() }}">
+                                                CA{{ $key+1 }}
+                                            </td>
+                                        @endforeach
+                                    </tr>
+                                    <tr class="border p-0 m-0">
+                                        @foreach ($asignacione->capacidades as $key => $capacidade)
+                                            @foreach ($capacidade->indicadores as $llave=>$indicadore)
+                                                <td class="border p-0 m-0">
+                                                    I{{ $llave+1 }}
+                                                </td>
+                                            @endforeach
+                                        @endforeach
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
                         <td>
                             <!-- vamos a mostrar las capacidades -->
                             <a href="{{ route('docentes.cursos.show',$asignacione->id) }}" class="btn btn-info mb-1">
