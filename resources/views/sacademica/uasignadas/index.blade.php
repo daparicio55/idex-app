@@ -28,7 +28,8 @@
             <th>Programa Estudios</th>
             <th>Docente</th>
             <th>Horario</th>
-            <th>Estructura</th>
+            <th>Opciones</th>
+            {{-- <th>Estructura</th> --}}
         </tr>
     </thead>
     <tbody>
@@ -46,29 +47,7 @@
                         @endforeach
                     </ul>
                 </td>
-                <td>
-                    <table class="table border p-0 m-0">
-                        <tbody class="text-center border p-0 m-0">
-                            <tr class="border p-0 m-0 bg-secondary">
-                                @foreach ($uasignada->capacidades as $key => $capacidade)
-                                    <td class="border p-0 m-0" colspan="{{ $capacidade->indicadores()->count() }}">
-                                        CA{{ $key+1 }}
-                                    </td>
-                                @endforeach
-                            </tr>
-                            <tr class="border p-0 m-0">
-                                @foreach ($uasignada->capacidades as $key => $capacidade)
-                                    @foreach ($capacidade->indicadores as $llave=>$indicadore)
-                                        <td class="border p-0 m-0">
-                                            I{{ $llave+1 }}
-                                        </td>
-                                    @endforeach
-                                @endforeach
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-                <td style="width: 130px">
+                <td style="width: 170px" class="text-center">
                     <a data-toggle="modal" data-target="#modal-update-{{ $uasignada->id }}" class="btn btn-warning mt-1" title="cambiar docente">
                         <i class="fas fa-users"></i>
                     </a>
@@ -78,6 +57,37 @@
                     <a href="{{ route('sacademica.uasignadas.horarios.show',$uasignada->id) }}" class="btn btn-info mt-1" title="agregar horarios">
                         <i class="fas fa-calendar-alt"></i>
                     </a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <table class="table border">
+                        <thead class="border">
+                            <tr>
+                                @foreach ($uasignada->capacidades as $key => $capacidade)
+                                    <th class="text-center pt-0 pb-0 border" colspan="{{ $capacidade->indicadores()->count() }}">
+                                        {{ $capacidade->nombre }} - cierre: {{ date('d-m-Y',strtotime($capacidade->fecha)) }}
+                                    </th>
+                                @endforeach
+                            </tr>
+                            <tr>
+                                @foreach ($uasignada->capacidades as $key => $capacidade)
+                                    @foreach ($capacidade->indicadores as $llave=>$indicadore)
+                                        <th class="text-center pt-0 pb-0 border">
+                                            <span>
+                                                {{ $indicadore->nombre }} - cierre: {{ date('d-m-Y',strtotime($indicadore->fecha)) }}
+                                            </span>
+                                            <p class="pt-0 pb-0 mb-0">
+                                                <span>T: {{ $indicadore->detalles()->count() }}</span>|
+                                                <span class="text-primary">A: {{ $indicadore->detalles()->where('nota','>',12)->count() }}</span>|
+                                                <span class="text-danger">D: {{ $indicadore->detalles()->where('nota','<',13)->count() }}</span>
+                                            </p>
+                                        </th>
+                                    @endforeach
+                                @endforeach
+                            </tr>
+                        </thead>
+                    </table>
                 </td>
             </tr>
             @include('sacademica.uasignadas.modal')
