@@ -6,6 +6,8 @@
 @section ('content')
 <div class="row">
     <img src="{{asset('img/bg.webp')}}" class="rounded mx-auto d-block img-fluid">
-    <small>Sistema de Gestion v0.8</small>
 </div>       
 @stop
+@section('footer')
+    Sistema de Gestion v0.9.2 <small class="text-primary">© Todos los derechos reservados Oficina de Soporte TI 2023</small>
+@endsection
