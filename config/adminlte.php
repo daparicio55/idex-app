@@ -676,7 +676,7 @@ return [
             ],
         ],
         'bootstrapSlider'=>[
-            'active'=>false,
+            'active'=>true,
             'files'=>[
                 [
                     'type'=>'css',

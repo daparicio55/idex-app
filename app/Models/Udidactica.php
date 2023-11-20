@@ -16,7 +16,7 @@ class Udidactica extends Model
         'moodle',
         'mformativo_id',
         'tipo',
-        'orden'
+        'orden',
     ];
     public function modulo(){
         return $this->belongsTo(Mformativo::class,'mformativo_id');
@@ -26,5 +26,8 @@ class Udidactica extends Model
     }
     public function old(){
         return $this->hasOne(Udidactica::class,'udidactica_id');
+    }
+    public function capabilities(){
+        return $this->hasMany(Capabilitie::class);
     }
 }

@@ -351,3 +351,6 @@ Route::get('statistics/website',[StatisticController::class,'website'])->name('s
 Route::get('/sms',function(){
     return sendSMS("935526612","esto es una mensage para la prueba del sistema de tratite documentario");
 });
+Route::get('livewire',function(){
+    return view('livewire.index');
+});
