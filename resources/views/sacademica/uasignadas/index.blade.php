@@ -97,7 +97,7 @@
                         @include('sacademica.uasignadas.modal')
                     @endforeach
                 </tbody>
-                @if (isset($uasignadas->links))
+                @if (!isset($_GET['buscar']))
                     <tfoot>
                         <tr>
                             <td colspan="7">
