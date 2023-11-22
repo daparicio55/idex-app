@@ -379,6 +379,22 @@ function tUnidades(){
         ];
         return $tipos;
 }
+function ventaestados(){
+        $estados = [
+                'Activo'=>'Activo',
+                'Anulado'=>'Anulado',
+        ];
+        return $estados;
+}
+function tpagos(){
+        $tpagos = [
+                'Todo'=>'Todo',
+                'Contado'=>'Contado',
+                'Transferencia'=>'Transferencia',
+                'Credito'=>'Credito',
+        ];
+        return $tpagos;
+}
 function ciclos(){
         $ciclos = [
                 'I'=>'I',

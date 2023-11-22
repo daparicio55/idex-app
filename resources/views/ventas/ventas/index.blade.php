@@ -1,4 +1,78 @@
 @extends('adminlte::page')
+
+@section('title', 'Ventas')
+
+@section('content_header')
+    <h1>Ventas registradas</h1>
+	<div class="d-block mt-2">
+		<a href="" class="btn btn-success">
+			<i class="fas fa-dollar-sign"></i> Nueva venta
+		</a>
+		<a href="" class="btn btn-danger">
+			<i class="fas fa-window-close"></i> Anular
+		</a>
+	</div>
+@stop
+
+@section('content')
+	<x-adminlte-card title="Buscar / Filtrar" theme="info" icon="fas fa-search" collapsible>
+		<div class="row">
+			<div class="col-sm-12 col-md-4">
+				{!! Form::label('dni', 'DNI/RUC', [null]) !!}
+				{!! Form::text('dni', null, ['class'=>'form-control']) !!}
+			</div>
+			<div class="col-sm-12 col-md-2">
+				{!! Form::label('tpago', 'T. Pago', [null]) !!}
+				{!! Form::select('tpago', tpagos(), null, ['class'=>'form-control']) !!}
+			</div>
+			<div class="col-sm-12 col-md-2">
+				{!! Form::label('estado', 'Estado', [null]) !!}
+				{!! Form::select('estado', ventaestados(), null, ['class'=>'form-control']) !!}
+			</div>
+			<div class="col-sm-12 col-md-2">
+				{!! Form::label('finicio', 'F. Inicio', [null]) !!}
+				{!! Form::date('finicio', null, ['class'=>'form-control']) !!}
+			</div>
+			<div class="col-sm-12 col-md-2">
+				{!! Form::label('ffin', 'F. Fin', [null]) !!}
+				{!! Form::date('ffin', null, ['class'=>'form-control']) !!}
+			</div>
+			<div class="col-sm-12 col-md-12 mt-2">
+				<x-adminlte-select2 id="servicio" name="servicios[]" label="Servicio o Producto"
+					label-class="text-black" igroup-size="md" multiple>
+					<x-slot name="prependSlot">
+						<div class="input-group-text bg-gradient-info">
+							<i class="fas fa-tag"></i>
+						</div>
+					</x-slot>
+					@foreach ($collection as $item)
+						
+					@endforeach
+				</x-adminlte-select2>
+			</div>
+		</div>
+	</x-adminlte-card>
+@stop
+
+@section('js')
+	<script>
+		$(document).ready(function(){
+		setTimeout(() => {
+			$("#info").hide();
+		}, 12000);
+		});
+		$(document).ready(function(){
+			setTimeout(() => {
+			$("#error").hide();
+		}, 12000);
+		});
+	</script>
+@stop
+
+
+
+
+{{-- @extends('adminlte::page')
 @section('title', 'Ventas')
 @section('content_header')
 		<h1>Listado de Ventas 
@@ -115,4 +189,4 @@
       }, 12000);
     });
 	</script>
-@stop
+@stop --}}

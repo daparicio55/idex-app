@@ -37,8 +37,8 @@ class VentaController extends Controller
 		$fInicio=trim($request->get('dInicio'));
 		$fFin=trim($request->get('dFin'));
 		$idServicio = trim($request->get('idServicio'));
-		$servicios = DB::table('servicios')
-		->get();
+		/* $servicios = Servicio::orderBy('nombre','asc')->pluck('nombre','idServicio')->toArray(); */
+		$servicios = Servicio::orderBy('nombre','asc')->get();
 		if ($fInicio == NULL)
 		{
 			$ventas=DB::table('ventas as v')
@@ -133,8 +133,9 @@ class VentaController extends Controller
 					}
 				}
 			}
-		}		
-    	return view('ventas.ventas.index',["ventas"=>$ventas,"searchText"=>$query,"dInicio"=>$fInicio,"dFin"=>$fFin,"tipoPago"=>$tipoPago,'servicios'=>$servicios,'idServicio'=>$idServicio]);
+		}
+		return view('ventas.ventas.index',compact('servicios'));
+    	/* return view('ventas.ventas.index',["ventas"=>$ventas,"searchText"=>$query,"dInicio"=>$fInicio,"dFin"=>$fFin,"tipoPago"=>$tipoPago,'servicios'=>$servicios,'idServicio'=>$idServicio]); */
     }
 
     /**
