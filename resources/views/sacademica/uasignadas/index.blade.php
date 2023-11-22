@@ -97,6 +97,15 @@
                         @include('sacademica.uasignadas.modal')
                     @endforeach
                 </tbody>
+                @if (isset($uasignadas->links))
+                    <tfoot>
+                        <tr>
+                            <td colspan="7">
+                                {{ $uasignadas->links() }}
+                            </td>
+                        </tr>
+                    </tfoot>    
+                @endif
             </table>
         </div>
     </div>

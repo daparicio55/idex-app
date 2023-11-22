@@ -34,7 +34,7 @@ class UasignadaController extends Controller
         $udidacticas = Udidactica::orderBy('nombre','asc')->get();
         $uasignadas = Uasignada::whereHas('periodo',function($query){
             $query->where('plan_cerrado','=',0);
-        })->orderBy('id','desc')->get();
+        })->orderBy('id','desc')->paginate(5);
         $periodos = Pmatricula::orderBy('nombre','desc')->get();
         if (isset($request->buscar)){
             $uasignadas = Uasignada::orderBy('id','desc')
