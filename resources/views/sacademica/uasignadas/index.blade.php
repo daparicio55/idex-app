@@ -1,11 +1,12 @@
 @extends('adminlte::page')
 @section('title', 'Experiencias laborales')
 @section('content_header')
-<h1>List de unidades didacticas asignadas
+    <h1>
+        List de unidades didacticas asignadas
+    </h1>
     <a href="{{route('sacademica.uasignadas.create')}}" class="btn btn-success">
         <i class="far fa-file"></i> Nueva Asignacion
     </a>
-</h1>
 @stop
 @section('content')
 @if (session('info'))

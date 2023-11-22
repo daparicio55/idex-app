@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Carrera;
 use App\Models\Pmatricula;
 use App\Models\Uasignada;
 use App\Models\Udidactica;
@@ -30,17 +31,46 @@ class UasignadaController extends Controller
     {
         //
         $text = $request->searchText;
+        $udidacticas = Udidactica::orderBy('nombre','asc')->get();
         $uasignadas = Uasignada::whereHas('periodo',function($query){
             $query->where('plan_cerrado','=',0);
         })->orderBy('id','desc')->get();
-        if (isset($request->searchText)){
+        $periodos = Pmatricula::orderBy('nombre','desc')->get();
+        if (isset($request->buscar)){
             $uasignadas = Uasignada::orderBy('id','desc')
-            ->whereHas('user',function($query) use($text){
-                $query->where('name','like','%'.$text.'%');
-            })->get();
+            ->where(function($query) use($request){
+                if(isset($request->periodo)){
+                    $query->where('pmatricula_id','=',$request->periodo);
+                }
+            })
+            ->where(function($query) use($request){
+                if(isset($request->udidactica)){
+                    $query->where('udidactica_id','=',$request->udidactica);
+                }
+            })
+            ->where(function($query) use($request){
+                if(isset($request->docente)){
+                    $query->where('user_id','=',$request->docente);
+                }
+            })
+            ->whereHas('unidad.modulo',function($query) use($request){
+                if(isset($request->carrera) and isset($request->ciclo)){
+                    $query->where('carrera_id','=',$request->carrera)->where('ciclo','=',$request->ciclo);
+                }else{
+                    if(isset($request->carrera)){
+                        $query->where('carrera_id','=',$request->carrera);
+                    }else{
+                        if(isset($request->ciclo)){
+                            $query->where('ciclo','=',$request->ciclo);
+                        }
+                    }
+                }
+            })
+            ->get();
         }
+        $carreras = Carrera::orderBy('nombreCarrera')->get();
         $users = User::role('Docentes')->orderBy('name','asc')->get();
-        return view('sacademica.uasignadas.index',compact('uasignadas','text','users'));
+        return view('sacademica.uasignadas.index',compact('uasignadas','text','users','udidacticas','carreras','periodos'));
     }
 
     /**
