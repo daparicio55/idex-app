@@ -126,6 +126,10 @@ function BuscarAlumno($id,$tipo)
         }
         
 }
+
+
+
+
 //vamos a retornar el DNI
 function BuscarDni($dni){
         if ($dni == "vacio")
@@ -810,25 +814,7 @@ function letras($num){
 }
 function getdni($dni){
         try {
-                
-                //token... apis-token-6373.QVY2G0dg0tW7su3VMT-tYzQVUIITQrOY
-                //verificamos el largo de la cadena
-
-                /* $cliente = (object)$cliente;
-                return($cliente); */
-
-                /* $cliente = ['idCliente'=>0,
-                                'dniRuc'=>$dni,
-                                'nombre'=>'INGRESO',
-                                'apellido'=>'MANUAL',
-                                'direccion'=>'-',
-                                'email'=>'sincorreo@gmail.com',
-                                'telefono'=>'999999999',
-                                'estado'=>0,
-                                'estudiante'=>'no',
-                                'telefono2'=>'999999999'
-                                ]; */
-                if( strlen($dni) == 8 || strlen($dni) == 11){
+                 if( strlen($dni) == 8 || strlen($dni) == 11){
                         $cantidad = Cliente::where('dniruc','=',$dni)->count();
                         if ($cantidad == 1){
                                 $cliente = Cliente::where('dniruc','=',$dni)->first();
@@ -919,8 +905,35 @@ function getdni($dni){
                  
         } catch (\Throwable $th) {
                 //throw $th;
-                return $th->getMessage();
+                $cliente = [
+                        'idCliente'=>0,
+                        'dniRuc'=>'error',
+                        'nombre'=>'error',
+                        'apellido'=>'error',
+                        'direccion'=>'error',
+                        'email'=>'error',
+                        'telefono'=>'error',
+                        'estado'=>0,
+                        'estudiante'=>'error',
+                        'telefono2'=>'error'
+                ];
+                return $cliente = (object)$cliente;
+                return $cliente;
         }
+        $cliente = [
+                'idCliente'=>0,
+                'dniRuc'=>'error',
+                'nombre'=>'error',
+                'apellido'=>'error',
+                'direccion'=>'error',
+                'email'=>'error',
+                'telefono'=>'error',
+                'estado'=>0,
+                'estudiante'=>'error',
+                'telefono2'=>'error'
+        ];
+        return $cliente = (object)$cliente;
+        return $cliente;
 }
 
 

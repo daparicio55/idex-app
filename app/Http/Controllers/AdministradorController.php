@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Exports\ReporteDeudaAdministradorExport;
 use App\Models\Admisione;
 use App\Models\Deuda;
+use App\Models\Ematricula;
 use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
 use App\Models\Mformativo;
+use App\Models\Pmatricula;
 use App\Models\Practica;
 use App\Models\Udidactica;
 use Maatwebsite\Excel\Facades\Excel;
@@ -29,7 +31,8 @@ class AdministradorController extends Controller
     }
     public function index(){
         $admisiones = Admisione::orderBy('periodo','desc')->take(10)->get();
-        return view('administrador.index',compact('admisiones'));
+        $periodos = Pmatricula::orderBy('nombre','desc')->take(18)->get();
+        return view('administrador.index',compact('admisiones','periodos'));
     }
     public function reportedeudas(){
         $deudas = Deuda::orderBy('numero','desc')
@@ -51,6 +54,15 @@ class AdministradorController extends Controller
             return($th->getMessage());
         }
         return view('administrador.reporteingresantes',compact('estudiantes','admisione'));
+    }
+    public function reportedis($id){
+        $periodo = Pmatricula::findOrfail($id);
+        $matriculas = Ematricula::where('pmatricula_id','=',$id)
+        ->whereHas('estudiante.postulante',function($query){
+            $query->where('discapacidad','=',0);
+        })
+        ->get();
+        return view('administrador.reportedis',compact('periodo','matriculas'));
     }
     public function checkeformativas(){
         set_time_limit(0);

@@ -7,9 +7,10 @@ use App\Models\Cliente;
 use App\Models\Servicio;
 use App\Models\Venta;
 use App\Models\VentaDetalle;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 
@@ -22,6 +23,7 @@ class VentaController extends Controller
      */
     public function __construct()
     {
+		
         $this->middleware('auth');
 		$this->middleware('can:ventas.ventas.index')->only('index');
         $this->middleware('can:ventas.ventas.create')->only('create','store');
@@ -32,110 +34,36 @@ class VentaController extends Controller
     }
     public function index(Request $request)
     {
-        $query=trim($request->get('searchText'));
-		$tipoPago=trim($request->get('tipoPago'));
-		$fInicio=trim($request->get('dInicio'));
-		$fFin=trim($request->get('dFin'));
-		$idServicio = trim($request->get('idServicio'));
-		/* $servicios = Servicio::orderBy('nombre','asc')->pluck('nombre','idServicio')->toArray(); */
 		$servicios = Servicio::orderBy('nombre','asc')->get();
-		if ($fInicio == NULL)
-		{
-			$ventas=DB::table('ventas as v')
-			->join('clientes as c','c.idCliente','=','v.idCliente')
-			->select('v.idVenta','v.tipo','v.numero','c.nombre','c.dniRuc','c.direccion','c.apellido','v.estado','v.total','v.tipoPago','v.fecha')
-			->orderBy('v.fecha','desc')
-			->orderBy('v.numero','desc')
-			->paginate(7);
-		}
-		else
-		{
-			if ($tipoPago == 'Todo')
-			{
-				if ($idServicio == 0)
-				{
-					if ($query == NULL)
-					{
-						$ventas=DB::table('ventas as v')
-						->join('clientes as c','c.idCliente','=','v.idCliente')
-						->select('v.idVenta','v.tipo','v.numero','c.nombre','c.dniRuc','c.direccion','c.apellido','v.estado','v.total','v.tipoPago','v.fecha')
-						->whereBetween('v.fecha',[$fInicio,$fFin])
-						->orderBy('v.fecha','desc')
-						->orderBy('v.numero','desc')
-						->paginate(7);
+		$ventas = Venta::orderBy('fecha','desc')
+		->orderBy('numero','desc')
+		->paginate(10);
+		if(isset($request->buscar)){
+			$ventas = Venta::whereBetween('fecha',[$request->finicio,$request->ffin])
+			->whereHas('cliente',function($query) use($request){
+				if(isset($request->dni)) {
+					$query->where('dniRuc','=',$request->dni);
+				}
+			})
+			->whereHas('detalles',function($sql) use($request){
+				if(isset($request->servicios)){
+					$sql->whereIn('idServicio',$request->servicios);
+				}
+			})
+			->where(function($res) use($request){
+				if(isset($request->estado)) {
+					if($request->estado == "Activo"){
+						$res->where('estado','=','Activo');
 					}
-					else
-					{
-						if (strlen($query) == 8)
-						{
-							$ventas=DB::table('ventas as v')
-							->join('clientes as c','c.idCliente','=','v.idCliente')
-							->select('v.idVenta','v.tipo','v.numero','c.nombre','c.dniRuc','c.direccion','c.apellido','v.estado','v.total','v.tipoPago','v.fecha')
-							->whereBetween('v.fecha',[$fInicio,$fFin])
-							->where('c.dniRuc','=',$query)
-							->orderBy('v.fecha','desc')
-							->orderBy('v.numero','desc')
-							->paginate(7);
-						}
-						else
-						{
-							$ventas=DB::table('ventas as v')
-							->join('clientes as c','c.idCliente','=','v.idCliente')
-							->select('v.idVenta','v.tipo','v.numero','c.nombre','c.dniRuc','c.direccion','c.apellido','v.estado','v.total','v.tipoPago','v.fecha')
-							->whereBetween('v.fecha',[$fInicio,$fFin])
-							->where('v.numero','=',$query)
-							->orderBy('v.fecha','desc')
-							->orderBy('v.numero','desc')
-							->paginate(7);
-						}
+					if($request->estado == "Anulado"){
+						$res->where('estado','=','Anulado');
 					}
 				}
-				else
-				{
-					if ($query == NULL)
-					{
-						$ventas=DB::table('ventas as v')
-						->join('clientes as c','c.idCliente','=','v.idCliente')
-						->join('ventasdetalles as vd','v.idVenta','=','vd.idVenta')
-						->select('v.idVenta','v.tipo','v.numero','c.nombre','c.dniRuc','c.direccion','c.apellido','v.estado','v.total','v.tipoPago','v.fecha')
-						->whereBetween('v.fecha',[$fInicio,$fFin])
-						->where('vd.idServicio','=',$idServicio)
-						->orderBy('v.fecha','desc')
-						->orderBy('v.numero','desc')
-						->paginate(7);
-					}
-					else
-					{
-						if (strlen($query) == 8)
-						{
-							$ventas=DB::table('ventas as v')
-							->join('clientes as c','c.idCliente','=','v.idCliente')
-							->select('v.idVenta','v.tipo','v.numero','c.nombre','c.dniRuc','c.direccion','c.apellido','v.estado','v.total','v.tipoPago','v.fecha')
-							->whereBetween('v.fecha',[$fInicio,$fFin])
-							->where('c.dniRuc','=',$query)
-							->where('vd.idServicio','=',$idServicio)
-							->orderBy('v.fecha','desc')
-							->orderBy('v.numero','desc')
-							->paginate(7);
-						}
-						else
-						{
-							$ventas=DB::table('ventas as v')
-							->join('clientes as c','c.idCliente','=','v.idCliente')
-							->select('v.idVenta','v.tipo','v.numero','c.nombre','c.dniRuc','c.direccion','c.apellido','v.estado','v.total','v.tipoPago','v.fecha')
-							->whereBetween('v.fecha',[$fInicio,$fFin])
-							->where('v.numero','=',$query)
-							->where('vd.idServicio','=',$idServicio)
-							->orderBy('v.fecha','desc')
-							->orderBy('v.numero','desc')
-							->paginate(7);
-						}
-					}
-				}
-			}
+			})
+			->get();
 		}
-		return view('ventas.ventas.index',compact('servicios'));
-    	/* return view('ventas.ventas.index',["ventas"=>$ventas,"searchText"=>$query,"dInicio"=>$fInicio,"dFin"=>$fFin,"tipoPago"=>$tipoPago,'servicios'=>$servicios,'idServicio'=>$idServicio]); */
+		return view('ventas.ventas.index',compact('servicios','ventas'));
+		
     }
 
     /**
@@ -143,99 +71,9 @@ class VentaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        $servicios=DB::table('servicios')
-		->where('estado','=','1')
-		->get();
-		$dni=trim($request->get('dni'));
-        $nombre=NULL;
-        $apellido=NULL;
-        $direccion=NULL;
-		$correo=NULL;
-		$telefono=NULL;
-		$idCliente=0;
-		$numero = DB::table('ventas')
-		->select('numero')
-		->where('tipo','=','Boleta')
-		->orderBy('numero','desc')
-		->first();
-		if ($dni != NULL)
-		{
-			$cliente = DB::table('clientes')
-			->where('dniRuc','=',$dni)
-			->first();
-
-			$cantidad = DB::table('clientes')
-			->where('dniRuc','=',$dni)
-			->count();
-			if ($cantidad == 0)
-			{
-				//ahora verificamos si es de 8
-				if (strlen($dni)==8){
-					$cons = file_get_contents('https://dniruc.apisperu.com/api/v1/dni/'.$dni.'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImR3YXBhcmljaWNpb0BnbWFpbC5jb20ifQ.2AdhICiTyw6lpnrxtfK2ajSgfMGiMn-71RvrRGKd8Uk');
-					$arr = json_decode($cons,false);
-					if (!isset($arr->success))
-					{
-						//$dni='INGRESE MANUAL';
-						$nombre=NULL;
-						$apellido="INGRESE MANUAL";
-
-					}
-					else
-					{
-						if ($cons =='"success":false,"message":"No se encontraron resultados."')
-						{
-							//$dni='INGRESE MANUAL';
-							$nombre=NULL;
-							$apellido="INGRESE MANUAL";
-						}
-						else
-						{
-							$consulta=json_decode($cons,true);
-							$dni=$consulta['dni'];
-							$nombre=$consulta['nombres'];
-							$apellido=$consulta['apellidoPaterno'].' '.$consulta['apellidoMaterno'];
-						}
-					}
-					$direccion='sin direccion';
-					$correo='sincorreo@gmail.com';
-					$telefono=NULL;
-				}
-				//verificamos si es de 11 caracteres
-				if (strlen($dni)==11){
-					$cons = file_get_contents('https://dniruc.apisperu.com/api/v1/ruc/'.$dni.'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImR3YXBhcmljaWNpb0BnbWFpbC5jb20ifQ.2AdhICiTyw6lpnrxtfK2ajSgfMGiMn-71RvrRGKd8Uk');
-					$arr = json_decode($cons,false);
-					if (!isset($arr->ruc))
-					{
-						//$dni='INGRESE MANUAL';
-						$nombre=NULL;
-						$apellido="INGRESE MANUAL";
-
-					}else{
-						$consulta=json_decode($cons,true);
-						$dni=$consulta['ruc'];
-						$nombre='-';
-						$apellido=$consulta['razonSocial'];
-						$direccion=$consulta['direccion'];
-					}
-					$correo='sincorreo@gmail.com';
-					$telefono=NULL;
-				}	
-				
-			}
-			else
-			{
-				$idCliente = $cliente->idCliente;
-				$apellido = $cliente->apellido;
-				$nombre= $cliente->nombre;
-				$direccion = $cliente->direccion;
-				$correo = $cliente->email;
-				$telefono = $cliente->telefono;
-			}
-		}
-		$cliente = Cliente::find($idCliente);
-		return view("ventas.ventas.create",["cliente"=>$cliente,"dni"=>$dni,"apellido"=>$apellido,"nombre"=>$nombre,"direccion"=>$direccion,"correo"=>$correo,"telefono"=>$telefono,"idCliente"=>$idCliente,"numero"=>$numero,"servicios"=>$servicios]);
+		return view('ventas.ventas.create');
     }
 
     /**
@@ -246,69 +84,69 @@ class VentaController extends Controller
      */
     public function store(Request $request)
     {
-        try
-    	{
-			//verificamos el cliente
+		$request->validate([
+			'ids'=>[
+				'required',
+			],
+			'fecha'=>[
+				'required',
+				'date',
+				function($attribute,$value,$fail){
+					$fechaActual = date('Y-m-d',strtotime(Carbon::now()));
+					$fechaIngresada = Carbon::parse($value);
+					if ($fechaIngresada->isBefore($fechaActual)) {
+                        $fail('La fecha  debe ser igual o mayor a la fecha actual.');
+                    }
+				},
+			]
+		]);
+		try {
 			DB::beginTransaction();
-			$venta = new Venta;
-			if ($request->get('idCliente') == 0)
-			{
-				//vamos a insertar el cliente nuevo
-				$cliente = new Cliente;
-				$cliente->dniRuc=$request->get('dniRuc');
-				$cliente->nombre=$request->get('nombre');
-				$cliente->apellido=$request->get('apellido');
-				$cliente->direccion=$request->get('direccion');
-				$cliente->email=$request->get('email');
-				$cliente->telefono=$request->get('telefono');
-				$cliente->estado='1';
-				$cliente->save();
-				$venta->idCliente=$cliente->idCliente;
+			//actualizamos el Cliente o lo CREAMOS
+			$cliente = Cliente::updateOrCreate(
+				[
+					'dniRuc'=>$request->dni
+				],
+				[
+					'apellido'=>$request->apellido,
+					'nombre'=>$request->nombre,
+					'telefono'=>$request->telefono,
+					'telefono2'=>$request->telefono2,
+					'email'=>$request->email,
+					'direccion'=>$request->direccion,
+				]
+			);
+			//ahora agreamos la venta
+			$venta = Venta::create(
+				[
+					'tipo'=>$request->tipo,
+					'numero'=>$request->numero,
+					'fecha'=>$request->fecha,
+					'tipopago'=>$request->tpago,
+					'comentario'=>$request->observacion,
+					'idCliente'=>$cliente->idCliente,
+					'total'=>$request->total,
+					'pagado'=>'SI',
+					'estado'=>'activo',
+				]
+			);
+			//agregamos los detalles
+			for ($i=0; $i < count($request->ids); $i++) { 
+				# code...
+				$detalle = new VentaDetalle();
+				$detalle->cantidad = $request->cantidades[$i];
+				$detalle->precio = $request->precios[$i];
+				$detalle->idServicio = $request->ids[$i];
+				$detalle->idVenta = $venta->idVenta;
+				$detalle->save();
 			}
-			else
-			{
-				$venta->idCliente=$request->get('idCliente');
-			}
-            $venta->fecha=$request->get('fecha');
-            $venta->tipo=$request->get('tipo');
-            $venta->numero=$request->get('numero');
-            $venta->total=$request->get('total_venta');
-			$venta->estado="activo";
-			if ($request->get('tipoPago')=='Credito')
-			{
-				$venta->tipoPago=$request->get('tipoPago');
-				$venta->pagado = 'no';
-			}
-			else
-			{
-				$venta->tipoPago=$request->get('tipoPago');
-				$venta->pagado = 'si';
-			}
-			$venta->comentario=$request->get('comentario');
-            $venta->save();
-            $idServicio=$request->get('idServicio');
-            $cantidad=$request->get('cantidad');
-			$precio=$request->get('precio');
-    		$cont = 0;
-
-    		while ($cont < count($idServicio))
-    		{
-    			$detalle = new VentaDetalle();
-    			$detalle->idVenta=$venta->idVenta;
-                $detalle->cantidad=$cantidad[$cont];
-                $detalle->precio=$precio[$cont];
-    			$detalle->idServicio=$idServicio[$cont];
-    			$detalle->save();
-    			$cont=$cont+1;
-    		}
-    		DB::commit();
-    	}
-    	catch(\Throwable $th)
-    	{
-    		DB::rollback();
-            return Redirect::to('ventas/ventas')->with('error','no se pudo guardar la venta, error: '.$th->getMessage());    
-    	}
-    	return Redirect::to('ventas/ventas')->with('info','la venta se guardo de forma correcta');
+			DB::commit();
+			return Redirect::route('ventas.ventas.index')->with('info','se guardo la venta correctamente');
+		} catch (\Throwable $th) {
+			//throw $th;
+			DB::rollBack();
+			dd($th->getMessage());
+		}
     }
 
     /**
@@ -399,15 +237,13 @@ class VentaController extends Controller
 		} catch (\Throwable $th) {
 			//throw $th;
 			DB::rollBack();
-			return Redirect::to('ventas/ventas')->with('error','no se pudo guardar la venta anulada, error: '.$th->getMessage());
+			Return Redirect::route('ventas.ventas.index')->with('error','no se pudo guardar la venta anulada, error: '.$th->getMessage());
 		}
-		return Redirect::to('ventas/ventas')->with('info','se guardo la venta anulada correctamente');    
+		return Redirect::route('ventas.ventas.index')->with('info','se guardo la venta anulada correctamente');
 	}
     public function destroy($id)
     {
         try {
-            //code...
-            DB::beginTransaction();
             $datos = explode(":",$id);
             if ($datos[1]=='anular')
             {
@@ -421,18 +257,24 @@ class VentaController extends Controller
             }
             if ($datos[1]=='eliminar')
             {
+				//verificamos si es la ultima venta
                 $venta=Venta::findOrFail($datos[0]);
-                $venta->delete();
+				$ventas = Venta::orderBy('numero','desc')->first();
+				if($ventas->idVenta == $venta->idVenta){
+					$venta->delete();
+				}else{
+					return Redirect::route('ventas.ventas.index')->with('error','no se puede eliminar esta venta por que ya esta emitida otro comprobante');
+				}
             }
             if ($datos[1]=='editar')
             {
                 $venta=Venta::findOrFail($datos[0]);
                 return ('editar');
             }
-            DB::commit();
+            
         } catch (\Throwable $th) {
             //throw $th;
-            DB::rollBack();
+            
             return Redirect::to('ventas/ventas')->with('error','nose puedo eliminar anular, error: '.$th->getMessage());
         }
         return Redirect::to('ventas/ventas')->with('info','los cambios fueron realizados correctamente');
@@ -461,9 +303,12 @@ class VentaController extends Controller
 			return Excel::download(new VentaExport($datos),$datos[2].'-'.$datos[3].'.xlsx');
 		}
 	}
-
+	public function reporte(Request $request){
+		dd($request);
+	}
 	public function imprimirv2($id)
 	{
+
 		$datos = explode(":",$id);
 		if ($datos[1]!=NULL & $datos[2]!=NULL & $datos[3]!=NULL & $datos[4]!=NULL)
 		{

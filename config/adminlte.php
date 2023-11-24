@@ -715,14 +715,19 @@ return [
             'active' => true,
             'files' => [
                 [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js',
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/snapappointments/bootstrap-select/dist/css/bootstrap-select.min.css',
                 ],
                 [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css',
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/snapappointments/bootstrap-select/dist/js/bootstrap-select.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/snapappointments/bootstrap-select/dist/js/i18n/defaults-es_ES.js',
                 ],
             ],
         ],
@@ -824,5 +829,5 @@ return [
     |
     */
 
-    'livewire' => false,
+    'livewire' => true,
 ];
