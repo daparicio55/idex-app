@@ -1,118 +1,104 @@
 @extends('adminlte::page')
+
 @section('title', 'Ventas')
+
 @section('content_header')
-		<h1>Listado de Ventas 
-			<a href="ventas/create">
-				<button class="btn btn-success" @if (oficinaNombre() == 'Unidad Académica') disabled @endif>
-					<i class="far fa-file"></i> Nuevo
-				</button></a>
-			<a href="ventas">
-				<button class="btn btn-warning text-white" @if (oficinaNombre() == 'Unidad Académica') disabled @endif>
-					<i class="fa fa-paint-brush" aria-hidden="true"></i> Limpiar
-				</button>
-			</a>
-			<a href="{{URL('ventas/ventas/imprimirv2/'.$searchText.':'.$tipoPago.':'.$dInicio.':'.$dFin.':'.$idServicio)}}">
-				<button class="btn btn-primary" @if (oficinaNombre() == 'Unidad Académica') disabled @endif>
-					<i class="fa fa-print" aria-hidden="true"></i> Imprimir
-				</button>
-			</a>
-			<a href="{{ route('venta.ventas.excel',$searchText.':'.$tipoPago.':'.$dInicio.':'.$dFin.':'.$idServicio) }}" class="btn btn-success">
-				<i class="far fa-file-excel"></i> Excel
-			</a>
-			<a  href=""  data-target="#modal-anular-1" data-toggle="modal">
+    <h1>Ventas registradas</h1>
+	<div class="d-block mt-2">
+		<a href="{{ route('ventas.ventas.create') }}" class="btn btn-success">
+			<i class="fas fa-dollar-sign"></i> Nueva venta
+		</a>
+		@can('ventas.ventas.anular')
+			<a data-target="#modal-anular-1" data-toggle="modal">
 				<button class="btn btn-danger">
 					<i class="fas fa-minus-circle" aria-hidden="true"></i> Anular
 				</button>
 			</a>
-		</h1>
-		@include('ventas.ventas.anular')
+		@endcan
+	</div>	
+	@include('ventas.ventas.anular')
+	<x-Alert />
 @stop
 
 @section('content')
-@if (session('info'))
-    <div class="alert alert-success" id='info'>
-        <strong>{{session('info')}}</strong>
-    </div>
-@endif
-@if (session('error'))
-    <div class="alert alert-danger" id='error'>
-        <strong>{{session('error')}}</strong>
-    </div>
-@endif
-<div class="row">
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		@include('ventas.ventas.search')
-	</div>
-</div>
-<br>
-<div class="row">
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		<div class="table-responsive">
-			<table class="table table-striped table-bordered table-condensed table-hover">
-				<thead>
-					<th>Comprob</th>
-					<th>T. Pago</th>
-					<th>Num</th>
-                    <th>DNI | Nombre Cliente</th>
-					<th>Fecha</th>
-                    <th>Monto</th>
-                    <th>Est.</th>
-				</thead>
-				<tbody>
-					@foreach ($ventas as $vent)
-					<tr @if($vent->estado == 'anulado') class="text-danger" @endif>
-						<td>{{ $vent->tipo}}</td>
-						<td>{{ $vent->tipoPago}}</td>
-						<td>
-							{{ $vent->numero}}
-							<a href="" class="btn btn-warning" data-target="#modal-editar-{{$vent->idVenta}}" data-toggle="modal" title="editar numero de boleta">
-								<i class="fas fa-pen"></i>
-							</a>
-						</td>
-						<td>
-							{{ $vent->dniRuc}} |<strong class="text-uppercase">{{$vent->apellido}}</strong>, <span class="text-capitalize">{{strtolower($vent->nombre)}}</span>  
-						</td>
-						<td style="width: 100px; text-align: center">{{ date('d-m-Y', strtotime($vent->fecha))}}</td>
-						<td class="text-right">{{ $vent->total}}</td>
-						<td>{{ $vent->estado}}</td>
-						<td style="width: 205px; text-align: center">
-							<a href="{{route('ventas.ventas.show',['venta' =>$vent->idVenta])}}">
-								<button class="btn btn-info"><i class="fa fa-search-plus" aria-hidden="true" title="detalles"></i></button></a>
-							<a @if (oficinaNombre() == 'Unidad Académica') hidden @endif href="{{route('ventas.ventas.imprimir',['id'=>$vent->idVenta])}}">
-								<button class="btn btn-success" title="imprimir"><i class="fa fa-print" aria-hidden="true"></i></button></a>
-							<a @if (oficinaNombre() == 'Unidad Académica') hidden @endif href="" data-target="#modal-anular-{{$vent->idVenta}}" data-toggle="modal">
-								<button class="btn btn-secondary" title="anular / activar"><i class="fa fa-ban" aria-hidden="true"></i></button></a>
-							<a @if (oficinaNombre() == 'Unidad Académica') hidden @endif href="" data-target="#modal-delete-{{$vent->idVenta}}" data-toggle="modal">
-								<button class="btn btn-danger" title="eliminar"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
-						</td>
-						@include('ventas.ventas.modal')
-					</tr>
-					@endforeach
-				</tbody>
-				<tfoot>
-					<tr>
-						<td colspan="9">
-							{{$ventas->links()}}
-						</td>
-					</tr>
-				</tfoot>
-			</table>
+	@include('ventas.ventas.search')
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<th>Comprob</th>
+						<th>T. Pago</th>
+						<th class="text-center">Num</th>
+						<th>Fecha</th>
+						<th>DNI | Nombre Cliente</th>
+						<th class="text-right">Monto</th>
+						<th>Est.</th>
+					</thead>
+					<tbody>
+						@foreach ($ventas as $venta)
+							<tr @if ($venta->estado == 'anulado')
+								class="text-danger"
+							@endif>
+								<td>{{ $venta->tipo }}</td>
+								<td>{{ $venta->tipoPago }}</td>
+								<td class="text-center">
+									{{ $venta->numero }}
+									@can('ventas.ventas.edit')
+										<a class="btn btn-sm btn-warning" data-target="#modal-editar-{{ $venta->idVenta }}" data-toggle="modal" title="editar numero de boleta">
+											<i class="fas fa-pen"></i>
+										</a>	
+									@endcan
+								</td>
+								<td>{{ date('d-m-Y',strtotime($venta->fecha)) }}</td>
+								<td>{{ $venta->cliente->dniRuc }} | {{ Str::upper($venta->cliente->apellido) }}, {{ Str::title($venta->cliente->nombre) }}</td>
+								<td class="text-right">{{ $venta->total }}</td>
+								<td>{{ $venta->estado }}</td>
+								<td>
+									<a href="{{route('ventas.ventas.show',['venta'=>$venta->idVenta])}}">
+										<button class="mt-1 btn btn-info"><i class="fa fa-search-plus" aria-hidden="true" title="detalles"></i></button></a>
+									<a @if (oficinaNombre() == 'Unidad Académica') hidden @endif href="{{route('ventas.ventas.imprimir',['id'=>$venta->idVenta])}}">
+										<button class="mt-1 btn btn-success" title="imprimir"><i class="fa fa-print" aria-hidden="true"></i></button></a>
+									<a @if (oficinaNombre() == 'Unidad Académica') hidden @endif href="" data-target="#modal-anular-{{$venta->idVenta}}" data-toggle="modal">
+										<button class="mt-1 btn btn-secondary" title="anular / activar"><i class="fa fa-ban" aria-hidden="true"></i></button></a>
+									<a @if (oficinaNombre() == 'Unidad Académica') hidden @endif href="" data-target="#modal-delete-{{$venta->idVenta}}" data-toggle="modal">
+										<button class="mt-1 btn btn-danger" title="eliminar"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
+								</td>
+								@include('ventas.ventas.modal')
+							</tr>
+						@endforeach
+					</tbody>
+					@if(!isset($_GET['buscar']))
+						<tfoot>
+							<tr>
+								<td colspan="7">
+									{{ $ventas->links() }}
+								</td>
+							</tr>
+						</tfoot>
+					@endisset
+					
+				</table>
+			</div>
 		</div>
-		
 	</div>
-<div>
 @stop
+
 @section('js')
-    <script>
-	$(document).ready(function(){
-    setTimeout(() => {
-        $("#info").hide();
-    }, 12000);
-    });
-    $(document).ready(function(){
-        setTimeout(() => {
-        $("#error").hide();
-      }, 12000);
-    });
+	<script>
+		let botton = document.getElementById('btn_enviar');
+		var protocolo = window.location.protocol;
+		var host = window.location.hostname;
+		var ruta = window.location.pathname;
+		var consulta = window.location.search;
+		botton.addEventListener('click',function(){
+			let url = protocolo+'//'+host+'/ventas/reportes/create'+consulta;
+			window.location.href = url;
+		});
+		let excel = document.getElementById('btn_excel');
+		excel.addEventListener('click',function(){
+			let url = protocolo+'//'+host+'/ventas/reportes/excel'+consulta;
+			window.location.href = url;
+		});	
 	</script>
 @stop

@@ -21,6 +21,7 @@
         "maennchen/zipstream-php": "^2.4",
         "phpoffice/phpspreadsheet": "^1.29",
         "rmunate/spell-number": "^1.0",
+        "snapappointments/bootstrap-select": "^1.13",
         "spatie/laravel-permission": "^5.11.1",
         "twilio/sdk": "^7.12.1"
     },

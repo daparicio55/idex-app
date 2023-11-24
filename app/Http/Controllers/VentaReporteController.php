@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\VentaExport;
 use App\Models\Venta;
-use App\Models\VentaDetalle;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use Twilio\Rest\Serverless\V1\Service\FunctionContext;
 
 class VentaReporteController extends Controller
 {
@@ -56,10 +58,7 @@ class VentaReporteController extends Controller
             ->where('v.estado','=','activo')
             ->groupByRaw('nombre,mes')
             ->orderBy('mes','asc')
-            ->get();
-            //dd($ventas_servicios);
-            
-
+            ->get();          
             return view('ventas.reportes.index',compact('anios','ventas','meses','ventas_servicios'));
         }
         return view('ventas.reportes.index',compact('anios'));
@@ -70,64 +69,35 @@ class VentaReporteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function excel(Request $request){
+		return Excel::download(new VentaExport($request),'Reporte.xlsx');
+    }
+    public function create(Request $request)
     {
-        //
+        $ventas = Venta::whereBetween('fecha',[$request->finicio,$request->ffin])
+		->whereHas('cliente',function($query) use($request){
+			if(isset($request->dni)) {
+				$query->where('dniRuc','=',$request->dni);
+			}
+		})
+		->whereHas('detalles',function($sql) use($request){
+			if(isset($request->servicios)){
+				$sql->whereIn('idServicio',$request->servicios);
+			}
+		})
+		->where(function($res) use($request){
+			if(isset($request->estado)) {
+				if($request->estado == "Activo"){
+					$res->where('estado','=','Activo');
+				}
+				if($request->estado == "Anulado"){
+					$res->where('estado','=','Anulado');
+				}
+			}
+		})
+		->get();
+		return view('ventas.ventas.reportes.reporte',compact('ventas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    
 }

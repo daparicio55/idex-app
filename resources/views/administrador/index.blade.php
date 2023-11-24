@@ -29,12 +29,24 @@
           <a class="nav-link" href="#">Pricing</a>
         </li> --}}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navingresantes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" id="navingresantes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Reporte Ingresantes
           </a>
           <div class="dropdown-menu" aria-labelledby="navingresantes">
             @foreach ($admisiones as $admisione)
                 <a class="dropdown-item" href="{{ route('administrador.reporteingresantes',$admisione->id) }}">{{ $admisione->periodo }}</a>    
+            @endforeach
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navdiscapacidad" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Reporte Discapacidad
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navdiscapacidad">
+            @foreach ($periodos as $periodo)
+              <a href="{{ route('administrador.reportedis',$periodo->id) }}" class="dropdown-item">
+                {{ $periodo->nombre }}
+              </a>
             @endforeach
           </div>
         </li>

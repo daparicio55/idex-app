@@ -3,68 +3,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Reporte Excel</title>
 </head>
 <body>
     <table>
         <thead>
             <tr>
-                <th colspan="11"><h1>Reporte Sitema de Ventas</h1></th>
-            </tr>
-            <tr>
-                <th colspan="11">
-                    Fechas de: {{ date('d-m-Y',strtotime($datos[2])) }} hasta: {{ date('d-m-Y',strtotime($datos[3])) }}
-                </th>
-            </tr>
-            <tr>
-                <th colspan="11">
-                    @if ($datos[4]==0)
-                        Servicio: TODOS
-                    @else
-                        Servicio: {{ $servicio }}
-                    @endif
-                </th>
+                <th colspan="11" style="text-align:center">REPORTE DE VENTAS</th>
             </tr>
             <tr>
                 <th>#</th>
                 <th>T. Pago</th>
-                <th>Comp.</th>
-                <th>Num.</th>
+                <th>Com.</th>
+                <th>Núm.</th>
+                <th>Fecha</th>
                 <th>DNI</th>
-                <th>Cliente</th>
+                <th>APELLIDO, Nombre</th>
                 <th>Servicio</th>
                 <th>Observacion</th>
-                <th>Fecha</th>
                 <th>Monto</th>
                 <th>Estado</th>
             </tr>
         </thead>
         <tbody>
-        @foreach ($ventas as $key=>$venta)
-        <tr>
-            <td>{{ $key+1 }}</td>
-            <td>{{ $venta->tipoPago }}</td>
-            <td>{{ $venta->tipo }}</td>
-            <td>{{ $venta->numero }}</td>
-            <td>{{ $venta->cliente->dniRuc }}</td>
-            <td>{{ $venta->cliente->apellido }}, {{ $venta->cliente->nombre }}</td>
-            <td>
-                @foreach ($venta->detalles as $detalle)
-                    {{ $detalle->servicio->nombre }}
-                @endforeach
-            </td>
-            <td>{{ $venta->comentario }}</td>
-            <td>{{ date('d-m-Y',strtotime($venta->fecha)) }}</td>
-            <td>{{ $venta->total }}</td>
-            <td>{{ $venta->estado }}</td>
-        </tr>
-        @endforeach
-        <tr>
-            <td colspan="8"></td>
-            <td>Total</td>
-            <td>{{ $sumaTotal->sumaTotal }}</td>
-        </tr>
+            @php
+                $totalactivo=0;
+                $totalanulado=0;
+            @endphp
+            @foreach ($ventas as $key=>$venta)
+                <tr @if($venta->estado == "anulado") @endif>
+                    <td>{{ $key + 1 }}</td>
+					<td>{{ $venta->tipoPago }}</td>
+                    <td>{{ $venta->tipo }}</td>
+					<td>{{ $venta->numero }}</td>
+					<td>{{ date('d-m-Y',strtotime($venta->fecha)) }}</td>
+					<td>{{ $venta->cliente->dniRuc }}</td>
+                    <td>{{ Str::upper($venta->cliente->apellido) }}, {{ Str::title($venta->cliente->nombre) }}</td>
+                    <td>
+                        <ul>
+                        @foreach ($venta->detalles as $detalle)
+                            <li>{{ $detalle->servicio->nombre }}</li>    
+                        @endforeach
+                        </ul>
+                    </td>
+                    <td>{{ $venta->observacion }}</td>
+					<td>{{ $venta->total }}</td>
+					<td>{{ $venta->estado }}</td>
+                </tr>
+                @php
+                    if($venta->estado == "activo"){
+                        $totalactivo = $totalactivo + $venta->total;
+                    }
+                    if($venta->estado == "anulado"){
+                        $totalanulado = $totalanulado + $venta->total;
+                    }
+                @endphp
+            @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="9" style="text-align: right">Total Anulados:</td>
+                <td>
+                    {{ number_format($totalanulado,2) }}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="9" style="text-align: right"><b><h3>TOTAL:</h3></b></td>
+                <td>
+                    <h3>
+                        {{ number_format($totalactivo,2) }}
+                    </h3>
+                </td>
+            </tr>
+        </tfoot>
     </table>
 </body>
 </html>

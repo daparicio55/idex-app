@@ -1,6 +1,6 @@
 <div class="modal fade modal-slide-in-right" aria-hidden="true"
-role="dialog" tabindex="-1" id="modal-delete-{{$vent->idVenta}}">
-	{{Form::Open(array('route'=>array('ventas.ventas.destroy',$vent->idVenta.':'.'eliminar'),'method'=>'delete'))}}
+role="dialog" tabindex="-1" id="modal-delete-{{$venta->idVenta}}">
+	{{Form::Open(array('route'=>array('ventas.ventas.destroy',$venta->idVenta.':'.'eliminar'),'method'=>'delete'))}}
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -22,8 +22,8 @@ role="dialog" tabindex="-1" id="modal-delete-{{$vent->idVenta}}">
 	{{Form::Close()}}
 </div>
 
-<div class="modal fade modal-slide-in-right" aria-hidden="true" role="dialog" tabindex="-1" id="modal-anular-{{$vent->idVenta}}">
-	{{Form::Open(array('route'=>array('ventas.ventas.destroy',$vent->idVenta.':'.'anular'),'method'=>'delete'))}}
+<div class="modal fade modal-slide-in-right" aria-hidden="true" role="dialog" tabindex="-1" id="modal-anular-{{$venta->idVenta}}">
+	{{Form::Open(array('route'=>array('ventas.ventas.destroy',$venta->idVenta.':'.'anular'),'method'=>'delete'))}}
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header bg-danger" style="opacity: 0.8">
@@ -33,8 +33,8 @@ role="dialog" tabindex="-1" id="modal-delete-{{$vent->idVenta}}">
                 </button>
             </div>
 			<div class="modal-body">
-				<p>Confirme si desea anular la venta <span style="font-weight: 900">#{{ $vent->numero }}</span> </p>
-				<p><strong class="text-uppercase">{{$vent->apellido}}</strong>, <span class="text-capitalize">{{strtolower($vent->nombre)}}</span> </p>
+				<p>Confirme si desea anular la venta <span style="font-weight: 900">#{{ $venta->numero }}</span> </p>
+				<p><strong class="text-uppercase">{{ Str::upper($venta->cliente->apellido) }}</strong>, <span class="text-capitalize">{{ Str::title(($venta->cliente->nombre)) }}</span> </p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-dark" data-dismiss="modal">
@@ -50,9 +50,9 @@ role="dialog" tabindex="-1" id="modal-delete-{{$vent->idVenta}}">
 </div>
 
 <!--Editar Numero-->
-<div class="modal fade" id="modal-editar-{{$vent->idVenta}}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modal-editar-{{$venta->idVenta}}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	{{-- {!!Form::model(['method'=>'PATCH','route'=>['ventas.ventas.update',$vent->idVenta]])!!} --}}
-	{!! Form::model($vent, ['route'=>['ventas.ventas.update',$vent->idVenta],'method'=>'PUT']) !!}
+	{!! Form::model($venta, ['route'=>['ventas.ventas.update',$venta->idVenta],'method'=>'PUT']) !!}
 	{{Form::token()}}
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
@@ -68,7 +68,7 @@ role="dialog" tabindex="-1" id="modal-delete-{{$vent->idVenta}}">
 			  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
 				  <div class="form-group">
 					  {!! Form::label('numero', 'Numero', [null]) !!}
-					  {!! Form::text('numero', $vent->numero, ['class'=>'form-control','required']) !!}
+					  {!! Form::text('numero', $venta->numero, ['class'=>'form-control','required']) !!}
 				  </div>
 			  </div>
 		  </div>

@@ -230,12 +230,18 @@ Route::resource('accesos/usuarios', UsuarioController::class)->names('accesos.us
 Route::get('accesos/usuarios/{id}/visibility',[UsuarioController::class,'visibility'])
 ->name('accesos.usuarios.visibility');
 Route::resource('accesos/oficinas', OficinaController::class)->names('accesos.oficinas');
-Route::resource('ventas/servicios',ServicioController::class)->names('ventas.servicios');
-Route::resource('ventas/clientes', ClienteController::class)->names('ventas.clientes');
-Route::resource('ventas/ventas', VentaController::class)->names('ventas.ventas');
-Route::resource('ventas/deudas', DeudaController::class)->names('ventas.deudas');
-Route::resource('ventas/reportes',VentaReporteController::class)->names('ventas.reportes');
-Route::resource('ventas/aperturas',AperturaController::class)->names('ventas.aperturas');
+//ventas
+Route::resource('/ventas/servicios',ServicioController::class)->names('ventas.servicios');
+Route::resource('/ventas/clientes', ClienteController::class)->names('ventas.clientes');
+Route::resource('/ventas/ventas', VentaController::class)->names('ventas.ventas');
+Route::resource('/ventas/deudas', DeudaController::class)->names('ventas.deudas');
+/* Route::resource('/ventas/reportes',VentaReporteController::class)->names('ventas.reportes'); */
+Route::get('/ventas/reportes',[VentaReporteController::class,'index'])->name('ventas.reportes.index');
+Route::get('/ventas/reportes/create',[VentaReporteController::class,'create'])->name('ventas.reportes.create');
+Route::get('/ventas/reportes/excel',[VentaReporteController::class,'excel'])->name('ventas.reportes.excel');
+
+Route::resource('/ventas/aperturas',AperturaController::class)->names('ventas.aperturas');
+
 
 Route::resource('cepres/estudiantes', CepreEstudianteController::class)->names('cepres.estudiantes');
 Route::resource('cepres/pagos', CeprePagoController::class)->names('cepres.pagos');
@@ -305,7 +311,6 @@ Route::get('ventas/deudas/amortizar/{id}',[DeudaController::class,'amortizar'])
 Route::get('ventas/deudas/impriAmortizacion/{id}',[DeudaController::class,'impriAmortizar'])
 ->where('id','[0-9]+')->name('ventas.deudas.impriAmortizacion');
 Route::get('ventas/ventas/excel/{id}',[VentaController::class,'excel'])->name('venta.ventas.excel');
-Route::get('ventas/ventas/imprimirv2/{id}',[VentaController::class,'imprimirv2'])->name('ventas.ventas.imprimirv2');
 Route::get('ventas/ventas/imprimir/{id}',[VentaController::class,'imprimir'])
 ->where('id','[0-9]+')->name('ventas.ventas.imprimir');
 Route::get('ventas/ventas/anular/{id}',[VentaController::class,'anular'])
@@ -324,7 +329,9 @@ Route::get('/privacidad',function(){
     Route::get('/administrador/checkeformativas',[AdministradorController::class,'checkeformativas'])->name('administrador.checkeformativas');
     Route::get('/administrador',[AdministradorController::class,'index'])->name('administrador.index');
     Route::get('/administrador/reporteingresantes/{id}',[AdministradorController::class,'reporteingresantes'])->name('administrador.reporteingresantes');
+    Route::get('/administrador/reportedis/{id}',[AdministradorController::class,'reportedis'])->name('administrador.reportedis');
     Route::get('/administrador/reportedeudas',[AdministradorController::class,'reportedeudas'])->name('administrador.reportedeudas');
+
 //
 
 Route::get('/sacademica/correos',function(){
@@ -351,6 +358,6 @@ Route::get('statistics/website',[StatisticController::class,'website'])->name('s
 Route::get('/sms',function(){
     return sendSMS("935526612","esto es una mensage para la prueba del sistema de tratite documentario");
 });
-Route::get('livewire',function(){
-    return view('livewire.index');
+Route::get('/last',function(){
+    return view('welcome');
 });
