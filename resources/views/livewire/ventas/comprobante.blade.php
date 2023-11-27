@@ -10,7 +10,7 @@
             </div>
             <div class="col-sm-12 col-md-3">
                 <label>Numero</label>
-                <input type="number" name="numero" id="numero" class="form-control" wire:model="numero" required/>
+                <input type="number" name="numero" id="numero" class="form-control" @hasrole('Caja') readonly @endrole wire:model="numero" required/>
             </div>
             <div class="col-sm-12 col-md-3">
                 <label>Fecha</label>
