@@ -8,6 +8,25 @@
 <button class="btn btn-primary" title="subir plantilla">
     <i class="fas fa-upload"></i> Plantilla <i class="fas fa-file-excel"></i>
 </button> --}}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header bg-info">
+                <i class="fas fa-upload"></i> Subir Masivo
+            </div>
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <input type="file" id="file" name="file" class="form-control">                    
+                    <div class="input-group-append">
+                        <button class="btn btn-success" id="btn_excel">
+                            <i class="fas fa-file-excel"></i> Subir 
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @stop
 @section('content')
 {!! Form::open(['route'=>['docentes.cursos.capacidades.indicadores.calificarstore',$indicadore->id],'method'=>'post']) !!}
@@ -56,7 +75,7 @@
                             </td>
                         @endif
                         <td>
-                            <input type="number" @if($estudiante->tipo == "Convalidacion" || $detalle->matricula->licencia == "SI") readonly @endif value="{{ notacriterio($indicadore->id,$estudiante->id) }}" max=20 min=0 step=1 name="notas[]" class="form-control">
+                            <input type="number" id="text{{ $estudiante->dniRuc }}" @if($estudiante->tipo == "Convalidacion" || $detalle->matricula->licencia == "SI") readonly @endif value="{{ notacriterio($indicadore->id,$estudiante->id) }}" max=20 min=0 step=1 name="notas[]" class="form-control">
                         </td>
                     </tr>
                 @endforeach
@@ -78,7 +97,7 @@
                             <td>{{ $equivalencia->observacion }}</td>
                             <td>
                                 
-                                <input type="number" @if($equivalencia->tipo == "Convalidacion") readonly @endif value="{{ notacriterio($indicadore->id,$equivalencia->id) }}" max=20 min=0 step=1 name="notas[]" class="form-control">
+                                <input type="number" id="text{{ $estudiante->dniRuc }}" @if($equivalencia->tipo == "Convalidacion") readonly @endif value="{{ notacriterio($indicadore->id,$equivalencia->id) }}" max=20 min=0 step=1 name="notas[]" class="form-control">
                             </td>
                         </tr>
                     @endforeach
@@ -113,5 +132,40 @@
         $("#error").hide();
       }, 12000);
     })
+
+    let btn = document.getElementById('btn_excel');
+    btn.addEventListener('click',function(){
+        var inputFile = document.getElementById('file').files[0];
+        var token = document.querySelector('meta[name="csrf-token"]').content; // Obtén el token CSRF de la etiqueta meta
+        var formData = new FormData();
+        formData.append('file', inputFile, 'nombre_personalizado.xlsx');
+        formData.append('_token',token);
+        fetch("{{ route('imports.calificaciones.store') }}", {
+        method: 'POST',
+        body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+            throw new Error('Error en la solicitud');
+            }
+            return response.json(); // Puedes cambiar esto según la respuesta esperada
+        })
+        .then(data => {
+            //console.log('Éxito:', data);
+            rows = data;
+            rows.forEach(row => {
+                let text = document.getElementById('text'+row['dni']);
+                if(text){
+                    console.log(text);
+                    if(text.getAttribute('readonly') === null){
+                        text.value = row['nota'];
+                    };
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
 </script>
 @stop

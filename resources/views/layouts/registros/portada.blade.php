@@ -195,33 +195,33 @@
         <tbody>
             <tr>
                 <td class="p-0 border"><b>Programa de Estudios</b></td>
-                <td class="p-0 border">@yield('acta_carrera')</td>
+                <td class="pl-2 pb-0 pt-0 border">@yield('acta_carrera')</td>
                 <td class="p-0 border"><b>Sección</b></td>
-                <td class="p-0 border">Única</td>
+                <td class="pl-2 pb-0 pt-0 border">Única</td>
             </tr>
             <tr>
                 <td class="p-0 border"><b>Módulo</b></td>
-                <td class="p-0 border">@yield('acta_modulo')</td>
+                <td class="pl-2 pb-0 pt-0 border">@yield('acta_modulo')</td>
                 <td class="p-0 border"><b>Turno</b></td>
-                <td class="p-0 border">Diurno</td>
+                <td class="pl-2 pb-0 pt-0 border">Diurno</td>
             </tr>
             <tr>
                 <td class="p-0 border"><b>Unidad Didáctica</b></td>
-                <td class="p-0 border">@yield('acta_unidad')</td>
+                <td class="pl-2 pb-0 pt-0 border">@yield('acta_unidad')</td>
                 <td class="p-0 border"><b>Semestre</b></td>
-                <td class="p-0 border">@yield('acta_ciclo')</td>
+                <td class="pl-2 pb-0 pt-0 border">@yield('acta_ciclo')</td>
             </tr>
             <tr>
                 <td class="p-0 border"><b>Docente</b></td>
-                <td class="p-0 border">@yield('acta_docente')</td>
+                <td class="pl-2 pb-0 pt-0 border">@yield('acta_docente')</td>
                 <td class="p-0 border"><b>Fecha</b></td>
-                <td class="p-0 border">@yield('acta_fecha')</td>
+                <td class="pl-2 pb-0 pt-0 border">@yield('acta_fecha')</td>
             </tr>
             <tr>
                 <td class="p-0 border"><b>Evaluacion</b></td>
-                <td class="p-0 border">Semestral</td>
+                <td class="pl-2 pb-0 pt-0 border">Semestral</td>
                 <td class="p-0 border"><b>Créditos</b></td>
-                <td class="p-0 border">@yield('acta_creditos')</td>
+                <td class="pl-2 pb-0 pt-0 border">@yield('acta_creditos')</td>
             </tr>
         </tbody>
     </table>

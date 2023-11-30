@@ -29,8 +29,8 @@
     @foreach ($estudiantes as $key=>$estudiante)
         <tr>
             <td class="p-0 text-center border border-1">{{ cero($key +1) }}</td>
-            <td class="p-0 border border-1">{{ $estudiante->dniRuc }}</td>
-            <td class="p-0 border border-1"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
+            <td class="pl-2 pb-0 pt-0 border border-1">{{ $estudiante->dniRuc }}</td>
+            <td class="pl-2 pb-0 pt-0 border border-1"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
             <td class="p-0 border border-1">{{ $estudiante->periodo }}</td>
         </tr>
     @endforeach
@@ -113,8 +113,8 @@
     @foreach ($estudiantes as $key=>$estudiante)
     <tr>
         <td class="p-0 text-center border">{{ cero($key + 1)  }}</td>
-        <td class="p-0 border border-1">{{ $estudiante->dniRuc }}</td>
-        <td class="p-0 border"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
+        <td class="pl-2 pb-0 pt-0 border border-1">{{ $estudiante->dniRuc }}</td>
+        <td class="pl-2 pb-0 pt-0 border"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
         @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
 
             @if($estudiante->licencia == "SI")
@@ -187,8 +187,8 @@
     @foreach ($estudiantes as $key=>$estudiante)
     <tr>
         <td class="p-0 border text-center">{{ cero($key+1) }}</td>
-        <td class="p-0 border border-1">{{ $estudiante->dniRuc }}</td>
-        <td class="p-0 border"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
+        <td class="pl-2 pb-0 pt-0 border border-1">{{ $estudiante->dniRuc }}</td>
+        <td class="pl-2 pb-0 pt-0 border"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
         <td class="p-0 border text-center">{{ $estudiante->periodo }}</td>
             @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
 
@@ -240,8 +240,5 @@
 @endsection
 <script> 
     console.log('Hi!');
-    window.onload = function() {
-            window.print();
-        }
 </script>
 

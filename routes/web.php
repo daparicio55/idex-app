@@ -52,6 +52,7 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FdocumentoController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\IformativoController;
+use App\Http\Controllers\Imports\IndicadoresController;
 use App\Http\Controllers\IndicadoreController;
 use App\Http\Controllers\InsidenciaController;
 use App\Http\Controllers\LicenciaController;
@@ -93,6 +94,7 @@ use App\Models\Estudiante;
 use App\Models\Pmatricula;
 use App\Models\Udidactica;
 use App\Models\User;
+use DragonCode\Contracts\Cashier\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -159,6 +161,11 @@ Route::get('docentes/cursos/capacidades/indicadores/calificar/{id}',[IndicadoreC
 ->name('docentes.cursos.capacidades.indicadores.calificar');
 Route::post('docentes/cursos/capacidades/indicadores/calificar/{id}',[IndicadoreController::class,'calificarstore'])
 ->name('docentes.cursos.capacidades.indicadores.calificarstore');
+Route::get('/calificacionesexcel',function(){
+    return view('imports.calificaciones.excel');
+})->name('imports.calificaciones.index');
+Route::post('/calificacionesexcel',[IndicadoresController::class,'store'])
+->name('imports.calificaciones.store');
 
 //aca otro forma de cambiar las capacidades//
 Route::resource('docentes/cursos/criterios',CriterioController::class)->names('docentes.cursos.criterios');
@@ -182,7 +189,8 @@ Route::get('/sacademica/precticas/{id}/constancia',[PracticaController::class,'c
 Route::resource('sacademica/equivalencias',EquivalenciaController::class)->names('sacademica.equivalencias');
 Route::resource('sacademica/iformativos',IformativoController::class)->names('sacademica.iformativos');
 Route::resource('sacademica/pmatriculas',PmatriculaController::class)->names('sacademica.pmatriculas');
-Route::get('sacademica/pmatriculas/{id}/plancierre/',[PmatriculaController::class,'plancierre'])->name('sacademica.pmatriculas.plancierre');
+Route::get('sacademica/pmatriculas/{id}/plancierre/',[PmatriculaController::class,'plancierre'])
+->name('sacademica.pmatriculas.plancierre');
 Route::resource('sacademica/mformativos', MformativoController::class)->names('sacademica.mformativos');
 Route::resource('sacademica/udidacticas',UdidacticaController::class)->names('sacademica.udidacticas');
 Route::resource('sacademica/ability',AbilityController::class)->names('sacademica.ability');
