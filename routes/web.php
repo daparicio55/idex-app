@@ -166,6 +166,9 @@ Route::get('/calificacionesexcel',function(){
 })->name('imports.calificaciones.index');
 Route::post('/calificacionesexcel',[IndicadoresController::class,'store'])
 ->name('imports.calificaciones.store');
+Route::get('/calificacionesexcel/platilla',[IndicadoresController::class,'plantilla'])
+->name('imports.calificaciones.plantilla');
+
 
 //aca otro forma de cambiar las capacidades//
 Route::resource('docentes/cursos/criterios',CriterioController::class)->names('docentes.cursos.criterios');

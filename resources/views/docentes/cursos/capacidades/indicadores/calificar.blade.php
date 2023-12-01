@@ -2,12 +2,6 @@
 @section('title', 'Calificar Indicadores')
 @section('content_header')
 <h4 class="h4">Lista de Alumnos</h4>
-{{-- <button class="btn btn-success" title="descargar plantilla">
-    <i class="fas fa-download"></i> Plantilla <i class="fas fa-file-excel"></i>
-</button>
-<button class="btn btn-primary" title="subir plantilla">
-    <i class="fas fa-upload"></i> Plantilla <i class="fas fa-file-excel"></i>
-</button> --}}
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
@@ -16,6 +10,17 @@
             </div>
             <div class="card-body">
                 <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        {!! Form::open(['route'=>'imports.calificaciones.plantilla','method'=>'get']) !!}
+                        <input type="hidden" name="periodo_id" id="periodo_id" value="{{ $indicadore->capacidade->uasignada->pmatricula_id }}">
+                        <input type="hidden" name="udidactica_id" id="udidactica_id" value="{{ $indicadore->capacidade->uasignada->udidactica_id }}">
+                        <input type="hidden" name="carrera" id="carrera" value="{{ $indicadore->capacidade->uasignada->unidad->modulo->carrera_id }}">
+                        <input type="hidden" name="ciclo" id="ciclo" value="{{ $indicadore->capacidade->uasignada->unidad->ciclo }}">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-download"></i> Descargar Plantilla 
+                        </button>
+                        {!! Form::close() !!}
+                    </div>
                     <input type="file" id="file" name="file" class="form-control">                    
                     <div class="input-group-append">
                         <button class="btn btn-success" id="btn_excel">
@@ -86,7 +91,7 @@
                                 <input type="hidden" name="ematricula_detalle_id[]" value="{{ $equivalencia->id }}">
                                 {{ $key+1 }}
                             </td>
-                            <td>{{ $estudiante->dniRuc }}</td>
+                            <td>{{ $equivalencia->dniRuc }}</td>
                             <td>                            
                                 <span class="text-uppercase">{{ $equivalencia->apellido }}, </span><span class="text-capitalize">{{ strtolower($equivalencia->nombre) }}</span>
                             </td>
@@ -97,7 +102,7 @@
                             <td>{{ $equivalencia->observacion }}</td>
                             <td>
                                 
-                                <input type="number" id="text{{ $estudiante->dniRuc }}" @if($equivalencia->tipo == "Convalidacion") readonly @endif value="{{ notacriterio($indicadore->id,$equivalencia->id) }}" max=20 min=0 step=1 name="notas[]" class="form-control">
+                                <input type="number" id="text{{ $equivalencia->dniRuc }}" @if($equivalencia->tipo == "Convalidacion") readonly @endif value="{{ notacriterio($indicadore->id,$equivalencia->id) }}" max=20 min=0 step=1 name="notas[]" class="form-control">
                             </td>
                         </tr>
                     @endforeach
@@ -113,12 +118,13 @@
         <button type="submit" class="btn btn-success mb-3"> 
             <i class="far fa-save"></i> Guardar
         </button>
+{!! Form::close() !!}
         <a href="{{ route('docentes.cursos.capacidades.show',$indicadore->capacidade->id) }}" class="btn btn-danger mb-3">
             <i class="fas fa-ban"></i> Cancelar
         </a>
     </div>
 </div>
-{!! Form::close() !!}
+
 @stop
 @section('js')
 <script>
