@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Str;
 class Cliente extends Model
 {
     use HasFactory;
@@ -40,5 +40,10 @@ class Cliente extends Model
     }
     public function ventas(){
         return $this->hasMany(Venta::class,'idCliente');
+    }
+    public function mayusculas(){
+        $this->apellido = Str::upper($this->apellido);
+        $this->nombre = Str::upper($this->nombre);
+        $this->save();
     }
 }

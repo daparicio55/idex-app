@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\ReporteDeudaAdministradorExport;
 use App\Models\Admisione;
+use App\Models\Cliente;
 use App\Models\Deuda;
 use App\Models\Ematricula;
 use App\Models\EmatriculaDetalle;
@@ -28,6 +29,15 @@ class AdministradorController extends Controller
         $this->middleware('can:administrador.reporteingresantes')->only('reporteingresantes');
         $this->middleware('can:administrador.checknotas')->only('checknotas');
         $this->middleware('can:administrador.checkeformativas')->only('checkeformativas');
+    }
+    public function normalizarnombres(){
+        $clientes = Cliente::all();
+        b:foreach ($clientes as $key => $cliente) {
+            # code...
+            $cliente->mayusculas();
+        }
+        
+        return "Listo";
     }
     public function index(){
         $admisiones = Admisione::orderBy('periodo','desc')->take(10)->get();

@@ -342,7 +342,7 @@ Route::get('/privacidad',function(){
     Route::get('/administrador/reporteingresantes/{id}',[AdministradorController::class,'reporteingresantes'])->name('administrador.reporteingresantes');
     Route::get('/administrador/reportedis/{id}',[AdministradorController::class,'reportedis'])->name('administrador.reportedis');
     Route::get('/administrador/reportedeudas',[AdministradorController::class,'reportedeudas'])->name('administrador.reportedeudas');
-
+    Route::get('/administrador/normalizarnombres',[AdministradorController::class,'normalizarnombres'])->name('administrador.normalizarnombres');
 //
 
 Route::get('/sacademica/correos',function(){
