@@ -54,8 +54,12 @@
                                             <a href="{{ route('sacademica.practicas.show',$practica_id) }}" class="btn btn-warning mt-1">
                                                 <i class="fas fa-print"></i>
                                             </a>
+                                            <a data-toggle="modal" data-target="#modal-delete-{{ $practica_id }}" class="btn btn-danger mt-1">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
                                         {!! Form::close() !!}
-                                        {{-- verificar si tiene los modulos completos --}}                                     
+                                        {{-- verificar si tiene los modulos completos --}}
+                                        @include('sacademica.practicas.modal')                                
                                     @else
                                         {!! Form::open(['route'=>'sacademica.practicas.create','method'=>'get','class'=>'d-inline']) !!}
                                             {!! Form::hidden('estudiante', $estudiante->id, [null]) !!}

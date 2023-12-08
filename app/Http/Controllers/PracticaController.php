@@ -215,6 +215,16 @@ class PracticaController extends Controller
     public function destroy($id)
     {
         //
+        try {
+            //code...
+            $practica = Practica::findOrFail($id);
+            $practica->delete();
+            return Redirect::route('sacademica.practicas.index')->with('info','se elimino las practicas correctamente');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return Redirect::route('sacademica.practicas.index')->with('error','se producio un error');
+        }
+        
     }
     public function conjunto($id){
         try {
