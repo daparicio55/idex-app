@@ -27,7 +27,7 @@ class CeprePagoController extends Controller
     public function index()
     {
         //
-        $ceprepagos = CeprePago::orderBy('idCeprePago','desc')->get();
+        $ceprepagos = CeprePago::orderBy('idCeprePago','desc')->paginate(10);
         return view('cepres.pagos.index',compact('ceprepagos'));
     }
 

@@ -39,7 +39,7 @@ class CepreEstudianteController extends Controller
                 $query->where('dniRuc','like','%'.$searchText.'%')->orWhere('apellido','like','%'.$searchText.'%');
             })->get();
         }else{
-            $cepreEstudiantes = CepreEstudiante::orderBy('idCepreEstudiante','desc')->get();
+            $cepreEstudiantes = CepreEstudiante::orderBy('idCepreEstudiante','desc')->paginate(10);
         }
         return view('cepres.estudiantes.index',compact('cepreEstudiantes','searchText'));
     }

@@ -32,27 +32,39 @@
                     <th>Periodo</th>
                     <th></th>
                 </thead>
-                @foreach ($cepreEstudiantes as $cepreEstudiante)
-                <tr>
-                    <td>{{$cepreEstudiante->cliente->dniRuc}}</td>
-                    <td><strong class="text-uppercase">{{$cepreEstudiante->cliente->apellido}}</strong>, <span class="text-capitalize">{{Str::lower($cepreEstudiante->cliente->nombre)}}</span></td>
-                    <td>{{$cepreEstudiante->cliente->telefono}}</td>
-                    <td>{{$cepreEstudiante->carrera->nombreCarrera}}</td>
-                    <td>{{ $cepreEstudiante->cepre->periodoCepre }}</td>
-                    <td style="text-align: center; width: 160px">
-                        <a class="btn btn-info" target="_blank" href="{{route('cepres.estudiantes.show',['estudiante'=>$cepreEstudiante->idCepreEstudiante])}}">
-                            <i class="fa fa-print" aria-hidden="true"></i>
-                        </a>
-                        <a class="btn btn-success" href="{{route('cepres.estudiantes.edit',['estudiante'=>$cepreEstudiante->idCepreEstudiante])}}">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger" data-target="#modal-delete-{{$cepreEstudiante->idCepreEstudiante}}" data-toggle="modal" href="">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </a>
-                    </td>
-                    @include('cepres.estudiantes.modal')
-                </tr> 
-                @endforeach
+                <tbody>
+                    @foreach ($cepreEstudiantes as $cepreEstudiante)
+                    <tr>
+                        <td>{{$cepreEstudiante->cliente->dniRuc}}</td>
+                        <td><strong class="text-uppercase">{{$cepreEstudiante->cliente->apellido}}</strong>, <span class="text-capitalize">{{Str::lower($cepreEstudiante->cliente->nombre)}}</span></td>
+                        <td>{{$cepreEstudiante->cliente->telefono}}</td>
+                        <td>{{$cepreEstudiante->carrera->nombreCarrera}}</td>
+                        <td>{{ $cepreEstudiante->cepre->periodoCepre }}</td>
+                        <td style="text-align: center; width: 160px">
+                            <a class="btn btn-info" target="_blank" href="{{route('cepres.estudiantes.show',['estudiante'=>$cepreEstudiante->idCepreEstudiante])}}">
+                                <i class="fa fa-print" aria-hidden="true"></i>
+                            </a>
+                            <a class="btn btn-success" href="{{route('cepres.estudiantes.edit',['estudiante'=>$cepreEstudiante->idCepreEstudiante])}}">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="btn btn-danger" data-target="#modal-delete-{{$cepreEstudiante->idCepreEstudiante}}" data-toggle="modal" href="">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        @include('cepres.estudiantes.modal')
+                    </tr> 
+                    @endforeach
+                </tbody>
+                @if(!isset($_GET['searchText']))
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                {{ $cepreEstudiantes->links() }}
+                            </td>
+                        </tr>
+                    </tfoot>    
+                @endif
+                
             </table>
         </div>
     </div>
