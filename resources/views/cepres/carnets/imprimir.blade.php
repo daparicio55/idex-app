@@ -67,7 +67,7 @@
                             </div>
                         </div>
                         <div class="col-5">
-                            <img src="{{ Storage::url($estudiantes[$i]->url) }}" style="width: 85%" alt="">
+                            <img src="{{ Storage::url($estudiantes[$i]->url) }}" class="mx-auto d-block border border-danger" style="height: 112px" alt="">
                         </div>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
                             </div>
                         </div>
                         <div class="col-5">
-                            <img src="{{ Storage::url($estudiantes[$i]->url) }}" style="width: 85%" alt="">
+                            <img src="{{ Storage::url($estudiantes[$i]->url) }}" class="mx-auto d-block border border-danger" style="height: 112px" alt="">
                         </div>
                     </div>
                 </div>
