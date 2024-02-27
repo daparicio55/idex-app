@@ -28,8 +28,10 @@
                     <th>DNI</th>
                     <th>Apellidos, Nombres</th>
                     <th>Telefono</th>
-                    <th>Carrera</th>
+                    <th>Programa de Estudios</th>
+                    <th>Fecha</th>
                     <th>Periodo</th>
+                    <th>Aula</th>
                     <th></th>
                 </thead>
                 <tbody>
@@ -39,8 +41,13 @@
                         <td><strong class="text-uppercase">{{$cepreEstudiante->cliente->apellido}}</strong>, <span class="text-capitalize">{{Str::lower($cepreEstudiante->cliente->nombre)}}</span></td>
                         <td>{{$cepreEstudiante->cliente->telefono}}</td>
                         <td>{{$cepreEstudiante->carrera->nombreCarrera}}</td>
+                        <td>{{ date('d/m/Y',strtotime($cepreEstudiante->ceEsFecha)) }}</td>
                         <td>{{ $cepreEstudiante->cepre->periodoCepre }}</td>
-                        <td style="text-align: center; width: 160px">
+                        <td>{{ $cepreEstudiante->aula }}</td>
+                        <td style="text-align: center; width: 210px">
+                            <a href="{{ route('cepres.estudiantes.asistencias.show',$cepreEstudiante->idCepreEstudiante) }}" class="btn btn-secondary">
+                                <i class="far fa-calendar-alt"></i>
+                            </a>
                             <a class="btn btn-info" target="_blank" href="{{route('cepres.estudiantes.show',['estudiante'=>$cepreEstudiante->idCepreEstudiante])}}">
                                 <i class="fa fa-print" aria-hidden="true"></i>
                             </a>

@@ -42,26 +42,33 @@
                         </div>
                     </div>
                     {{-- siguiente fila --}}
+                    
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                        <div class='form-group'>
-                            <label for="email">E. Mail</label>
-                            {!! Form::text('email', $postulante->cliente->email, ['class'=>'form-control','required']) !!}
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                         <div class='form-group'>
                             <label for="fechaNacimiento">F. Nacimiento</label>
                             {!! Form::date('fechaNacimiento', null, ['class'=>'form-control','required']) !!}
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <div class="form-group">
                             {!! Form::label('sexo', "Sexo", [null]) !!}
                             {!! Form::select('sexo', $sexos, null, ['class'=>'form-control']) !!}
                         </div>
                     </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            {!! Form::label('idioma', "Idioma", [null]) !!}
+                            {!! Form::select('idioma', $idiomas, null, ['class'=>'form-control']) !!}
+                        </div>
+                    </div>
                     {{-- siguiente fila de direccion--}}
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class='form-group'>
+                            <label for="email">E. Mail</label>
+                            {!! Form::text('email', $postulante->cliente->email, ['class'=>'form-control','required']) !!}
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         <div class='form-group'>
                             <label for="direccion">Dirección</label>
                             {!! Form::text('direccion', $postulante->cliente->direccion, ['class'=>'form-control','required']) !!}
@@ -180,28 +187,34 @@
                         </div>
                     </div>
                     {{-- siguiente linea --}}
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <div class='form-group'>
                             {!! Form::label(null, 'Distrito', [null]) !!}
                             {!! Form::text('D_DIST', $postulante->colegio->D_DIST, ['class'=>'form-control','required','id'=>'D_DIST','disabled']) !!}
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <div class='form-group'>
                             {!! Form::label(null, 'Provincia', [null]) !!}
                             {!! Form::text('D_PROV', $postulante->colegio->D_PROV, ['class'=>'form-control','required','id'=>'D_PROV','disabled']) !!}
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <div class='form-group'>
                             {!! Form::label(null, 'Departamento', [null]) !!}
                             {!! Form::text('D_DPTO', $postulante->colegio->D_DPTO, ['class'=>'form-control','required','id'=>'D_DPTO','disabled']) !!}
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                         <div class='form-group'>
                             {!! Form::label(null, 'Dirección', [null]) !!}
                             {!! Form::text('DIR_CEN', $postulante->colegio->DIR_CEN, ['class'=>'form-control','required','id'=>'DIR_CEN','disabled']) !!}
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <div class='form-group'>
+                            {!! Form::label(null, 'Año de Termino', [null]) !!}
+                            {!! Form::number('anioColegio', $postulante->anioColegio, ['class'=>'form-control','required']) !!}
                         </div>
                     </div>
                 </div>

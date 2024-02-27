@@ -233,7 +233,9 @@
                             ->first();
                         @endphp
                         {{$detalle->unidad->nombre}} <span style="color: red">Equivalencia:</span> {{ $detalle->unidad->equivalencia->nombre }} Ciclo: {{ $detalle->unidad->equivalencia->ciclo }}
-                        <b>Docente: </b> {{ $uasignada->user->name }}
+                        @isset($uasignada->user->name)
+                            <b>Docente: </b> {{ $uasignada->user->name }}    
+                        @endisset
                     @else
                         
                         @php

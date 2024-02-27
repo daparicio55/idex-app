@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admisione;
 use App\Models\AdmisionePostulante;
+use App\Models\Colegio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -101,7 +102,12 @@ class AdmisioneReporteController extends Controller
             ->where('anulado','=','NO')
             ->get();
 
-            return view('admisiones.reportes.index',compact('totalpostulantes','postulantesO','anuladosO','programasO','postulantesX','anuladosX','programasX','admisiones','anulados','admisione','postulantes','programas'));
+            $colegios = Colegio::whereHas('admisionePostulantes',function($query) use($request){
+                $query->where('admisione_id','=',$request->id);
+            })->get();
+
+
+            return view('admisiones.reportes.index',compact('colegios','totalpostulantes','postulantesO','anuladosO','programasO','postulantesX','anuladosX','programasX','admisiones','anulados','admisione','postulantes','programas'));
         }
         return view('admisiones.reportes.index',compact('admisiones'));
     }

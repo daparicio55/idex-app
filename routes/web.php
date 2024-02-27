@@ -18,6 +18,7 @@ use App\Http\Controllers\CapacidadeController;
 use App\Http\Controllers\CargarNotaController;
 use App\Http\Controllers\CepreCarnetController;
 use App\Http\Controllers\CepreCruzeController;
+use App\Http\Controllers\CepreEstudianteAsistenciaController;
 use App\Http\Controllers\CepreEstudianteController;
 use App\Http\Controllers\CeprePagoController;
 use App\Http\Controllers\CepreReporteController;
@@ -92,6 +93,7 @@ use App\Models\cvPersonale;
 use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
 use App\Models\Pmatricula;
+use App\Models\Servicio;
 use App\Models\Udidactica;
 use App\Models\User;
 use DragonCode\Contracts\Cashier\Http\Request;
@@ -155,6 +157,12 @@ Route::resource('docentes/cv/conocimientos',cvConocimientoController::class)->na
 Route::resource('docentes/cursos',DocenteCursoController::class)->names('docentes.cursos');
 Route::get('docentes/cursos/imprimir/{id}',[DocenteCursoController::class,'imprimir'])->name('docentes.cursos.imprimir');
 Route::get('docentes/cursos/equivalencia/{id}',[DocenteCursoController::class,'equivalencia'])->name('docentes.cursos.equivalencia');
+
+Route::get('docentes/cursos/pdf/regular/{id}',[DocenteCursoController::class,'pdfregular'])
+->name('docentes.cursos.pdf.regular');
+Route::get('docentes/cursos/pdf/equivalencia/{id}',[DocenteCursoController::class,'pdfequivalencia'])
+->name('docentes.cursos.pdf.equivalencia');
+
 Route::resource('docentes/cursos/capacidades',CapacidadeController::class)->names('docentes.cursos.capacidades');
 Route::resource('docentes/cursos/capacidades/indicadores',IndicadoreController::class)->names('docentes.cursos.capacidades.indicadores');
 Route::get('docentes/cursos/capacidades/indicadores/calificar/{id}',[IndicadoreController::class,'calificar'])
@@ -253,8 +261,9 @@ Route::get('/ventas/reportes/excel',[VentaReporteController::class,'excel'])->na
 
 Route::resource('/ventas/aperturas',AperturaController::class)->names('ventas.aperturas');
 
-
+Route::resource('cepres/estudiantes/asistencias',CepreEstudianteAsistenciaController::class)->names('cepres.estudiantes.asistencias');
 Route::resource('cepres/estudiantes', CepreEstudianteController::class)->names('cepres.estudiantes');
+
 Route::resource('cepres/pagos', CeprePagoController::class)->names('cepres.pagos');
 Route::resource('cepres/carnets',CepreCarnetController::class)->names('cepres.carnets');
 Route::resource('cepres/reportes',CepreReporteController::class)->names('cepres.reportes');
@@ -372,3 +381,8 @@ Route::get('/sms',function(){
 Route::get('/last',function(){
     return view('welcome');
 });
+Route::get('/ver',function(){
+    $ventas = Servicio::get();
+    return $ventas->detalles->count();
+    
+}); 

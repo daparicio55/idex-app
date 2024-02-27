@@ -119,7 +119,7 @@
             <i class="far fa-save"></i> Guardar
         </button>
 {!! Form::close() !!}
-        <a href="{{ route('docentes.cursos.capacidades.show',$indicadore->capacidade->id) }}" class="btn btn-danger mb-3">
+        <a href="{{ route('docentes.cursos.index') }}" class="btn btn-danger mb-3">
             <i class="fas fa-ban"></i> Cancelar
         </a>
     </div>

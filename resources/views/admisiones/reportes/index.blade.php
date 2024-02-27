@@ -27,7 +27,7 @@
 </div>
 {!! Form::close() !!}
 @if(isset($admisione))
-@include('admisiones.reportes.modal')
+    @include('admisiones.reportes.modal')
     <div class="card border-success">
         <div class="card-header text-center">
             <h3><strong> Proceso de Admisión IDEX Perú Japón - {{$admisione->periodo}} </strong></h1>
@@ -121,6 +121,7 @@
             Reporte Sistema SISGE-PJ
         </div>
     </div>
+    @include('admisiones.reportes.colegios')
 @endif
 
 

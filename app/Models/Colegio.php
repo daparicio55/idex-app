@@ -9,6 +9,6 @@ class Colegio extends Model
 {
     use HasFactory;
     public function admisionePostulantes(){
-        return $this->hasMany(AdmisionePostulante::class);
+        return $this->hasMany(AdmisionePostulante::class,'colegio_id','id');
     }
 }

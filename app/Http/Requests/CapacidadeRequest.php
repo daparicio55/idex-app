@@ -28,9 +28,10 @@ class CapacidadeRequest extends FormRequest
     {
         //dd($this->request);
         $capacidade = Capacidade::findOrFail($this->route('capacidade'));
+//        dd($capacidade->uasignada->periodo->ffin);
         return [
             //
-            'fecha'=>'before_or_equal:'.$capacidade->uasignada->periodo->ffin,
+            'fecha'=>'required|before_or_equal:'.$capacidade->uasignada->periodo->ffin,
         ];
     }
 }

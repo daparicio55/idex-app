@@ -57,6 +57,15 @@ class AdmisionePostulanteController extends Controller
     {
         // 
         $sexos = ['Masculino'=>'Masculino','Femenino'=>'Femenino'];
+        $idiomas = [
+            'Español'=>'Español',
+            'Awajum'=>'Awajum',
+            'Wampis'=>'Wampis',
+            'Aimara'=>'Aimara',
+            'Bora'=>'Bora',
+            'Ashaninka'=>'Ashaninka',
+            'Quechua'=>'Quechua'
+        ];
         $modalidadTipo = ['Ordinario'=>'Ordinario','Exonerado'=>'Exonerado'];
         $modalidad = [
             'Ordinario'=>'Ordinario',
@@ -85,7 +94,7 @@ class AdmisionePostulanteController extends Controller
         $admisiones = Admisione::orderBy('periodo','desc')
         ->pluck('periodo','id')
         ->toArray();
-        return view('admisiones.postulantes.create',compact('modalidad','modalidadTipo','carreras','admisiones','sexos','cliente','searchText'));
+        return view('admisiones.postulantes.create',compact('modalidad','modalidadTipo','carreras','admisiones','sexos','cliente','searchText','idiomas'));
     }
 
     /**
@@ -156,6 +165,8 @@ class AdmisionePostulanteController extends Controller
             $postulante->colegio_id = $request->colegio_id;
             $postulante->boleta = $request->boleta;
             $postulante->user_id = auth()->user()->id;
+            $postulante->idioma = $request->idioma;
+            $postulante->anioColegio = $request->anioColegio;
             $postulante->save();
             DB::commit();
         } catch (\Throwable $th) {
@@ -190,6 +201,15 @@ class AdmisionePostulanteController extends Controller
         //
         $postulante = AdmisionePostulante::findOrFail($id);
         $sexos = ['Masculino'=>'Masculino','Femenino'=>'Femenino'];
+        $idiomas = [
+            'Español'=>'Español',
+            'Awajum'=>'Awajum',
+            'Wampis'=>'Wampis',
+            'Aimara'=>'Aimara',
+            'Bora'=>'Bora',
+            'Ashaninka'=>'Ashaninka',
+            'Quechua'=>'Quechua'
+        ];
         $modalidadTipo = ['Ordinario'=>'Ordinario','Exonerado'=>'Exonerado'];
         $modalidad = [
             'Ordinario'=>'Ordinario',
@@ -211,7 +231,7 @@ class AdmisionePostulanteController extends Controller
         $admisiones = Admisione::orderBy('periodo','desc')
         ->pluck('periodo','id')
         ->toArray();
-        return view('admisiones.postulantes.edit',compact('postulante','modalidad','modalidadTipo','carreras','admisiones','sexos'));
+        return view('admisiones.postulantes.edit',compact('postulante','modalidad','modalidadTipo','carreras','admisiones','sexos','idiomas'));
     }
 
     /**
@@ -254,6 +274,8 @@ class AdmisionePostulanteController extends Controller
             $postulante->colegio_id = $request->colegio_id;
             $postulante->boleta = $request->boleta;
             $postulante->user_id = auth()->user()->id;
+            $postulante->idioma = $request->idioma;
+            $postulante->anioColegio = $request->anioColegio;
             $postulante->update();
             DB::commit();
         } catch (\Throwable $th) {

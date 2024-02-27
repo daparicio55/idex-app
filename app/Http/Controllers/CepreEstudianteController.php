@@ -81,7 +81,50 @@ class CepreEstudianteController extends Controller
             }else{
                 $url = 'ceprefotos/pordefectoimagen.png';
             }
-            $cliente = Cliente::updateOrCreate(['idCliente'=>$request->idCliente],['direccion'=>$request->direccion,'dniRuc'=>$request->dniRuc,'apellido'=>$request->apellido,'nombre'=>$request->nombre,'telefono'=>$request->telefono,'telefono2'=>$request->telefono2,'email'=>$request->email]);
+            $cliente = Cliente::updateOrCreate(
+                [
+                    'idCliente'=>$request->idCliente
+                ],
+                [
+                    'direccion'=>$request->direccion,
+                    'dniRuc'=>$request->dniRuc,
+                    'apellido'=>$request->apellido,
+                    'nombre'=>$request->nombre,
+                    'telefono'=>$request->telefono,
+                    'telefono2'=>$request->telefono2,
+                    'email'=>$request->email
+                ]
+            );
+            //calcular el numero para el estudiante
+            $aula = 0;
+            $cantidad = CepreEstudiante::where('idCepre','=',$request->idCepre)->count();
+            if ($cantidad < 30){
+                $aula = 1;
+            }else{
+                if($cantidad < 60){
+                    $aula = 2;
+                }else{
+                    if($cantidad < 90){
+                        $aula = 3;
+                    }else{
+                        if ($cantidad < 120){
+                            $cantidad = ($cantidad + 1) - 90;
+                            if ($cantidad <= 3){
+                                $aula = $cantidad;
+                            }else{
+                                $aula = ($cantidad % 3 == 0) ? 3 : $cantidad % 3;
+                            }
+                        }else{
+                            if ($cantidad < 160){
+                                $aula = 4;
+                            }else{
+                                $cantidad = ($cantidad + 1) - 160;
+                                $aula = ($cantidad % 4 ==0) ? 4 : $cantidad % 4;
+                            }
+                        }
+                    }
+                }
+            }
             CepreEstudiante::create([
                 'fechaNacimiento'=>$request->fechaNacimiento,
                 'url'=>$url,
@@ -107,6 +150,7 @@ class CepreEstudianteController extends Controller
                 'idCliente'=>$cliente->idCliente,
                 'idCarrera'=>$request->idCarrera,
                 'id'=>$request->id,
+                'aula'=>$aula,
             ]);
         } catch (\Throwable $th) {
             //throw $th;

@@ -37,16 +37,18 @@
                 </thead>
                 <tbody>
                     @foreach ($ceprepagos as $ceprepago)
-                    <tr @if(ceprePorPagar($ceprepago->cepreEstudiante->idCepreEstudiante) == 0) style="color : green" @endif>
+                    <tr>
                         <td>{{$ceprepago->cepreEstudiante->cepre->periodoCepre}}</td>
                         <td>{{$ceprepago->cepreEstudiante->cliente->dniRuc}}</td>
-                        <td><strong class="text-uppercase">{{$ceprepago->cepreEstudiante->cliente->apellido}}</strong>, <span class="text-capitalize">{{Str::lower($ceprepago->cepreEstudiante->cliente->nombre)}}</span></td>
+                        <td><strong class="text-uppercase">{{$ceprepago->cepreEstudiante->cliente->apellido}}</strong>, 
+                            <span class="text-capitalize">{{Str::lower($ceprepago->cepreEstudiante->cliente->nombre)}}</span>
+                        </td>
                         <td>{{ $ceprepago->cepreEstudiante->carrera->nombreCarrera }}</td>
-                        <td>{{date('d-m-Y',strtotime($ceprepago->fechaPago))}}</td>
-                        <td>{{$ceprepago->tipoComprobante}}</td>
+                        <td>{{ date('d-m-Y',strtotime($ceprepago->fechaPago)) }}</td>
+                        <td>{{ $ceprepago->tipoComprobante }}</td>
                         <td>{{ $ceprepago->numeroComprobante }}</td>
-                        <td>{{$ceprepago->montoPago}}</td>
-                        <td>{{ceprePorPagar($ceprepago->cepreEstudiante->idCepreEstudiante)}}</td>
+                        <td>{{ $ceprepago->montoPago }}</td>
+                        <td>{{ ceprePorPagar($ceprepago->cepreEstudiante->idCepreEstudiante) }}</td>
                         <td>
                             <a class="btn btn-primary" href="{{route('cepres.pagos.edit',['pago'=>$ceprepago->idCeprePago])}}">
                                 <i class="fas fa-edit"></i>
@@ -56,7 +58,7 @@
                             </a>
                         </td>
                         @include('cepres.pagos.modal')
-                    </tr> 
+                    </tr>
                     @endforeach
                 </tbody>
                 <tfoot>

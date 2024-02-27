@@ -29,6 +29,9 @@ class Cliente extends Model
     public function CepreEstudiantes(){
         return $this->hasMany('App\Models\CepreEstudiante','idCepreEstudiante');
     }
+    public function cestudiantes(){
+        return $this->hasMany(CepreEstudiante::class,'idCliente','idCliente');
+    }
     public function repositorios(){
         return $this->hasMany(Repositorio::class);
     }

@@ -140,6 +140,33 @@ class DocenteCursoController extends Controller
         ];
         return view('docentes.cursos.imprimir',compact('uasignada','estudiantes'));
     }
+
+    public function pdfregular($id){
+        $uasignada = Uasignada::findOrFail($id);
+        //tengo que poner la unidad didactica de equivalencia.
+        $estudiantes = Ematricula::select('ematriculas.licencia','ematriculas.licenciaObservacion','clientes.nombre','clientes.apellido','clientes.dniRuc','admisiones.periodo','ematricula_detalles.tipo','ematricula_detalles.observacion','ematricula_detalles.id')
+        ->join('ematricula_detalles','ematriculas.id','=','ematricula_detalles.ematricula_id')
+        ->join('estudiantes','estudiantes.id','ematriculas.estudiante_id')
+        ->join('admisione_postulantes','admisione_postulantes.id','=','estudiantes.admisione_postulante_id')
+        ->join('admisiones','admisione_postulantes.admisione_id','=','admisiones.id')
+        ->join('clientes','admisione_postulantes.idCliente','=','clientes.idCliente')
+        ->where('ematricula_detalles.tipo','<>','Convalidacion')
+        ->where('ematricula_detalles.udidactica_id','=',$uasignada->udidactica_id)
+        ->where('ematriculas.pmatricula_id','=',$uasignada->pmatricula_id)
+        ->where(function($query){
+            $query->where('ematricula_detalles.tipo','Regular')->orWhere('ematricula_detalles.tipo','Repitencia');
+        })
+        ->orderBy('clientes.apellido')
+        ->orderBy('clientes.nombre')
+        ->get();
+        $data = [
+            'uasignada'=>$uasignada,
+            'estudiantes'=>$estudiantes
+        ];
+        $pdf = PDF::loadView('docentes.cursos.imprimir',compact('uasignada','estudiantes'));
+        return $pdf->download('invoice.pdf');
+    }
+
     public function equivalencia($id){
         $uasignada = Uasignada::findOrFail($id);
         if(isset($uasignada->unidad->old->id)){

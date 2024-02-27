@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\ReporteMatriculaExport;
 use App\Models\Carrera;
+use App\Models\Ematricula;
 use App\Models\Pmatricula;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -36,8 +37,31 @@ class EstadisticaController extends Controller
             
             $carreras = Carrera::orderBy('nombreCarrera','asc')->get();
             //$matriculas = Ematricula::where('pmatricula_id','=',$request->id)->get();
-            
             //dd($matriculas);
+            //puestos
+            $notas =  [];
+            foreach ($carreras as $key1 => $carrera) {
+                foreach ($ciclos as $key2 => $ciclo) {
+                    # code...
+                    $estudiantes = Ematricula::whereHas('detalles.unidad.modulo',function($query) use($request,$ciclo,$carrera){
+                        $query->where('pmatricula_id','=',$request->id)
+                        ->where('ciclo','=',$ciclo)
+                        ->where('carrera_id','=',$carrera->idCarrera);
+                    })->get();
+                    foreach ($estudiantes as $key3 => $estudiante){
+                        foreach ($estudiante->detalles as $key4 => $detalle) {
+                            # code...
+                            $a = [
+                                'nota'=>$detalle->nota,
+                                
+                            ];
+                            array_push($notas,$detalle->nota);
+                        }
+                    }
+                }
+                # code...
+            }
+            return $notas;
             return view('sacademica.estadisticas.index',compact('periodos','carreras','ciclos'));
         }
         return view('sacademica.estadisticas.index',compact('periodos'));

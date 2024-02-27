@@ -330,33 +330,17 @@ function vacantes($admisione_id,$carrera_id){
 }
 //ver lo que falta por pagar de la cepre
 function ceprePorPagar($id){
-        try {
-                //code...
-                
-                $estudiante = CepreEstudiante::findOrFail($id);
-                $cepre = DB::table('cepres')
-                ->where('idCepre','=',$estudiante->idCepre)
-                ->first();
-                $pago = DB::table('cepre_pagos')
-                ->select(DB::raw('sum(montoPago) as total'))
-                ->where('idCepreEstudiante','=',$id)
-                ->first();
-                $cantidad = DB::table('cepre_pagos')
-                ->where('idCepreEstudiante','=',$id)
-                ->count();
-                //verificar primero si el pago es total
-                if ($pago->total >= $cepre->costoTotal && $cantidad == 1 ){
-                        //
-                        return(0);
-                }else{
-                        $resta = $cepre->costoCuota - $pago->total;
-                        return ($resta);
-                }
-        } catch (\Throwable $th) {
-                //throw $th;
-                return ($th->getMessage());
+        //code...
+        $estudiante = CepreEstudiante::findOrFail($id);
+        $total = 0;
+        foreach ($estudiante->ceprePagos as $pago) {
+                $total = $total + number_format($pago->montoPago,2,'.');
         }
-        
+        if (number_format($estudiante->cepre->costoTotal,2,'.') == $total){
+                return number_format($estudiante->cepre->costoTotal,2,'.') - $total;
+        }else{
+                return number_format($estudiante->cepre->costoCuota,2,'.') - $total;
+        }
 }
 /* verificar si es estudiante */
 function existeEstudiante($id){
@@ -483,13 +467,11 @@ function modulos($id){
 }
 //vamos a devolver las notas por unidad didactica
 function notas($unidad,$estudiante){
-        $notas = DB::table('ematricula_detalles as md')
-        ->select('md.nota','md.tipo','pm.ffin','md.observacion','pm.id as matricula','md.id as ematricula')
-        ->join('ematriculas as m','m.id','=','md.ematricula_id')
-        ->join('pmatriculas as pm','pm.id','=','m.pmatricula_id')
-        ->where('md.udidactica_id','=',$unidad)
-        ->where('m.estudiante_id','=',$estudiante)
-        ->get();
+
+        $notas = EmatriculaDetalle::whereHas('matricula',function($query) use($unidad,$estudiante){
+                $query->where('udidactica_id','=',$unidad)
+                ->where('estudiante_id','=',$estudiante);
+        })->get();
         return $notas;
 }
 function capacidades($pmatricula_id,$unidad){
@@ -964,3 +946,7 @@ function sendSMS($number,$message)
         // Puedes imprimir el SID del mensaje si lo deseas
         
     }
+
+function days($day){
+
+}

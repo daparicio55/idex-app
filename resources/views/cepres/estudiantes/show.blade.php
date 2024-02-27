@@ -17,11 +17,14 @@
                 <img src="{{asset('img/logo.png')}}"  style="width: 140px" class="mx-auto d-block card-img p-2" alt="...">
               </div>
               <div class="col-sm-8">
-                <div class="card-body text-center">
+                <div class="card-body text-center pb-0">
                     <h3 class="h3">CENTRO PRE "IDEX PERÚ JAPÓN"</h3>
                     <span class="h5">Ficha de Inscripción - Año {{$cepreEstudiante->cepre->periodoCepre}}</span>
                     <p class="card-subtitle"><strong>Chachapoyas - Amazonas</strong></p>
                     <p class="card-subtitle"><small class="text-muted"><i class="fa fa-check" aria-hidden="true"></i> Jr. Amazonas #120 <i class="fa fa-mobile" aria-hidden="true"></i> 041 - 750047 <i class="fa fa-globe" aria-hidden="true"></i> www.idexperujapon.edu.pe</small></p>
+                    <p class="p-0 m-0">
+                        <span class="text-danger"><strong>AULA: {{ cero($cepreEstudiante->aula) }}</strong></span>
+                    </p>
                 </div>
               </div>
             </div>

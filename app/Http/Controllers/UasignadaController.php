@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Capacidade;
 use App\Models\Carrera;
+use App\Models\Indicadore;
 use App\Models\Pmatricula;
 use App\Models\Uasignada;
 use App\Models\Udidactica;
@@ -88,7 +90,7 @@ class UasignadaController extends Controller
         
         /* $unidades = Udidactica::orderBy('nombre','asc')->get(); */
         $unidades = Udidactica::whereHas('modulo',function($query){
-            $query->where('iformativo_id','=',5);
+            /* $query->where('iformativo_id','=',5); */
         })->orderBy('nombre','desc')->get();
         //dd($unidades);
         return view('sacademica.uasignadas.create',compact('users','unidades','periodos'));
@@ -103,15 +105,37 @@ class UasignadaController extends Controller
     public function store(Request $request)
     {
         //
+        
         try {
             //code...
             $unidades = $request->udidactica;
+            $udidactica = Udidactica::findOrFail($request->udidactica[0]);
             for($i=0; $i<count($unidades);$i++){
                 $asignada = new Uasignada();
                 $asignada->user_id = $request->user_id;
                 $asignada->pmatricula_id = $request->pmatricula_id;
                 $asignada->udidactica_id = $unidades[$i];
                 $asignada->save();
+
+                //creamo la capacidades
+                foreach ($udidactica->capabilities as $capabilitie) {
+                    # code...
+                    $capacidade = new Capacidade();
+                    $capacidade->nombre = $capabilitie->nombre;
+                    $capacidade->descripcion = $capabilitie->descripcion;
+                    $capacidade->uasignada_id = $asignada->id;
+                    $capacidade->save();
+                    //ponemos los indicadores
+                    foreach ($capabilitie->indicators as $indicator) {
+                        # code...
+                        $indicador = new Indicadore();
+                        $indicador->nombre = $indicator->nombre;
+                        $indicador->descripcion = $indicator->descripcion;
+                        //$indicador->fecha
+                        $indicador->capacidade_id = $capacidade->id;
+                        $indicador->save();
+                    }
+                }
             }
         } catch (\Throwable $th) {
             //throw $th;

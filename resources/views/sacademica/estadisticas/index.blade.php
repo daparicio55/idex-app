@@ -224,6 +224,58 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header bg-danger">
+                    Aprobados y Desaprobados
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Programa</th>
+                                    <th>Aprobados</th>
+                                    <th>Desaprobados</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($carreras as $carrera)
+                                    <tr>
+                                        <td>{{ $carrera->nombreCarrera }}</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>                    
+                                    @foreach ($ciclos as $ciclo)
+                                        @php
+
+                                            $id = $_GET['id'];
+                                            
+                                        @endphp
+                                        <tr>
+                                            <td>{{ $ciclo }}</td>
+                                            <td>
+                                                {{ $aprobados }}
+                                            </td>
+                                            <td>
+                                                {{ $desaprobados }}
+                                            </td>
+                                            <td>
+                                                {{ $total }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    SisGE PJ
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endif

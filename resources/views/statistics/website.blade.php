@@ -70,7 +70,7 @@
                                     <tfoot>
                                         <tr>
                                             <td colspan="2"></td>
-                                            <td colspan="3" class="text-center"><strong>TOTAL:</strong> {{ $admisione->postulantes()->whereHas('estudiante')->count() }} postulantes.</td>
+                                            <td colspan="3" class="text-center"><strong>TOTAL:</strong> {{ $admisione->postulantes()->whereHas('estudiante')->count() }} Ingresantes.</td>
                                         </tr>
                                     </tfoot>
                                 </table>

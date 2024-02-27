@@ -15,7 +15,7 @@ class AdmisionePostulante extends Model
         return $this->belongsTo(Cliente::class,'idCliente');
     }
     public function colegio(){
-        return $this->belongsTo(Colegio::class);
+        return $this->belongsTo(Colegio::class,'colegio_id','id');
     }
     public function user(){
         return $this->belongsTo(User::class);

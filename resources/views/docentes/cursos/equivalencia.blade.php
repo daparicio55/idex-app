@@ -164,7 +164,7 @@
                     $pro = $sum/$cont;
                     $pro = round(number_format($pro,2,'.',''),0);
                 @endphp
-                <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ cero($pro) }}</td>
+                <td class="p-0 border text-center @if($pro>12) text-primary @else text-danger @endif">{{ cero($pro) }}</td>
             @endif
         </tr>
         @endforeach
@@ -241,7 +241,7 @@
                         $pro = $sum/$cont;
                         $pro = round(number_format($pro,2,'.',''),0);
                     @endphp
-                    <td class="p-0 border text-center @if($nota>12) text-primary @else text-danger @endif">{{ cero($pro) }}</td>
+                    <td class="p-0 border text-center @if($pro>12) text-primary @else text-danger @endif">{{ cero($pro) }}</td>
                     <td class="p-0 text-center">{{ letras($pro) }}</td>
                     <td class="p-0 text-center">{{ cero($pro * $uasignada->unidad->old->creditos) }}</td>
                 @endif
@@ -249,7 +249,3 @@
         @endforeach
     @endisset
 @endsection
-<script> 
-    console.log('Hi!');
-    
-</script>

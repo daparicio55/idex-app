@@ -230,26 +230,6 @@ return [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
-
-        // Sidebar items:
-        /* [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
-        ],
-      
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ], */
-        //Menus
         [
             'text' => 'Administrador',
             'icon' => 'fas fa-users-cog',
@@ -331,6 +311,11 @@ return [
                     'url'  => 'cepres/estudiantes',
                 ],
                 [
+                    'icon'=>'fas fa-user-tag',
+                    'text'=>'Reg. Asistencia',
+                    'route'=>'cepres.estudiantes.asistencias.index'
+                ],
+                [
                     'icon'    => 'fab fa-amazon-pay',
                     'text' => 'Pagos',
                     'url'  => 'cepres/pagos',
@@ -386,8 +371,19 @@ return [
                 [
                     'text'=>'Cursos',
                     'icon'=>'fas fa-book-reader',
-                    'can'=>'docentes.cursos.index',
-                    'route'=>'docentes.cursos.index'
+                    'submenu'=>[
+                        [
+                            'text'=>'Regulares',
+                            'icon'=>'fas fa-book',
+                            'can'=>'docentes.cursos.index',
+                            'route'=>'docentes.cursos.index'
+                        ],
+                        [
+                            'text'=>'Extraordinarios',
+                            'icon'=>'fas fa-quran',
+                            'url'=>'#'
+                        ]
+                    ]
                 ]
             ]
         ],

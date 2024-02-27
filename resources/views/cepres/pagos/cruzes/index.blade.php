@@ -35,6 +35,7 @@
         <table class="table table-hover">
             <thead>
               <tr>
+                <th>Aula</th>
                 <th>DNI</th>
                 <th>Apellido, Nombre</th>
                 <th>Teléfonos</th>
@@ -46,6 +47,7 @@
             <tbody>
                 @foreach ($estudiantes as $estudiante)
                     <tr>
+                        <td>{{ $estudiante->aula }}</td>
                         <td>{{$estudiante->cliente->dniRuc}}</td>
                         <td>
                             <strong class="text-uppercase">{{$estudiante->cliente->apellido}}</strong>, <span class="text-capitalize">{{Str::lower($estudiante->cliente->nombre)}}</span>
