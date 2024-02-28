@@ -90,18 +90,14 @@ use App\Http\Controllers\VmatriculaController;
 
 use App\Models\Cliente;
 use App\Models\cvPersonale;
-use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
 use App\Models\Pmatricula;
 use App\Models\Servicio;
-use App\Models\Udidactica;
 use App\Models\User;
-use DragonCode\Contracts\Cashier\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
-use Twilio\Rest\Client;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -202,6 +198,7 @@ Route::resource('sacademica/iformativos',IformativoController::class)->names('sa
 Route::resource('sacademica/pmatriculas',PmatriculaController::class)->names('sacademica.pmatriculas');
 Route::get('sacademica/pmatriculas/{id}/plancierre/',[PmatriculaController::class,'plancierre'])
 ->name('sacademica.pmatriculas.plancierre');
+Route::get('sacademica/uasignadas/getunidades/{id}',[UasignadaController::class,'getunidades'])->name('sacademica.uasignada.getunidades');
 Route::resource('sacademica/mformativos', MformativoController::class)->names('sacademica.mformativos');
 Route::resource('sacademica/udidacticas',UdidacticaController::class)->names('sacademica.udidacticas');
 Route::resource('sacademica/ability',AbilityController::class)->names('sacademica.ability');
@@ -219,6 +216,7 @@ Route::resource('sacademica/estudiantes',EstudianteController::class)->names('sa
 Route::resource('sacademica/licencias',LicenciaController::class)->names('sacademica.licencias');
 Route::resource('sacademica/cargarnotas',CargarNotaController::class)->names('sacademica.cargarnotas');
 Route::resource('sacademica/uasignadas',UasignadaController::class)->names('sacademica.uasignadas');
+
 Route::resource('sacademica/uasigandas/horarios',HorarioController::class)->names('sacademica.uasignadas.horarios');
 
 

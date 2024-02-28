@@ -30,4 +30,7 @@ class Udidactica extends Model
     public function capabilities(){
         return $this->hasMany(Capabilitie::class);
     }
+    public function uasignadas(){
+        return $this->hasMany(Uasignada::class);
+    }
 }

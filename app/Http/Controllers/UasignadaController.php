@@ -92,10 +92,38 @@ class UasignadaController extends Controller
         $unidades = Udidactica::whereHas('modulo',function($query){
             /* $query->where('iformativo_id','=',5); */
         })->orderBy('nombre','desc')->get();
+       
         //dd($unidades);
         return view('sacademica.uasignadas.create',compact('users','unidades','periodos'));
     }
+    public function getunidades($pmatricula_id){
+        $periodo = Pmatricula::findOrFail($pmatricula_id);
+        $numero = explode("-",$periodo->nombre);
+        if($numero[1]==1){
+            $arr=["I","III","V"];
+        }else{
+            $arr=["II","IV","VI"];
+        }
+        $unidades = Udidactica::whereDoesntHave('uasignadas',function($query) use($pmatricula_id) {
+            $query->where('pmatricula_id','=',$pmatricula_id);
+        })->get();
 
+        $array = [];
+        foreach ($unidades as $key => $unidad) {
+            # code...
+            if($unidad->modulo->iformativo_id == 4){
+                if(in_array($unidad->ciclo,$arr)){
+                    $a = [
+                        'id' => $unidad->id,
+                        'nombre' => $unidad->nombre.' - '.$unidad->modulo->carrera->nombreCarrera.' - '.$unidad->ciclo.' - '.$unidad->horas.' - '.$unidad->creditos
+                    ];
+                    array_push($array,$a);
+                }
+            }
+        }
+
+        return $array;
+    }
     /**
      * Store a newly created resource in storage.
      *
