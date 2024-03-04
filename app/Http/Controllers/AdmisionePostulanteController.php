@@ -33,19 +33,52 @@ class AdmisionePostulanteController extends Controller
     public function index(Request $request)
     {
         //
+        $modalidadTipo = ['Ordinario'=>'Ordinario','Exonerado'=>'Exonerado'];
+        $modalidad = [
+            'Ordinario'=>'Ordinario',
+            'Artista Calificado'=>'Artista Calificado',
+            'Comunidades Nativas y Campesinas'=>'Comunidades Nativas y Campesinas',
+            'Desplazados Terrorismo y combatientes del Cenepa'=>'Desplazados Terrorismo y combatientes del Cenepa',
+            'Personas con Discapacidad'=>'Personas con Discapacidad',
+            '1er y 2do Puesto EBR - EBA'=>'1er y 2do Puesto EBR - EBA',
+            '1er y 2do Puesto Cepre IDEX Perú Japón'=>'1er y 2do Puesto Cepre IDEX Perú Japón',
+            'Servicio Militar'=>'Servicio Militar',
+            'Deportistas Calificados'=>'Deportistas Calificados',
+            'Titulados'=>'Titulados',
+            'Reingresantes'=>'Reingresantes',
+            'Traslado Interno'=>'Traslado Interno',
+            'Traslado Externo'=>'Traslado Externo',
+            'Historico'=>'Historico',
+        ];
+        $programas = Carrera::orderBy('nombreCarrera','asc')->get();
+        $periodos = Admisione::orderBy('nombre','desc')->get();
         $searchText = null;
-        if (isset($request->searchText)) {
+        if (isset($request->searchText) || isset($request->periodo) || isset($request->programa) || isset($request->modalidadTipo) ) {
             # code...
             //ahora que hay código vamos a buscar
             $searchText = $request->searchText;
-            
-            $postulantes = AdmisionePostulante::whereHas('cliente',function($query) use ($searchText){
+            $postulantes = AdmisionePostulante::where(function($query) use($request){
+                if($request->carrera <> 0){
+                    $query->where('idCarrera','=',$request->carrera);
+                }
+            })
+            ->where(function($query) use($request){
+                if($request->modalidadTipo <> 0){
+                    $query->where('modalidadTipo','=',$request->modalidadTipo);
+                }
+            })
+            ->where(function($query) use($request){
+                if($request->periodo <> 0){
+                    $query->where('admisione_id','=',$request->periodo);
+                }
+            })
+            ->whereHas('cliente',function($query) use ($searchText){
                 $query->where('dniRuc','like','%'.$searchText.'%')->orWhere('apellido','like','%'.$searchText.'%');
-            })->paginate(25);
+            })->get();          
         }else{
             $postulantes = AdmisionePostulante::orderBy('id','desc')->paginate(25);
         }
-        return view('admisiones.postulantes.index',compact('postulantes','searchText'));
+        return view('admisiones.postulantes.index',compact('postulantes','searchText','modalidad','modalidadTipo','programas','periodos'));
     }
 
     /**

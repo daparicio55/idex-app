@@ -85,9 +85,11 @@
                     </tr> 
                     @endforeach
                 </tbody>
-                <caption>
-                    {{ $postulantes->links() }}
-                </caption>
+                @if (method_exists($postulantes, 'links'))
+                    <caption>
+                        {{ $postulantes->links() }}
+                    </caption>                
+                @endif
             </table>
             
         </div>

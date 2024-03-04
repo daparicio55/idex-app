@@ -121,6 +121,86 @@
             Reporte Sistema SISGE-PJ
         </div>
     </div>
+    <div class="card border-success">
+        <div class="card-header bg-warning">
+            <h3><strong> Reportes de Admisión Exonerados IDEX Perú Japón - {{$admisione->periodo}} </strong></h1>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <th>#</th>
+                        <th>Exp.</th>
+                        <th>Tipo</th>
+                        <th>Modalidad</th>
+                        <th>Programa de Estudios</th>
+                        <th>DNI</th>
+                        <th>APELLIDOS, Nombres</th>
+
+                    </thead>
+                    <tbody>
+                        @php
+                            $contador = 1
+                        @endphp
+                        @foreach ($postulantes->where('modalidadTipo','=','Exonerado')->sortBy('expediente') as $key => $postulante)
+                            <tr>
+                                <td>{{ $contador++ }}</td>
+                                <td>{{ ceros($postulante->expediente) }}</td>
+                                <td>{{ $postulante->modalidadTipo}}</td>
+                                <td>{{ $postulante->modalidad }}</td>
+                                <td>{{ $postulante->carrera->nombreCarrera }}</td>
+                                <td>{{ $postulante->cliente->dniRuc }}</td>
+                                <td>{{ Str::upper($postulante->cliente->apellido) }}, {{ Str::title($postulante->cliente->nombre) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            Reporte Sistema SISGE-PJ
+        </div>
+    </div>
+    <div class="card border-success">
+        <div class="card-header bg-success">
+            <h3><strong> Reportes de Admisión Regular IDEX Perú Japón - {{$admisione->periodo}} </strong></h1>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <th>#</th>
+                        <th>Exp.</th>
+                        <th>Tipo</th>
+                        <th>Modalidad</th>
+                        <th>Programa de Estudios</th>
+                        <th>DNI</th>
+                        <th>APELLIDOS, Nombres</th>
+
+                    </thead>
+                    <tbody>
+                        @php
+                            $contador = 1
+                        @endphp
+                        @foreach ($postulantes->where('modalidadTipo','=','Ordinario')->sortBy('expediente') as $key => $postulante)
+                            <tr>
+                                <td>{{ $contador++ }}</td>
+                                <td>{{ ceros($postulante->expediente) }}</td>
+                                <td>{{ $postulante->modalidadTipo}}</td>
+                                <td>{{ $postulante->modalidad }}</td>
+                                <td>{{ $postulante->carrera->nombreCarrera }}</td>
+                                <td>{{ $postulante->cliente->dniRuc }}</td>
+                                <td>{{ Str::upper($postulante->cliente->apellido) }}, {{ Str::title($postulante->cliente->nombre) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            Reporte Sistema SISGE-PJ
+        </div>
+    </div>
     @include('admisiones.reportes.colegios')
 @endif
 

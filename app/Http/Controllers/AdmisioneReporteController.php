@@ -106,7 +106,7 @@ class AdmisioneReporteController extends Controller
                 $query->where('admisione_id','=',$request->id);
             })->get();
 
-
+            
             return view('admisiones.reportes.index',compact('colegios','totalpostulantes','postulantesO','anuladosO','programasO','postulantesX','anuladosX','programasX','admisiones','anulados','admisione','postulantes','programas'));
         }
         return view('admisiones.reportes.index',compact('admisiones'));
