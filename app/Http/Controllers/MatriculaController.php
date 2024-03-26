@@ -34,6 +34,8 @@ class MatriculaController extends Controller
     public function index(Request $request)
     {
         //vamos a sacar el periodo actual
+        $programas = Carrera::orderBy('nombreCarrera')->where('observacionCarrera','=','visible')->get();
+        //$periodos = Pmatricula::
         $anio = Carbon::now()->parse()->year;
         $periodoPar = Pmatricula::where('nombre','=',$anio."-1")->first();
         $periodoImpar = Pmatricula::where('nombre','=',$anio."-2")->first();
@@ -54,7 +56,7 @@ class MatriculaController extends Controller
                 $query->where('plan_cerrado',0)->whereNot('ematriculas.tipo','=',"Extra");
             })->orderBy('id','desc')->paginate(10);
         }
-        return view('sacademica.ematriculas.index',compact('matriculas','searchText'));
+        return view('sacademica.ematriculas.index',compact('matriculas','searchText','programas'));
     }
 
     /**

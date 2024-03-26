@@ -66,7 +66,7 @@ class CapacidadeController extends Controller
             $capacidade = Capacidade::findOrFail($id);
             $uasignada = Uasignada::findOrFail($capacidade->uasignada_id);
             //return $uasignada->capacidades;
-            foreach ($uasignada->capacidades as $key => $capacidade) {
+            foreach ($uasignada->capacidades as $key => $capacidadee) {
                 # code...
                 if ($key != 0){
                     $fecha = Carbon::parse($request->fecha);
@@ -85,6 +85,6 @@ class CapacidadeController extends Controller
             //throw $th;
             return Redirect::route('docentes.cursos.index')->with('error',$th->getMessage());
         }
-        return Redirect::route('docentes.cursos.index')->with('info','se actualizo la fecha correctamente de la capacidad');
+        return Redirect::route('docentes.cursos.show',$capacidade->uasignada_id)->with('info','se actualizo la fecha correctamente de la capacidad');
     }
 }

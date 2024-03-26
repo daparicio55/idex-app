@@ -93,21 +93,26 @@
                     <input type="text" id="telefono2" name="telefono2" class="form-control" required>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mt-2">
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                    {!! Form::label('fechaNacimiento', 'F. Nacimiento', [null]) !!}
+                    {!! Form::label('fechaNacimiento', 'F. Nacimiento', ['class'=>'pb-2']) !!}
                     <input type="date" id="fechaNacimiento" name="fechaNacimiento" class="form-control" required>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                    {!! Form::label('sexo', 'Sexo', [null]) !!}
+                    {!! Form::label('sexo', 'Sexo', ['class'=>'pb-2']) !!}
                     {!! Form::select('sexo', $sexos, null, ['class'=>'form-control']) !!}
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                     {!! Form::label('email', 'Correo', [null]) !!}
+                    <label for="">
+                        <button type="button" class="btn btn-info btn-sm" id="btn_mail">
+                            <i class="fas fa-mail-bulk"></i>
+                        </button>
+                    </label>
                     <input type="text" id="email" name="email" class="form-control" required>
                 </div>
                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
-                    {!! Form::label('direccion', 'Dirección', [null]) !!}
+                    {!! Form::label('direccion', 'Dirección', ['class'=>'pb-2']) !!}
                     <input type="text" id="direccion" name="direccion" class="form-control" required>                    
                 </div>
             </div>
@@ -156,7 +161,7 @@
                                 <th style="text-align: center">Ciclo</th>
                                 <th>Tipo</th>
                                 <th>Unidad Didáctica</th>
-                                <th style="width: 90px">Cre</th>
+                                <th>Cre</th>
                                 <th style="width: 90px">Nota</th>
                                 <th>Horario</th>
                             </thead>
@@ -347,7 +352,7 @@
                 var td6 = document.createElement('td');
                 var td7 = document.createElement('td');
                 //inicio de TD
-                    //console.log(unidad.horarios);
+                    //console.log(unidad.horarios.length);
                     let ul = document.createElement('ul');
                     ul.setAttribute('id',"ul"+unidad.id);
                     unidad.horarios.forEach(horario=>{
@@ -360,12 +365,21 @@
                 td0.appendChild(txt);
                 td0.appendChild(txtid);
                 td1.appendChild(document.createTextNode(unidad.ciclo));
+                td1.setAttribute('class','h5');
                 td1.setAttribute('style','text-align: center');
                 td2.appendChild(document.createTextNode(unidad.tipo));
+                td2.setAttribute('class','h5');
                 td3.appendChild(document.createTextNode(unidad.nombre));
+                td3.setAttribute('class','h5');
                 td4.appendChild(document.createTextNode(unidad.creditos));
                 td5.innerHTML = "<input type='text' id='txt"+unidad.id+"' name='notas[]' readonly class='form-control'>";
-                td6.innerHTML = '<a id="btn'+unidad.id+'" onclick="creditos('+unidad.creditos+','+unidad.id+')" class="btn btn-primary">+</a>';
+                //cambio de botton
+                if (unidad.horarios.length > 0 ){
+                    td6.innerHTML = '<button type="button" id="btn'+unidad.id+'" onclick="creditos('+unidad.creditos+','+unidad.id+')" class="btn btn-primary"><i class="fas fa-plus"></i></button>';
+                }else{
+                    td6.innerHTML = '<button type="button" disabled id="btn'+unidad.id+'" onclick="creditos('+unidad.creditos+','+unidad.id+')" class="btn btn-primary"><i class="fas fa-plus"></i></button>'
+                }
+                
                 tr.appendChild(td6);
                 tr.appendChild(td0);
                 tr.appendChild(td1);
@@ -475,5 +489,11 @@
             alert("Existe un cruce de horarios con esta unidad didactica");
         }
     }
+    document.getElementById('btn_mail').addEventListener('click',function(){
+        let dni = document.getElementById('searchText');
+        console.log(dni.value);
+        let text = dni.value + '@idexperujapon.edu.pe';
+        document.getElementById('email').value = text;
+    });
     </script>
 @stop

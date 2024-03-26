@@ -12,7 +12,7 @@
             </div>
             <div class="col-sm-2">
                 <label>Precio</label>
-                <input type="number" min=1 step="1" class="form-control" wire:model="precio">
+                <input type="number" min=1 step="0.5" class="form-control" wire:model="precio">
             </div>
             <div class="col-sm-2">
                 <label>Cant.</label>

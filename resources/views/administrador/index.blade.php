@@ -34,13 +34,6 @@
         <li>
           <a href="{{ route('administrador.reportedeudas') }}" class="btn btn-outline-primary ml-2">Reporte Deudas</a>
         </li>
-        {{--
-        <li class="nav-item">
-          <a class="nav-link" href="#">Features</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
-        </li> --}}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navingresantes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Reporte Ingresantes
@@ -60,6 +53,18 @@
               <a href="{{ route('administrador.reportedis',$periodo->id) }}" class="dropdown-item">
                 {{ $periodo->nombre }}
               </a>
+            @endforeach
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navreportematricula" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Reporte de Matriculas
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navreportematricula">
+            @foreach ($periodos as $periodo)
+                <a href="{{ route('administrador.reportematricula',$periodo->id) }}" class="dropdown-item">
+                  {{ $periodo->nombre }}
+                </a>
             @endforeach
           </div>
         </li>

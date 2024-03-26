@@ -445,11 +445,11 @@ return [
                     'url'=>'sacademica/pmatriculas',
                     'can'=>'sacademica.pmatriculas.index'
                 ],
-                [
+                /* [
                     'text'=>'Nominas',
                     'icon'=>'far fa-list-alt',
                     'url'=>'sacademica/nominas'
-                ],
+                ], */
                 [
                     'text'=>'Convalidaciones',
                     'icon'=>'far fa-map',
@@ -462,12 +462,12 @@ return [
                     'url'=>'sacademica/regularizaciones',
                     'can'=>'sacademica.regularizaciones.index'
                 ],
-                [
+                /* [
                     'text'=>'Verificaciones',
                     'icon'=>'fas fa-spell-check',
                     'url'=>'sacademica/verificaciones',
                     'can'=>'sacademica.verificaciones.index'
-                ],
+                ], */
                 /* [
                     'text'=>'Verificaciones Avanzado',
                     'icon'=>'fas fa-spell-check',

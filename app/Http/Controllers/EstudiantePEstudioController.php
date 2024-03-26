@@ -116,11 +116,11 @@ class EstudiantePEstudioController extends Controller
             $horarios = [];
             if(isset($uni->equivalencia->id)){
                 $uasignada = Uasignada::where('udidactica_id','=',$uni->equivalencia->id)
-                ->where('pmatricula_id','=',91)
+                ->where('pmatricula_id','=',100)
                 ->first();
             }else{
                 $uasignada = Uasignada::where('udidactica_id','=',$uni->id)
-                ->where('pmatricula_id','=',91)
+                ->where('pmatricula_id','=',100)
                 ->first();
             }
             if(isset($uasignada->horarios)){

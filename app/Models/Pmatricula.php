@@ -19,6 +19,9 @@ class Pmatricula extends Model
     public function asignaciones(){
         return $this->belongsTo(Uasignada::class);
     }
+    public function uasignadas(){
+        return $this->hasMany(Uasignada::class);
+    }
     public function matriculas(){
         return $this->hasMany(Ematricula::class);
     }

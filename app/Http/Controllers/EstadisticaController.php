@@ -61,7 +61,7 @@ class EstadisticaController extends Controller
                 }
                 # code...
             }
-            return $notas;
+            //return $notas;
             return view('sacademica.estadisticas.index',compact('periodos','carreras','ciclos'));
         }
         return view('sacademica.estadisticas.index',compact('periodos'));

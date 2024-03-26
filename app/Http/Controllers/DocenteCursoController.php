@@ -7,8 +7,11 @@ use App\Models\Capacidade;
 use App\Models\Ematricula;
 use App\Models\Pmatricula;
 use App\Models\Uasignada;
+
 use PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class DocenteCursoController extends Controller
 {
@@ -76,11 +79,18 @@ class DocenteCursoController extends Controller
      */
     public function show($id)
     {
-        //
         $asignacione = Uasignada::findOrFail($id);
+        if ($asignacione->user_id <> Auth::id()){
+            return Redirect::route('docentes.cursos.index')->with('error','error no puedes acceder a este curso');
+        }
+
         //vamos buscar las capacidades
-        $capacidades = Capacidade::where('uasignada_id','=',$asignacione->id)->get();
-        return view('docentes.cursos.capacidades.index',compact('asignacione','capacidades'));
+        
+        //$capacidades = Capacidade::where('uasignada_id','=',$asignacione->id)->get();
+        //return $capacidades[1]->indicadores;
+        return view('docentes.cursos.show',compact('asignacione'));
+
+        //return view('docentes.cursos.capacidades.index',compact('asignacione','capacidades'));
     }
 
     /**

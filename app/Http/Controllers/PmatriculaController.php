@@ -71,6 +71,8 @@ class PmatriculaController extends Controller
     public function show($id)
     {
         //
+        $periodo = Pmatricula::findOrFail($id);
+        return view('sacademica.pmatriculas.show',compact('periodo'));
     }
 
     /**

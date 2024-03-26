@@ -89,7 +89,7 @@ class Nomina1Export implements FromView, WithStyles, ShouldAutoSize, WithColumnW
         ->join('admisiones as adm','adm.id','=','pos.admisione_id')
         ->join('clientes as cli','cli.idCliente','=','pos.idCliente')
         ->where('ema.pmatricula_id','=',$periodo->id)
-        ->where('ud.ciclo','<>','V')
+        /* ->where('ud.ciclo','<>','V') */
         /* ->where('ud.ciclo','<>','VI') */
         ->where('mf.carrera_id','=',$carr->ccarrera_id)
         ->where(function($query){

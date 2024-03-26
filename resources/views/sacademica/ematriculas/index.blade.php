@@ -20,22 +20,40 @@
     </div>
 @endif
 {!! Form::open(['route'=>'sacademica.matriculas.index','method'=>'GET','autocomplete'=>'off','role'=>'search']) !!}
-<div class='form-group'>
-    <div class="input-group">
-        <input type="text" class="form-control" name="searchText" placeholder="Ingrese número de DNI a buscar..." @if(isset($searchText)) value="{{$searchText}}" @endif >
-        <span class="input-group-btn">
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-search-plus"></i> Buscar
-            </button>
-{!! Form::close() !!}
-            <a href="{{route('sacademica.matriculas.index')}}" class="btn btn-danger">
-                <i class="fas fa-recycle"></i> Limpiar
-            </a>
-        </span>
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class='form-group'>
+            <div class="input-group">
+                <input type="text" class="form-control" name="searchText" placeholder="Ingrese número de DNI a buscar..." @if(isset($searchText)) value="{{$searchText}}" @endif >
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search-plus"></i> Buscar
+                    </button>
+                    <a href="{{route('sacademica.matriculas.index')}}" class="btn btn-danger">
+                        <i class="fas fa-recycle"></i> Limpiar
+                    </a>
+                </span>
+            </div>
+        </div>
     </div>
 </div>
-
 <div class="row">
+    <div class="col-sm-12 col-md-6">
+        <select name="programa" class="form-control">
+            <option value="0" disabled selected>Seleccione Programa de Estudios</option>
+            @foreach ($programas as $programa)
+                <option value="{{ $programa->idCarrera }}">{{ $programa->nombreCarrera }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="col-sm-4">
+        <select name="periodo">
+            
+        </select>
+    </div>
+</div>
+{!! Form::close() !!}
+<div class="row mt-2">
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="table-responsive">
 			<table class="table table-striped table-bordered table-condensed table-hover">

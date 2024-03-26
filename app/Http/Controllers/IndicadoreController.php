@@ -52,33 +52,164 @@ class IndicadoreController extends Controller
         $indicadore = Indicadore::findOrFail($id);
         return view('docentes.cursos.capacidades.indicadores.edit',compact('indicadore'));
     }
-    public function update(Request $request,$id){
-
-        //dd($id);
-        try {
-            //code...
-            $indicadoree = Indicadore::findOrFail($id);
-            $request->validate([
-                'fecha'=>'required|before_or_equal:'.$indicadoree->capacidade->fecha
-            ]);
-            $capacidade = Capacidade::findOrFail($indicadoree->capacidade_id);
-            foreach ($capacidade->indicadores as $key => $indicadore) {
-                # code...
-                if ($key != 0){
-                    $fecha = Carbon::parse($request->fecha);
-                    $fanterior = Carbon::parse($capacidade->indicadores[$key-1]->fecha);
-                    if($fecha->lessThanOrEqualTo($fanterior)){
-                        throw new Exception('La fecha no puede ser igual o menor a la del anterior indicador');
+    public function u_indicador($indicador){
+        $i = Indicadore::findOrFail($indicador);
+        $c = Capacidade::findOrFail($i->capacidade_id);
+        $a_indicadores = [];
+        $indicadores = $c->indicadores()->orderBy('nombre','asc')->get();
+        foreach ($indicadores as $key => $indicador) {
+            array_push($a_indicadores,$indicador->id);
+        }
+        $pos = array_search($i->id,$a_indicadores) + 1;
+        if (count($a_indicadores)==1){
+            //solo hay 1 indicador
+            $a = [
+                'orden'=> $pos,
+                'primero'=>true,
+                'ultimo'=>true,
+                'unico'=>true,
+                'id'=>$i->id,
+                'id_anterior'=>null,
+                'id_siguiente'=>null
+            ];
+        }else{
+            if($pos == 1){
+                $a = [
+                    //es el numero 1;
+                    'orden'=> $pos,
+                    'primero'=>true,
+                    'ultimo'=>false,
+                    'unico'=>false,
+                    'id'=>$i->id,
+                    'id_anterior'=>null,
+                    'id_siguiente'=>$a_indicadores[$pos]
+                ];
+            }else{
+                if (count($a_indicadores)==$pos){
+                    $a = [
+                        //es el ultimo
+                        'orden'=> $pos,
+                        'primero'=>false,
+                        'ultimo'=>true,
+                        'unico'=>false,
+                        'id'=>$i->id,
+                        'id_anterior'=>$a_indicadores[$pos-2],
+                        'id_siguiente'=>null
+                    ];
+                }else{
+                    $a = [
+                        'orden'=> $pos,
+                        'primero'=>false,
+                        'ultimo'=>false,
+                        'unico'=>false,
+                        'id'=>$i->id,
+                        'id_anterior'=>$a_indicadores[$pos-2],
+                        'id_siguiente'=>$a_indicadores[$pos]
+                    ];
+                }
+            }
+        }
+        return $a;
+    }
+    public function verificarFecha($indicador,$fecha){
+        $arMessage = [
+            "estado"=>false,
+            "mensage"=>"OK",
+        ];
+        $i = Indicadore::findOrFail($indicador);
+        $ar = $this->u_indicador($indicador);
+        $fechaCapacidad = Carbon::createFromFormat('Y-m-d',$i->capacidade->fecha);
+        $fechaIndicador = Carbon::createFromFormat('Y-m-d',$fecha);
+        if ($ar["unico"]){
+            if($fechaIndicador->gt($fechaCapacidad)){
+                //verificamos si no pasa el final del indicador:
+                $arMessage["estado"] = true;
+                $arMessage["mensage"] = "La fecha no puede ser mayor a la fecha limite del indicador";
+            }
+        }else{
+            if($ar["primero"]){           
+                //verificamos si no pasa el final de la capacidad:
+                if($fechaIndicador->gt($fechaCapacidad)){
+                    $arMessage["estado"] = true;
+                    $arMessage["mensage"] = "La fecha no puede ser mayor a la fecha limite del indicador";
+                }else{
+                    //verificanos que la sigueinte fecha no sea nula
+                    $i_siguiente = Indicadore::findOrFail($ar['id_siguiente']);
+                    if(isset($i_siguiente->fecha)){
+                        $fechaSiguiente = Carbon::createFromFormat('Y-m-d',$i_siguiente->fecha);
+                        if($fechaIndicador->gt($fechaSiguiente)){
+                            $arMessage["estado"] = true;
+                            $arMessage["mensage"] = "La fecha no puede ser mayor a la fecha del siguiente indicador";
+                        }
+                    }
+                }
+                
+            }else{
+                if($ar["ultimo"]){
+                    if($fechaIndicador->gt($fechaCapacidad)){
+                        //verificamos si no pasa el final del indicador:
+                        $arMessage["estado"] = true;
+                        $arMessage["mensage"] = "La fecha no puede ser mayor a la fecha limite del indicador";
+                    }else{
+                        //buscamos el indicador anterior
+                        $i_anterior = Indicadore::findOrFail($ar["id_anterior"]);
+                        if(isset($i_anterior->fecha)){
+                            $fechaAnterior = Carbon::createFromFormat('Y-m-d',$i_anterior->fecha);
+                            if($fechaAnterior->gt($fechaIndicador)){
+                                $arMessage["estado"] = true;
+                                $arMessage["mensage"] = "La fecha no puede ser menor a la fecha del indicador anterior";
+                            }
+                        }else{
+                            $arMessage["estado"] = true;
+                            $arMessage["mensage"] = "no puedes ingresar la fecha de esde indicador sin ingresar el indicador anterior";
+                        }
+                    }
+                }else{
+                    //ahora si no es ultuimos
+                    $i_anterior = Indicadore::findOrFail($ar["id_anterior"]);
+                    $i_siguiente = Indicadore::findOrFail($ar['id_siguiente']);
+                    //ahora tengo que verificar que la fecha este entre las fecha de inicio y fin
+                    if(isset($i_anterior->fecha)){
+                        $fechaAnterior = Carbon::createFromFormat('Y-m-d',$i_anterior->fecha);
+                        if(isset($i_siguiente->fecha)){
+                            $fechaSiguiente = Carbon::createFromFormat('Y-m-d',$i_siguiente->fecha);
+                            if($fechaAnterior->gt($fechaIndicador)){
+                                $arMessage["estado"] = true;
+                                $arMessage["mensage"] = "no puedes ingresar una fecha anterior al indicador";
+                            }
+                            if($fechaSiguiente->gt($fechaIndicador)){
+                                $arMessage["estado"] = true;
+                                $arMessage["mensage"] = "no puedes ingresar una fecha posterior al indicador";
+                            }
+                        }else{
+                            if($fechaAnterior->gt($fechaIndicador)){
+                                $arMessage["estado"] = true;
+                                $arMessage["mensage"] = "la fecha no puede ser menor a la del indicador anterior";
+                            }
+                        }
+                    }else{
+                        $arMessage["estado"] = true;
+                        $arMessage["mensage"] = "no puedes ingresar la fecha de esde indicador sin ingresar el indicador anterior";
                     }
                 }
             }
+        }
+        return $arMessage;
+    }
+    public function update(Request $request,$id){
+        try {
+            $indicadoree = Indicadore::findOrFail($id);
+            $respuesta = $this->verificarFecha($id,$request->fecha);
+            if ($respuesta["estado"]){
+                throw new Exception($respuesta["mensage"]);
+            }
+            
             $indicadoree->fecha = $request->fecha;
             $indicadoree->update();
         } catch (\Throwable $th) {
-            //throw $th;
-            return Redirect::route('docentes.cursos.index')->with('error',$th->getMessage());
+            return Redirect::route('docentes.cursos.show',$indicadoree->capacidade->uasignada_id)->with('error',$th->getMessage());
         }
-        return Redirect::route('docentes.cursos.index')->with('info','Se actualizo el indicador correctamente');
+        return Redirect::route('docentes.cursos.show',$indicadoree->capacidade->uasignada_id)->with('info','Se actualizo el indicador correctamente');
     }
     public function destroy($id){
         try {

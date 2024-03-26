@@ -44,6 +44,10 @@ class AdministradorController extends Controller
         $periodos = Pmatricula::orderBy('nombre','desc')->take(18)->get();
         return view('administrador.index',compact('admisiones','periodos'));
     }
+    public function reportematricula($id){
+        $pmatricula = Pmatricula::findOrFail($id);
+        return view('administrador.reportematricula',compact('pmatricula'));
+    }
     public function reportedeudas(){
         $deudas = Deuda::orderBy('numero','desc')
         ->where('estado','=','deuda')
