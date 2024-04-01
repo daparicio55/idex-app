@@ -12,6 +12,15 @@
       <li class="nav-item">
         <a href="{{ route('administrador.normalizarnombres') }}" class="btn btn-outline-danger" >Normalizacion de Nombres</a>
       </li>
+      <li class="nav-item">
+        <button class="btn btn-outline-success ml-2" id="btn-notas" type="button">Revisar Notas</button>
+      </li>
+      <li>
+        <button type="button" class="btn btn-outline-info ml-2">Revisar Ex. Formativas</button>
+      </li>
+      <li>
+        <a href="{{ route('administrador.reportedeudas') }}" class="btn btn-outline-primary ml-2">Reporte Deudas</a>
+      </li>
     </ul>
   </div>
 </nav>
@@ -25,15 +34,6 @@
     
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <button class="btn btn-outline-success" id="btn-notas" type="button">Revisar Notas</button>
-        </li>
-        <li>
-          <button type="button" class="btn btn-outline-info ml-2">Revisar Ex. Formativas</button>
-        </li>
-        <li>
-          <a href="{{ route('administrador.reportedeudas') }}" class="btn btn-outline-primary ml-2">Reporte Deudas</a>
-        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navingresantes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Reporte Ingresantes
@@ -63,6 +63,18 @@
           <div class="dropdown-menu" aria-labelledby="navreportematricula">
             @foreach ($periodos as $periodo)
                 <a href="{{ route('administrador.reportematricula',$periodo->id) }}" class="dropdown-item">
+                  {{ $periodo->nombre }}
+                </a>
+            @endforeach
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navmasiveaccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Masive Create Account
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navmasiveaccount">
+            @foreach ($periodos as $periodo)
+                <a href="{{ route('administrador.masivemakeaccount',$periodo->id) }}" class="dropdown-item">
                   {{ $periodo->nombre }}
                 </a>
             @endforeach

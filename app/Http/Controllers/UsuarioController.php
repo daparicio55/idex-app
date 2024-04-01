@@ -26,20 +26,13 @@ class UsuarioController extends Controller
         $this->middleware('can:accesos.usuarios.show')->only('show');
         /* $this->middleware('can:accesos.usuarios.visibilty')->only('visibility'); */
     } 
-    public function index(Request $request)
+    public function index()
     {
         //
-        $searchText = null;
-        if (isset($request->searchText)) {
-            # code...
-            //ahora que hay código vamos a buscar
-            $searchText = $request->searchText;
-            $usuarios = User::where('name','LIKE','%'.$searchText.'%')
-            ->orWhere('email','LIKE','%'.$searchText.'%')->get();
-        }else{
-            $usuarios = User::all();
-        }
-        return view('accesos.usuarios.index',compact('usuarios','searchText'));
+        $usuarios = User::whereDoesntHave('roles', function($query){
+            $query->where('name','Bolsa User');
+        })->get();;
+        return view('accesos.usuarios.index',compact('usuarios'));
     }
 
     /**

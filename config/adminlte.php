@@ -242,9 +242,16 @@ return [
             'can'     => 'accesos.permisos.index',
             'submenu' => [
                 [
-                    'icon'    => 'far fa-user',
+                    'icon'    => 'fas fa-user-tie',
                     'text' => 'Usuarios',
                     'url'  => 'accesos/usuarios',
+                    'icon_color' => 'danger'
+                ],
+                [
+                    'icon'=>'fas fa-user-graduate',
+                    'text'=>'Estudiantes',
+                    'route'=>'accesos.estudiantes.index',
+                    'icon_color'=>'primary'
                 ],
                 [
                     'icon'    => 'fas fa-building',

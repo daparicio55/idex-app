@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AbilityController;
 use App\Http\Controllers\AcampianiasController;
+use App\Http\Controllers\Accesos\EstudianteController as AccesosEstudianteController;
 use App\Http\Controllers\AdministradorController;
 use App\Http\Controllers\AdmisioneAlternativaController;
 use App\Http\Controllers\AdmisioneConfiguracionController;
@@ -244,6 +245,7 @@ Route::resource('inicio', InicioController::class)->names('inicio');
 Route::resource('accesos/permisos',PermisoController::class)->names('accesos.permisos');
 Route::resource('accesos/roles', RoleController::class)->names('accesos.roles');
 Route::resource('accesos/usuarios', UsuarioController::class)->names('accesos.usuarios');
+Route::resource('accesos/estudiantes',AccesosEstudianteController::class)->names('accesos.estudiantes');
 Route::get('accesos/usuarios/{id}/visibility',[UsuarioController::class,'visibility'])
 ->name('accesos.usuarios.visibility');
 Route::resource('accesos/oficinas', OficinaController::class)->names('accesos.oficinas');
@@ -343,14 +345,24 @@ Route::get('/privacidad',function(){
     return view('privacidad.index');
 });
 //RUTAS DE ADMINISTRADOR:
-    Route::get('/administrador/checknotas',[AdministradorController::class,'checknotas'])->name('administrador.checknotas');
-    Route::get('/administrador/checkeformativas',[AdministradorController::class,'checkeformativas'])->name('administrador.checkeformativas');
-    Route::get('/administrador',[AdministradorController::class,'index'])->name('administrador.index');
-    Route::get('/administrador/reporteingresantes/{id}',[AdministradorController::class,'reporteingresantes'])->name('administrador.reporteingresantes');
-    Route::get('/administrador/reportedis/{id}',[AdministradorController::class,'reportedis'])->name('administrador.reportedis');
-    Route::get('/administrador/reportematricula/{id}',[AdministradorController::class,'reportematricula'])->name('administrador.reportematricula');
-    Route::get('/administrador/reportedeudas',[AdministradorController::class,'reportedeudas'])->name('administrador.reportedeudas');
-    Route::get('/administrador/normalizarnombres',[AdministradorController::class,'normalizarnombres'])->name('administrador.normalizarnombres');
+    Route::get('/administrador/checknotas',[AdministradorController::class,'checknotas'])
+    ->name('administrador.checknotas');
+    Route::get('/administrador/checkeformativas',[AdministradorController::class,'checkeformativas'])
+    ->name('administrador.checkeformativas');
+    Route::get('/administrador',[AdministradorController::class,'index'])
+    ->name('administrador.index');
+    Route::get('/administrador/reporteingresantes/{id}',[AdministradorController::class,'reporteingresantes'])
+    ->name('administrador.reporteingresantes');
+    Route::get('/administrador/reportedis/{id}',[AdministradorController::class,'reportedis'])
+    ->name('administrador.reportedis');
+    Route::get('/administrador/reportematricula/{id}',[AdministradorController::class,'reportematricula'])
+    ->name('administrador.reportematricula');
+    Route::get('/administrador/reportedeudas',[AdministradorController::class,'reportedeudas'])
+    ->name('administrador.reportedeudas');
+    Route::get('/administrador/normalizarnombres',[AdministradorController::class,'normalizarnombres'])
+    ->name('administrador.normalizarnombres');
+    Route::get('/administrador/masivemakeaccount/{id}',[AdministradorController::class,'masivemakeaccount'])
+    ->name('administrador.masivemakeaccount');
 //
 
 Route::get('/sacademica/correos',function(){

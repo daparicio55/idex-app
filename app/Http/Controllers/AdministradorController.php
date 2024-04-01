@@ -12,8 +12,11 @@ use App\Models\Estudiante;
 use App\Models\Mformativo;
 use App\Models\Pmatricula;
 use App\Models\Practica;
+use App\Models\Ucliente;
 use App\Models\Udidactica;
+use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
 
 class AdministradorController extends Controller
 {
@@ -47,6 +50,71 @@ class AdministradorController extends Controller
     public function reportematricula($id){
         $pmatricula = Pmatricula::findOrFail($id);
         return view('administrador.reportematricula',compact('pmatricula'));
+    }
+    public function masivemakeaccount($id){
+        try {
+            //code...
+            $request = new Request();
+        $estudiantes = Estudiante::whereHas('matriculas',function($query) use($id){
+            $query->where('pmatricula_id','=',$id);
+        })->get();
+        //return $estudiantes;
+        $users = [];
+        $count = 0;
+        foreach ($estudiantes as $estudiante) {
+            # code...
+            if(!isset($estudiante->postulante->cliente->ucliente->id)){
+                $count ++;
+                $estudiante = Estudiante::findOrFail($estudiante->id);
+                $cliente = Cliente::findOrFail($estudiante->postulante->cliente->idCliente);
+                //creamos la cuenta.
+                $uss = User::where('email','=',$estudiante->postulante->cliente->email)->first();
+                if(!isset($uss->id)){
+                    //si no existe usuario con ese email entonces creamos el usuario
+                    $user = new User();
+                    $user->name = $cliente->nombre.', '.$cliente->apellido;
+                    $user->email = $cliente->email;
+                    $user->password = bcrypt('Pj'.$cliente->dniRuc);
+                    $user->idOficina = 10;
+                    $user->save();
+                    $user->assignRole('Bolsa User');
+                    //luego creamos el usuario intermedio entre la tabla usuarios y clientes Uclientes
+                    $request->merge(['email' => $user->email]);
+                    $ucliente = new Ucliente();
+                    $ucliente->user_id = $user->id;
+                    $ucliente->cliente_id = $cliente->idCliente;
+                    $ucliente->save();
+                    $a = [
+                        'dni'=>$cliente->dniRuc,
+                        'apellido'=>$cliente->apellido,
+                        'nombre'=>$cliente->nombre,
+                        'contraseña'=>'Pj'.$cliente->dniRuc,
+                    ];
+                    array_push($users,$a);
+                }else{
+                    //de existir el usuario entonces solo creamos la tabla intermedia;
+                    
+                    $request->merge(['email' => $uss->email]);
+                    $ucliente = new Ucliente();
+                    $ucliente->user_id = $uss->id;
+                    $ucliente->cliente_id = $cliente->idCliente;
+                    $ucliente->save();
+                    $a = [
+                        'dni'=>$cliente->dniRuc,
+                        'apellido'=>$cliente->apellido,
+                        'nombre'=>$cliente->nombre,
+                        'contraseña'=>'Pj'.$cliente->dniRuc,
+                    ];
+                    array_push($users,$a);
+                }
+                //$this->sendReset($request);
+            }
+        }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return $th->getMessage();
+        }
+        return view('administrador.masivemakeaccount',compact('users'));
     }
     public function reportedeudas(){
         $deudas = Deuda::orderBy('numero','desc')
