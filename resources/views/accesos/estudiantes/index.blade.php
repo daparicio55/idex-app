@@ -16,6 +16,16 @@
         <strong>{{session('error')}}</strong>
     </div>
 @endif
+{!! Form::open(['route'=>'accesos.estudiantes.index','method'=>'get','id'=>'frm']) !!}
+<div class="input-group mb-3">
+    <input type="text" class="form-control" @if(isset($_GET['buscar'])) value="{{ $_GET['buscar'] }}" @endif placeholder="ingrese texto a buscar" aria-label="Recipient's username" name="buscar">
+    <div class="input-group-append">
+      <button class="btn btn-outline-info" type="submit">
+        <i class="fas fa-search-plus"></i> Buscar
+      </button>
+    </div>
+</div>
+{!! Form::close() !!}
 <div class="table-responsive">
     <table class="table">
         <thead>
@@ -45,6 +55,7 @@
                 </tr>
             @endforeach
         </tbody>
+        @if (method_exists($usuarios,'links'))
         <tfoot>
             <tr>
                 <td colspan="4">
@@ -52,6 +63,7 @@
                 </td>
             </tr>
         </tfoot>
+        @endif
     </table>
 </div>
 

@@ -12,6 +12,7 @@
                 <th>#</th>
                 <th>DNI</th>
                 <th>APELLIDOS, Nombres</th>
+                <th>Correo</th>
                 <th>Modalidad</th>
                 <th>Programa de Estudios</th>
                 <th>Promocion</th>
@@ -25,6 +26,7 @@
                     <td>{{ $key + 1 }}</td>
                     <td>{{ $matricula->estudiante->postulante->cliente->dniRuc }}</td>
                     <td>{{ Str::upper($matricula->estudiante->postulante->cliente->apellido) }}, {{ Str::title($matricula->estudiante->postulante->cliente->nombre) }}</td>
+                    <td>{{ $matricula->estudiante->postulante->cliente->dniRuc }}@idexperujapon.edu.pe</td>
                     <td>{{ $matricula->estudiante->postulante->modalidad }}</td>
                     <td>{{ $matricula->estudiante->postulante->carrera->nombreCarrera }}</td>
                     <td>{{ $matricula->estudiante->postulante->admisione->nombre }}</td>

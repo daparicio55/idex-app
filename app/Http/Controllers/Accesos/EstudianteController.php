@@ -18,10 +18,17 @@ class EstudianteController extends Controller
     {
         $this->middleware('auth');
     }
-    public function index(){
-        $usuarios = User::whereHas('roles',function($query){
-            $query->where('name','Bolsa User');
-        })->paginate(15);
+    public function index(Request $request){
+        if(isset($request->buscar)){
+            $usuarios = User::whereHas('roles',function($query){
+                $query->where('name','Bolsa User');
+            })->where('name','like','%'.$request->buscar.'%')->get();
+        }else{
+            $usuarios = User::whereHas('roles',function($query){
+                $query->where('name','Bolsa User');
+            })->paginate(15);
+        }
+        
         return view('accesos.estudiantes.index',compact('usuarios'));
     }
     public function update(Request $request, $id){   
