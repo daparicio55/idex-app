@@ -239,6 +239,7 @@ return [
         [
             'text'    => 'Accesos',
             'icon'    => 'fab fa-galactic-republic',
+            'icon_color'=>'info',
             'can'     => 'accesos.permisos.index',
             'submenu' => [
                 [
@@ -369,25 +370,30 @@ return [
             'text'=>'Docentes',
             'icon'=>'fas fa-user-tie',
             'can'=>'docentes.cvs.index',
+            'icon_color'=>'success',
             'submenu'=>[
                 [
                     'text'=>'Hoja de vida',
                     'icon'=>'far fa-sticky-note',
+                    'icon_color'=>'warning',
                     'route'=>'docentes.cvs.index'
                 ],
                 [
-                    'text'=>'Cursos',
+                    'text'=>'Uni. Didácticas',
                     'icon'=>'fas fa-book-reader',
+                    'icon_color'=>'info',
                     'submenu'=>[
                         [
                             'text'=>'Regulares',
-                            'icon'=>'fas fa-book',
+                            'icon'=>'fas fa-arrow-right',
+                            'icon_color'=>'info',
                             'can'=>'docentes.cursos.index',
                             'route'=>'docentes.cursos.index'
                         ],
                         [
                             'text'=>'Extraordinarios',
-                            'icon'=>'fas fa-quran',
+                            'icon'=>'fas fa-arrow-right',
+                            'icon_color'=>'info',
                             'url'=>'#'
                         ]
                     ]
@@ -397,78 +403,154 @@ return [
         [
             'text'=>'Sec. Académica',
             'icon'=>'fas fa-user-graduate',
+            'icon_color'=>'primary',
             'can'=>'sacademica.estadisticas.index',
             'submenu'=>[
                 [
-                    'text'=>'Unidades Didacticas',
+                    'text'=>'Planificación',
                     'icon'=>'fas fa-book',
+                    'icon_color'=>'primary',
                     'submenu'=>[
                         [
                             'text'=>'Asignar U. Didacticas',
-                            'icon'=>'fas fa-book-open',
+                            'icon'=>'far fa-square',
                             'route'=>'sacademica.uasignadas.index',
-                            'can'=>'sacademica.uasignadas.index'
+                            'can'=>'sacademica.uasignadas.index',
+                            'icon_color'=>'primary',
+                        ],
+                        [
+                            'text'=>'Itinearios Formativos',
+                            'icon'=>'far fa-square',
+                            'url'=>'sacademica/iformativos',
+                            'can'=>'sacademica.iformativos.index',
+                            'icon_color'=>'primary',
                         ],
                         [
                             'text'=>'Modulos Formativos',
-                            'icon'=>'fas fa-shapes',
+                            'icon'=>'far fa-square',
                             'url'=>'sacademica/mformativos',
-                            'can'=>'sacademica.mformativos.index'
+                            'can'=>'sacademica.mformativos.index',
+                            'icon_color'=>'primary',
                         ],
                         [
                             'text'=>'Equivalencias',
-                            'icon'=>'fas fa-equals',
+                            'icon'=>'far fa-square',
                             'route'=>'sacademica.equivalencias.index',
+                            'icon_color'=>'primary',
+                        ],
+                        [
+                            'text'=>'Periodos',
+                            'icon'=>'far fa-square',
+                            'url'=>'sacademica/pmatriculas',
+                            'can'=>'sacademica.pmatriculas.index',
+                            'icon_color'=>'primary',
+                        ],
+                    ]
+                ],
+                /* [
+                    'text'=>'Matrículas',
+                    'icon'=>'fas fa-book-reader',
+                    
+                ], */
+                [
+                    'text'=>'Matrículas',
+                    'icon'=>'fas fa-book-reader',
+                    'icon_color'=>'warning',
+                    'submenu'=>[
+                        [
+                            'text'=>'Reg. Matrícula',
+                            'icon'=>'far fa-circle',
+                            'route'=>'sacademica.matriculas.index',
+                            'icon_color'=>'warning',
+                            'can'=>'sacademica.matriculas.index'
+                        ],
+                        [
+                            'text'=>'Licencias',
+                            'icon'=>'far fa-circle',
+                            'icon_color'=>'warning',
+                            'url'=>'#'
+                        ],
+                        [
+                            'text'=>'Reingresos',
+                            'icon'=>'far fa-circle',
+                            'icon_color'=>'warning',
+                            'url'=>'#'
+                        ],
+                        [
+                            'text'=>'Moodle',
+                            'icon'=>'far fa-circle',
+                            'url'=>'sacademica/moodle',
+                            'icon_color'=>'warning',
+                            'can'=>'sacademica.moodle.index'
+                        ],
+                        [
+                            'text'=>'Estadisticas',
+                            'icon'=>'far fa-chart-bar',
+                            'url'=>'sacademica/estadisticas',
+                            'icon_color'=>'warning',
+                            'can'=>'sacademica.estadisticas.index'
                         ]
                     ]
                 ],
                 [
-                    'text'=>'Itinearios Formativos',
-                    'icon'=>'fas fa-list',
-                    'url'=>'sacademica/iformativos',
-                    'can'=>'sacademica.iformativos.index'
+                    'text'=>'Evaluaciones',
+                    'icon'=>'fas fa-clipboard-list',
+                    'icon_color'=>'danger',
+                    'submenu'=>[
+                        [
+                            'text'=>'Convalidaciones',
+                            'icon'=>'far fa-star',
+                            'url'=>'sacademica/convalidaciones',
+                            'icon_color'=>'danger',
+                            'can'=>'sacademica.convalidaciones.index'
+                        ],
+                        [
+                            'text'=>'Regu - Extraordinario',
+                            'icon'=>'far fa-star',
+                            'url'=>'sacademica/regularizaciones',
+                            'icon_color'=>'danger',
+                            'can'=>'sacademica.regularizaciones.index'
+                        ],
+                        [
+                            'text'=>'Exp. Formativas',
+                            'icon'=>'far fa-star',
+                            'route'=>'sacademica.practicas.index',
+                            'icon_color'=>'danger',
+                            'can'=>'sacademica.practicas.index'
+                        ]
+                    ]
                 ],
                 [
                     'text'=>'Estudiantes',
                     'icon'=>'fas fa-user-friends',
+                    'icon_color'=>'info',
                     'url'=>'sacademica/estudiantes',
                     'can'=>'sacademica.estudiantes.index'
                 ],
-                [
-                    'text'=>'Matrículas',
-                    'icon'=>'fas fa-book-reader',
-                    'url'=>'sacademica/matriculas',
-                    'can'=>'sacademica.matriculas.index'
-                ],
-                [
+               /*  [
                     'text'=>'Exp. Formativas',
                     'icon'=>'fas fa-business-time',
                     'route'=>'sacademica.practicas.index',
                     'can'=>'sacademica.practicas.index'
-                ],
-                [
-                    'text'=>'Periodos',
-                    'icon'=>'fas fa-hourglass-end',
-                    'url'=>'sacademica/pmatriculas',
-                    'can'=>'sacademica.pmatriculas.index'
-                ],
+                ], */
+                
                 /* [
                     'text'=>'Nominas',
                     'icon'=>'far fa-list-alt',
                     'url'=>'sacademica/nominas'
                 ], */
-                [
+                /* [
                     'text'=>'Convalidaciones',
                     'icon'=>'far fa-map',
                     'url'=>'sacademica/convalidaciones',
                     'can'=>'sacademica.convalidaciones.index'
-                ],
-                [
+                ], */
+                /* [
                     'text'=>'Regu - Extraordinario',
                     'icon'=>'far fa-clipboard',
                     'url'=>'sacademica/regularizaciones',
                     'can'=>'sacademica.regularizaciones.index'
-                ],
+                ], */
                 /* [
                     'text'=>'Verificaciones',
                     'icon'=>'fas fa-spell-check',
@@ -480,21 +562,21 @@ return [
                     'icon'=>'fas fa-spell-check',
                     'url'=>'sacademica/verificacionesas'
                 ], */
-                [
+                /* [
                     'text'=>'Moodle',
                     'icon'=>'fas fa-brain',
                     'url'=>'sacademica/moodle',
                     'can'=>'sacademica.moodle.index'
-                ],
-                [
+                ], */
+                /* [
                     'text'=>'Estadisticas',
                     'icon'=>'far fa-chart-bar',
                     'url'=>'sacademica/estadisticas',
                     'can'=>'sacademica.estadisticas.index'
-                ]
+                ] */
             ]
         ],
-        [
+        /* [
             'text'=>'Salud',
             'icon'=>'fas fa-hospital-user',
             'can'=>'salud.acampanias.index',
@@ -518,11 +600,12 @@ return [
                     'can'=>'salud.encuestas.index'
                 ]
             ],
-        ],
+        ], */
         [
             'text'=>'Trámite Documentario',
             'icon'=>'far fa-file',
             'can'=>'tdocumentario.index',
+            'icon_color'=>'info',
             'submenu'=>[
                 [
                     'text'=>'Mesa de Partes',
@@ -553,49 +636,55 @@ return [
             ]
         ],
         [
-            'text'    => 'Ventas',
+            'text'    => 'Administración',
             'icon'    => 'fab fa-sellsy',
             'can'     => 'ventas.clientes.index',
+            'icon_color'=>'danger',
             'submenu' => [
                 [
                     'icon'    => 'fab fa-servicestack',
                     'text' => 'Servicios',
-                    'url'  => 'ventas/servicios',
+                    'route'=>'ventas.servicios.index',
+                    'icon_color'=>'danger'
                 ],
                 [
                     'icon'    => 'fas fa-users',
                     'text' => 'Clientes',
-                    'url'  => 'ventas/clientes',
+                    'route'=>'ventas.clientes.index',
+                    'icon_color'=>'danger'
                 ],
                 [
                     'icon'    => 'fab fa-sellcast',
                     'text' => 'Ventas',
-                    'url'  => 'ventas/ventas',
+                    'route'=>'ventas.ventas.index',
+                    'icon_color'=>'danger'
                 ],
                 [
                     'icon'    => 'fas fa-money-bill-alt',
                     'text' => 'Deudas',
-                    'url'  => 'ventas/deudas',
+                    'route'=>'ventas.deudas.index',
+                    'icon_color'=>'danger'
                 ],
                 [
                     'text'=>'Reportes',
                     'icon'=>'fas fa-chart-line',
-                    'url'=>'ventas/reportes'
+                    'route'=>'ventas.reportes.index',
+                    'icon_color'=>'danger'
                 ],
-                [
+                /* [
                     'text'=>'Matricula Rapida',
                     'icon'=>'fas fa-shipping-fast',
                     'route'=>'ventas.vmatriculas.index'
-                ],
-                [
+                ], */
+                /* [
                     'text'=>'Aperturas',
                     'icon'=>'fas fa-lock-open',
                     'can'=>'ventas.aperturas.index',
                     'route'=>'ventas.aperturas.index'
-                ]
+                ] */
             ],
         ],
-        [
+        /* [
             'text'=>'Estadisticas',
             'icon'=>'far fa-chart-bar',
             'submenu'=>[
@@ -605,7 +694,7 @@ return [
                     'route'=>'statistics.website',
                 ]
             ]
-        ],
+        ], */
         /* ['header' => 'OTROS'],
         [
             'text'       => 'Repositorio',
@@ -613,7 +702,7 @@ return [
             'url'        => 'repositorios',
             'can'        => 'repositorios.index'
         ], */
-        [
+        /* [
             'text'  => 'Soporte',
             'icon'  => 'fas fa-headset',
             'submenu' =>[
@@ -630,7 +719,7 @@ return [
                     'target' => '_blank',
                 ],
             ]
-        ],    
+        ],    */ 
     ],
 
     /*
