@@ -208,32 +208,19 @@ class CapacidadeController extends Controller
 
 
     public function update(Request $request,$id){
-        //validar si se updatea o no
-        //return $request;
-        return $this->verificarFecha($id,$request->fecha);
         try {
             //code...
             $capacidade = Capacidade::findOrFail($id);
             $uasignada = Uasignada::findOrFail($capacidade->uasignada_id);
-            //return $uasignada->capacidades;
-            foreach ($uasignada->capacidades as $key => $capacidadee) {
-                # code...
-                if ($key != 0){
-                    $fecha = Carbon::parse($request->fecha);
-                    $fanterior = Carbon::parse($uasignada->capacidades[$key-1]->fecha);
-                    if($fecha->lessThanOrEqualTo($fanterior)){
-                        throw new Exception('La fecha no puede ser igual o menor a la del anterior indicador');
-                    }
-                }
+            $respuesta = $this->verificarFecha($id,$request->fecha);
+            if($respuesta['estado']){
+                throw new Exception($respuesta["mensage"]);
             }
-            /* $capacidade->nombre = $request->nombre;
-            $capacidade->descripcion = $request->descripcion; */
             $capacidade->fecha = $request->fecha;
             $capacidade->update();
-            
         } catch (\Throwable $th) {
             //throw $th;
-            return Redirect::route('docentes.cursos.index')->with('error',$th->getMessage());
+            return Redirect::route('docentes.cursos.show',$capacidade->uasignada_id)->with('error',$th->getMessage());
         }
         return Redirect::route('docentes.cursos.show',$capacidade->uasignada_id)->with('info','se actualizo la fecha correctamente de la capacidad');
     }
