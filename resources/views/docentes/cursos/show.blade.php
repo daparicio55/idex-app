@@ -28,9 +28,9 @@
                             <div class="input-group input-group-sm mt-3">
                                 <input type="date" class="form-control"  name="fecha" value="{{ $capacidade->fecha }}" style="max-width: 150px">
                                 <div class="input-group-append">
-                                <button class="btn btn-outline-info" type="submit">
-                                    <i class="fas fa-save"></i>
-                                </button>
+                                    <button class="btn btn-outline-info" type="submit">
+                                        <i class="fas fa-save"></i>
+                                    </button>
                                 </div>
                             </div>
                             @error('fecha')

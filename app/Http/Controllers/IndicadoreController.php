@@ -38,7 +38,7 @@ class IndicadoreController extends Controller
     public function store(Request $request){
         try {
             //code...
-            //dd($request->capacidade_id);
+            return $request;
             $indicadore = new Indicadore();
             $indicadore->create($request->all());
         } catch (\Throwable $th) {
@@ -177,7 +177,7 @@ class IndicadoreController extends Controller
                                 $arMessage["estado"] = true;
                                 $arMessage["mensage"] = "no puedes ingresar una fecha anterior al indicador";
                             }
-                            if($fechaSiguiente->gt($fechaIndicador)){
+                            if($fechaIndicador->gt($fechaSiguiente)){
                                 $arMessage["estado"] = true;
                                 $arMessage["mensage"] = "no puedes ingresar una fecha posterior al indicador";
                             }

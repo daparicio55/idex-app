@@ -83,14 +83,7 @@ class DocenteCursoController extends Controller
         if ($asignacione->user_id <> Auth::id()){
             return Redirect::route('docentes.cursos.index')->with('error','error no puedes acceder a este curso');
         }
-
-        //vamos buscar las capacidades
-        
-        //$capacidades = Capacidade::where('uasignada_id','=',$asignacione->id)->get();
-        //return $capacidades[1]->indicadores;
         return view('docentes.cursos.show',compact('asignacione'));
-
-        //return view('docentes.cursos.capacidades.index',compact('asignacione','capacidades'));
     }
 
     /**

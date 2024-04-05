@@ -26,6 +26,7 @@
                             <th>CURSO</th>
                             <th>PROGRAMA DE ESTUDIOS</th>
                             <th>ESTRUCTURA</th>
+                            <th>HORARIO</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -49,7 +50,7 @@
                                             <tr class="p-0 m-0">
                                                 @foreach ($asignacione->capacidades as $key => $capacidade)
                                                     @foreach ($capacidade->indicadores as $llave=>$indicadore)
-                                                        <td class="border p-0 m-0">
+                                                        <td class="border p-1 m-0">
                                                             IN{{ $llave+1 }}
                                                         </td>
                                                     @endforeach
@@ -58,16 +59,16 @@
                                         </tbody>
                                     </table>
                                 </td>
-                                <td style="min-width: 120px">
-                                    <!-- vamos a mostrar las capacidades -->
-                                    {{-- <a href="{{ route('docentes.cursos.imprimir',$asignacione->id) }}" class="btn btn-warning mb-1">
-                                        <i class="fas fa-print"></i> Acta Regular
-                                    </a>
-                                    @isset($asignacione->unidad->old->id)
-                                        <a href="{{ route('docentes.cursos.equivalencia',$asignacione->id) }}" class="btn btn-success mb-1">
-                                            <i class="fas fa-print"></i> Equivalencias
-                                        </a>    
-                                    @endisset --}}
+                                <td class="h5">
+                                    <ul>
+                                        @foreach ($asignacione->horarios as $horario)
+                                            <li>
+                                                {{ $horario->day }} {{ $horario->hinicio }} {{ $horario->hfin }}
+                                            </li>   
+                                        @endforeach
+                                    </ul>
+                                </td>
+                                <td style="min-width: 170px">
                                     <a href="{{ route('docentes.cursos.show',$asignacione->id) }}" class="btn btn-info" title="Gestion de Calificaciones">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
@@ -80,59 +81,20 @@
                                             <i class="fas fa-download"></i>
                                         </button>
                                     {!! Form::close() !!}
+                                    {{-- {!! Form::open(['route'=>'docentes.asistencias.create','method'=>'get','id'=>'frm','class'=>'d-inline']) !!}
+                                        <input type="hidden" name="asignacione" value="{{ $asignacione->id }}">
+                                        <button type="submit" class="btn btn-warning" title="registrar asistencias">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </button>
+                                    {!! Form::close() !!}
+                                    {!! Form::open(['route'=>'docentes.asistencias.index','method'=>'get','id'=>'frm']) !!}
+                                        <input type="hidden" name="asignacione" value="{{ $asignacione->id }}">
+                                        <button type="submit" class="btn btn-success">
+                                            Reg. Asistencia
+                                        </button>
+                                    {!! Form::close() !!} --}}
                                 </td>
                             </tr>
-                           {{-- @foreach ($asignacione->capacidades as $capacidade)
-                                <tr>
-                                    <td colspan="3" class="mb-0 pb-0">
-                                        {!! Form::model($capacidade,['route'=>['docentes.cursos.capacidades.update',$capacidade->id],'method'=>'put','id'=>'frm_datos']) !!}
-                                        <span class="h5">{{ $capacidade->nombre }}</span>
-                                        <div class="input-group input-group-sm mt-3">
-                                            <input type="date" class="form-control"  name="fecha" value="{{ $capacidade->fecha }}" style="max-width: 150px">
-                                            <div class="input-group-append">
-                                            <button class="btn btn-outline-info" type="submit">
-                                                <i class="fas fa-save"></i>
-                                            </button>
-                                            </div>
-                                        </div>
-                                        @error('fecha')
-                                            <small class="text-danger pt-2">{{ $message }}</small>
-                                        @enderror
-                                        {!! Form::close() !!}
-                                    </td>
-                                    <td colspan="3" class="mb-0 pb-0">
-                                        @isset($capacidade->fecha)
-                                        <ul class="mb-0">
-                                            @foreach ($capacidade->indicadores as $indicadore)
-                                                {!! Form::model($indicadore,['route'=>['docentes.cursos.capacidades.indicadores.update',$indicadore->id],'method'=>'put','id'=>'frm_datos']) !!}
-                                                <li>
-                                                    {{ $indicadore->nombre }}
-                                                    <div class="input-group mt-2 input-group-sm">
-                                                        <input type="date" class="form-control" style="max-width: 150px" name="fecha" value="{{ $indicadore->fecha }}">
-                                                        <div class="input-group-append">
-                                                        <button class="btn btn-outline-info" type="submit">
-                                                            <i class="fas fa-save"></i>
-                                                        </button>
-                                                        @isset($indicadore->fecha)
-                                                            <a href="{{ route('docentes.cursos.capacidades.indicadores.calificar',$indicadore->id) }}" class="btn btn-primary ml-2 @if(calificacion_cerrado($indicadore->id) == true) disabled @endif">
-                                                                <i class="fas fa-sort-numeric-up-alt"></i> Calificaciones {{ calificacion_cerrado($indicadore->id) }}
-                                                            </a>
-                                                        @endisset
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                {!! Form::close() !!}
-                                                @if (!isset($indicadore->fecha))
-                                                    @php
-                                                        break;
-                                                    @endphp
-                                                @endif
-                                            @endforeach
-                                        </ul>    
-                                        @endisset
-                                    </td>
-                                </tr>
-                            @endforeach --}}
                         @endforeach
                     </tbody>
                 </table>

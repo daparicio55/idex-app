@@ -33,4 +33,10 @@ class Udidactica extends Model
     public function uasignadas(){
         return $this->hasMany(Uasignada::class);
     }
+    public function ematricula_detalles(){
+        return $this->hasMany(EmatriculaDetalle::class,'udidactica_id','id');
+    }
+    public function ematricula_detalles_eq(){
+        return $this->hasMany(EmatriculaDetalle::class,'udidactica_id','udidactica_id');
+    }
 }

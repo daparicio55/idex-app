@@ -43,6 +43,7 @@ use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\DeudaController;
 use App\Http\Controllers\DocenteCursoController;
+use App\Http\Controllers\Docentes\AsistenciaController;
 use App\Http\Controllers\DocumentotipoController;
 use App\Http\Controllers\EdocumentoController;
 use App\Http\Controllers\EquipoController;
@@ -88,7 +89,7 @@ use App\Http\Controllers\VentaReporteController;
 use App\Http\Controllers\VerificacioneAvanzadoController;
 use App\Http\Controllers\VerificacioneController;
 use App\Http\Controllers\VmatriculaController;
-
+use App\Models\Carrera;
 use App\Models\Cliente;
 use App\Models\cvPersonale;
 use App\Models\Estudiante;
@@ -145,6 +146,7 @@ Route::resource('/salud',SaludController::class)->names('salud');
 
 
 Route::resource('docentes/cvs',cvController::class)->names('docentes.cvs');
+Route::resource('docentes/asistencias',AsistenciaController::class)->names('docentes.asistencias');
 Route::resource('docentes/cv/experiencias',cvExperienciaController::class)->names('docentes.cv.experiencias');
 Route::resource('docentes/cv/capacitaciones',cvCapacitacionController::class)->names('docentes.cv.capacitaciones');
 Route::resource('docentes/cv/personales',cvPersonalController::class)->names('docentes.cv.personales');
@@ -160,12 +162,15 @@ Route::get('docentes/cursos/pdf/regular/{id}',[DocenteCursoController::class,'pd
 Route::get('docentes/cursos/pdf/equivalencia/{id}',[DocenteCursoController::class,'pdfequivalencia'])
 ->name('docentes.cursos.pdf.equivalencia');
 
-Route::resource('docentes/cursos/capacidades',CapacidadeController::class)->names('docentes.cursos.capacidades');
+
 Route::resource('docentes/cursos/capacidades/indicadores',IndicadoreController::class)->names('docentes.cursos.capacidades.indicadores');
 Route::get('docentes/cursos/capacidades/indicadores/calificar/{id}',[IndicadoreController::class,'calificar'])
 ->name('docentes.cursos.capacidades.indicadores.calificar');
 Route::post('docentes/cursos/capacidades/indicadores/calificar/{id}',[IndicadoreController::class,'calificarstore'])
 ->name('docentes.cursos.capacidades.indicadores.calificarstore');
+
+Route::resource('docentes/cursos/capacidades',CapacidadeController::class)->names('docentes.cursos.capacidades');
+
 Route::get('/calificacionesexcel',function(){
     return view('imports.calificaciones.excel');
 })->name('imports.calificaciones.index');
@@ -363,6 +368,11 @@ Route::get('/privacidad',function(){
     ->name('administrador.normalizarnombres');
     Route::get('/administrador/masivemakeaccount/{id}',[AdministradorController::class,'masivemakeaccount'])
     ->name('administrador.masivemakeaccount');
+    Route::get('/administrador/unidades',function(){
+        $carreras = Carrera::where('ccarrera_id','<>',null)->get();
+        return view('administrador.unidades',compact('carreras'));
+        return $carreras;
+    });
 //
 
 Route::get('/sacademica/correos',function(){
