@@ -132,13 +132,11 @@ class UasignadaController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        
         try {
             //code...
             $unidades = $request->udidactica;
-            $udidactica = Udidactica::findOrFail($request->udidactica[0]);
             for($i=0; $i<count($unidades);$i++){
+                $udidactica = Udidactica::findOrFail($request->udidactica[$i]);
                 $asignada = new Uasignada();
                 $asignada->user_id = $request->user_id;
                 $asignada->pmatricula_id = $request->pmatricula_id;

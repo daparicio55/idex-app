@@ -50,25 +50,8 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="input-group mb-3">
-                        {{-- <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2"> --}}
-                       {{--  <select name="udidactica_id" id="udidactica_id" class="form-control selectpicker" data-live-search="true" data-size=10>
-                            @foreach ($unidades as $unidad)
-                                <option value="{{ $unidad->id }}">
-                                    {{ $unidad->nombre  }} - {{ $unidad->modulo->carrera->nombreCarrera }} - {{ $unidad->ciclo }} - {{ $unidad->horas }} - {{ $unidad->creditos }}
-                                </option>
-                            @endforeach
-                        </select> --}}
-
-                        <select name="udidactica_id" id="udidactica_id" class="form-control selectpicker" data-live-search="true">
-                            
-                            {{-- @foreach ($unidades as $unidad)
-                                <option value="{{ $unidad->id }}">
-                                    {{ $unidad->nombre  }} - {{ $unidad->modulo->carrera->nombreCarrera }} - {{ $unidad->ciclo }} - {{ $unidad->horas }} - {{ $unidad->creditos }}
-                                </option>
-                            @endforeach --}}
+                        <select name="udidactica_id" id="udidactica_id" class="form-control selectpicker" data-live-search="true">                     
                         </select>
-
-
                         <div class="input-group-append">
                         <button class="btn btn-outline-primary" type="button" id="btn_agregar">
                             <i class="fas fa-plus-square"></i> Agregar
@@ -111,9 +94,6 @@
         let row = document.getElementById(id);
         row.remove();
     }
-
-
-
     function unidades(){
         //verificar si los 2 son diferentes de 0;
         const unidades = document.getElementById('unidades');
