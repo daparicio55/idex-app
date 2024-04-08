@@ -31,12 +31,11 @@ class IndicadoreController extends Controller
     }
     public function create(Request $request){
         $capacidade = Capacidade::findOrFail($request->capacidade_id);
-        //dd($capacidade);
         return view('docentes.cursos.capacidades.indicadores.create',compact('capacidade'));
         
     }
     public function store(Request $request){
-        try {
+        /* try {
             //code...
             return $request;
             $indicadore = new Indicadore();
@@ -46,7 +45,7 @@ class IndicadoreController extends Controller
             dd($th->getMessage());
             return Redirect::route('docentes.cursos.capacidades.show',$request->capacidade_id)->with('error',$th->getMessage());
         }
-        return Redirect::route('docentes.cursos.capacidades.show',$request->capacidade_id)->with('info','se guardo el indicador correctamente');
+        return Redirect::route('docentes.cursos.capacidades.show',$request->capacidade_id)->with('info','se guardo el indicador correctamente'); */
     }
     public function edit($id){
         $indicadore = Indicadore::findOrFail($id);

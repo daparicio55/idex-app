@@ -51,6 +51,7 @@ use App\Http\Controllers\EquivalenciaController;
 use App\Http\Controllers\EstadisticaController;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\EstudiantePEstudioController;
+use App\Http\Controllers\Estudiantes\DashboardController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FdocumentoController;
 use App\Http\Controllers\HorarioController;
@@ -112,11 +113,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',function(){
-    return Redirect::to('inicio');
+    return view('index');
+    //return Redirect::to('inicio');
 });
 Route::get('/home',function(){
     return Redirect::to('inicio');
 })->name('home');
+Route::resource('/estudiantes',DashboardController::class)->names('estudiantes');
 
 Auth::routes(["register" =>'false']);
 //rutas de salud

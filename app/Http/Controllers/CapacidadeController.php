@@ -32,7 +32,7 @@ class CapacidadeController extends Controller
         return view('docentes.cursos.capacidades.create',compact('uasignada'));
     }
     public function store(Request $request){
-        try {
+        /* try {
             //code...
             $capacidade = new Capacidade();
             $capacidade::create($request->all());
@@ -40,7 +40,7 @@ class CapacidadeController extends Controller
             //throw $th;
             return Redirect::route('docentes.cursos.show',$request->uasignada_id)->with('error',$th->getMessage());
         }
-        return Redirect::route('docentes.cursos.show',$request->uasignada_id)->with('info','se guardo la informacion correctamente');
+        return Redirect::route('docentes.cursos.show',$request->uasignada_id)->with('info','se guardo la informacion correctamente'); */
     }
     public function destroy($id,CapacidadeRequest $re){
         //validar si se eliminar
@@ -211,7 +211,6 @@ class CapacidadeController extends Controller
         try {
             //code...
             $capacidade = Capacidade::findOrFail($id);
-            $uasignada = Uasignada::findOrFail($capacidade->uasignada_id);
             $respuesta = $this->verificarFecha($id,$request->fecha);
             if($respuesta['estado']){
                 throw new Exception($respuesta["mensage"]);
