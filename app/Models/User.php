@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -58,5 +59,25 @@ class User extends Authenticatable
     }
     public function personale(){
         return $this->hasOne(cvPersonale::class,'user_id');
+    }
+    public function ucliente(){
+        return $this->hasOne(Ucliente::class);
+    }
+    public function adminlte_image(){
+        $user = User::findOrFail(auth()->id());
+        if(isset($user->ucliente->cliente_id)){
+            $estudiante = Estudiante::whereHas('postulante',function($query) use($user){
+                $query->where('idCliente','=',$user->ucliente->cliente_id);
+            })->get();
+            return Storage::url($estudiante[0]->postulante->url);
+        }else{
+            //si es profesor
+            $cv = cvPersonale::where('user_id','=',$user->id)->get();
+            if(isset($cv[0]->perFoto)){
+                return Storage::url($cv[0]->perFoto);
+            }else{
+                return Storage::url("blank-profile-picture-973460_640.png");
+            }
+        }
     }
 }
