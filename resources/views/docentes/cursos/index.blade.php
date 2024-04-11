@@ -81,18 +81,12 @@
                                             <i class="fas fa-download"></i>
                                         </button>
                                     {!! Form::close() !!}
-                                    {{-- {!! Form::open(['route'=>'docentes.asistencias.create','method'=>'get','id'=>'frm','class'=>'d-inline']) !!}
+                                    {!! Form::open(['route'=>'docentes.asistencias.index','method'=>'get','id'=>'frm','class'=>'d-inline']) !!}
                                         <input type="hidden" name="asignacione" value="{{ $asignacione->id }}">
                                         <button type="submit" class="btn btn-warning" title="registrar asistencias">
                                             <i class="fas fa-calendar-alt"></i>
                                         </button>
                                     {!! Form::close() !!}
-                                    {!! Form::open(['route'=>'docentes.asistencias.index','method'=>'get','id'=>'frm']) !!}
-                                        <input type="hidden" name="asignacione" value="{{ $asignacione->id }}">
-                                        <button type="submit" class="btn btn-success">
-                                            Reg. Asistencia
-                                        </button>
-                                    {!! Form::close() !!} --}}
                                 </td>
                             </tr>
                         @endforeach

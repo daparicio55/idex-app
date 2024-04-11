@@ -9,4 +9,10 @@ class Asistencias extends Model
 {
     use HasFactory;
     public $table = "emd_asistencias";
+    public $fillable = [
+        'estado',
+        'fecha',
+        'user_id',
+        'emdetalle_id'
+    ];
 }

@@ -18,28 +18,24 @@ class AsistenciaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    public function index(Request $request)
-    {
-        $mapeoTildes = [
-            'á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u',
-            'Á' => 'A', 'É' => 'E', 'Í' => 'I', 'Ó' => 'O', 'Ú' => 'U',
-            'ü' => 'u', 'Ü' => 'U', 'ñ' => 'n', 'Ñ' => 'N'
-        ];
-        $asignacione = Uasignada::findOrFail($request->asignacione);
+    protected $mapeoTildes = [
+        'á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u',
+        'Á' => 'A', 'É' => 'E', 'Í' => 'I', 'Ó' => 'O', 'Ú' => 'U',
+        'ü' => 'u', 'Ü' => 'U', 'ñ' => 'n', 'Ñ' => 'N'
+    ];
+    protected function fdias($asignacione){
+        //llenamos con los días de la semana que se lleva esta unidad didactica
         $dias = [];
         foreach ($asignacione->horarios as $key => $horario) {
             # code...
             $dias [] = strtolower($horario->day);
-            
         }
-        //return $dias;
+        //determinamos el dia de inicio y el dia de fin;
         $fechaInicio = Carbon::parse($asignacione->periodo->finicio);
         $fechaFin = Carbon::parse($asignacione->periodo->ffin);
+        //llenamos un array con las fechas que hay entre el periodo de inicio y fin
         $fechasEntre = [];
+        $semanasEntre = [];
         // Añadimos la fecha de inicio al array
         $fechasEntre[] = $fechaInicio->toDateString();
         // Iteramos sobre las fechas desde la fecha de inicio hasta la fecha de fin
@@ -47,26 +43,102 @@ class AsistenciaController extends Controller
             // Añadimos cada fecha al array
             $fechasEntre[] = $fechaInicio->toDateString();
         }
+        //semanas entre
+        $finsemanaInicio = Carbon::parse($asignacione->periodo->finicio)->endOfWeek(Carbon::SUNDAY);
+        $finsemanaFin = Carbon::parse($asignacione->periodo->ffin)->endOfWeek(Carbon::SUNDAY);
+        $semanasEntre[] = $finsemanaInicio->toDateString();
+        //dd($finsemanaInicio->toDateString());
+        while ($finsemanaInicio->addWeek() <= $finsemanaFin) {
+            // Añadimos cada fecha al array
+            $semanasEntre[] = $finsemanaInicio->toDateString();
+        }
+        
+        //dd($semanasEntre);
+        //array con las fechas que coincidan con los dias que toca la unidad didactica
         $fdias = [];
         for ($i=0; $i < count($fechasEntre); $i++) { 
             # code...
             $fecha = Carbon::parse($fechasEntre[$i]);
             $diaDeLaSemana = $fecha->isoFormat('E');
-            $nombreDia =  strtr($fecha->isoFormat('dddd'), $mapeoTildes);
+            $nombreDia =  strtr($fecha->isoFormat('dddd'), $this->mapeoTildes);
             if(in_array($nombreDia,$dias)){
+                //aca tenemos que revizar si una fecha pertenece a la semana:
+                $e = false;
+                $f = Carbon::parse($fechasEntre[$i]);
+                $t = Carbon::parse(Carbon::now());
+                //habilitar solo para la semana actual
+                /* $wef = $f->endOfWeek(Carbon::SUNDAY);
+                $wet = $t->endOfWeek(Carbon::SUNDAY);
+                if ($wef->equalTo($wet)){
+                    $e = true;
+                } */
+                //FIN
+                //habiliutar para solo hasta la semana actual
+
+                $wef = $t->endOfWeek(Carbon::SUNDAY);
+                $e = $wef->gt($f);
                 $fdias [] = [
                     'fecha' => $fechasEntre[$i],
                     'numero_dia' => $diaDeLaSemana,
                     'nombre_dia' => $nombreDia,
+                    'estado'=>$e,
                 ];
             }
-            /* $fdias [] = [
-                'fecha' => $fechasEntre[$i],
-                'numero_dia' => $diaDeLaSemana,
-                'nombre_dia' => $nombreDia,
-            ]; */
         }
-        return view('docentes.cursos.asistencias.index',compact('asignacione','fdias'));
+        return $fdias;
+    }
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    public function index(Request $request)
+    {
+        $ematricula = [];
+        $asignacione = Uasignada::findOrFail($request->asignacione);
+        $fdias = $this->fdias($asignacione);
+        //matriculas regulares
+        $ematricula_detalles = EmatriculaDetalle::whereHas('matricula',function($query) use($asignacione){
+            $query->where('udidactica_id','=',$asignacione->udidactica_id)
+            ->where('pmatricula_id','=',$asignacione->pmatricula_id);
+        })->get();
+        foreach ($ematricula_detalles as $key => $detalle) {
+            # code...
+            array_push($ematricula,[
+                'id'=>$detalle->id,
+                'apellido' => $detalle->matricula->estudiante->postulante->cliente->apellido,
+                'nombre' => $detalle->matricula->estudiante->postulante->cliente->nombre,
+            ]);
+        }
+        //ordenando el array
+        usort($ematricula, function ($a, $b) {
+            // Primero ordena por apellido
+            $apellidoComparison = strcmp($a['apellido'], $b['apellido']);
+        
+            if ($apellidoComparison !== 0) {
+                return $apellidoComparison;
+            }
+        
+            // Si los apellidos son iguales, ordena por nombre
+            return strcmp($a['nombre'], $b['nombre']);
+        });
+        //matriculas de equivalencia
+        if(isset($asignacione->unidad->old->id)){
+            $eqematricula_detalles = EmatriculaDetalle::whereHas('matricula',function($query) use($asignacione){
+                $query->where('udidactica_id','=',$asignacione->unidad->old->id)
+                ->where('pmatricula_id','=',$asignacione->pmatricula_id)
+                ->whereIn('tipo',['Regular','Repitencia']);
+            })->get();
+            //agregamos al ultimo las equivalencias en el array $ematricula
+            foreach ($eqematricula_detalles as $key => $eqdetalle) {
+                # code...
+                array_push($ematricula,[
+                    'id'=>$eqdetalle->id,
+                    'apellido' => $eqdetalle->matricula->estudiante->postulante->cliente->apellido,
+                    'nombre' => $eqdetalle->matricula->estudiante->postulante->cliente->nombre,
+                ]);
+            }
+        }
+        return view('docentes.cursos.asistencias.index',compact('asignacione','fdias','ematricula_detalles','ematricula'));
     }
 
     /**
@@ -74,66 +146,39 @@ class AsistenciaController extends Controller
      */
     public function create(Request $request)
     {
-        //trar los estudiantes
-        $asignacione = Uasignada::findOrFail($request->asignacione);
-        $equivalencias = EmatriculaDetalle::whereHas('matricula',function ($query) use($asignacione){
-            $query->where('udidactica_id','=',$asignacione->unidad->old->id)
-            ->where('pmatricula_id','=',$asignacione->pmatricula_id)
-            ->whereIn('ematricula_detalles.tipo',['Regular','Repitencia']);
-        })->get();
-        //return $equivalencias;
-        return view('docentes.cursos.asistencias.create',compact('asignacione','equivalencias'));
+        
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-        /* "asignacione": "420",
-        "fecha": "2024-04-02",
-        "r_emdetalle": [
-        ],
-        "rselect": [
-        ],
-        "e_emdetalle": [
-        ],
-        "eselect": [
-        ] */
-        
+    {            
         try {
-            //code...
-            //verificamos si esta unidad didactica esta asignada a este usuario;
-            $uasignada = Uasignada::findOrFail($request->asignacione);
-            if($uasignada->user_id != Auth::id()){
-                throw new Exception("No se puede guardar la asistencia", 1);
-            }
-            //agregamos las asistencias de los regulares;
-            for ($i=0; $i < count($request->r_emdetalle) ; $i++) { 
+            foreach ($request->datos as $key => $dato) {
                 # code...
-                $asistencia = new Asistencias();
-                $asistencia->fecha = Carbon::now();
-                $asistencia->estado = $request->rselect[$i];
-                $asistencia->user_id = Auth::id();
-                $asistencia->emdetalle_id = $request->r_emdetalle[$i];
-                $asistencia->save();
+                $data = explode(':',$dato);
+                $asistencia = Asistencias::updateOrCreate(
+                    ['fecha'=>$request->dia,'emdetalle_id'=>$data[0]],
+                    [
+                        'fecha' => $request->dia,
+                        'estado' => $data[1],
+                        'user_id' => auth()->id(),
+                        'emdetalle_id' => $data[0],
+                    ]
+                );
             }
-            for ($z=0; $z < count($request->e_emdetalle) ; $z++) { 
-                # code...
-                $asistencia = new Asistencias();
-                $asistencia->fecha = Carbon::now();
-                $asistencia->estado = $request->eselect[$z];
-                $asistencia->user_id = Auth::id();
-                $asistencia->emdetalle_id = $request->e_emdetalle[$z];
-                $asistencia->save();
-            }
+            $array = [
+                'respuesta' =>'Correcto'
+            ];  
+            return $array;
         } catch (\Throwable $th) {
             //throw $th;
-            return Redirect::route('docentes.cursos.index')->with('error',$th->getMessage());
+            $array = [
+                'respuesta' =>$th->getMessage()
+            ];
+            return $array;
         }
-        return Redirect::route('docentes.cursos.index')->with('info','Se guardo la asistencia correctamente');
-        return $request;
     }
 
     /**
@@ -158,6 +203,7 @@ class AsistenciaController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        return $request;
     }
 
     /**
