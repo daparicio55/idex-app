@@ -68,23 +68,23 @@
                                         @endforeach
                                     </ul>
                                 </td>
-                                <td style="min-width: 170px">
-                                    <a href="{{ route('docentes.cursos.show',$asignacione->id) }}" class="btn btn-info" title="Gestion de Calificaciones">
-                                        <i class="fas fa-pencil-alt"></i>
+                                <td style="min-width: 160px">
+                                    <a href="{{ route('docentes.cursos.show',$asignacione->id) }}" class="btn btn-info" style="min-width: 140px" title="Gestion de Calificaciones">
+                                        <i class="fas fa-pencil-alt"></i> Calificaciones
                                     </a>
                                     {!! Form::open(['route'=>'exports.nomina2','method'=>'get','class'=>'d-inline']) !!}
                                         <input type="hidden" name="periodo_id" id="periodo_id" value="{{ $asignacione->periodo->id }}">
                                         <input type="hidden" name="udidactica_id" id="udidactica_id" value="{{ $asignacione->unidad->id }}">
                                         <input type="hidden" name="carrera" id="carrera" value="{{ $asignacione->unidad->modulo->carrera->idCarrera }}">
                                         <input type="hidden" name="ciclo" id="ciclo" value="{{ $asignacione->unidad->ciclo }}">
-                                        <button type="submit" class="btn btn-danger" title="Descargar Nómina">
-                                            <i class="fas fa-download"></i>
+                                        <button type="submit" class="btn btn-danger mt-1" title="Descargar Nómina" style="min-width: 140px">
+                                            <i class="fas fa-download"></i> Nómina
                                         </button>
                                     {!! Form::close() !!}
                                     {!! Form::open(['route'=>'docentes.asistencias.index','method'=>'get','id'=>'frm','class'=>'d-inline']) !!}
                                         <input type="hidden" name="asignacione" value="{{ $asignacione->id }}">
-                                        <button type="submit" class="btn btn-warning" title="registrar asistencias">
-                                            <i class="fas fa-calendar-alt"></i>
+                                        <button type="submit" class="btn btn-warning mt-1" title="registrar asistencias" style="min-width: 140px">
+                                            <i class="fas fa-calendar-alt"></i> Asistencia
                                         </button>
                                     {!! Form::close() !!}
                                 </td>
