@@ -14,4 +14,5 @@ class EmatriculaDetalle extends Model
     public function unidad(){
         return $this->belongsTo(Udidactica::class,'udidactica_id');
     }
+    
 }

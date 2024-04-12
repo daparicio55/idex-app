@@ -163,7 +163,7 @@
                             ->where('udidactica_id','=',$detalle->unidad->id)
                             ->first();
                         @endphp
-                        @if ($uasignada !== null)
+                        @if (isset($uasignada->user->name))
                             {{$detalle->unidad->nombre}} <b>Docente: </b> {{ $uasignada->user->name }}
                         @else
                             {{$detalle->unidad->nombre}}
@@ -172,7 +172,7 @@
                     @endif
                 </td>
                 <td>
-                    @if($uasignada !== null)
+                    @if(isset($uasignada))
                     <ul>
                         @foreach ($uasignada->horarios as $horario)
                             <li>{{ $horario->day }}-{{ $horario->hinicio }}-{{ $horario->hfin }}</li>

@@ -684,6 +684,58 @@ return [
                 ] */
             ],
         ],
+        [
+            'text'=>'Estudiante',
+            'icon'=>'fas fa-user-graduate',
+            'icon_color'=>'info',
+            'can'=>'dashboard.postulaciones.index',
+            'submenu'=>[
+                [
+                    'text'=>'Perfil',
+                    'icon'=>'fas fa-id-card',
+                    'icon_color'=>'info',
+                    'route'=>'estudiantes.perfile.index'
+                ],
+                [
+                    'text'=>'Matriculas',
+                    'icon'=>'fas fa-list',
+                    'icon_color'=>'info',
+                    'route'=>'estudiantes.matriculas.index'
+                ],
+                [
+                    'text'=>'Reportes',
+                    'icon'=>'fas fa-print',
+                    'icon_color'=>'success',
+                    'submenu'=>[
+                        [
+                            'text'=>'Notas',
+                            'icon'=>'fas fa-sort-numeric-up-alt',
+                            'icon_color'=>'success',
+                            'route'=>'estudiantes.reportenotas.index',
+                        ]
+                    ]
+                ],
+                [
+                    'text'=>'Servicios',
+                    'icon'=>'fas fa-th',
+                    'icon_color'=>'danger',
+                    'submenu'=>[
+                        [
+                            'text'=>'Biblioteca',
+                            'icon'=>'fas fa-book-open',
+                            'icon_color'=>'danger',
+                            'url'=>'https://biblioteca.idexperujapon.edu.pe',
+                        ],
+                        [
+                            'text'=>'Bolsa Laboral',
+                            'icon'=>'fas fa-building',
+                            'icon_color'=>'danger',
+                            'url'=>'https://empleabilidad.idexperujapon.edu.pe',
+                        ]
+                    ]
+                ]
+            ]
+        ],
         /* [
             'text'=>'Estadisticas',
             'icon'=>'far fa-chart-bar',

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\AdmisioneVacante;
+use App\Models\Capacidade;
 use App\Models\Cepre;
 use App\Models\CepreEstudiante;
 use App\Models\CepreSumativo;
@@ -950,3 +951,49 @@ function sendSMS($number,$message)
 function days($day){
 
 }
+function inNota($indicadore,$detalleMatricula){
+        $arr = [];
+        $notaIndicador = 0;
+        $ni = IndicadoreDetalle::where('indicadore_id','=',$indicadore)
+        ->where('ematricula_detalle_id','=',$detalleMatricula)
+        ->first();
+        if(isset($ni->nota)){
+            $notaIndicador = number_format($ni->nota,0);
+        }
+        if ($notaIndicador<13){
+                $arr=[
+                    'color'=>'text-danger',
+                    'nota'=>cero($notaIndicador),
+                ];
+        }else{
+                $arr=[
+                        'color'=>'text-primary',
+                        'nota'=>number_format($notaIndicador,0),
+                ];
+        }
+        return $arr;
+}
+function caNota($capacidade,$detalleMatricula){
+        $arr = [];
+        $suma = 0;
+        $cantidad = 0;
+        $ca = Capacidade::where('id','=',$capacidade)->first();
+        foreach ($ca->indicadores as $key => $indicadore) {
+                # code...
+                $suma = $suma + inNota($indicadore->id,$detalleMatricula)['nota'];
+                $cantidad = $key;
+        }
+        $promedio = $suma / ($cantidad + 1);
+        if(number_format(round($promedio,0))<13){
+                $color = 'text-danger';
+        }else{ 
+                $color = 'text-primary';
+        }
+        $arr = [
+                'nota'=>number_format(round($promedio,0)),
+                'color'=> $color,
+        ];
+        return $arr;
+}
+
+

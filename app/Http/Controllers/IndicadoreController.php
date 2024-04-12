@@ -305,12 +305,14 @@ class IndicadoreController extends Controller
                             $contador ++;
                         }
                     $nota = $suma / (($contador == 0) ? 1 : $contador);
-                    $nota = round(number_format($nota,2,'.',''),0);
+                    //$nota = round(number_format($nota,2,'.',''),0);
+                    $nota = number_format(round($nota,0),0);
                     $sum = $sum + $nota;
                     $cont++;
                 }
                 $pro = $sum / (($cont == 0) ? 1 : $cont);
-                $pro = round(number_format($pro,2,'.',''),0);
+                //$pro = round(number_format($pro,2,'.',''),0);
+                $pro = number_format(round($pro,0),0);
                 $estudiantematriculadetalle->nota = $pro;
                 $estudiantematriculadetalle->update();
             }

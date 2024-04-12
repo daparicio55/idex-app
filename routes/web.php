@@ -52,6 +52,9 @@ use App\Http\Controllers\EstadisticaController;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\EstudiantePEstudioController;
 use App\Http\Controllers\Estudiantes\DashboardController;
+use App\Http\Controllers\Estudiantes\MatriculaController as EstudiantesMatriculaController;
+use App\Http\Controllers\Estudiantes\PerfilController;
+use App\Http\Controllers\Estudiantes\ReporteNotaController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FdocumentoController;
 use App\Http\Controllers\HorarioController;
@@ -119,7 +122,11 @@ Route::get('/',function(){
 Route::get('/home',function(){
     return Redirect::to('inicio');
 })->name('home');
-Route::resource('/estudiantes',DashboardController::class)->names('estudiantes');
+
+Route::resource('estudiantes/perfil',PerfilController::class)->names('estudiantes.perfile');
+Route::resource('estudiantes/matriculas',EstudiantesMatriculaController::class)->names('estudiantes.matriculas');
+Route::resource('estudiantes/reportenotas',ReporteNotaController::class)->names('estudiantes.reportenotas');
+Route::resource('estudiantes',DashboardController::class)->names('estudiantes');
 
 Auth::routes(["register" =>'false']);
 //rutas de salud
@@ -231,6 +238,7 @@ Route::resource('sacademica/uasigandas/horarios',HorarioController::class)->name
 
 /* rutas para students */
 Route::resource('students',StudentController::class)->names('students');
+
 /* fin ruta students */
 Route::get('tdocumentario/mesapartes/{id}/editar',[MesaparteController::class,'editar'])
 ->name('tdocumentario.mesapartes.editar');
@@ -376,7 +384,8 @@ Route::get('/privacidad',function(){
         return view('administrador.unidades',compact('carreras'));
         return $carreras;
     });
-//
+//RUTAS DE ESTUDIANTES
+
 
 Route::get('/sacademica/correos',function(){
     try {

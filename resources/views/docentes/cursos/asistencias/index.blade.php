@@ -96,7 +96,7 @@
         <div id="circle"></div>
     </div>
     <p id="loading-text">Cargando esto puede tomar varios minutos ...</p>
-  </div>
+</div>
 @stop
 @push('css')
 <style type="text/css">
