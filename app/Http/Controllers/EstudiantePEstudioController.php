@@ -156,5 +156,66 @@ class EstudiantePEstudioController extends Controller
         }
         return $unidades;
     }
-    
+    public function licencias($id){
+        $estudiante = Estudiante::findOrFail($id);
+        $m = [];
+        foreach ($estudiante->matriculas as $matricula) {
+            # code...
+            $licencia = [];
+            if(isset($matricula->li->id)){
+                $reingreso = [];
+                if(isset($matricula->li->reingreso->id)){
+                    $reingreso = [
+                        'id'=>$matricula->li->reingreso->id,
+                        'fecha'=>$matricula->li->reingreso->fecha,
+                        'observacion'=>$matricula->li->reingreso->observacion,
+                    ];
+                }
+                $licencia = [
+                    'id'=>$matricula->li->id,
+                    'fecha'=>date('d-m-Y',strtotime($matricula->li->fecha)),
+                    'observacion'=>$matricula->li->observacion,
+                    'reingreso'=>$reingreso,
+                ];
+            }
+            $m [] = [
+                'id'=>$matricula->id,
+                'fecha'=>$matricula->fecha,
+                'tipo'=>$matricula->tipo,
+                'periodo'=>$matricula->matricula->nombre,
+                'licencia'=>$licencia,
+            ];
+        }
+        $arr = [
+            'dni'=>$estudiante->postulante->cliente->dniRuc,
+            'apellido'=>$estudiante->postulante->cliente->apellido,
+            'nombre'=>$estudiante->postulante->cliente->nombre,
+            'telefono'=>$estudiante->postulante->cliente->telefono,
+            'programa'=>$estudiante->postulante->carrera->nombreCarrera,
+            'matriculas'=>$m
+        ];
+        return $arr;
+    }
+    public function checklicencia($id){
+        //tenemos el estudiante
+        $matriculas = Ematricula::where('estudiante_id','=',$id)
+        ->orderBy('fecha','desc')
+        ->get();
+        $respuesta = false;
+        //de forma rápida buscamos si tenemos licencias
+        foreach ($matriculas as $key => $matricula) {
+            # code...
+            if ($matricula->licencia == "SI"){
+                //ahora revizo si tiene un reingreso de esa licencia:
+                if(!isset($matricula->li->reingreso->id))
+                {
+                    $respuesta = true;
+                }
+            }
+        }
+        $arr = [
+            'message'=>$respuesta,
+        ];
+        return $arr;
+    }
 }

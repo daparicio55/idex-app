@@ -77,6 +77,7 @@ use App\Http\Controllers\PmatriculaController;
 use App\Http\Controllers\PracticaController;
 use App\Http\Controllers\RdocumentoController;
 use App\Http\Controllers\RegularizacioneController;
+use App\Http\Controllers\ReingresoController;
 use App\Http\Controllers\RepositorioController;
 use App\Http\Controllers\SaludAlternativaController;
 use App\Http\Controllers\SaludappController;
@@ -96,8 +97,10 @@ use App\Http\Controllers\VmatriculaController;
 use App\Models\Carrera;
 use App\Models\Cliente;
 use App\Models\cvPersonale;
+use App\Models\Empresa;
 use App\Models\Estudiante;
 use App\Models\Pmatricula;
+use App\Models\Practica;
 use App\Models\Servicio;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
@@ -230,6 +233,7 @@ Route::resource('sacademica/convalidaciones', ConvalidacioneController::class)->
 Route::resource('sacademica/regularizaciones', RegularizacioneController::class)->names('sacademica.regularizaciones');
 Route::resource('sacademica/estudiantes',EstudianteController::class)->names('sacademica.estudiantes');
 Route::resource('sacademica/licencias',LicenciaController::class)->names('sacademica.licencias');
+Route::resource('sacademica/reingresos',ReingresoController::class)->names('sacademica.reingresos');
 Route::resource('sacademica/cargarnotas',CargarNotaController::class)->names('sacademica.cargarnotas');
 Route::resource('sacademica/uasignadas',UasignadaController::class)->names('sacademica.uasignadas');
 
@@ -328,6 +332,9 @@ Route::get('admisiones/ordinarios/bono/{id}',[AdmisioneOrdinarioController::clas
 Route::resource('colegios',ColegioController::class)->names('colegios');
 Route::get('estudiantepestudio/dni/{dni}',[EstudiantePEstudioController::class,'buscardni'])
 ->where('dni','[0-9]+')->name('estudiantepestudio.dni');
+Route::get('estudiantepestudio/licencias/{id}',[EstudiantePEstudioController::class,'licencias'])
+->where('dni','[0-9]+')->name('estudiantepestudio.licencias');
+
 Route::get('estudiantepestudio/datos/{id}',[EstudiantePEstudioController::class,'datos'])
 ->where('id','[0-9]+')->name('estudiantepestudio.datos');
 Route::get('estudiantepestudio/unidades/{id}',[EstudiantePEstudioController::class,'unidades'])
@@ -336,6 +343,10 @@ Route::get('estudiantepestudio/notas/',[EstudiantePEstudioController::class,'not
 ->name('estudiantepestudio.notas');
 Route::get('estudiantepestudio/unidadesfaltantes/{id}',[EstudiantePEstudioController::class,'unidadesfaltantes'])
 ->name('estudiantepestudio.unidadesfaltantes');
+Route::get('estudiantepestudio/checklicencia/{id}',[EstudiantePEstudioController::class,'checklicencia'])
+->name('estudiantepestudio.checklicencia');
+
+
 //fin de rutas API
 Route::resource('ventas/vmatriculas/',VmatriculaController::class)->names('ventas.vmatriculas');
 Route::get('ventas/deudas/imprimir/{id}',[DeudaController::class,'imprimir'])
@@ -404,18 +415,18 @@ Route::get('/sacademica/correos',function(){
     }
     
 })->middleware('auth');
-Route::get('/info_php',function(){
+/* Route::get('/info_php',function(){
     echo phpinfo();
-});
+}); */
 Route::get('statistics/website',[StatisticController::class,'website'])->name('statistics.website');
-Route::get('/sms',function(){
+/* Route::get('/sms',function(){
     return sendSMS("935526612","esto es una mensage para la prueba del sistema de tratite documentario");
-});
+}); */
 Route::get('/last',function(){
     return view('welcome');
 });
-Route::get('/ver',function(){
+/* Route::get('/ver',function(){
     $ventas = Servicio::get();
     return $ventas->detalles->count();
     
-}); 
+});  */

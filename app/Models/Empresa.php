@@ -11,4 +11,7 @@ class Empresa extends Model
     protected $table="empresas";
     protected $primaryKey="idEmpresa";
     public $timestamps = false;
+    public function practicas(){
+        return $this->hasMany(Practica::class,'empresa_id','idEmpresa');
+    }
 }

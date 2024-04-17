@@ -468,13 +468,13 @@ return [
                             'text'=>'Licencias',
                             'icon'=>'far fa-circle',
                             'icon_color'=>'warning',
-                            'url'=>'#'
+                            'route'=>'sacademica.licencias.index'
                         ],
                         [
                             'text'=>'Reingresos',
                             'icon'=>'far fa-circle',
                             'icon_color'=>'warning',
-                            'url'=>'#'
+                            'route'=>'sacademica.reingresos.index'
                         ],
                         [
                             'text'=>'Moodle',
@@ -482,6 +482,12 @@ return [
                             'url'=>'sacademica/moodle',
                             'icon_color'=>'warning',
                             'can'=>'sacademica.moodle.index'
+                        ],
+                        [
+                            'text'=>'Nóminas',
+                            'icon'=>'far fa-circle',
+                            'icon_color'=>'warning',
+                            'url'=>'sacademica/nominas',
                         ],
                         [
                             'text'=>'Estadisticas',

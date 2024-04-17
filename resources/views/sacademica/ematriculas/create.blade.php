@@ -256,6 +256,23 @@
         });
     }
     function eleccion(id){
+        let r = "{{ asset('') }}"+"estudiantepestudio/checklicencia/"+id;
+        fetch(r).then(function(response){
+            if(!response.ok){
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        }).then(function(data){
+            if(data.message){
+                alert('LICENCIA ACTIVA, REALIZE EL REINGRESO PRIMERO');
+                return;
+            }
+            eleccion2(id);
+        }).catch(function(error){
+            console.error('There was a problem with your fetch operation:', error);
+        });
+    }
+    function eleccion2(id){
         $('#modal-pestudios').modal('hide');
         $('#estudiante_id').val(id);
         /* mostrar los datos */
@@ -279,9 +296,7 @@
         });
         //para agregar las filas a las deudas
         DEUDA_URL = URL+"ventas/deudas/"+id;
-        
         fetch(DEUDA_URL).then((response)=>response.json()).then((deudas)=>{
-            
             deudas.forEach(deuda=>{
                 //mostrar el card con las deudas
                 document.getElementById('deudas').style.display = "flex";
@@ -299,7 +314,6 @@
                 filadeuda.appendChild(colfecha);
                 filadeuda.appendChild(colservicio);
                 filadeuda.appendChild(colobservacion);
-                //console.log(deuda);
                 document.getElementById('table_deudas').appendChild(filadeuda);
                 //aca mismo tengo que agregar la fila con los detalles:
                 let filadeuda2 = document.createElement('tr');
@@ -311,7 +325,6 @@
                 coldetalles.appendChild(lista);
                 filadeuda2.appendChild(coldetalles);
                 document.getElementById('table_deudas').appendChild(filadeuda2);
-                console.log(deuda.detalles);
                 deuda.detalles.forEach(detalle=>{
                     let item = document.createElement('li');
                     item.innerHTML = "#: "+detalle.orden + " | Fecha Pago: "+detalle.fprogramada+" | Estado: "+detalle.estado+" | Monto: "+detalle.monto +" | Boleta: "+detalle.boleta;
@@ -321,8 +334,6 @@
             
         });
         //agrego todo a la tabla
-        
-
         $('#unidades tr').each(function(){ 
             this.remove();
         });
@@ -352,7 +363,6 @@
                 var td6 = document.createElement('td');
                 var td7 = document.createElement('td');
                 //inicio de TD
-                    //console.log(unidad.horarios.length);
                     let ul = document.createElement('ul');
                     ul.setAttribute('id',"ul"+unidad.id);
                     unidad.horarios.forEach(horario=>{
@@ -445,9 +455,6 @@
                 }
             }
         });
-        //console.log(parabuscar);
-        //console.log(dondebuscar);
-        //ahora vamos a verificar
         parabuscar.forEach(para=>{
             dondebuscar.forEach(donde=>{
                 if(para.dia == donde.dia){
@@ -491,7 +498,6 @@
     }
     document.getElementById('btn_mail').addEventListener('click',function(){
         let dni = document.getElementById('searchText');
-        console.log(dni.value);
         let text = dni.value + '@idexperujapon.edu.pe';
         document.getElementById('email').value = text;
     });

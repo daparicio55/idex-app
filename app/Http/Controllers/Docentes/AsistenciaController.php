@@ -125,9 +125,9 @@ class AsistenciaController extends Controller
         if(isset($asignacione->unidad->old->id)){
             $eqematricula_detalles = EmatriculaDetalle::whereHas('matricula',function($query) use($asignacione){
                 $query->where('udidactica_id','=',$asignacione->unidad->old->id)
-                ->where('pmatricula_id','=',$asignacione->pmatricula_id)
-                ->whereIn('tipo',['Regular','Repitencia']);
-            })->get();
+                ->where('pmatricula_id','=',$asignacione->pmatricula_id);    
+            })->whereIn('tipo',['Regular','Repitencia'])
+            ->get();
             //agregamos al ultimo las equivalencias en el array $ematricula
             foreach ($eqematricula_detalles as $key => $eqdetalle) {
                 # code...

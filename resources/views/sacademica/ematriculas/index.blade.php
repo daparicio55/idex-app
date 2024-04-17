@@ -88,7 +88,7 @@
                                 </a>
                             </td>                        
                         </tr>
-                        <tr>
+                        {{-- <tr>
                             <td>
                                 <a href="" class="btn btn-primary" data-target="#modal-licencia-{{$matricula->id}}" data-toggle="modal">
                                     Licencia
@@ -102,7 +102,7 @@
                                     <i class="fas fa-trash-alt"></i>
                                 </a>
                             </td>
-                        </tr>
+                        </tr> --}}
                         @include('sacademica.ematriculas.delete')
                 @endforeach
                 </tbody>

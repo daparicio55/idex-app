@@ -20,4 +20,7 @@ class Ematricula extends Model
     public function detalles(){
         return $this->hasMany(EmatriculaDetalle::class);
     }
+    public function li(){
+        return $this->hasOne(Licencia::class,'ematricula_id','id');
+    }
 }

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Carrera;
 use App\Models\Ematricula;
 use App\Models\Estudiante;
+use App\Models\Licencia;
+use App\Models\Pmatricula;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -15,9 +19,17 @@ class LicenciaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         //
+        $licencias = Licencia::orderBy('id','desc')->get();
+        $programas = Carrera::orderby('observacionCarrera','desc')->orderBy('nombreCarrera','asc')->get();
+        $periodos = Pmatricula::orderBy('nombre','desc')->get();
+        return view('sacademica.licencias.index',compact('licencias','programas','periodos'));
     }
 
     /**
@@ -28,6 +40,7 @@ class LicenciaController extends Controller
     public function create()
     {
         //
+        return view('sacademica.licencias.create');
     }
 
     /**
@@ -39,6 +52,7 @@ class LicenciaController extends Controller
     public function store(Request $request)
     {
         //
+        return $request;
     }
 
     /**
@@ -49,25 +63,7 @@ class LicenciaController extends Controller
      */
     public function show($id, Request $request)
     {
-        //
-        try {
-            //code...
-            DB::beginTransaction();
-            $matricula = Ematricula::findOrFail($id);
-            $matricula->licencia = "SI";
-            $matricula->licenciaObservacion = $request->licenciaObservacion;
-            $matricula->save();
-            //modifico la tabla de estudiante
-            $estudiante = Estudiante::findOrFail($matricula->estudiante_id);
-            $estudiante->licencia = "SI";
-            $estudiante->save();
-            DB::commit();
-        } catch (\Throwable $th) {
-            //throw $th;
-            DB::rollBack();
-            return Redirect::to('sacademica/matriculas')->with('error',$th->getMessage());
-        }
-        return Redirect::to('sacademica/matriculas')->with('info','se registro la licencia correctamente');
+        return $request;
     }
 
     /**
@@ -91,6 +87,27 @@ class LicenciaController extends Controller
     public function update(Request $request, $id)
     {
         //
+        try {
+            //code...
+            DB::beginTransaction();
+            $licencia = new Licencia();
+            $licencia->user_id = auth()->id();
+            $licencia->observacion = $request->observacion;
+            $licencia->fecha = Carbon::now();
+            $licencia->ematricula_id = $id;
+            $licencia->save();
+            //updateamos la licencia
+            $matricula = Ematricula::findOrFail($id);
+            $matricula->licencia = "SI";
+            $matricula->licenciaObservacion = $request->observacion;
+            $matricula->update();
+            DB::commit();
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return Redirect::route('sacademica.licencias.index')->with('error',$th->getMessage());    
+        }
+        return Redirect::route('sacademica.licencias.index')->with('info','licencia registrada correctamente');
     }
 
     /**
@@ -105,21 +122,20 @@ class LicenciaController extends Controller
         try {
             //code...
             DB::beginTransaction();
-            $matricula = Ematricula::findOrFail($id);
+            $licencia = Licencia::findOrFail($id);
+            $licencia->delete();
+            //ahora hay que revertir la anterior tabla
+            $matricula = Ematricula::findOrFail($licencia->ematricula_id);
             $matricula->licencia = "NO";
-            $matricula->licenciaObservacion="";
-            $matricula->save();
-            //modifico la tabla de estudiante
-            $estudiante = Estudiante::findOrFail($matricula->estudiante_id);
-            $estudiante->licencia = "NO";
-            $estudiante->save();
+            $matricula->licenciaObservacion ="";
+            $matricula->update();
             DB::commit();
 
         } catch (\Throwable $th) {
             //throw $th;
-            DB::rollBack();
-            return Redirect::to('sacademica/matriculas')->with('error',$th->getMessage());
+            DB::rollBack();            
+            return Redirect::route('sacademica.licencias.index')->with('error',$th->getMessage());
         }
-        return Redirect::to('sacademica/matriculas')->with('info','se eliminó la licencia correctamente');
+        return Redirect::route('sacademica.licencias.index')->with('info','se eliminó la licencia correctamente');
     }
 }
