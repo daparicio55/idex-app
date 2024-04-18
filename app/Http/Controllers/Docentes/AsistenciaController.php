@@ -100,7 +100,7 @@ class AsistenciaController extends Controller
         $ematricula_detalles = EmatriculaDetalle::whereHas('matricula',function($query) use($asignacione){
             $query->where('udidactica_id','=',$asignacione->udidactica_id)
             ->where('pmatricula_id','=',$asignacione->pmatricula_id);
-        })->get();
+        })->whereIn('tipo',['Regular','Repitencia'])->get();
         foreach ($ematricula_detalles as $key => $detalle) {
             # code...
             array_push($ematricula,[
