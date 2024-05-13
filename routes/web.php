@@ -57,6 +57,15 @@ use App\Http\Controllers\Estudiantes\PerfilController;
 use App\Http\Controllers\Estudiantes\ReporteNotaController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FdocumentoController;
+use App\Http\Controllers\Ga\AlmacenRecepcioneController;
+use App\Http\Controllers\Ga\CatalogoController;
+use App\Http\Controllers\Ga\MarcaController;
+use App\Http\Controllers\Ga\NcatalogoCntroller;
+use App\Http\Controllers\Ga\OrdenCompraController;
+use App\Http\Controllers\Ga\RequerimientoController;
+use App\Http\Controllers\Ga\TipoController;
+use App\Http\Controllers\Ga\TramiteController;
+use App\Http\Controllers\Ga\UnidadeController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\IformativoController;
 use App\Http\Controllers\Imports\IndicadoresController;
@@ -347,6 +356,7 @@ Route::get('estudiantepestudio/checklicencia/{id}',[EstudiantePEstudioController
 ->name('estudiantepestudio.checklicencia');
 
 
+
 //fin de rutas API
 Route::resource('ventas/vmatriculas/',VmatriculaController::class)->names('ventas.vmatriculas');
 Route::get('ventas/deudas/imprimir/{id}',[DeudaController::class,'imprimir'])
@@ -368,6 +378,8 @@ Route::get('/clear-cache', function () {
     echo Artisan::call('cache:clear');
     echo Artisan::call('route:clear');
  })->middleware('auth');
+
+
 Route::get('/privacidad',function(){
     return view('privacidad.index');
 });
@@ -425,8 +437,55 @@ Route::get('statistics/website',[StatisticController::class,'website'])->name('s
 Route::get('/last',function(){
     return view('welcome');
 });
-/* Route::get('/ver',function(){
-    $ventas = Servicio::get();
-    return $ventas->detalles->count();
-    
-});  */
+
+//GESTION ADMINISTRATIVA
+Route::get('gadministrativa/nacionalcatalogos/getCatalogos',[NcatalogoCntroller::class,'getCatalogos'])
+->name('gadministrativa.nacionalcatalogos.getCatalogos');
+Route::resource('gadministrativa/requerimientos',RequerimientoController::class)
+->names('gadministrativa.requerimientos');
+Route::resource('gadministrativa/nacionalcatalogos',NcatalogoCntroller::class)
+->names('gadministrativa.nacionalcatalogos');
+Route::get('gadministrativa/administracion/getCatalogosExcept',[CatalogoController::class,'getCatalogosExcept'])
+->name('gadministrativa.administracion.getCatalogosExcept');
+Route::resource('gadministrativa/administracion/catalogos',CatalogoController::class)
+->names('gadministrativa.administracion.catalogos');
+
+//ruta API de marcas
+Route::get('gadministrativa/administracion/marcas/get',[MarcaController::class,'getMarcas'])
+->name('gadministrativa.administracion.marcas.get');
+Route::resource('gadministrativa/administracion/marcas', MarcaController::class)
+->names('gadministrativa.administracion.marcas');
+//ruta API de Tipos de catalogos
+Route::get('gadministrativa/administracion/tipos/get',[TipoController::class,'getTipos'])
+->name('gadministrativa.administracion.tipos.get');
+Route::resource('gadministrativa/administracion/tipos', TipoController::class)
+->names('gadministrativa.administracion.tipos');
+//ruta API unidades de medida
+Route::get('gadministrativa/administracion/unidades/get',[UnidadeController::class,'getUnidades'])
+->name('gadministrativa.administracion.unidades.get');
+Route::resource('gadministrativa/administracion/unidades',UnidadeController::class)
+->names('gadministrativa.administracion.unidades');
+//rutas de requerimmientos
+Route::get('gadministrativa/administracion/requerimientos/{id}/archivar',[RequerimientoController::class,'archivar'])
+->name('gadministrativa.administracion.requerimientos.archivar');
+Route::get('gadministrativa/administracion/requerimientos/{id}/tramitar',[RequerimientoController::class,'tramitar'])
+->name('gadministrativa.administracion.requerimientos.tramitar');
+Route::get('gadministrativa/administracion/requerimientos/{id}/getrequerimiento',[RequerimientoController::class,'getRequerimiento'])
+->name('gadministrativa.administracion.requerimientos.getrequerimiento');
+Route::get('gadministrativa/administracion/requerimientos',[RequerimientoController::class,'index_administracion'])
+->name('gadministrativa.administracion.requerimientos.index');
+//rutas de Tramites de Administracion
+Route::resource('gadministrativa/administracion/tramites',TramiteController::class)
+->names('gadministrativa.administracion.tramites');
+Route::get('gadministrativa/administracion/tramites/{id}/gettramite',[TramiteController::class,'getTramite'])
+->name('gadministrativa.administracion.gettramite');
+//rutas de abastecimiento
+Route::get('gadministrativa/abastecimiento/ocompras/{id}/getocompra',[OrdenCompraController::class,'getOcompra'])
+->name('gadministrativa.administracion.getocompra');
+Route::resource('gadministrativa/abastecimiento/ocompras',OrdenCompraController::class)
+->names('gadministrativa.abastecimiento.ocompras');
+
+
+//rutas de recepcion de almacen
+Route::resource('gadministrativa/almacen/recepciones',AlmacenRecepcioneController::class)
+->names('gadministrativa.almacen.recepciones');

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Gadministrativa;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tipo extends Model
+class NacionalCatalogo extends Model
 {
     use HasFactory;
-    public $table = 'titems';
 }

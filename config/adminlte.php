@@ -742,6 +742,61 @@ return [
                 ]
             ]
         ],
+        [
+            'text'=>'Gestión Administrativa',
+            'icon'=>'fas fa-money-check-alt',
+            'icon_color'=>'info',
+            'submenu'=>[
+                [
+                    'text'=>'Almacén',
+                    'icon_color'=>'primary',
+                    'submenu'=>[
+                            [
+                                'text'=>'Recepciónes',
+                                'icon_color'=>'primary',
+                                'route'=>'gadministrativa.almacen.recepciones.index',
+                            ]
+                        ]
+                ],
+                [
+                    'text'=>'Abastecimiento',
+                    'icon_color'=>'danger',
+                    'submenu'=>[
+                        [
+                            'text'=>'Or. de Compra',
+                            'icon_color'=>'danger',
+                            'route'=>'gadministrativa.abastecimiento.ocompras.index'
+                        ]
+                    ]
+                ],
+                [
+                    'text'=>'Requerimientos',
+                    'icon_color'=>'info',
+                    'route'=>'gadministrativa.requerimientos.index'
+                ],
+                [
+                    'text'=>'Administracion',
+                    'icon_color'=>'warning',
+                    'submenu'=>[
+                        [
+                            'text'=>'Catálogos',
+                            'icon_color'=>'warning',
+                            'route'=>'gadministrativa.administracion.catalogos.index'
+                        ],
+                        [
+                            'text'=>'Requerimientos',
+                            'icon_color'=>'warning',
+                            'route'=>'gadministrativa.administracion.requerimientos.index'
+                        ],
+                        [
+                            'text'=>'Trámites',
+                            'icon_color'=>'warning',
+                            'route'=>'gadministrativa.administracion.tramites.index',
+                        ]
+                    ]
+                ]
+            ]
+        ],
         /* [
             'text'=>'Estadisticas',
             'icon'=>'far fa-chart-bar',
@@ -857,6 +912,16 @@ return [
                     'type' => 'css',
                     'asset' => false,
                     'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                ],
+            ],
+        ],
+        'BootstrapSwitch' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/bootstrap-switch/js/bootstrap-switch.min.js',
                 ],
             ],
         ],
