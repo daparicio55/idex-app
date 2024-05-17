@@ -59,6 +59,7 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FdocumentoController;
 use App\Http\Controllers\Ga\AlmacenRecepcioneController;
 use App\Http\Controllers\Ga\CatalogoController;
+use App\Http\Controllers\Ga\CodificacioneController;
 use App\Http\Controllers\Ga\MarcaController;
 use App\Http\Controllers\Ga\NcatalogoCntroller;
 use App\Http\Controllers\Ga\OrdenCompraController;
@@ -487,5 +488,10 @@ Route::resource('gadministrativa/abastecimiento/ocompras',OrdenCompraController:
 
 
 //rutas de recepcion de almacen
+Route::get('gadministrativa/almacen/recepciones/{id}/getrecepcione',[AlmacenRecepcioneController::class,'getRecepcione'])
+->name('gadministrativa.almacen.getrecepcione');
 Route::resource('gadministrativa/almacen/recepciones',AlmacenRecepcioneController::class)
 ->names('gadministrativa.almacen.recepciones');
+
+Route::resource('gadministrativa/patrimonio/codificaciones',CodificacioneController::class)
+->names('gadministrativa.patrimonio.codificaciones');

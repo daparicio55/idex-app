@@ -28,10 +28,12 @@
                     <td>{{ ceros($tramite->requerimiento->asunto) }}</td>
                     <td style="width: 110px">{{ date('d-m-Y',strtotime($tramite->fecha)) }}</td>
                     <td>
-                        <a href="" class="btn btn-danger" title="Eliminar Trámite">
+                        <button type="button" class="btn btn-danger" title="Eliminar Trámite" data-toggle="modal" data-target="#modal-delete-{{ $tramite->id }}">
                             <i class="fa fa-trash"></i>
-                        </a>
+                        </button>
+                        
                     </td>
+                    @include('gadministrativa.administracion.tramites.modal')
                 </tr>
                 <tr>
                     <td colspan="3">

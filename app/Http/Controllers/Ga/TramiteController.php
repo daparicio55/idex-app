@@ -115,6 +115,15 @@ class TramiteController extends Controller
     public function destroy(string $id)
     {
         //
+        try {
+            $tramite = Tramite::findOrFail($id);
+            $tramite->delete();
+        } catch (\Throwable $th) {
+            //throw $th;
+            dd($th->getMessage());
+            return Redirect::route('gadministrativa.administracion.tramites.index')->with('error','no se pudo eliminar el tramite');
+        }
+        return Redirect::route('gadministrativa.administracion.tramites.index')->with('info','se elimino el tramite correctamente');
     }
     public function getTramite($id){
         try {

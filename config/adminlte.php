@@ -794,6 +794,17 @@ return [
                             'route'=>'gadministrativa.administracion.tramites.index',
                         ]
                     ]
+                ],
+                [
+                    'text'=>'Patrimonio',
+                    'icon_color'=>'success',
+                    'submenu'=>[
+                        [
+                            'text'=>'Codificaciones',
+                            'icon_color'=>'success',
+                            'route'=>'gadministrativa.patrimonio.codificaciones.index'
+                        ],
+                    ]
                 ]
             ]
         ],

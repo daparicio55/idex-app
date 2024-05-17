@@ -65,6 +65,6 @@
 @stop
 
 @section('js')
-<script src="{{ asset('js/carga.js') }}"></script>
+    <script src="{{ asset('js/carga.js') }}"></script>
     <script src="{{ asset('js/gacademica/almacen/recepciones/main.js') }}"></script>
 @stop

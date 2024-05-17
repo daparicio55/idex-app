@@ -8,12 +8,34 @@
 @stop
 
 @section('content')
-    
-@stop
-
-@section('css')
-    {{-- Add here extra stylesheets --}}
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+<x-alert/>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <th>Num.</th>
+            <th>Fecha</th>
+            <th>Ord. Servicio</th>
+            <th>Proveedor</th>
+            <th></th>
+        </thead>
+        <tbody>
+            <tr>
+                @foreach ($recepciones as $recepcione)
+                    <td>{{ ceros($recepcione->numero) }}</td>
+                    <td>{{ date('d-m-Y',strtotime($recepcione->fecha)) }}</td>
+                    <td>{{ ceros($recepcione->ocompra->numero) }}</td>
+                    <td>{{ $recepcione->ocompra->empresa->razonSocial }}</td>
+                    <td>
+                        <button type="button" data-toggle="modal" data-target="#modal-delete-{{ $recepcione->id }}" class="btn btn-danger" title="Eliminar recepción">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        @include('gadministrativa.almacen.recepciones.modal')
+                    </td>
+                @endforeach
+            </tr>
+        </tbody>
+    </table>
+</div>
 @stop
 
 @section('js')
