@@ -224,7 +224,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12">
+        {{-- <div class="col-sm-12">
             <div class="card">
                 <div class="card-header bg-danger">
                     Aprobados y Desaprobados
@@ -275,7 +275,7 @@
                     SisGE PJ
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 @endif
