@@ -27,25 +27,11 @@
 </x-adminlte-card>
 <x-adminlte-card title="Agregar materiales y/o productos" theme="primary" icon="fas fa-list-ol" collapsible>
     <div class="row">
-        <div class="col-sm-12 col-md-6">
-            <label for="grupo">Grupo</label>
-            <select name="grupo" id="grupo" class="form-control selectpicker" data-live-search=true data-size=10 >
-                <option value="" disabled selected>Seleccione una grupo</option>
-                
-            </select>
-        </div>
-        <div class="col-sm-12 col-md-6">
-            <label for="clase">Clase</label>
-            <select name="clase" id="clase" class="form-control selectpicker" data-live-search=true data-size=10>
-                <option value="" disabled selected>Seleccionar una clase</option>
-                
-            </select>
-        </div>
         <div class="col-sm-12">
-            <label for="" class="mt-2">Catalogo Nacional</label>
-            <select name="denominacion" id="denominacion" class="form-control selectpicker" data-live-search=true data-size=10>
-                <option value="" disabled selected>Seleccione un producto</option>
-                
+            <select name="productos" id="productos" class="form-control selectpicker" data-live-search=true data-size=10>
+                @foreach ($productos as $producto)
+                    <option value="{{ $producto->id }}">{{ $producto->nombre }}</option>
+                @endforeach
             </select>
         </div>
     </div>

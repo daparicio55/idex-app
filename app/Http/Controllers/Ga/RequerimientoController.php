@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ga;
 use App\Http\Controllers\Controller;
 use App\Models\Gadministrativa\Configuration;
 use App\Models\Gadministrativa\NacionalCatalogo;
+use App\Models\Gadministrativa\Productos;
 use App\Models\Gadministrativa\ReDetalle;
 use App\Models\Gadministrativa\Requerimiento;
 use PDF;
@@ -36,8 +37,8 @@ class RequerimientoController extends Controller
      */
     public function create()
     {
-        //
-        return view('gadministrativa.requerimientos.create');
+        $productos = Productos::orderBy('nombre','asc')->get();
+        return view('gadministrativa.requerimientos.create',compact('productos'));
     }
 
     /**
