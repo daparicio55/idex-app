@@ -86,7 +86,7 @@
         <p>{{ $requerimiento->justificacion }}</p>
         <ul>
             @foreach ($requerimiento->re_detalles as $detalle)
-                <li>{{ $detalle->cantidad }} {{ $detalle->ncatalogo->denominacion }} - {{ $detalle->observacion }}</li>
+                <li>{{ $detalle->cantidad }} {{ $detalle->producto->nombre }} - {{ $detalle->observacion }}</li>
             @endforeach
         </ul>
         <p>Es cuanto lo que tengo que solicitar a su despacho. Aprovecho la oportunidad para expresarle las muestras de mi especial consideracion y estima.</p>

@@ -198,7 +198,8 @@
                             <td>{{ number_format($detalle->cantidad * $detalle->precio->valor,2) }}</td>
                         </tr>
                         @php
-                            $total = $total + (number_format($detalle->cantidad * $detalle->precio->valor,2));
+                            $subtotal = $detalle->cantidad * $detalle->precio->valor;   
+                            $total = $total + $subtotal;
                         @endphp
                     @endforeach
                     <tr>

@@ -7,6 +7,8 @@
 @stop
 
 @section('content')
+
+
 {!! Form::open(['route'=>['gadministrativa.requerimientos.update',$requerimiento->id],'method'=>'PUT','id'=>'frm']) !!}
 <x-adminlte-card title="Datos del requerimiento" theme="info" icon="fas fa-lg fa-bell" collapsible>
     <div class="row">
@@ -22,9 +24,70 @@
             <label for="Justificación" class="mt-2">Justificación</label>
             <textarea name="justificacion" id="justificacion" rows="10" class="form-control" required>{{ $requerimiento->justificacion }}</textarea>
         </div>
-
     </div>
 </x-adminlte-card>
+<x-adminlte-card title="Agregar materiales y/o productos" theme="primary" icon="fas fa-list-ol" collapsible>
+    <div class="row">
+        <div class="col-sm-12">
+            <select name="productos" id="productos" class="form-control selectpicker" data-live-search=true data-size=10>
+                @foreach ($productos as $producto)
+                    <option value="{{ $producto->id }}">{{ $producto->nombre }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <x-slot name="footerSlot">
+        <button type="button" id="btn_add" class="btn btn-primary">
+            <i class="fas fa-save"></i> Agregar
+        </button>
+    </x-slot>
+</x-adminlte-card>
+<x-adminlte-card title="Lista de materiales y/o productos" theme="success" icon="fas fa-list-ol" collapsible>
+    <div class="responsive-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cant.</th>
+                    <th>Observación</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="table_body">
+                @foreach ($requerimiento->re_detalles as $detalle)
+                    <tr id="fila{{ $detalle->producto->id }}">
+                        <td>
+                            <input type="hidden" name="ids[]" value="{{ $detalle->producto->id }}">
+                            {{ $detalle->producto->nombre }}
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="cantidades[]" style="width: 100px" value="{{ $detalle->cantidad }}">
+                        </td>
+                        <td>
+                            <input type="text" name="observaciones[]" class="form-control" value="{{ $detalle->observacion }}">                            
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger" onclick="eliminar({{ $detalle->producto->id }})">
+                                <i class="fas fa-minus-circle"></i>
+                            </button>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    <x-slot name="footerSlot">
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-save"></i> Guardar
+        </button>
+    </x-slot>
+</x-adminlte-card>
+{!! Form::close() !!}
+
+
+
+
+{{-- {!! Form::open(['route'=>['gadministrativa.requerimientos.update',$requerimiento->id],'method'=>'PUT','id'=>'frm']) !!}
 <x-adminlte-card title="Agregar materiales y/o productos" theme="primary" icon="fas fa-list-ol" collapsible>
     <div class="row">
         <div class="col-sm-12 col-md-6">
@@ -72,22 +135,14 @@
                 @foreach ($requerimiento->re_detalles as $requerimiento)
                     <tr id="fila{{ $requerimiento->ncatalogo->id }}">
                         <td>
-                            <input type="hidden" name="ids[]" value="{{ $requerimiento->ncatalogo->id }}">
+                            
                             {{ $requerimiento->ncatalogo->grupo }}
                         </td>
                         <td>{{ $requerimiento->ncatalogo->clase }}</td>
                         <td>{{ $requerimiento->ncatalogo->denominacion }}</td>
-                        <td>
-                            <input type="number" class="form-control" name="cantidades[]" style="width: 100px" value="{{ $requerimiento->cantidad }}">
-                        </td>
-                        <td>
-                            <input type="text" name="observaciones[]" class="form-control" value="{{ $requerimiento->observacion }}">                            
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-danger" onclick="eliminar({{ $requerimiento->ncatalogo->id }})">
-                                <i class="fas fa-minus-circle"></i>
-                            </button>
-                        </td>
+                        
+                        
+                        
                     </tr>
                 @endforeach
             </tbody>
@@ -99,10 +154,16 @@
         </button>
     </x-slot>
 </x-adminlte-card>
-{!! Form::close() !!}
+{!! Form::close() !!} --}}
 @stop
 @section('js')
+    <script src="{{ asset('js/gacademica/requerimientos/main.js') }}"></script>
     <script>
+        function eliminar(id){
+        $('#fila'+id).remove();
+    }
+    </script>
+    {{-- <script>
         function eliminar(id){
             $('#fila'+id).remove();
         }
@@ -253,5 +314,5 @@
                 }
             });
         });
-    </script>
+    </script> --}}
 @stop

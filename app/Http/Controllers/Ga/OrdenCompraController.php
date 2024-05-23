@@ -88,7 +88,7 @@ class OrdenCompraController extends Controller
             return Redirect::route('gadministrativa.abastecimiento.ocompras.index')->with('error','no se puede mostrar la orden de compra');
         }
         $pdf = PDF::loadview("gadministrativa.abastecimiento.ocompras.show",compact('ocompra'));
-		return $pdf->download('ORDEN-COMPRA-'.ceros($ocompra->numero).'.pdf');
+		//return $pdf->download('ORDEN-COMPRA-'.ceros($ocompra->numero).'.pdf');
         return view('gadministrativa.abastecimiento.ocompras.show',compact('ocompra'));
     }
     public function destroy($id){

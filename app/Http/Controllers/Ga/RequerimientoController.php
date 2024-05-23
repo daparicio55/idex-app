@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Ga;
 
 use App\Http\Controllers\Controller;
 use App\Models\Gadministrativa\Configuration;
-use App\Models\Gadministrativa\NacionalCatalogo;
-use App\Models\Gadministrativa\Productos;
+use App\Models\Gadministrativa\Producto;
 use App\Models\Gadministrativa\ReDetalle;
 use App\Models\Gadministrativa\Requerimiento;
 use PDF;
@@ -37,8 +36,10 @@ class RequerimientoController extends Controller
      */
     public function create()
     {
-        $productos = Productos::orderBy('nombre','asc')->get();
-        return view('gadministrativa.requerimientos.create',compact('productos'));
+        $productos = Producto::orderBy('nombre','asc')->get();
+        //obteber el ultimo asunto del usuario
+        $ultimo_requerimiento = Requerimiento::where('user_id','=',auth()->id())->get()->last();
+        return view('gadministrativa.requerimientos.create',compact('productos','ultimo_requerimiento'));
     }
 
     /**
@@ -47,6 +48,7 @@ class RequerimientoController extends Controller
     public function store(Request $request)
     {
         //
+        
         try {
             //code...
             DB::beginTransaction();
@@ -68,7 +70,7 @@ class RequerimientoController extends Controller
                 # code...
                 $detalle = new ReDetalle();
                 $detalle->requerimiento_id = $requerimiento->id;
-                $detalle->ncatalogo_id = $request->ids[$i];
+                $detalle->producto_id = $request->ids[$i];
                 $detalle->cantidad = $request->cantidades[$i];
                 $detalle->observacion = $request->observaciones[$i];
                 $detalle->save();
@@ -97,9 +99,7 @@ class RequerimientoController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             return Redirect::route('gadministrativa.requerimientos.index')->with('error','no puedes imprimir este requerimiento');
-        }
-
-        
+        } 
         $pdf = PDF::loadView('gadministrativa.requerimientos.show', compact('requerimiento','config'));
         return $pdf->download('INFORME-'.$requerimiento->id.'.pdf');
         return view('gadministrativa.requerimientos.show',compact('requerimiento','config'));
@@ -110,9 +110,9 @@ class RequerimientoController extends Controller
      */
     public function edit(string $id)
     {
-        //
         try {
             //code...
+            $productos = Producto::orderBy('nombre','asc')->get();
             $requerimiento = Requerimiento::findOrFail($id);
             if($requerimiento->user_id != auth()->id()){
                 return Redirect::route('gadministrativa.requerimientos.index')->with('error','no puedes editar este requerimiento');
@@ -121,7 +121,7 @@ class RequerimientoController extends Controller
             //throw $th;
             return Redirect::route('gadministrativa.requerimientos.index')->with('error','no puedes editar este requerimiento');
         }
-        return view('gadministrativa.requerimientos.edit',compact('requerimiento'));
+        return view('gadministrativa.requerimientos.edit',compact('requerimiento','productos'));
     }
 
     /**
@@ -231,7 +231,7 @@ class RequerimientoController extends Controller
                 [
                     'id'=>$detalle->id,
                     'cantidad'=>$detalle->cantidad,
-                    'denominacion'=>$detalle->ncatalogo->denominacion,
+                    'denominacion'=>$detalle->producto->nombre,
                     'observacion'=>$detalle->observacion,
                 ];
             }
