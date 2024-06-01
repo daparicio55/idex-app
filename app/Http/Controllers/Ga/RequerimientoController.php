@@ -7,6 +7,7 @@ use App\Models\Gadministrativa\Configuration;
 use App\Models\Gadministrativa\Producto;
 use App\Models\Gadministrativa\ReDetalle;
 use App\Models\Gadministrativa\Requerimiento;
+use App\Models\User;
 use PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -22,9 +23,9 @@ class RequerimientoController extends Controller
     {
         $this->middleware('auth');
     }
-    public function index()
+    public function index(Request $request)
     {
-        //
+        
         $requerimientos = Requerimiento::where('user_id','=',auth()->id())
         ->orderBy('id','desc')
         ->get();
@@ -213,11 +214,34 @@ class RequerimientoController extends Controller
         }
         Return Redirect::route('gadministrativa.administracion.requerimientos.index')->with('info','se tramitó correctamente');
     }
-    public function index_administracion(){
-        $requerimientos = Requerimiento::orderBy('numero')
-        ->where('estado','=','Espera')
-        ->get();
-        return view('gadministrativa.administracion.requerimientos.index',compact('requerimientos'));
+    public function index_administracion(Request $request){       
+        if(isset($request->search)){
+            $requerimientos = Requerimiento::where(function($a) use($request){
+                if(isset($request->numero)){
+                    $a->where('numero','=',$request->numero);
+                }
+            })->where(function($b) use($request){
+                if($request->usuario != 0){
+                    $b->where('user_id','=',$request->usuario);
+                }
+            })->where(function($c) use($request){
+                if($request->finicio != null && $request->ffin != null){
+                    $c->whereBetween('fecha',[$request->finicio,$request->ffin]);
+                }
+            })->where(function($d) use($request){
+                if($request->estado != 0){
+                    $d->where('estado','=',$request->estado);
+                }
+            })->get();
+        }else{
+            $requerimientos = Requerimiento::orderBy('numero')
+            ->where('estado','=','Espera')
+            ->get();
+        }
+        $usuarios = User::whereHas('roles',function($query){
+            $query->where('name','<>','Bolsa User');
+        })->get();
+        return view('gadministrativa.administracion.requerimientos.index',compact('requerimientos','usuarios'));
     }
     public function getRequerimiento($id){
         $array = [];
@@ -227,10 +251,17 @@ class RequerimientoController extends Controller
             $d = [];
             foreach ($requerimiento->re_detalles as $key => $detalle) {
                 # code...
+                $suma = 0;
+                $cant = 0;
+                foreach ($detalle->tdetalles as $deta) {
+                    # code...
+                    $suma += $deta->cantidad;
+                }
+                $cant = $detalle->cantidad - $suma;
                 $d [] = 
                 [
                     'id'=>$detalle->id,
-                    'cantidad'=>$detalle->cantidad,
+                    'cantidad'=>$cant,
                     'denominacion'=>$detalle->producto->nombre,
                     'observacion'=>$detalle->observacion,
                 ];

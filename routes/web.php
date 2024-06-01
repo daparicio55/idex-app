@@ -107,11 +107,8 @@ use App\Http\Controllers\VmatriculaController;
 use App\Models\Carrera;
 use App\Models\Cliente;
 use App\Models\cvPersonale;
-use App\Models\Empresa;
 use App\Models\Estudiante;
 use App\Models\Pmatricula;
-use App\Models\Practica;
-use App\Models\Servicio;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -129,6 +126,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',function(){
+    return Auth::check() ? Redirect::to('inicio') : Redirect::to('login');
     return view('index');
     //return Redirect::to('inicio');
 });

@@ -21,9 +21,10 @@ class TramiteController extends Controller
     {
         $this->middleware('auth');
     }
-    public function index()
+    public function index(Request $request)
     {
         //
+        
         $tramites = Tramite::orderBy('numero','desc')->get();
         return view('gadministrativa.administracion.tramites.index',compact('tramites'));
     }
@@ -33,9 +34,43 @@ class TramiteController extends Controller
      */
     public function create()
     {
-        $requerimientos = Requerimiento::where('estado','=','Tramitado')
+        $res = Requerimiento::where('estado','=','Tramitado')
         ->orderBy('numero','desc')
         ->get();
+        $requerimientos = [];
+        foreach ($res as $key => $re) {
+            #verificamos si el requerimiento tiene tramites o no
+            if($re->tramites->count() == 0){
+                $requerimientos [] = [
+                    'id'=>$re->id,
+                    'nombre'=>ceros($re->numero).' - '.$re->encabezado.' - '.$re->encabezado.' - '.$re->asunto,
+                ];
+            }else{
+                //ahora verificamos si estos tramites estan todos listos
+                foreach ($re->re_detalles as $de) {
+                    $ingresa = false;
+                    # code...
+                    #a esto se debe llegar:
+                    $cantidad = $de->cantidad;
+                    $contador = 0;
+                    foreach($de->tdetalles as $de){
+                        $contador += $de->cantidad;
+                    }
+                    if($contador < $cantidad){
+                        $ingresa = true;
+                    }
+                    if($ingresa){
+                        $requerimientos [] = [
+                            'id'=>$re->id,
+                            'nombre'=>ceros($re->numero).' - '.$re->encabezado.' - '.$re->encabezado.' - '.$re->asunto,
+                        ];
+                    }
+                }
+                  
+            }
+        }
+        
+        //return $requerimientos;
         $catalogos = Catalogo::orderBy('modelo','asc')
         ->orderBy('descripcion')
         ->get();
@@ -117,6 +152,9 @@ class TramiteController extends Controller
         //
         try {
             $tramite = Tramite::findOrFail($id);
+            $requerimiento = Requerimiento::findOrFail($tramite->requerimiento_id);
+            $requerimiento->estado = 'Espera';
+            $requerimiento->update();
             $tramite->delete();
         } catch (\Throwable $th) {
             //throw $th;
@@ -129,10 +167,11 @@ class TramiteController extends Controller
         try {
             //code...
             $arr = [];
+            //traigo el trámite
             $tramite = Tramite::findOrFail($id);
             $arr_detalles = [];
             foreach ($tramite->tramiteDetalles as $key => $detalle) {
-                # code...
+                # tengo que verificar si este detalle ya esta cargado
                 $arr_detalles [] =[
                     'id'=>$detalle->id,
                     'catalogo_id'=>$detalle->catalogo_id,

@@ -7,6 +7,7 @@
 @stop
 
 @section('content')
+    @include('gadministrativa.administracion.requerimientos.partes.search')
     <x-alert/>
     <div class="table-responsive">
         <table class="table">
@@ -29,12 +30,14 @@
                         <td style="width: 120px">{{ date('d-m-Y',strtotime($requerimiento->fecha)) }}</td>
                         <td>{{ $requerimiento->user->name }}</td>
                         <td>
-                            <a href="{{ route('gadministrativa.administracion.requerimientos.archivar',$requerimiento->id) }}" type="button" class="btn btn-warning mt-1">
-                                <i class="fas fa-archive"></i> Archivar
-                            </a>
-                            <a href="{{ route('gadministrativa.administracion.requerimientos.tramitar',$requerimiento->id) }}" type="button" class="btn btn-primary mt-1">
-                                <i class="fas fa-paper-plane"></i> Tramitar
-                            </a>
+                            @if ($requerimiento->tramites->count()==0)
+                                <a href="{{ route('gadministrativa.administracion.requerimientos.archivar',$requerimiento->id) }}" type="button" class="btn btn-warning mt-1">
+                                    <i class="fas fa-archive"></i> Archivar
+                                </a>
+                                <a href="{{ route('gadministrativa.administracion.requerimientos.tramitar',$requerimiento->id) }}" type="button" class="btn btn-primary mt-1">
+                                    <i class="fas fa-paper-plane"></i> Tramitar
+                                </a>    
+                            @endif
                         </td>
                     </tr>
                 @endforeach

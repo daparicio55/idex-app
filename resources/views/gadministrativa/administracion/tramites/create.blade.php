@@ -12,7 +12,8 @@
 <x-adminlte-card title="Requerimientos Tramitados" theme="info" icon="fas fa-lg fa-fan" collapsible>
     <select name="requerimiento" id="requerimiento" class="form-control selectpicker" title="Nada seleccionado" data-live-search="true" data-size="10">
         @foreach ($requerimientos as $requerimiento)
-            <option value="{{ $requerimiento->id }}">{{ ceros($requerimiento->numero) }} - {{ $requerimiento->encabezado }} - {{ $requerimiento->asunto }}</option>
+            {{-- <option value="{{ $requerimiento->id }}">{{ ceros($requerimiento->numero) }} - {{ $requerimiento->encabezado }} - {{ $requerimiento->asunto }}</option> --}}
+            <option value="{{ $requerimiento['id'] }}">{{ $requerimiento['nombre'] }}</option>
         @endforeach
     </select>
     <x-slot name="footerSlot">

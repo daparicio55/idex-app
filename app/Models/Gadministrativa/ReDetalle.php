@@ -19,4 +19,7 @@ class ReDetalle extends Model
     public function producto(){
         return $this->belongsTo(Producto::class);
     }
+    public function tdetalles(){
+        return $this->hasMany(TramiteDetalle::class,'rdetalle_id','id');
+    }
 }
