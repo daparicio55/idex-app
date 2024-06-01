@@ -126,9 +126,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',function(){
-    return Auth::check() ? Redirect::to('inicio') : Redirect::to('login');
-    return view('index');
-    //return Redirect::to('inicio');
+    if (Auth::check()) {
+        return Redirect::to('inicio');
+    }else{
+        return view('index');
+    }
 });
 Route::get('/home',function(){
     return Redirect::to('inicio');

@@ -4,15 +4,16 @@ document.getElementById('btn_add').addEventListener('click', function(){
     }
     //verificar que tengamos algo seleccionado
     var denominacion = $('#productos').val();
+    console.log(denominacion);
     if (denominacion == null || denominacion == ""){
         alert('Seleccione un producto o material');
     }else{
         //verificamos si el item ya esta presente en la lista
         var id = $("#productos").val();
-        var deno = $("#productos option:selected").text();
+        /* var deno = $("#productos option:selected").text(); */
+        var deno = $('#productos').find('[value='+id+']').text();
         //agregamos una nueva fila
         var elementos = $('[id^="fila'+id+'"]');
-        console.log();
         //
         if (elementos.length == 0){                   
             var r = $('<tr></tr>');
@@ -70,4 +71,3 @@ document.getElementById('btn_add').addEventListener('click', function(){
     
     }
 });
-console.log('estamos listos');
