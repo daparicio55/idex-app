@@ -57,4 +57,15 @@
 @section('js')
 <script src="{{ asset('js/gacademica/administracion/requerimientos/main.js') }}"></script>
 <script src="{{ asset('js/carga.js') }}"></script>
+<script>
+    $('#catalogos').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+    // do something...
+    var datosJs = <?php echo json_encode($catalogos); ?>;
+    datosJs.forEach(element => {
+        if(element.id == this.value){
+            $('#cantidad').val(element.almacen);
+        }
+    });
+});
+</script>
 @stop

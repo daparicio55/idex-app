@@ -32,8 +32,7 @@ class TramiteController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
+    public function getRequerimientos(){
         $res = Requerimiento::where('estado','=','Tramitado')
         ->orderBy('numero','desc')
         ->get();
@@ -43,7 +42,7 @@ class TramiteController extends Controller
             if($re->tramites->count() == 0){
                 $requerimientos [] = [
                     'id'=>$re->id,
-                    'nombre'=>ceros($re->numero).' - '.$re->encabezado.' - '.$re->encabezado.' - '.$re->asunto,
+                    'nombre'=>ceros($re->numero).' - '.$re->encabezado.' - '.$re->asunto,
                 ];
             }else{
                 //ahora verificamos si estos tramites estan todos listos
@@ -62,18 +61,34 @@ class TramiteController extends Controller
                     if($ingresa){
                         $requerimientos [] = [
                             'id'=>$re->id,
-                            'nombre'=>ceros($re->numero).' - '.$re->encabezado.' - '.$re->encabezado.' - '.$re->asunto,
+                            'nombre'=>ceros($re->numero).' - '.$re->encabezado.' - '.$re->asunto,
                         ];
                     }
                 }
                   
             }
         }
-        
-        //return $requerimientos;
+        return $requerimientos;
+    }
+    public function getCatalogos(){
+        $array = [];
         $catalogos = Catalogo::orderBy('modelo','asc')
         ->orderBy('descripcion')
         ->get();
+        foreach ($catalogos as $key => $catalogo) {
+            # code...
+            $array [] = [
+                'id'=>$catalogo->id,
+                'nombre'=>$catalogo->codigo .' - '.$catalogo->marca->nombre.' - '.$catalogo->modelo.' - '.$catalogo->descripcion .' - x '.$catalogo->unidade->nombre,
+                'almacen'=>0,
+            ];
+        }
+        return $array;
+    }
+    public function create()
+    {
+        $requerimientos = $this->getRequerimientos();
+        $catalogos = $this->getCatalogos();
         return view('gadministrativa.administracion.tramites.create',compact('requerimientos','catalogos'));
     }
 

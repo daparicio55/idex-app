@@ -298,10 +298,5 @@ class RequerimientoController extends Controller
             ];
             return $array;
         }
-        /* return $requerimiento->re_detalles[0]->ncatalogo;
-        $arry = [
-            'message'=>'Esta listo para usar: '.$id
-        ];
-        return $arry; */
     }
 }

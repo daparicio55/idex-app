@@ -1,8 +1,7 @@
-$('#mySelect').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
-    // do something...
-});
+
 //le damos click en el boton agregar del modal
-function destino(){
+function destino(cantidad){
+    console.log(cantidad);
     var select = document.createElement('select');
     select.name = "destinos[]";
     select.classList.add('form-control');
@@ -15,7 +14,9 @@ function destino(){
     var op3 = document.createElement('option');
     op3.value = "Caja Chica";
     op3.innerHTML = "Caja Chica";
-    select.appendChild(op1);
+    if(cantidad > 0){
+        select.appendChild(op1);
+    }
     select.appendChild(op2);
     select.appendChild(op3);
     return select;
@@ -64,7 +65,7 @@ function cat_remove(id){
 
 document.getElementById('btn_modal_catalogo_add').addEventListener('click',function(){
     var catalogo = document.getElementById('catalogos');
-    var cantidad = document.getElementById('cantidad');
+    var en_almacen = document.getElementById('cantidad');
     var fila = document.getElementById('fila_detalle');
     var selectedText = $('#catalogos').find("option:selected").text();
 
@@ -91,11 +92,11 @@ document.getElementById('btn_modal_catalogo_add').addEventListener('click',funct
         cantidad.type = 'number';
         cantidad.name = "cantidades[]";
         cantidad.setAttribute('min','1');
-        cantidad.setAttribute('step','1');
+        //cantidad.setAttribute('step','1');
         cantidad.classList.add('form-control');
         td1.innerHTML = selectedText;
         td1.appendChild(txt);
-        td2.appendChild(destino());
+        td2.appendChild(destino(en_almacen.value));
         td3.appendChild(cantidad);
         td3.style.width = "150px";
         td4.appendChild(btn_delete)

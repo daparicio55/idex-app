@@ -25,13 +25,12 @@
             @foreach ($tramites as $tramite)
                 <tr class="bg-secondary">
                     <td>{{ ceros($tramite->numero) }}</td>
-                    <td>{{ ceros($tramite->requerimiento->asunto) }}</td>
+                    <td>{{ $tramite->requerimiento->encabezado }} {{ $tramite->requerimiento->asunto }}</td>
                     <td style="width: 110px">{{ date('d-m-Y',strtotime($tramite->fecha)) }}</td>
                     <td>
                         <button type="button" class="btn btn-danger" title="Eliminar Trámite" data-toggle="modal" data-target="#modal-delete-{{ $tramite->id }}">
                             <i class="fa fa-trash"></i>
                         </button>
-                        
                     </td>
                     @include('gadministrativa.administracion.tramites.modal')
                 </tr>
@@ -57,7 +56,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        
                     </td>
                     <td></td>
                 </tr>

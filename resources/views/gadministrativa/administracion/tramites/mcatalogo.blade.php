@@ -16,13 +16,13 @@
                         <select id="catalogos" class="form-control selectpicker" data-live-search="true" data-size="10">
                             <option value="0" disabled selected>Selecione un catálogo</option>
                             @foreach ($catalogos as $catalogo)
-                                <option value="{{ $catalogo->id }}">{{ $catalogo->codigo }} - {{ $catalogo->modelo }} - {{ $catalogo->descripcion }} x {{ $catalogo->unidade->nombre }}</option>
+                                <option value="{{ $catalogo['id'] }}">{{ $catalogo['nombre'] }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-3">
-                        <label for="cantidad">Cantidad</label>
-                        <input type="number" id="cantidad" class="form-control" min=1 step="1">
+                        <label for="cantidad">En Almacen</label>
+                        <input type="number" id="cantidad" class="form-control" min=1 step="1" value=0>
                     </div>
                 </div>
             </div>
