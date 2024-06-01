@@ -8,6 +8,7 @@ document.getElementById('btn_add').addEventListener('click', function(){
     if (denominacion == null || denominacion == ""){
         alert('Seleccione un producto o material');
     }else{
+        mostrarPantallaDeCarga();
         //verificamos si el item ya esta presente en la lista
         var id = $("#productos").val();
         /* var deno = $("#productos option:selected").text(); */
@@ -43,10 +44,12 @@ document.getElementById('btn_add').addEventListener('click', function(){
 
             txt_observacion.attr('type','text');
             txt_observacion.attr('name','observaciones[]');
+            txt_observacion.attr('required','true');
             txt_observacion.addClass('form-control');
 
             txt_cantidad.attr('type','number');
             txt_cantidad.attr('name','cantidades[]');
+            txt_cantidad.attr('required','true');
             txt_cantidad.addClass('form-control');
             txt_cantidad.css('width','100px');
 
@@ -68,6 +71,6 @@ document.getElementById('btn_add').addEventListener('click', function(){
         }else{
             alert('Este elemento ya esta en la lista seleccione otro');
         }
-    
+        ocultarPantallaDeCarga();
     }
 });

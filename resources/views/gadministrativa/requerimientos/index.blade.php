@@ -20,6 +20,7 @@
             <strong>{{session('error')}}</strong>
         </div>
     @endif
+    @include('gadministrativa.requerimientos.partes.search')
     <p>Lista de Requerimientos:</p>
     <div class="table-responsive">
         <div class="table">
@@ -36,7 +37,7 @@
                 <tbody>
                     @foreach ($requerimientos as $key => $requerimiento)
                         <tr>
-                            <td>{{ $requerimiento->numero }}</td>
+                            <td>{{ ceros($requerimiento->numero) }}</td>
                             <td>{{ $requerimiento->encabezado }}</td>
                             <td>{{ $requerimiento->asunto }}</td>
                             <td style="width: 120px">{{ date('d-m-Y',strtotime($requerimiento->fecha)) }}</td>

@@ -25,10 +25,24 @@ class RequerimientoController extends Controller
     }
     public function index(Request $request)
     {
+        if(isset($request->search)){
+            $requerimientos = Requerimiento::where('user_id','=',auth()->id())
+            ->where(function($a) use($request){
+                if(isset($request->numero)){
+                    $a->where('numero','=',$request->numero);
+                }
+            })->where(function($b) use($request){
+                if($request->finicio != null && $request->ffin != null){
+                    $b->whereBetween('fecha',[$request->finicio,$request->ffin]);
+                }
+            })->orderBy('id','desc')
+            ->get();
+        }else{
+            $requerimientos = Requerimiento::where('user_id','=',auth()->id())
+            ->orderBy('id','desc')
+            ->get();
+        }
         
-        $requerimientos = Requerimiento::where('user_id','=',auth()->id())
-        ->orderBy('id','desc')
-        ->get();
         return view('gadministrativa.requerimientos.index',compact('requerimientos'));
     }
 

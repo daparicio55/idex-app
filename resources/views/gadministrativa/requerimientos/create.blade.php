@@ -64,6 +64,11 @@
 </x-adminlte-card>
 {!! Form::close() !!}
 @stop
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/loading.css') }}">
+@stop
+<x-carga/>
 @section('js')
+    <script src="{{ asset('js/carga.js') }}"></script>
     <script src="{{ asset('js/gacademica/requerimientos/main.js') }}"></script>
 @stop
