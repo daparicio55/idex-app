@@ -36,7 +36,7 @@
             </div>
             <div class="col-sm-12 col-md-3">
                 {!! Form::label('marcas', 'Marcas', ['class'=>'mt-2']) !!}
-                <select name="marcas" id="marcas" class="form-control selectpicker" title="No hay selección" data-live-search = true data-size = 10 required>
+                <select name="marcas" id="marcas" class="form-control selectpicker" title="No hay selección" data-live-search = true data-size = 15 required>
                     @foreach ($marcas as $marca)
                         <option value="{{ $marca->id }}">{{ $marca->nombre }}</option>
                     @endforeach
@@ -50,7 +50,7 @@
             </div>
             <div class="col-sm-12 col-md-3">
                 {!! Form::label('tipos', 'Tipos', ['class'=>'mt-2']) !!}
-                <select name="tipos" id="tipos" class="form-control d-inline selectpicker" title="No hay selección" data-live-search = true data-size = 10 required>
+                <select name="tipos" id="tipos" class="form-control d-inline selectpicker" title="No hay selección" data-live-search = true data-size = 15 required>
                     @foreach ($tipos as $tipo)
                         <option value="{{ $tipo->id }}">{{ $tipo->nombre }}</option>
                     @endforeach

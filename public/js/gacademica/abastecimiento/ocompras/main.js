@@ -96,6 +96,7 @@ function getCatalogosExcept(data,url){
 }
 function selectTramite (url){
     var tramite_id = $('#tramites').val();
+    $('#detalles').empty();
     var ruta = url+'gadministrativa/administracion/tramites/'+tramite_id+'/gettramite';
     fetch(ruta).then(response =>{
         if(!response.ok){

@@ -126,9 +126,13 @@ class CatalogoController extends Controller
             $catalogo = Catalogo::findOrFail($id);
             if(isset($request->codigo)){
                 $catalogo->codigo = $request->codigo;
+            }else{
+                $catalogo->codigo = 'CAT'.ceros($catalogo->id);
             }
             if(isset($request->modelo)){
                 $catalogo->modelo = $request->modelo;
+            }else{
+                $catalogo->modelo = 'MOD'.ceros($catalogo->id);
             }
             $catalogo->descripcion = $request->descripcion;
             $catalogo->observacion = $request->observacion;
@@ -153,9 +157,6 @@ class CatalogoController extends Controller
             }else{
                 $catalogo->perecible = 0;
             }
-            //
-            $catalogo->codigo = 'CAT'.ceros($catalogo->id);      
-            $catalogo->modelo = 'MOD'.ceros($catalogo->id);
             $catalogo->update();
             DB::commit();
         } catch (\Throwable $th) {

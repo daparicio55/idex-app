@@ -46,29 +46,6 @@ class AlmacenRecepcioneController extends Controller
     }
     public function store(Request $request){
         try {
-            //code...
-            /* $a_series =[];
-            $a_perecibles = [];
-
-            foreach ($request->check as $value) {
-                //revizar si tiene serie o fecha
-                $tdetalle = TramiteDetalle::findOrFail($value);
-                if($tdetalle->cambio){
-                    if($tdetalle->cambio->catalogo->serie){
-                        $a_series[] = 'serie'.$value;
-                    }
-                    if($tdetalle->cambio->catalogo->perecible){
-                        $a_perecibles[] = 'perecible'.$value;
-                    }
-                }else{
-                    if($tdetalle->catalogo->serie){
-                        $a_series[] = 'serie'.$value;
-                    }
-                    if($tdetalle->catalogo->perecible){
-                        $a_perecibles[] = 'perecible'.$value;
-                    }
-                }
-            } */
             //guardamos la recepcion
             DB::beginTransaction();
             $recepcion = new Recepcione();
