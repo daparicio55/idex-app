@@ -37,8 +37,8 @@
         </div>
     </div>
     <x-slot name="footerSlot">
-        <button type="submit" class="btn btn-primary">Buscar</button>
-        <a href="{{ route('gadministrativa.administracion.requerimientos.index') }}" class="btn btn-default">Limpiar</a>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+        <a href="{{ route('gadministrativa.administracion.requerimientos.index') }}" class="btn btn-default"><i class="fas fa-broom"></i> Limpiar</a>
     </x-slot>
 </x-adminlte-card>
 {!! Form::close() !!}

@@ -30,6 +30,9 @@
                         <td style="width: 120px">{{ date('d-m-Y',strtotime($requerimiento->fecha)) }}</td>
                         <td>{{ $requerimiento->user->name }}</td>
                         <td>
+                            <a href="{{ route('gadministrativa.requerimientos.show',$requerimiento->id) }}" class="btn btn-info mt-1">
+                                <i class="fas fa-eye"></i> Ver
+                            </a>
                             @if ($requerimiento->tramites->count()==0)
                                 <a href="{{ route('gadministrativa.administracion.requerimientos.archivar',$requerimiento->id) }}" type="button" class="btn btn-warning mt-1">
                                     <i class="fas fa-archive"></i> Archivar

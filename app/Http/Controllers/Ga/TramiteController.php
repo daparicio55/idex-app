@@ -23,8 +23,6 @@ class TramiteController extends Controller
     }
     public function index(Request $request)
     {
-        //
-        
         $tramites = Tramite::orderBy('numero','desc')->get();
         return view('gadministrativa.administracion.tramites.index',compact('tramites'));
     }
@@ -97,8 +95,6 @@ class TramiteController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        //return $request;
         try {
             //code...
             DB::beginTransaction();
@@ -140,7 +136,8 @@ class TramiteController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $tramite = Tramite::findOrFail($id);
+        return view('gadministrativa.administracion.tramites.show',compact('tramite'));
     }
 
     /**
@@ -148,7 +145,10 @@ class TramiteController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $tramite = Tramite::findOrFail($id);
+        $requerimientos = $this->getRequerimientos();
+        $catalogos = $this->getCatalogos();
+        return view('gadministrativa.administracion.tramites.edit',compact('tramite','requerimientos','catalogos'));
     }
 
     /**
@@ -156,7 +156,33 @@ class TramiteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            //code...
+            DB::beginTransaction();
+            $tramite = Tramite::findOrFail($id);
+            $tramite->user_id = auth()->id();
+            $tramite->save();
+            //agregamos los detalles
+            TramiteDetalle::where('tramite_id','=',$tramite->id)->delete();
+            for ($i=0; $i < count($request->elementos); $i++) { 
+                $detalle = new TramiteDetalle();
+                $detalle->cantidad = $request->cantidades[$i];
+                $detalle->destino =$request->destinos[$i];
+                $detalle->tramite_id = $tramite->id;
+                //separamos los ids del requerimientoDetalle y el cataloID
+                $ids = explode(':',$request->elementos[$i]);
+                $detalle->rdetalle_id = $ids[0];
+                $detalle->catalogo_id = $ids[1];
+                $detalle->save();
+            }
+            DB::commit();
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            dd ($th->getMessage());
+            return Redirect::route('gadministrativa.administracion.tramites.index')->with('error','no se registro el tramite del requerimiento');
+        }
+        return Redirect::route('gadministrativa.administracion.tramites.index')->with('info','se registro el tramite del requerimiento correctamente');
     }
 
     /**
