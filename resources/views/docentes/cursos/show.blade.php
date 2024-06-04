@@ -62,9 +62,6 @@
                                 @endisset
                             </ul>    
                             @endisset
-
-
-
                         </td>
                     </tr>
                 @endforeach

@@ -18,6 +18,14 @@
             padding: 1px;
             //aqui el resto de tus estilos
         }
+        .vertical-text {
+            writing-mode: vertical-rl; /* Establece la orientación vertical */
+            transform: rotate(180deg); /* Rota el texto para que esté en posición vertical */
+            white-space: nowrap;
+        }
+        .table th{
+            padding: 0;
+        }
     }
     @media print{
         body {
@@ -34,6 +42,9 @@
             text-align: center;
             //aqui el resto de tus estilos
         }
+        #tasistencia {
+            font-size: 0.6rem;
+        }
         #tactafinal {
             font-size: 0.5rem;
         }
@@ -48,6 +59,18 @@
         }
         #tregistro{
             font-size: 0.6rem;
+        }
+        .vertical-text {
+            writing-mode: vertical-rl; /* Establece la orientación vertical */
+            transform: rotate(180deg); /* Rota el texto para que esté en posición vertical */
+            white-space: nowrap;
+        }
+        .table th{
+            padding: 0;
+        }
+        .table td{
+            padding: 0;
+            text-align: center;
         }
     }
     </style>
@@ -152,7 +175,20 @@
     </main>
 
 <div class="saltopagina"></div>
-
+    @include('layouts.registros.header')
+    <main>
+        <table class="table" id="tasistencia">
+            <thead>
+                <tr>
+                    @yield('fechas_asistencia')
+                </tr>
+            </thead>
+            <tbody>
+                    @yield('asistencias')
+            </tbody>
+        </table>
+    </main>
+<div class="saltopagina"></div>
     @include('layouts.registros.header')
     <main>
         <table class="table" id="tregistro">
