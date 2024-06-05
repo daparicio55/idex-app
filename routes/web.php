@@ -140,7 +140,7 @@ Route::get('/salud/app/encuestas/{id}',[SaludappController::class,'encuestas'])-
 Route::get('/salud/app/psicologia/{id}',[SaludappController::class,'psicologia'])->name('salud.app.psicologia');
 Route::post('/salud/app/surveys/',[SaludappController::class,'surveys_store'])->name('salud.app.surveys.store');
 Route::get('/salud/app/surveys/{id}',[SaludappController::class,'surveys'])->name('salud.app.surveys');
-Route::get('/salud/app/herramientas/{id}',[SaludappController::class,'herramientas'])->name('salud.app.herramientas');
+Route::get('/salud/app/herramientas',[SaludappController::class,'herramientas'])->name('salud.app.herramientas');
 //CONTRALADOR PERSONALIZADO
 Route::resource('/salud/encuestas',SaludEncuestaController::class)
 ->names('salud.encuestas');

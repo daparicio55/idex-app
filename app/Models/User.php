@@ -63,6 +63,9 @@ class User extends Authenticatable
     public function ucliente(){
         return $this->hasOne(Ucliente::class);
     }
+    public function acampanias(){
+        return $this->hasMany(Acdocente::class,'docente_id','id');
+    }
     public function adminlte_image(){
         $user = User::findOrFail(auth()->id());
         if(isset($user->ucliente->cliente_id)){

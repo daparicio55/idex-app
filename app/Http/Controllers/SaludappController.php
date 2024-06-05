@@ -20,6 +20,10 @@ class SaludappController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(Request $request)
     {
         //
@@ -232,8 +236,7 @@ class SaludappController extends Controller
         return Redirect::route('salud.app.encuestas',[$estudiante->id])
         ->with('info','encuesta guardada correctamente');
     }
-    public function herramientas($id){
-        $estudiante = Estudiante::findOrFail($id);
-        return view('salud.app.herramientas',compact('estudiante'));
+    public function herramientas(){
+        return view('salud.app.herramientas');
     }
 }

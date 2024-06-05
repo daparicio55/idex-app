@@ -582,7 +582,7 @@ return [
                 ] */
             ]
         ],
-        /* [
+        [
             'text'=>'Salud',
             'icon'=>'fas fa-hospital-user',
             'can'=>'salud.acampanias.index',
@@ -606,7 +606,7 @@ return [
                     'can'=>'salud.encuestas.index'
                 ]
             ],
-        ], */
+        ],
         [
             'text'=>'Trámite Documentario',
             'icon'=>'far fa-file',
