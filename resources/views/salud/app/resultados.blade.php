@@ -1,210 +1,85 @@
-@extends('layouts.saludcontenido')
-@section('css')
-<style>
-    .highcharts-figure,
-    .highcharts-data-table table {
-      min-width: 310px;
-      max-width: 500px;
-      margin: 1em auto;
-    }
-    
-    .highcharts-data-table table {
-      font-family: Verdana, sans-serif;
-      border-collapse: collapse;
-      border: 1px solid #ebebeb;
-      margin: 10px auto;
-      text-align: center;
-      width: 100%;
-      max-width: 500px;
-    }
-    
-    .highcharts-data-table caption {
-      padding: 1em 0;
-      font-size: 1.2em;
-      color: #555;
-    }
-    
-    .highcharts-data-table th {
-      font-weight: 600;
-      padding: 0.5em;
-    }
-    
-    .highcharts-data-table td,
-    .highcharts-data-table th,
-    .highcharts-data-table caption {
-      padding: 0.5em;
-    }
-    
-    .highcharts-data-table thead tr,
-    .highcharts-data-table tr:nth-child(even) {
-      background: #f8f8f8;
-    }
-    
-    .highcharts-data-table tr:hover {
-      background: #f1f7ff;
-    }
-    </style>
-@stop
-@if($estudiante->acampanias->count()>0)
-@section('cuerpo')
-<div class="main-content flex-1 mt-2 md:mt-2 pb-24 md:pb-5">
-    <div class="flex flex-wrap">
-        {{-- frecuencia cardiaca --}}
-        <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-            <!--Graph Card-->
-            <div class="bg-white border-transparent rounded-lg shadow-xl">
-                <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                    <h5 class="font-bold uppercase text-red-600">
-                        <i class="fas fa-heartbeat"></i> Glucosa {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
-                    </h5>
-                </div>
-                <div class="p-0 chartjs">
-                    <figure class="highcharts-figure">
-                        <div id="container_glicemia"></div>
-                        <p class="highcharts-description mx-5 pb-2">
-                            Cantidad de un azúcar llamado glucosa en una muestra de sangre.
-                        </p>
-                    </figure>
-                </div>
-            </div>
-            <!--Graph Card-->
-        </div>
-        {{-- frecuencia cardiaca --}}
-        {{-- tiglicerios --}}
-        <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-            <!--Graph Card-->
-            <div class="bg-white border-transparent rounded-lg shadow-xl">
-                <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                    <h5 class="font-bold uppercase text-red-600">
-                        <i class="fas fa-heartbeat"></i> Triglicéridos {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
-                    </h5>
-                </div>
-                <div class="p-0 chartjs">
-                    <figure class="highcharts-trigliceridos">
-                        <div id="container_trigliceridos"></div>
-                        <p class="highcharts-description mx-5 pb-2">
-                            Los triglicéridos son un tipo de grasa (lípidos) que se encuentran en la sangre.
-                        </p>
-                    </figure>
-                </div>
-            </div>
-            <!--Graph Card-->
-        </div>
-        {{-- triglicerios --}}
-        {{-- colesterol --}}
-        <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-            <!--Graph Card-->
-            <div class="bg-white border-transparent rounded-lg shadow-xl">
-                <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                    <h5 class="font-bold uppercase text-red-600">
-                        <i class="fas fa-heartbeat"></i> Colesterol {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
-                    </h5>
-                </div>
-                <div class="p-0 chartjs">
-                    <figure class="highcharts-figure">
-                        <div id="container_colesterol"></div>
-                        <p class="highcharts-description mx-5 pb-2">
-                            El colesterol es una sustancia cerosa que se encuentra en la sangre.
-                        </p>
-                    </figure>
-                </div>
-            </div>
-            <!--Graph Card-->
-        </div>
-        {{-- colesterol --}}
-        {{-- HDL --}}
-        <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-          <!--Graph Card-->
-          <div class="bg-white border-transparent rounded-lg shadow-xl">
-              <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                  <h5 class="font-bold uppercase text-red-600">
-                      <i class="fas fa-heartbeat"></i> HDL - Colesterol Positivo {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
-                  </h5>
-              </div>
-              <div class="p-0 chartjs">
-                  <figure class="highcharts-figure">
-                      <div id="container_hdl"></div>
-                      <p class="highcharts-description mx-5 pb-2">
-                        El colesterol de lipoproteínas de alta densidad (HDL) es conocido como el colesterol "bueno" porque ayuda a eliminar otras formas de colesterol del torrente sanguíneo. Los niveles más altos de colesterol HDL están asociados con un menor riesgo de desarrollar una enfermedad cardíaca..
-                      </p>
-                  </figure>
-              </div>
-          </div>
-          <!--Graph Card-->
-        </div>
-        {{-- HDL --}}
-        {{-- LDL --}}
-        <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-          <!--Graph Card-->
-          <div class="bg-white border-transparent rounded-lg shadow-xl">
-              <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                  <h5 class="font-bold uppercase text-red-600">
-                      <i class="fas fa-heartbeat"></i> LDL - Colesterol Negativo {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
-                  </h5>
-              </div>
-              <div class="p-0 chartjs">
-                  <figure class="highcharts-figure">
-                      <div id="container_ldl"></div>
-                      <p class="highcharts-description mx-5 pb-2">
-                        LDL significa lipoproteínas de baja densidad en inglés. En ocasiones se le llama colesterol "malo" porque un nivel alto de LDL lleva a una acumulación de colesterol en las arteria.
-                      </p>
-                  </figure>
-              </div>
-          </div>
-          <!--Graph Card-->
-        </div>
-
-
-        {{-- LDL --}}
-        {{-- hemoglobina --}}
-        <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-            <!--Graph Card-->
-            <div class="bg-white border-transparent rounded-lg shadow-xl">
-                <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                    <h5 class="font-bold uppercase text-red-600">
-                        <i class="fas fa-heartbeat"></i> Hemoglobina {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
-                    </h5>
-                </div>
-                <div class="p-0 chartjs">
-                    <figure class="highcharts-figure">
-                        <div id="container_hemoglobina"></div>
-                        <p class="highcharts-description mx-5 pb-2">
-                            Proteína del interior de los glóbulos rojos que transporta oxígeno desde los pulmones a los tejidos y órganos del cuerpo; además, transporta el dióxido de carbono de vuelta a los pulmones.
-                        </p>
-                    </figure>
-                </div>
-            </div>
-            <!--Graph Card-->
-        </div>
-        {{-- hemoglobina --}}
-        {{-- hematocrito --}}
-
-        <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-            <!--Graph Card-->
-            <div class="bg-white border-transparent rounded-lg shadow-xl">
-                <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                    <h5 class="font-bold uppercase text-red-600">
-                        <i class="fas fa-heartbeat"></i> Hematocrito {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
-                    </h5>
-                </div>
-                <div class="p-0 chartjs">
-                    <figure class="highcharts-figure">
-                        <div id="container_hto"></div>
-                        <p class="highcharts-description mx-5 pb-2">
-                            El hematocrito es un análisis de sangre que permite detectar anemia y otros trastornos de la sangre.
-                        </p>
-                    </figure>
-                </div>
-            </div>
-            <!--Graph Card-->
-        </div>
-
-        {{-- hematocrito --}}
-
-    </div>
+@extends('salud.app.v2.layouts.main')
+@section('page-header')
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800 text-center">Resultados</h1>
+    <small class="text-center d-block">análisis de laboratorio</small>    
 </div>
-@stop
-@section('js')
+@endsection
+@section('page-content')
+<div class="row">
+  <div class="col-lg-6 mb-4">
+    <x-highchart-card id="container_glicemia">
+        <x-slot name="header">
+          Glucosa
+        </x-slot>
+        <x-slot name="description">
+          Cantidad de un azúcar llamado glucosa en una muestra de sangre.
+        </x-slot>
+    </x-highchart-card>
+  </div>
+  <div class="col-lg-6 mb-4">
+    <x-highchart-card id="container_trigliceridos">
+        <x-slot name="header">
+          Triglicéridos
+        </x-slot>
+        <x-slot name="description">
+          Los triglicéridos son un tipo de grasa (lípidos) que se encuentran en la sangre.
+        </x-slot>
+    </x-highchart-card>
+  </div>
+  <div class="col-lg-6 mb-4">
+    <x-highchart-card id="container_colesterol">
+        <x-slot name="header">
+          Colesterol
+        </x-slot>
+        <x-slot name="description">
+          El colesterol es una sustancia cerosa que se encuentra en la sangre.
+        </x-slot>
+    </x-highchart-card>
+  </div>
+  <div class="col-lg-6 mb-4">
+    <x-highchart-card id="container_hdl">
+        <x-slot name="header">
+          HDL - Colesterol Positivo
+        </x-slot>
+        <x-slot name="description">
+          El colesterol de lipoproteínas de alta densidad (HDL) es conocido como el colesterol "bueno" porque ayuda a eliminar otras formas de colesterol del torrente sanguíneo. Los niveles más altos de colesterol HDL están asociados con un menor riesgo de desarrollar una enfermedad cardíaca..
+        </x-slot>
+    </x-highchart-card>
+  </div>
+  <div class="col-lg-6 mb-4">
+    <x-highchart-card id="container_ldl">
+        <x-slot name="header">
+          LDL - Colesterol Negativo
+        </x-slot>
+        <x-slot name="description">
+          LDL significa lipoproteínas de baja densidad en inglés. En ocasiones se le llama colesterol "malo" porque un nivel alto de LDL lleva a una acumulación de colesterol en las arteria.
+        </x-slot>
+    </x-highchart-card>
+  </div>
+  <div class="col-lg-6 mb-4">
+    <x-highchart-card id="container_hemoglobina">
+        <x-slot name="header">
+          Hemoglobina
+        </x-slot>
+        <x-slot name="description">
+          Proteína del interior de los glóbulos rojos que transporta oxígeno desde los pulmones a los tejidos y órganos del cuerpo; además, transporta el dióxido de carbono de vuelta a los pulmones.
+        </x-slot>
+    </x-highchart-card>
+  </div>
+  <div class="col-lg-6 mb-4">
+    <x-highchart-card id="container_hto">
+        <x-slot name="header">
+          Hematocrito
+        </x-slot>
+        <x-slot name="description">
+          El hematocrito es un análisis de sangre que permite detectar anemia y otros trastornos de la sangre.
+        </x-slot>
+    </x-highchart-card>
+  </div>
+</div>
+@endsection
+@section('scripts')
 <script>
 /* frecuencia cardiaca */
 Highcharts.chart("container_glicemia", {
@@ -274,7 +149,12 @@ Highcharts.chart("container_glicemia", {
   series: [
     {
       name: "Speed",
-      data: [<?= $estudiante->acampanias[0]->lab_glicemia ?>],
+      @if(Auth::user()->hasRole('Bolsa User'))
+        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_glicemia ?>],
+      @endif
+      @if(Auth::user()->hasRole('Docentes'))
+        data: [<?= Auth::user()->acampanias[0]->lab_glicemia ?>],
+      @endif
       tooltip: {
         valueSuffix: " mg/dl."
       },
@@ -367,7 +247,12 @@ Highcharts.chart("container_trigliceridos", {
   series: [
     {
       name: "Speed",
-      data: [<?= $estudiante->acampanias[0]->lab_trigliceridos ?>],
+      @if(Auth::user()->hasRole('Bolsa User'))
+        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_trigliceridos ?>],
+      @endif
+      @if(Auth::user()->hasRole('Docentes'))
+        data: [<?= Auth::user()->acampanias[0]->lab_trigliceridos ?>],
+      @endif
       tooltip: {
         valueSuffix: " mg/dl."
       },
@@ -462,7 +347,12 @@ Highcharts.chart("container_colesterol", {
   series: [
     {
       name: "Speed",
-      data: [<?= $estudiante->acampanias[0]->lab_colesterol ?>],
+      @if(Auth::user()->hasRole('Bolsa User'))
+        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_colesterol ?>],
+      @endif
+      @if(Auth::user()->hasRole('Docentes'))
+        data: [<?= Auth::user()->acampanias[0]->lab_colesterol ?>],
+      @endif
       tooltip: {
         valueSuffix: " mg/dl."
       },
@@ -555,7 +445,12 @@ Highcharts.chart("container_ldl", {
   series: [
     {
       name: "Speed",
-      data: [<?= $estudiante->acampanias[0]->lab_ldl ?>],
+      @if(Auth::user()->hasRole('Bolsa User'))
+        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_ldl ?>],
+      @endif
+      @if(Auth::user()->hasRole('Docentes'))
+        data: [<?= Auth::user()->acampanias[0]->lab_ldl ?>],
+      @endif
       tooltip: {
         valueSuffix: " mg/dl."
       },
@@ -655,7 +550,12 @@ Highcharts.chart("container_hdl", {
   series: [
     {
       name: "Speed",
-      data: [<?= $estudiante->acampanias[0]->lab_hdl ?>],
+      @if(Auth::user()->hasRole('Bolsa User'))
+        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_hdl ?>],
+      @endif
+      @if(Auth::user()->hasRole('Docentes'))
+        data: [<?= Auth::user()->acampanias[0]->lab_hdl ?>],
+      @endif
       tooltip: {
         valueSuffix: " mg/dl."
       },
@@ -685,26 +585,8 @@ Highcharts.chart("container_hdl", {
     }
   ]
 });
-
-
-
 /* ************************************ */
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* hemoglobina */
-
-
 Highcharts.chart("container_hto", {
     chart: {
     type: "gauge",
@@ -772,7 +654,12 @@ Highcharts.chart("container_hto", {
   series: [
     {
       name: "Speed",
-      data: [<?= $estudiante->acampanias[0]->lab_hto ?>],
+      @if(Auth::user()->hasRole('Bolsa User'))
+        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_hto ?>],
+      @endif
+      @if(Auth::user()->hasRole('Docentes'))
+        data: [<?= Auth::user()->acampanias[0]->lab_hto ?>],
+      @endif
       tooltip: {
         valueSuffix: " %"
       },
@@ -872,7 +759,12 @@ Highcharts.chart("container_hemoglobina", {
   series: [
     {
       name: "Speed",
-      data: [<?= $estudiante->acampanias[0]->lab_hemoglobina ?>],
+      @if(Auth::user()->hasRole('Bolsa User'))
+        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_hemoglobina ?>],
+      @endif
+      @if(Auth::user()->hasRole('Docentes'))
+        data: [<?= Auth::user()->acampanias[0]->lab_hemoglobina ?>],
+      @endif
       tooltip: {
         valueSuffix: " mg/dl."
       },
@@ -903,7 +795,5 @@ Highcharts.chart("container_hemoglobina", {
   ]
 });
 
-
 </script>
-@stop
-@endif
+@endsection

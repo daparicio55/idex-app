@@ -1,27 +1,31 @@
-@extends('layouts.saludcontenido')
-@section('cuerpo')
-<div class="main-content flex-1 bg-gray-800 mt-10 md:mt-2 pb-24 md:pb-5">
-    <div class="bg-gray-800 pt-1">
-        <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
-            <h5 class="font-bold pl-2">Encuestas.</h5>
-        </div>
-        <div class="W3-animado-izquierda flex flex-wrap"> 
-            <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-
-                @foreach ($surveys as $survey)
-                    <div class="bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-xl p-5">
-                        <p style="padding-bottom: 1rem">
-                            <i class="fas fa-map-marker"></i>
-                            {{ $survey->name_es }}                            
-                        </p>
-                        <a href="{{ route('salud.app.surveys',$survey->id.":".$estudiante->id) }}" style="text-decoration: underline;color: blue">
-                            <i class="fas fa-share"></i> ir a la encuesta
-                        </a>
-                    </div>
-                @endforeach
+@extends('salud.app.v2.layouts.main')
+@section('page-header')
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800 text-center">Encuestas</h1>
+    <small class="text-center d-block">ayudanos a mejorar respondiendo algunas preguntas</small>    
+</div>
+@endsection
+@section('page-content')
+<div class="row">
+    @foreach ($surveys as $key => $survey)
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Encuesta {{ $key + 1 }}
+                    </h6>
+                </div>
+                <div class="card-body">               
+                    <p>{{ $survey->name_es }} </p>
+                    <a href="{{ route('salud.app.surveys',$survey->id) }}" class="btn btn-secondary btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-arrow-right"></i>
+                        </span>
+                        <span class="text">Responder ahora</span>
+                    </a>
+                </div>
             </div>
         </div>
-        {{-- ****************************************************************** --}}
-    </div>
+    @endforeach
 </div>
-@stop
+@endsection

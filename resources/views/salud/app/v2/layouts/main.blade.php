@@ -12,6 +12,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('saludapp/css/sb-admin-2.css')}}" rel="stylesheet">
+    @section('styles')
 </head>
 <body>
     <div id="wrapper">

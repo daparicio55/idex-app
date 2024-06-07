@@ -9,6 +9,7 @@ use App\Models\Sdo;
 use App\Models\Sqalternative;
 use App\Models\Survey;
 use Carbon\Carbon;
+use DragonCode\Contracts\Cashier\Auth\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -132,24 +133,20 @@ class SaludappController extends Controller
     {
         //
     }
-    public function profile($id){
-        $estudiante = Estudiante::findOrFail($id);
-        return view('salud.app.profile',compact('estudiante'));
+    public function profile(){
+        return view('salud.app.profile');
     }
-    public function atencione($id){
-        $estudiante = Estudiante::findOrFail($id);
-        return view('salud.app.atencione',compact('estudiante'));
+    public function atencione(){
+        return view('salud.app.atencione');
     }
-    public function resultados($id){
-        $estudiante = Estudiante::findOrFail($id);
-        return view('salud.app.resultados',compact('estudiante'));
+    public function resultados(){
+        return view('salud.app.resultados');
     }
-    public function encuestas($id){
+    public function encuestas(){
         $surveys = Survey::orderBy('id','desc')
         ->where('type','=','Encuestas')
         ->get();
-        $estudiante = Estudiante::findOrFail($id);
-        return view('salud.app.encuestas',compact('estudiante','surveys'));
+        return view('salud.app.encuestas',compact('surveys'));
     }
     public function psicologia($id){
         $surveys = Survey::orderBy('id','desc')
@@ -159,31 +156,34 @@ class SaludappController extends Controller
         return view('salud.app.psicologia',compact('estudiante','surveys'));
     }
     public function surveys($id){
-        $dato = explode(':',$id);
-        $estudiante = Estudiante::findOrFail($dato[1]);
-        $survey = Survey::findOrFail($dato[0]);
-        return view('salud.app.surveys',compact('estudiante','survey'));
+        $survey = Survey::findOrFail($id);
+        return view('salud.app.surveys',compact('survey'));
     }
     public function surveys_store(Request $request){
-        //dd($request);
+        if(auth()->user()->hasRole('Bolsa User')){
+            $estudiante_id = auth()->user()->ucliente->cliente->postulaciones[0]->estudiante->id;
+        }else{
+            return Redirect::route('salud.app.encuestas')->with('info','no tiene permisos para realizar esta accion');
+        };
+        //
         try {
             //cremos que se lleno la encuesta
             DB::beginTransaction();
             //buscamos la encuesta
-            $sdoCount = Sdo::where('estudiante_id','=',$request->estudiante_id)
+            
+            $sdoCount = Sdo::where('estudiante_id','=',$estudiante_id)
             ->where('survey_id','=',$request->survey_id)
             ->count();
                 if ($sdoCount > 0){
                     //ya esta la encuesta
-                    $estudiante = Estudiante::findOrFail($request->estudiante_id);
-                    $encuesta = Sdo::where('estudiante_id','=',$request->estudiante_id)
+                    $estudiante = Estudiante::findOrFail($estudiante_id);
+                    $encuesta = Sdo::where('estudiante_id','=',$estudiante)
                     ->where('survey_id','=',$request->survey_id)
                     ->first();
                     $sdo = Sdo::findOrFail($encuesta->id);
                     $sdo->date = Carbon::now();
                     $sdo->update();
                     //borramos todos los detalles
-
                     Sddo::where('sdo_id','=',$sdo->id)->delete();
                     $survey = Survey::findOrFail($request->survey_id);
                     foreach ($survey->questions as $question) {
@@ -199,14 +199,12 @@ class SaludappController extends Controller
                         $sddo->sdo_id = $sdo->id;
                         $sddo->save();
                     }
-
-
                 }else{
-                    $estudiante = Estudiante::findOrFail($request->estudiante_id);
+                    $estudiante = Estudiante::findOrFail($estudiante_id);
                     $survey = Survey::findOrFail($request->survey_id);
                     $sdo = new Sdo();
                     $sdo->survey_id = $request->survey_id;
-                    $sdo->estudiante_id = $request->estudiante_id;
+                    $sdo->estudiante_id = $estudiante->id;
                     $sdo->date = Carbon::now();
                     $sdo->save();
                     //ahora guardamos los detalles del ingreso
@@ -230,10 +228,10 @@ class SaludappController extends Controller
             //throw $th;
             dd($th->getMessage());
             DB::rollBack();
-            return Redirect::route('salud.app.encuestas',[$estudiante->id])
+            return Redirect::route('salud.app.encuestas')
             ->with('error','error en la consulta');
         }
-        return Redirect::route('salud.app.encuestas',[$estudiante->id])
+        return Redirect::route('salud.app.encuestas')
         ->with('info','encuesta guardada correctamente');
     }
     public function herramientas(){

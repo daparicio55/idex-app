@@ -1,185 +1,96 @@
-@extends('layouts.saludcontenido')
-@section('css')
-<style>
-.highcharts-figure,
-.highcharts-data-table table {
-  min-width: 310px;
-  max-width: 500px;
-  margin: 1em auto;
-}
-
-.highcharts-data-table table {
-  font-family: Verdana, sans-serif;
-  border-collapse: collapse;
-  border: 1px solid #ebebeb;
-  margin: 10px auto;
-  text-align: center;
-  width: 100%;
-  max-width: 500px;
-}
-
-.highcharts-data-table caption {
-  padding: 1em 0;
-  font-size: 1.2em;
-  color: #555;
-}
-
-.highcharts-data-table th {
-  font-weight: 600;
-  padding: 0.5em;
-}
-
-.highcharts-data-table td,
-.highcharts-data-table th,
-.highcharts-data-table caption {
-  padding: 0.5em;
-}
-
-.highcharts-data-table thead tr,
-.highcharts-data-table tr:nth-child(even) {
-  background: #f8f8f8;
-}
-
-.highcharts-data-table tr:hover {
-  background: #f1f7ff;
-}
-</style>
-@stop
-@if($estudiante->acampanias->count()>0)
-@section('cuerpo')
-<div class="main-content flex-1 mt-2 md:mt-2 pb-24 md:pb-5">
-    <div class="flex flex-wrap">
-      {{-- frecuencia cardiaca --}}
-        <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-            <!--Graph Card-->
-            <div class="bg-white border-transparent rounded-lg shadow-xl">
-                <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                    <h5 class="font-bold uppercase text-red-600">
-                        <i class="fas fa-heartbeat"></i> Frecuencia Cardiaca {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
-                    </h5>
-                </div>
-                <div class="p-0 chartjs">
-                    <figure class="highcharts-figure">
-                        <div id="container"></div>
-                        <p class="highcharts-description mx-5 pb-2">
-                            La frecuencia cardíaca es el número de veces que el corazón late por minuto.
-                        </p>
-                    </figure>
-                </div>
-            </div>
-            <!--/Graph Card-->
-        </div>
-        {{-- frecuencia respiratoria --}}
-        <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-          <!--Graph Card-->
-          <div class="bg-white border-transparent rounded-lg shadow-xl">
-              <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                  <h5 class="font-bold uppercase text-blue-600">
-                    <i class="fas fa-lungs"></i> Frecuencia Respiratoria {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
-                  </h5>
-              </div>
-              <div class="p-0 chartjs">
-                  <figure class="highcharts-figure">
-                      <div id="container_fr"></div>
-                      <p class="highcharts-description mx-5 pb-2">
-                        La frecuencia respiratoria es la cantidad de veces que una persona respira por minuto. Es medida para determinar si una persona está respirando de manera normal o si hay algún problema respiratorio.                       </p>
-                  </figure>
-              </div>
-          </div>
-        </div>
-          <!--/Graph Card-->
-          {{-- temperatura --}}
-          <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-            <!--Graph Card-->
-            <div class="bg-white border-transparent rounded-lg shadow-xl">
-                <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                    <h5 class="font-bold uppercase text-red-600">
-                      <i class="fas fa-thermometer-half"></i> Temperatura {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
-                    </h5>
-                </div>
-                <div class="p-0 chartjs">
-                    <figure class="highcharts-figure">
-                        <div id="container_temperatura"></div>
-                        <p class="highcharts-description mx-5 pb-2">
-                          La temperatura se refiere a la medida de la calidad térmica del cuerpo humano. Es un indicador de la salud del cuerpo</p>
-                    </figure>
-                </div>
-            </div>
-          </div>
-            <!--/Graph Card-->
-            {{-- systole --}}
-          <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-            <!--Graph Card-->
-            <div class="bg-white border-transparent rounded-lg shadow-xl">
-                <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                    <h5 class="font-bold uppercase text-blue-600">
-                      <i class="fas fa-water"></i> Presión Arterial (Sis - Dia) {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
-                    </h5>
-                </div>
-                <div class="p-0 chartjs">
-                    <figure class="highcharts-figure">
-                        <div id="container_sis"></div>                        
-                    </figure>
-                </div>
-                <div class="p-0 chartjs">
-                  <figure class="highcharts-figure">
-                      <div id="container_dia"></div>                        
-                  </figure>
-              </div>
-            </div>
-          </div>
-
-          {{-- saturacion de oxigeno --}}
-
-
-          <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-            <!--Graph Card-->
-            <div class="bg-white border-transparent rounded-lg shadow-xl">
-                <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                    <h5 class="font-bold uppercase text-blue-600">
-                      <i class="fab fa-skyatlas"></i> Saturacion de Oxigeno {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
-                    </h5>
-                </div>
-                <div class="p-0 chartjs">
-                    <figure class="highcharts-figure">
-                        <div id="container_saturacion"></div>
-                        <p class="highcharts-description mx-5 pb-2">
-                          La saturación de oxígeno es la medida de la cantidad de oxígeno disponible en la sangre.
-                        </p>
-                    </figure>
-                </div>
-            </div>
-          </div>
-
-          {{-- informacion indice de maza corporal --}}
-          <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-            <!--Graph Card-->
-            <div class="bg-white border-transparent rounded-lg shadow-xl">
-                <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                    <h5 class="font-bold uppercase text-green-600">
-                      <i class="fas fa-balance-scale"></i> Indice de Masa Corporal {{ date('d-m-y',strtotime($estudiante->acampanias[0]->fecha)) }}
-                    </h5>
-                </div>
-                <div class="p-0 chartjs">
-                    <figure class="highcharts-figure">
-                        <div id="container_imc"></div>
-                        <p class="highcharts-description mx-5 pb-2">
-                          El índice de masa corporal (IMC) es una medida de la relación entre el peso y la altura de una persona.
-                        </p>
-                        @php
-                            $imc = round($estudiante->acampanias[0]->nutri_peso / (($estudiante->pmedico->nutri_talla)/100 * ($estudiante->pmedico->nutri_talla)/100),1);
-                            $imc = str_replace(',','.',$imc);
-                        @endphp
-                    </figure>
-                </div>
-            </div>
-          </div>
-      </div>
+@extends('salud.app.v2.layouts.main')
+@section('page-header')
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800 text-center">Resultados</h1>
+    <small class="text-center d-block">atenciones de enfermería</small>    
+</div>
+@endsection
+@section('page-content')
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <x-highchart-card id="container">
+            <x-slot name="header">
+                Frecuencia Cardiaca
+            </x-slot>
+            <x-slot name="description">
+                La frecuencia cardíaca es el número de veces que el corazón late por minuto.
+            </x-slot>
+        </x-highchart-card>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <x-highchart-card id="container_fr">
+            <x-slot name="header">
+                Frecuencia Respiratoria
+            </x-slot>
+            <x-slot name="description">
+                La frecuencia respiratoria es la cantidad de veces que una persona respira por minuto. Es medida para determinar si una persona está respirando de manera normal o si hay algún problema respiratorio.
+            </x-slot>
+        </x-highchart-card>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <x-highchart-card id="container_temperatura">
+            <x-slot name="header">
+                Temperatura
+            </x-slot>
+            <x-slot name="description">
+                La temperatura se refiere a la medida de la calidad térmica del cuerpo humano. Es un indicador de la salud del cuerpo.
+            </x-slot>
+        </x-highchart-card>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <x-highchart-card id="container_sis">
+            <x-slot name="header">
+                Presión Arterial (Sistole)
+            </x-slot>
+            <x-slot name="description">
+                Sistole
+            </x-slot>
+        </x-highchart-card>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <x-highchart-card id="container_dia">
+            <x-slot name="header">
+                Presión Arterial (Diastole)
+            </x-slot>
+            <x-slot name="description">
+                Diastole
+            </x-slot>
+        </x-highchart-card>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <x-highchart-card id="container_saturacion">
+            <x-slot name="header">
+                Saturación de Oxígeno
+            </x-slot>
+            <x-slot name="description">
+                La saturación de oxígeno es la medida de la cantidad de oxígeno disponible en la sangre.
+            </x-slot>
+        </x-highchart-card>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <x-highchart-card id="container_imc">
+            <x-slot name="header">
+                Indice de masa corporal
+            </x-slot>
+            <x-slot name="description">
+                El índice de masa corporal (IMC) es una medida de la relación entre el peso y la altura de una persona.
+                @php
+                    $imc = 0;
+                    if(Auth::user()->hasRole('Bolsa User')){
+                        $imc = round(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->nutri_peso / pow(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->pmedico->nutri_talla/100,2),2);
+                    }
+                    if(Auth::user()->hasRole('Docentes')){
+                        $imc = round(Auth::user()->acampanias[0]->nutri_peso / pow(Auth::user()->acampanias[0]->nutri_talla/100,2),2);
+                    }
+                @endphp
+            </x-slot>
+        </x-highchart-card>
     </div>
 </div>
-@stop
-@section('js')
+@endsection
+@section('scripts')
 <script>
+    //Frecuencia respiratoria
     Highcharts.chart("container", {
     chart: {
     type: "gauge",
@@ -247,7 +158,12 @@
   series: [
     {
       name: "Speed",
-      data: [<?= $estudiante->acampanias[0]->vitales_fc ?>],
+      @if(Auth::user()->hasRole('Bolsa User'))
+        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_fc ?>],
+      @endif
+      @if(Auth::user()->hasRole('Docentes'))
+        data: [<?= Auth::user()->acampanias[0]->vitales_fc ?>],
+      @endif
       tooltip: {
         valueSuffix: " lat/min."
       },
@@ -277,7 +193,7 @@
     }
   ]
 });
-
+//Frecuencia respiratoria
 Highcharts.chart("container_fr", {
   chart: {
     type: "gauge",
@@ -345,7 +261,12 @@ Highcharts.chart("container_fr", {
   series: [
     {
       name: "Speed",
-      data: [<?= $estudiante->acampanias[0]->vitales_fr ?>],
+      @if(Auth::user()->hasRole('Bolsa User'))
+        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_fr ?>],
+      @endif
+      @if(Auth::user()->hasRole('Docentes'))
+        data: [<?= Auth::user()->acampanias[0]->vitales_fr ?>],
+      @endif
       tooltip: {
         valueSuffix: " lat/min."
       },
@@ -444,7 +365,12 @@ Highcharts.chart("container_temperatura", {
   series: [
     {
       name: "Speed",
-      data: [<?= $estudiante->acampanias[0]->vitales_temperatura ?>],
+      @if(Auth::user()->hasRole('Bolsa User'))
+        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_temperatura ?>],
+      @endif
+      @if(Auth::user()->hasRole('Docentes'))
+        data: [<?= Auth::user()->acampanias[0]->vitales_temperatura ?>],
+      @endif
       tooltip: {
         valueSuffix: " grados Centigrados."
       },
@@ -474,8 +400,6 @@ Highcharts.chart("container_temperatura", {
     }
   ]
 });
-
-
 //sistolica
 Highcharts.chart("container_sis", {
     chart: {
@@ -568,7 +492,12 @@ Highcharts.chart("container_sis", {
   series: [
     {
       name: "Speed",
-      data: [<?= $estudiante->acampanias[0]->vitales_sys ?>],
+      @if(Auth::user()->hasRole('Bolsa User'))
+        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_sys ?>],
+      @endif
+      @if(Auth::user()->hasRole('Docentes'))
+        data: [<?= Auth::user()->acampanias[0]->vitales_sys ?>],
+      @endif
       tooltip: {
         valueSuffix: " mmHg."
       },
@@ -598,10 +527,6 @@ Highcharts.chart("container_sis", {
     }
   ]
 });
-
-
-
-
 //diastolica
 Highcharts.chart("container_dia", {
     chart: {
@@ -694,7 +619,12 @@ Highcharts.chart("container_dia", {
   series: [
     {
       name: "Speed",
-      data: [<?= $estudiante->acampanias[0]->vitales_dia ?>],
+      @if(Auth::user()->hasRole('Bolsa User'))
+        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_dia ?>],
+      @endif
+      @if(Auth::user()->hasRole('Docentes'))
+        data: [<?= Auth::user()->acampanias[0]->vitales_dia ?>],
+      @endif
       tooltip: {
         valueSuffix: " mmHg."
       },
@@ -724,7 +654,6 @@ Highcharts.chart("container_dia", {
     }
   ]
 });
-
 /* saturacion de oxigeno */
 Highcharts.chart("container_saturacion", {
     chart: {
@@ -799,7 +728,12 @@ Highcharts.chart("container_saturacion", {
   series: [
     {
       name: "Speed",
-      data: [<?= $estudiante->acampanias[0]->vitales_saturacion ?>],
+      @if(Auth::user()->hasRole('Bolsa User'))
+        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_saturacion ?>],
+      @endif
+      @if(Auth::user()->hasRole('Docentes'))
+        data: [<?= Auth::user()->acampanias[0]->vitales_saturacion ?>],
+      @endif
       tooltip: {
         valueSuffix: " %."
       },
@@ -937,5 +871,4 @@ Highcharts.chart("container_imc", {
   ]
 });
 </script>
-@stop
-@endif
+@endsection

@@ -67,7 +67,7 @@
                     @endif
                     <label for="" class="mt-2"><i class="fas fa-ruler-vertical"></i> Talla</label>
                     @if (Auth::user()->hasRole('Bolsa User'))
-                    <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->nutri_talla }} cm." readonly>
+                    <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->pmedico->nutri_talla }} cm." readonly>
                     @endif
                     @if (Auth::user()->hasRole('Docentes'))
                     <input type="text" class="form-control" value="{{ Auth::user()->acampanias[0]->nutri_talla }} cm." readonly>
@@ -81,14 +81,14 @@
                     @endif
                     <label for="" class="mt-2"><i class="fas fa-syringe"></i> Grupo Sanguineo</label>
                     @if (Auth::user()->hasRole('Bolsa User'))
-                    <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_gs }}" readonly>
+                    <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->pmedico->lab_gs }}" readonly>
                     @endif
                     @if (Auth::user()->hasRole('Docentes'))
                     <input type="text" class="form-control" value="{{ Auth::user()->acampanias[0]->lab_gs }}" readonly>
                     @endif
                     <label for="" class="mt-2"><i class="fas fa-prescription"></i> Factor Sanguineo</label>
                     @if (Auth::user()->hasRole('Bolsa User'))
-                    <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_fs }}" readonly>
+                    <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->pmedico->lab_fs }}" readonly>
                     @endif
                     @if (Auth::user()->hasRole('Docentes'))
                     <input type="text" class="form-control" value="{{ Auth::user()->acampanias[0]->lab_fs }}" readonly>

@@ -133,13 +133,14 @@ Route::resource('estudiantes',DashboardController::class)->names('estudiantes');
 
 Auth::routes(["register" =>'false']);
 //rutas de salud
-Route::get('/salud/app/profile/{id}',[SaludappController::class,'profile'])->name('salud.app.profile');
-Route::get('/salud/app/atenciones/{id}',[SaludappController::class,'atencione'])->name('salud.app.atencione');
-Route::get('/salud/app/resultados/{id}',[SaludappController::class,'resultados'])->name('salud.app.resultados');
-Route::get('/salud/app/encuestas/{id}',[SaludappController::class,'encuestas'])->name('salud.app.encuestas');
+Route::get('/salud/app/profile',[SaludappController::class,'profile'])->name('salud.app.profile');
+Route::get('/salud/app/atenciones/',[SaludappController::class,'atencione'])->name('salud.app.atencione');
+Route::get('/salud/app/resultados/',[SaludappController::class,'resultados'])->name('salud.app.resultados');
+Route::get('/salud/app/encuestas/',[SaludappController::class,'encuestas'])->name('salud.app.encuestas');
 Route::get('/salud/app/psicologia/{id}',[SaludappController::class,'psicologia'])->name('salud.app.psicologia');
-Route::post('/salud/app/surveys/',[SaludappController::class,'surveys_store'])->name('salud.app.surveys.store');
 Route::get('/salud/app/surveys/{id}',[SaludappController::class,'surveys'])->name('salud.app.surveys');
+Route::post('/salud/app/surveys/',[SaludappController::class,'surveys_store'])->name('salud.app.surveys.store');
+
 Route::get('/salud/app/herramientas',[SaludappController::class,'herramientas'])->name('salud.app.herramientas');
 //CONTRALADOR PERSONALIZADO
 Route::resource('/salud/encuestas',SaludEncuestaController::class)

@@ -7,7 +7,7 @@
     <!-- Dropdown - User Information -->
     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
         aria-labelledby="userDropdown">
-        <x-dropdown-item icon="fas fa-user fa-sm fa-fw" route="{{ route('salud.app.profile',Auth::user()->id) }}">
+        <x-dropdown-item icon="fas fa-user fa-sm fa-fw" route="{{ route('salud.app.profile')}}">
             Perfil
         </x-dropdown-item>
         <x-dropdown-item icon="fas fa-syringe" route="https://carnetvacunacion.minsa.gob.pe/">
