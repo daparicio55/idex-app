@@ -54,6 +54,66 @@
         @endforeach
     @endforeach
 @endsection
+
+<!-- Resumen de asistencias -->
+@section('fechas_asistencia')
+    <th class="pl-0 pr-0 pt-1 pb-1 text-center border">#</th>
+    @foreach ($fechas as $fecha)
+        <th class="pl-0 pr-0 pt-1 pb-1 text-center border vertical-text">{{ date('d-m-Y',strtotime($fecha['fecha'])) }}</th>
+    @endforeach
+    @php
+        $total_fechas = count($fechas);
+        $maximo = $total_fechas * 0.30;
+        $maximo = ceil($maximo);
+    @endphp
+@endsection
+@section('asistencias')
+    @foreach ($estudiantes as $key=>$estudiante)
+        <tr>
+            {{-- calculamos las faltas --}}
+            @php
+                $faltas = 0;
+            @endphp
+            @foreach ($fechas as $dia)
+                @php
+                    $valor = \App\Models\Docentes\Asistencias::where('fecha','=',$dia['fecha'])->where('emdetalle_id','=',$estudiante->id)->first();
+                    if(isset($valor->estado)){
+                        if($valor->estado == "F"){
+                            $faltas ++;
+                        }
+                    }
+                @endphp
+            @endforeach
+            {{-- revizamos si las faltas superan el %30 --}}
+            <td>{{ cero($key+1) }}</td>
+            @foreach ($fechas as $kd => $dia)
+                    @if ($faltas >= $maximo)
+                        @if ($kd == 0)
+                            <td class="border text-center text-danger" colspan="{{ $total_fechas }}">Inhabilitado por superar el 30% de inasistencias</td>
+                        @endif
+                    @else
+                        @php
+                            $valor = \App\Models\Docentes\Asistencias::where('fecha','=',$dia['fecha'])->where('emdetalle_id','=',$estudiante->id)->first();
+                            if(isset($valor->estado)){
+                                $estado = $valor->estado;
+                                if($estado == "P"){
+                                    $color = "primary";
+                                }else{
+                                    $color = "danger";
+                                }
+                            }else{
+                                $estado = "NR";
+                                $color = "warning";
+                            }
+                        @endphp
+                    <td class="border text-{{ $color }}">{{ $estado }}</td>
+                    @endif
+            @endforeach
+        </tr>
+    @endforeach
+@endsection
+
+
 <!-- Resumen de Notas con los Indicadores -->
 @section('notas_cuerpo')
     @isset($uasignada->unidad->old->id)
