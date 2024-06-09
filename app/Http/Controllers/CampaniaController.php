@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\AcdocenteImport;
 use App\Models\Acampania;
 use App\Models\AdmisionePostulante;
 use App\Models\Campania;
@@ -12,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CampaniaController extends Controller
 {
@@ -78,10 +80,19 @@ class CampaniaController extends Controller
         //
         dd($id);
     }
+    public function excel(Request $request, $id){
+        try {
+            //code...
+            Excel::import(new AcdocenteImport($id), $request->file('excel'));
+        } catch (\Throwable $th) {
+            //throw $th;
+            return Redirect::route('salud.campanias.index')->with('error','error al subir de forma masiva los docentes');
+        }
+        return Redirect::route('salud.campanias.index')->with('info','se subio de forma masiva todos los docentes');
+    }
     public function csv(Request $request, $id){
         try {
             //code...
-            
             DB::beginTransaction();
             $numero=0;
             $error = 0;

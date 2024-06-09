@@ -36,6 +36,9 @@
                         <td>{{ $campania->nombre }}</td>
                         <td>{{ date('d-m-Y',strtotime($campania->fecha)) }}</td>
                         <td>
+                            <button title="Subir Resultados de docentes de forma masiva" type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-excel-{{ $campania->id }}">
+                                <i class="fas fa-file-excel"></i>
+                            </button>
                             <a class="btn btn-info" data-toggle="modal" data-target="#modal-csv-{{ $campania->id }}">
                                 <i class="fas fa-file-csv"></i>
                             </a>

@@ -155,6 +155,7 @@ Route::resource('/salud/alternativas',SaludAlternativaController::class)
 Route::resource('/salud/app',SaludappController::class)->names('salud.app');
 Route::resource('/salud/acampanias',AcampianiasController::class)->names('salud.acampanias');
 Route::post('/salud/campanias/csv/{id}',[CampaniaController::class,'csv'])->name('salud.campanias.csv');
+Route::post('/salud/campanias/excel/{id}',[CampaniaController::class,'excel'])->name('salud.campanias.excel');
 Route::resource('/salud/campanias',CampaniaController::class)->names('salud.campanias');
 Route::resource('/salud',SaludController::class)->names('salud');
 
