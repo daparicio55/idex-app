@@ -15,13 +15,7 @@
     </div>
     <!-- End of Main Content -->
     <!-- Footer -->
-    <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-                <span>Desarrollado por &copy; Of. Soporte Tecnológico 2024</span>
-            </div>
-        </div>
-    </footer>
+    @include('salud.app.v2.partes.sticky-footer')
     <!-- End of Footer -->
 
 </div>

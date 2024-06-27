@@ -12,7 +12,7 @@ class Estudiante extends Model
         return $this->belongsTo(AdmisionePostulante::class,'admisione_postulante_id');
     }
     public function matriculas(){
-        return $this->hasMany(Ematricula::class,'estudiante_id');
+        return $this->hasMany(Ematricula::class,'estudiante_id')->orderBy('created_at','desc');
     }
     public function acampanias(){
         return $this->hasMany(Acampania::class);

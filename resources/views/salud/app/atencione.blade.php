@@ -77,10 +77,14 @@
                 @php
                     $imc = 0;
                     if(Auth::user()->hasRole('Bolsa User')){
+                      if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->nutri_peso)){
                         $imc = round(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->nutri_peso / pow(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->pmedico->nutri_talla/100,2),2);
+                      }
                     }
                     if(Auth::user()->hasRole('Docentes')){
+                      if(isset(Auth::user()->acampanias[0]->nutri_peso)){
                         $imc = round(Auth::user()->acampanias[0]->nutri_peso / pow(Auth::user()->acampanias[0]->nutri_talla/100,2),2);
+                      }
                     }
                 @endphp
             </x-slot>
@@ -159,10 +163,14 @@
     {
       name: "Speed",
       @if(Auth::user()->hasRole('Bolsa User'))
-        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_fc ?>],
+        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_fc))
+          data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_fc ?>],
+        @endif
       @endif
       @if(Auth::user()->hasRole('Docentes'))
-        data: [<?= Auth::user()->acampanias[0]->vitales_fc ?>],
+        @if(isset(Auth::user()->acampanias[0]->vitales_fc))
+          data: [<?= Auth::user()->acampanias[0]->vitales_fc ?>],
+        @endif
       @endif
       tooltip: {
         valueSuffix: " lat/min."
@@ -262,10 +270,14 @@ Highcharts.chart("container_fr", {
     {
       name: "Speed",
       @if(Auth::user()->hasRole('Bolsa User'))
-        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_fr ?>],
+        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_fr))
+          data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_fr ?>],
+        @endif
       @endif
       @if(Auth::user()->hasRole('Docentes'))
-        data: [<?= Auth::user()->acampanias[0]->vitales_fr ?>],
+        @if(isset(Auth::user()->acampanias[0]->vitales_fr))
+          data: [<?= Auth::user()->acampanias[0]->vitales_fr ?>],
+        @endif
       @endif
       tooltip: {
         valueSuffix: " lat/min."
@@ -366,10 +378,14 @@ Highcharts.chart("container_temperatura", {
     {
       name: "Speed",
       @if(Auth::user()->hasRole('Bolsa User'))
-        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_temperatura ?>],
+        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_temperatura))
+          data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_temperatura ?>],
+        @endif
       @endif
       @if(Auth::user()->hasRole('Docentes'))
-        data: [<?= Auth::user()->acampanias[0]->vitales_temperatura ?>],
+        @if(isset(Auth::user()->acampanias[0]->vitales_temperatura))
+          data: [<?= Auth::user()->acampanias[0]->vitales_temperatura ?>],
+        @endif
       @endif
       tooltip: {
         valueSuffix: " grados Centigrados."
@@ -493,10 +509,14 @@ Highcharts.chart("container_sis", {
     {
       name: "Speed",
       @if(Auth::user()->hasRole('Bolsa User'))
-        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_sys ?>],
+        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_sys))
+          data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_sys ?>],
+        @endif
       @endif
       @if(Auth::user()->hasRole('Docentes'))
-        data: [<?= Auth::user()->acampanias[0]->vitales_sys ?>],
+        @if(isset(Auth::user()->acampanias[0]->vitales_sys))
+          data: [<?= Auth::user()->acampanias[0]->vitales_sys ?>],
+        @endif
       @endif
       tooltip: {
         valueSuffix: " mmHg."
@@ -620,10 +640,14 @@ Highcharts.chart("container_dia", {
     {
       name: "Speed",
       @if(Auth::user()->hasRole('Bolsa User'))
-        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_dia ?>],
+        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_dia))
+          data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_dia ?>],
+        @endif
       @endif
       @if(Auth::user()->hasRole('Docentes'))
-        data: [<?= Auth::user()->acampanias[0]->vitales_dia ?>],
+        @if(isset(Auth::user()->acampanias[0]->vitales_dia))
+          data: [<?= Auth::user()->acampanias[0]->vitales_dia ?>],
+        @endif
       @endif
       tooltip: {
         valueSuffix: " mmHg."
@@ -729,10 +753,14 @@ Highcharts.chart("container_saturacion", {
     {
       name: "Speed",
       @if(Auth::user()->hasRole('Bolsa User'))
-        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_saturacion ?>],
+        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_saturacion))
+          data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->vitales_saturacion ?>],
+        @endif
       @endif
       @if(Auth::user()->hasRole('Docentes'))
-        data: [<?= Auth::user()->acampanias[0]->vitales_saturacion ?>],
+        @if(isset(Auth::user()->acampanias[0]->vitales_saturacion))
+          data: [<?= Auth::user()->acampanias[0]->vitales_saturacion ?>],
+        @endif
       @endif
       tooltip: {
         valueSuffix: " %."

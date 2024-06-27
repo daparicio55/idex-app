@@ -134,6 +134,7 @@ Route::resource('estudiantes',DashboardController::class)->names('estudiantes');
 Auth::routes(["register" =>'false']);
 //rutas de salud
 Route::get('/salud/app/profile',[SaludappController::class,'profile'])->name('salud.app.profile');
+Route::put('/salud/app/profile',[SaludappController::class,'profile_update'])->name('salud.app.profile.update');
 Route::get('/salud/app/atenciones/',[SaludappController::class,'atencione'])->name('salud.app.atencione');
 Route::get('/salud/app/resultados/',[SaludappController::class,'resultados'])->name('salud.app.resultados');
 Route::get('/salud/app/encuestas/',[SaludappController::class,'encuestas'])->name('salud.app.encuestas');
@@ -142,6 +143,15 @@ Route::get('/salud/app/surveys/{id}',[SaludappController::class,'surveys'])->nam
 Route::post('/salud/app/surveys/',[SaludappController::class,'surveys_store'])->name('salud.app.surveys.store');
 
 Route::get('/salud/app/herramientas',[SaludappController::class,'herramientas'])->name('salud.app.herramientas');
+Route::get('/salud/app/password',[SaludappController::class,'password_edit'])->name('salud.app.password.edit');
+Route::put('/salud/app/password',[SaludappController::class,'password_update'])->name('salud.app.password.update');
+Route::get('/salud/app/matriculas',[SaludappController::class,'matriculas_index'])->name('salud.app.matriculas.index');
+Route::get('/salud/app/matriculas/{id}',[SaludappController::class,'matriculas_show'])->name('salud.app.matriculas.show');
+Route::get('/salud/app/calificaciones/pdf/{id}',[SaludappController::class,'calificaciones_pdf'])->name('salud.app.calificaciones.pdf');
+Route::get('/salud/app/calificaciones',[SaludappController::class,'calificaciones_index'])->name('salud.app.calificaciones.index');
+
+
+
 //CONTRALADOR PERSONALIZADO
 Route::resource('/salud/encuestas',SaludEncuestaController::class)
 ->names('salud.encuestas');

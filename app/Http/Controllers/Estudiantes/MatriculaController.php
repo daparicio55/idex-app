@@ -65,16 +65,7 @@ class MatriculaController extends Controller
                 //aca tenemos que revizar si una fecha pertenece a la semana:
                 $e = false;
                 $f = Carbon::parse($fechasEntre[$i]);
-                $t = Carbon::parse(Carbon::now());
-                //habilitar solo para la semana actual
-                /* $wef = $f->endOfWeek(Carbon::SUNDAY);
-                $wet = $t->endOfWeek(Carbon::SUNDAY);
-                if ($wef->equalTo($wet)){
-                    $e = true;
-                } */
-                //FIN
-                //habiliutar para solo hasta la semana actual
-                
+                $t = Carbon::parse(Carbon::now());               
                 $wef = $t->endOfWeek(Carbon::SUNDAY);
                 $e = $wef->gt($f);
                 $fdias [] = [
@@ -91,7 +82,8 @@ class MatriculaController extends Controller
         $user = User::findOrFail(auth()->id());
         $estudiantes = Estudiante::whereHas('postulante',function($query) use($user){
             $query->where('idCliente','=',$user->ucliente->cliente_id);
-        })->get();
+        })->orderBy('created_at','desc')->get();
+        
         return view('estudiantes.matriculas.index',compact('user','estudiantes'));
     }
     public function show($id){

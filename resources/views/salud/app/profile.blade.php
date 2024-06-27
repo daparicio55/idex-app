@@ -5,12 +5,18 @@
         <h1 class="h3 mb-0 text-gray-800 text-center">{{ Auth::user()->ucliente->cliente->postulaciones[0]->carrera->nombreCarrera }}</h1>
         <small class="text-center d-block">{{ Auth::user()->ucliente->cliente->postulaciones[0]->admisione->nombre }}</small>    
     @endif
-    
 </div>
 @endsection
 @section('page-content')
+    @error('telefono')
+        <div class="alert alert-danger mt-1 mb-1 pt-0 pb-0">
+            <small>{{ $message }}</small>
+        </div>
+    @enderror
+    <x-alert/>
 <div class="row">
     <div class="col-lg-6 mb-4">
+        {!! Form::open(['route'=>'salud.app.profile.update','method'=>'PUT']) !!}
         <div class="card shadow mb-2 border-left-primary">
             <div class="card-header">
                 Datos Personales
@@ -35,7 +41,7 @@
 
                     <label class="mt-2">Telefono</label>
                     @if (Auth::user()->hasRole('Bolsa User'))
-                        <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->telefono }}" readonly>
+                        <input type="text" class="form-control" name="telefono" value="{{ Auth::user()->ucliente->cliente->telefono }}">
                     @endif
                     @if (Auth::user()->hasRole('Docentes'))
                         <input type="text" class="form-control" value="{{ Auth::user()->personale->telefono }}" readonly>
@@ -51,7 +57,13 @@
                     
                 </div>
             </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">
+                    Actualizar
+                </button>
+            </div>
         </div>
+        {!! Form::close() !!}
         <div class="card shadow mb-4 border-left-primary">
             <div class="card-header bg-gray-600 text-white">
                 Perfil Médico
@@ -60,42 +72,65 @@
                 <div class="form-group">
                     <label for=""><i class="fas fa-balance-scale"></i> Peso</label>
                     @if (Auth::user()->hasRole('Bolsa User'))
-                    <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->nutri_peso }} Kg." readonly>
+                        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->nutri_peso))
+                            <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->nutri_peso }} Kg." readonly>
+                        @endif
                     @endif
                     @if (Auth::user()->hasRole('Docentes'))
-                    <input type="text" class="form-control" value="{{ Auth::user()->acampanias[0]->nutri_peso }} Kg." readonly>
+                        @if(isset(Auth::user()->acampanias[0]->nutri_peso))
+                            <input type="text" class="form-control" value="{{ Auth::user()->acampanias[0]->nutri_peso }} Kg." readonly>
+                        @endif
                     @endif
                     <label for="" class="mt-2"><i class="fas fa-ruler-vertical"></i> Talla</label>
                     @if (Auth::user()->hasRole('Bolsa User'))
-                    <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->pmedico->nutri_talla }} cm." readonly>
+                        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->pmedico->nutri_talla))
+                            <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->pmedico->nutri_talla }} cm." readonly>
+                        @endif
                     @endif
                     @if (Auth::user()->hasRole('Docentes'))
-                    <input type="text" class="form-control" value="{{ Auth::user()->acampanias[0]->nutri_talla }} cm." readonly>
+                        @if(isset(Auth::user()->acampanias[0]->nutri_talla))
+                            <input type="text" class="form-control" value="{{ Auth::user()->acampanias[0]->nutri_talla }} cm." readonly>
+                        @endif
                     @endif
                     <label for="" class="mt-2"><i class="fas fa-circle-notch"></i> Perímetro Abdominal</label>
                     @if (Auth::user()->hasRole('Bolsa User'))
-                    <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->nutri_perimetro }} cm." readonly>
+                        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->nutri_perimetro))
+                            <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->nutri_perimetro }} cm." readonly>
+                        @endif
                     @endif
                     @if (Auth::user()->hasRole('Docentes'))
-                    <input type="text" class="form-control" value="{{ Auth::user()->acampanias[0]->nutri_perimetro }} cm." readonly>
+                        @if(isset(Auth::user()->acampanias[0]->nutri_perimetro))
+                            <input type="text" class="form-control" value="{{ Auth::user()->acampanias[0]->nutri_perimetro }} cm." readonly>
+                        @endif
                     @endif
                     <label for="" class="mt-2"><i class="fas fa-syringe"></i> Grupo Sanguineo</label>
                     @if (Auth::user()->hasRole('Bolsa User'))
-                    <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->pmedico->lab_gs }}" readonly>
+                        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->pmedico->lab_gs))
+                            <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->pmedico->lab_gs }}" readonly>
+                        @endif
                     @endif
                     @if (Auth::user()->hasRole('Docentes'))
-                    <input type="text" class="form-control" value="{{ Auth::user()->acampanias[0]->lab_gs }}" readonly>
+                        @if(isset(Auth::user()->acampanias[0]->lab_gs))
+                            <input type="text" class="form-control" value="{{ Auth::user()->acampanias[0]->lab_gs }}" readonly>
+                        @endif
                     @endif
                     <label for="" class="mt-2"><i class="fas fa-prescription"></i> Factor Sanguineo</label>
                     @if (Auth::user()->hasRole('Bolsa User'))
-                    <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->pmedico->lab_fs }}" readonly>
+                        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->pmedico->lab_fs))
+                            <input type="text" class="form-control" value="{{ Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->pmedico->lab_fs }}" readonly>
+                        @endif
                     @endif
                     @if (Auth::user()->hasRole('Docentes'))
-                    <input type="text" class="form-control" value="{{ Auth::user()->acampanias[0]->lab_fs }}" readonly>
+                        @if(isset(Auth::user()->acampanias[0]->lab_fs))
+                            <input type="text" class="form-control" value="{{ Auth::user()->acampanias[0]->lab_fs }}" readonly>
+                        @endif
                     @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
+@endsection
+@section('scripts')
+    <script src="{{ asset('js/main.js') }}"></script>
 @endsection

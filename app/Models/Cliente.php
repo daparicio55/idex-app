@@ -39,7 +39,7 @@ class Cliente extends Model
         return $this->hasMany(Deuda::class,'idCliente');
     }
     public function postulaciones(){
-        return $this->hasMany(AdmisionePostulante::class,'idCliente');
+        return $this->hasMany(AdmisionePostulante::class,'idCliente')->orderBy('created_at','desc');
     }
     public function ventas(){
         return $this->hasMany(Venta::class,'idCliente');

@@ -10,17 +10,3 @@
 		</div>
 	@endif
 </div>
-
-
-<script>
-    $(document).ready(function(){
-		setTimeout(() => {
-			$("#info").hide();
-		}, 12000);
-		});
-		$(document).ready(function(){
-			setTimeout(() => {
-			$("#error").hide();
-		}, 12000);
-	});
-</script>

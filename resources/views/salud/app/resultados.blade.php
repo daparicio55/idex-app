@@ -150,10 +150,14 @@ Highcharts.chart("container_glicemia", {
     {
       name: "Speed",
       @if(Auth::user()->hasRole('Bolsa User'))
-        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_glicemia ?>],
+        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_glicemia))
+          data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_glicemia ?>],
+        @endif
       @endif
       @if(Auth::user()->hasRole('Docentes'))
-        data: [<?= Auth::user()->acampanias[0]->lab_glicemia ?>],
+        @if(isset(Auth::user()->acampanias[0]->lab_glicemia))
+          data: [<?= Auth::user()->acampanias[0]->lab_glicemia ?>],
+        @endif
       @endif
       tooltip: {
         valueSuffix: " mg/dl."
@@ -248,10 +252,14 @@ Highcharts.chart("container_trigliceridos", {
     {
       name: "Speed",
       @if(Auth::user()->hasRole('Bolsa User'))
-        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_trigliceridos ?>],
+        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_trigliceridos))
+          data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_trigliceridos ?>],
+        @endif
       @endif
       @if(Auth::user()->hasRole('Docentes'))
-        data: [<?= Auth::user()->acampanias[0]->lab_trigliceridos ?>],
+        @if(isset(Auth::user()->acampanias[0]->lab_trigliceridos))
+          data: [<?= Auth::user()->acampanias[0]->lab_trigliceridos ?>],
+        @endif
       @endif
       tooltip: {
         valueSuffix: " mg/dl."
@@ -348,10 +356,14 @@ Highcharts.chart("container_colesterol", {
     {
       name: "Speed",
       @if(Auth::user()->hasRole('Bolsa User'))
-        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_colesterol ?>],
+        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_colesterol))
+          data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_colesterol ?>],
+        @endif
       @endif
       @if(Auth::user()->hasRole('Docentes'))
-        data: [<?= Auth::user()->acampanias[0]->lab_colesterol ?>],
+        @if(isset(Auth::user()->acampanias[0]->lab_colesterol))
+          data: [<?= Auth::user()->acampanias[0]->lab_colesterol ?>],
+        @endif
       @endif
       tooltip: {
         valueSuffix: " mg/dl."
@@ -446,10 +458,14 @@ Highcharts.chart("container_ldl", {
     {
       name: "Speed",
       @if(Auth::user()->hasRole('Bolsa User'))
-        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_ldl ?>],
+        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_ldl))
+          data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_ldl ?>],
+        @endif
       @endif
       @if(Auth::user()->hasRole('Docentes'))
-        data: [<?= Auth::user()->acampanias[0]->lab_ldl ?>],
+        @if(isset(Auth::user()->acampanias[0]->lab_ldl))
+          data: [<?= Auth::user()->acampanias[0]->lab_ldl ?>],
+        @endif
       @endif
       tooltip: {
         valueSuffix: " mg/dl."
@@ -551,10 +567,14 @@ Highcharts.chart("container_hdl", {
     {
       name: "Speed",
       @if(Auth::user()->hasRole('Bolsa User'))
-        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_hdl ?>],
+        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_hdl))
+          data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_hdl ?>],
+        @endif
       @endif
       @if(Auth::user()->hasRole('Docentes'))
-        data: [<?= Auth::user()->acampanias[0]->lab_hdl ?>],
+        @if(isset(Auth::user()->acampanias[0]->lab_hdl))
+          data: [<?= Auth::user()->acampanias[0]->lab_hdl ?>],
+        @endif
       @endif
       tooltip: {
         valueSuffix: " mg/dl."
@@ -655,10 +675,14 @@ Highcharts.chart("container_hto", {
     {
       name: "Speed",
       @if(Auth::user()->hasRole('Bolsa User'))
-        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_hto ?>],
+        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_hto))
+          data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_hto ?>],
+        @endif
       @endif
       @if(Auth::user()->hasRole('Docentes'))
-        data: [<?= Auth::user()->acampanias[0]->lab_hto ?>],
+        @if(isset(Auth::user()->acampanias[0]->lab_hto))
+          data: [<?= Auth::user()->acampanias[0]->lab_hto ?>],
+        @endif
       @endif
       tooltip: {
         valueSuffix: " %"
@@ -760,10 +784,14 @@ Highcharts.chart("container_hemoglobina", {
     {
       name: "Speed",
       @if(Auth::user()->hasRole('Bolsa User'))
-        data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_hemoglobina ?>],
+        @if(isset(Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_hemoglobina))
+          data: [<?= Auth::user()->ucliente->cliente->postulaciones[0]->estudiante->acampanias[0]->lab_hemoglobina ?>],
+        @endif
       @endif
       @if(Auth::user()->hasRole('Docentes'))
-        data: [<?= Auth::user()->acampanias[0]->lab_hemoglobina ?>],
+        @if(isset(Auth::user()->acampanias[0]->lab_hemoglobina))
+          data: [<?= Auth::user()->acampanias[0]->lab_hemoglobina ?>],
+        @endif
       @endif
       tooltip: {
         valueSuffix: " mg/dl."

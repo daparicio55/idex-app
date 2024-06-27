@@ -3,16 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
 use App\Models\Sddo;
 use App\Models\Sdo;
 use App\Models\Sqalternative;
 use App\Models\Survey;
+use App\Models\Uasignada;
+use App\Models\User;
 use Carbon\Carbon;
-use DragonCode\Contracts\Cashier\Auth\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use PDF;
 
 class SaludappController extends Controller
 {
@@ -24,6 +27,66 @@ class SaludappController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+    protected $mapeoTildes = [
+        'á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u',
+        'Á' => 'A', 'É' => 'E', 'Í' => 'I', 'Ó' => 'O', 'Ú' => 'U',
+        'ü' => 'u', 'Ü' => 'U', 'ñ' => 'n', 'Ñ' => 'N'
+    ];
+    protected function fdias($asignacione){
+        //llenamos con los días de la semana que se lleva esta unidad didactica
+        $dias = [];
+        foreach ($asignacione->horarios as $key => $horario) {
+            # code...
+            $dias [] = strtolower($horario->day);
+        }
+        //determinamos el dia de inicio y el dia de fin;
+        $fechaInicio = Carbon::parse($asignacione->periodo->finicio);
+        $fechaFin = Carbon::parse($asignacione->periodo->ffin);
+        //llenamos un array con las fechas que hay entre el periodo de inicio y fin
+        $fechasEntre = [];
+        $semanasEntre = [];
+        // Añadimos la fecha de inicio al array
+        $fechasEntre[] = $fechaInicio->toDateString();
+        // Iteramos sobre las fechas desde la fecha de inicio hasta la fecha de fin
+        while ($fechaInicio->addDay() <= $fechaFin) {
+            // Añadimos cada fecha al array
+            $fechasEntre[] = $fechaInicio->toDateString();
+        }
+        //semanas entre
+        $finsemanaInicio = Carbon::parse($asignacione->periodo->finicio)->endOfWeek(Carbon::SUNDAY);
+        $finsemanaFin = Carbon::parse($asignacione->periodo->ffin)->endOfWeek(Carbon::SUNDAY);
+        $semanasEntre[] = $finsemanaInicio->toDateString();
+        //dd($finsemanaInicio->toDateString());
+        while ($finsemanaInicio->addWeek() <= $finsemanaFin) {
+            // Añadimos cada fecha al array
+            $semanasEntre[] = $finsemanaInicio->toDateString();
+        }
+        
+        //dd($semanasEntre);
+        //array con las fechas que coincidan con los dias que toca la unidad didactica
+        $fdias = [];
+        for ($i=0; $i < count($fechasEntre); $i++) { 
+            # code...
+            $fecha = Carbon::parse($fechasEntre[$i]);
+            $diaDeLaSemana = $fecha->isoFormat('E');
+            $nombreDia =  strtr($fecha->isoFormat('dddd'), $this->mapeoTildes);
+            if(in_array($nombreDia,$dias)){
+                //aca tenemos que revizar si una fecha pertenece a la semana:
+                $e = false;
+                $f = Carbon::parse($fechasEntre[$i]);
+                $t = Carbon::parse(Carbon::now());               
+                $wef = $t->endOfWeek(Carbon::SUNDAY);
+                $e = $wef->gt($f);
+                $fdias [] = [
+                    'fecha' => $fechasEntre[$i],
+                    'numero_dia' => $diaDeLaSemana,
+                    'nombre_dia' => $nombreDia,
+                    'estado'=>$e,
+                ];
+            }
+        }
+        return $fdias;        
     }
     public function index(Request $request)
     {
@@ -136,6 +199,19 @@ class SaludappController extends Controller
     public function profile(){
         return view('salud.app.profile');
     }
+    public function profile_update(Request $request){
+        $request->validate([
+            'telefono' => 'required|min:9|max:9',
+        ]);
+        try {
+            $cliente = Cliente::findOrFail(auth()->user()->ucliente->cliente_id);
+            $cliente->telefono = $request->telefono;
+            $cliente->update();
+        } catch (\Throwable $th) {
+            return Redirect::route('salud.app.profile')->with('error','error en la consulta');
+        }
+        return Redirect::route('salud.app.profile')->with('info','datos actualizados correctamente');
+    }
     public function atencione(){
         return view('salud.app.atencione');
     }
@@ -236,5 +312,68 @@ class SaludappController extends Controller
     }
     public function herramientas(){
         return view('salud.app.herramientas');
+    }
+    public function password_edit(){
+        return view('salud.app.password_edit');
+    }
+    public function password_update(Request $request){
+        $request->validate([
+            'password' => [
+                'required',
+                'string',
+                'min:8',             // Mínimo de 8 caracteres
+                'regex:/[a-z]/',     // Debe contener al menos una letra minúscula
+                'regex:/[A-Z]/',     // Debe contener al menos una letra mayúscula
+            ],
+            'password_confirmation' => 'required|same:password'    
+        ]);
+        try {
+            //code...
+            $user = User::findOrFail(auth()->user()->id);
+            $user->password = bcrypt($request->password);
+            $user->update();
+        } catch (\Throwable $th) {
+            return Redirect::route ('salud.app.password.edit')->with('error','error al actualizar la consulta');
+        }
+        return Redirect::route('salud.app.password.edit')->with('info','contraseña actualizada correctamente');
+    }
+    public function matriculas_index(){
+        $user = User::findOrFail(auth()->id());
+        $estudiantes = Estudiante::whereHas('postulante',function($query) use($user){
+            $query->where('idCliente','=',$user->ucliente->cliente_id);
+        })->orderBy('created_at','desc')->get();
+        return view('salud.app.matriculas.index',compact('estudiantes'));
+    }
+    public function calificaciones_index(){
+        $user = User::findOrFail(auth()->id());
+        $estudiantes = Estudiante::whereHas('postulante',function($query) use($user){
+            $query->where('idCliente','=',$user->ucliente->cliente_id);
+        })->orderBy('created_at','desc')->get();
+        return view('salud.app.calificaciones.index',compact('estudiantes'));
+    }
+    public function matriculas_show($id){
+        //verificar si es su unidad didactica
+        $user = User::findOrFail(auth()->id());
+        $detalle = EmatriculaDetalle::findOrFail($id);
+        $a = Uasignada::where('pmatricula_id','=',$detalle->matricula->pmatricula_id)
+        ->where('udidactica_id','=',$detalle->udidactica_id)
+        ->first();
+        if(isset($a->horarios)){
+            $fdias = $this->fdias($a);
+        }else{
+            $fdias = [];
+        }
+        if($detalle->matricula->estudiante->postulante->idCliente == $user->ucliente->cliente_id){
+            return view('salud.app.matriculas.show',compact('detalle','fdias'));
+        }else{
+            return Redirect::route('estudiantes.matriculas.index')->with('error','no puedes acceder a esta informacion');
+        }
+    }
+    public function calificaciones_pdf($id){
+        $ciclos = ['I','II','III','IV','V','VI'];
+        $estudiante = Estudiante::findOrFail($id);
+        $pdf = PDF::loadview('salud.app.calificaciones.pdf',compact('estudiante','ciclos'));
+		return $pdf->download('VE-'.$estudiante->postulante->cliente->dniRuc.'.'.'pdf');
+        return view('salud.app.calificaciones.pdf',compact('estudiante','ciclos'));
     }
 }

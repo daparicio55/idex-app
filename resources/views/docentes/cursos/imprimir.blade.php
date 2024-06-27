@@ -83,29 +83,34 @@
             @endforeach
             {{-- revizamos si las faltas superan el %30 --}}
             <td>{{ cero($key+1) }}</td>
-            @foreach ($fechas as $kd => $dia)
-                    @if ($faltas >= $maximo)
-                        @if ($kd == 0)
-                            <td class="border text-center text-danger" colspan="{{ $total_fechas }}">Inhabilitado por superar el 30% de inasistencias</td>
-                        @endif
-                    @else
-                        @php
-                            $valor = \App\Models\Docentes\Asistencias::where('fecha','=',$dia['fecha'])->where('emdetalle_id','=',$estudiante->id)->first();
-                            if(isset($valor->estado)){
-                                $estado = $valor->estado;
-                                if($estado == "P"){
-                                    $color = "primary";
-                                }else{
-                                    $color = "danger";
-                                }
-                            }else{
-                                $estado = "NR";
-                                $color = "warning";
-                            }
-                        @endphp
-                    <td class="border text-{{ $color }}">{{ $estado }}</td>
-                    @endif
-            @endforeach
+            @if($estudiante->licencia == "SI")
+                <td class="border text-center" colspan="{{ $total_fechas }}">Licencia - {{ $estudiante->licenciaObservacion }}</td>
+            @else
+                @foreach ($fechas as $kd => $dia)
+                        
+                            @if ($faltas >= $maximo)
+                                @if ($kd == 0)
+                                    <td class="border text-center text-danger" colspan="{{ $total_fechas }}">Inhabilitado por superar el 30% de inasistencias</td>
+                                @endif
+                            @else
+                                @php
+                                    $valor = \App\Models\Docentes\Asistencias::where('fecha','=',$dia['fecha'])->where('emdetalle_id','=',$estudiante->id)->first();
+                                    if(isset($valor->estado)){
+                                        $estado = $valor->estado;
+                                        if($estado == "P"){
+                                            $color = "primary";
+                                        }else{
+                                            $color = "danger";
+                                        }
+                                    }else{
+                                        $estado = "NR";
+                                        $color = "warning";
+                                    }
+                                @endphp
+                            <td class="border text-{{ $color }}">{{ $estado }}</td>
+                            @endif
+                @endforeach
+            @endif
         </tr>
     @endforeach
 @endsection
