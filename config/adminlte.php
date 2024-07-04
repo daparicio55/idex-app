@@ -419,6 +419,12 @@ return [
                             'icon_color'=>'primary',
                         ],
                         [
+                            'text'=>'Unid. Intercambiables',
+                            'icon'=>'far fa-square',
+                            'route'=>'sacademica.intercambiables.index',
+                            'icon_color'=>'primary',
+                        ],
+                        [
                             'text'=>'Itinearios Formativos',
                             'icon'=>'far fa-square',
                             'url'=>'sacademica/iformativos',
@@ -490,6 +496,13 @@ return [
                             'url'=>'sacademica/nominas',
                         ],
                         [
+                            'text'=>'Reg. de Estudiantes',
+                            'icon'=>'fas fa-user-friends',
+                            'icon_color'=>'warning',
+                            'url'=>'sacademica/estudiantes',
+                            'can'=>'sacademica.estudiantes.index'
+                        ],
+                        [
                             'text'=>'Estadisticas',
                             'icon'=>'far fa-chart-bar',
                             'url'=>'sacademica/estadisticas',
@@ -527,12 +540,20 @@ return [
                     ]
                 ],
                 [
-                    'text'=>'Estudiantes',
-                    'icon'=>'fas fa-user-friends',
-                    'icon_color'=>'info',
-                    'url'=>'sacademica/estudiantes',
-                    'can'=>'sacademica.estudiantes.index'
-                ],
+                    'text'=>'Reportes',
+                    'icon'=>'far fa-chart-bar',
+                    'icon_color'=>'success',
+                    'submenu'=>[
+                        [
+                            'text'=>'Notas',
+                            'icon'=>'fas fa-sort-numeric-up-alt',
+                            'icon_color'=>'success',
+                            'route'=>'sacademica.reportes.ordermerito.index',
+                        ]
+                    
+                    ]
+                ]
+                ,
                /*  [
                     'text'=>'Exp. Formativas',
                     'icon'=>'fas fa-business-time',

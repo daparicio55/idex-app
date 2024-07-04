@@ -62,6 +62,7 @@ use App\Http\Controllers\IformativoController;
 use App\Http\Controllers\Imports\IndicadoresController;
 use App\Http\Controllers\IndicadoreController;
 use App\Http\Controllers\InsidenciaController;
+use App\Http\Controllers\IntercambiableController;
 use App\Http\Controllers\LicenciaController;
 use App\Http\Controllers\MatriculaController;
 use App\Http\Controllers\MatriculaDetalleController;
@@ -79,6 +80,7 @@ use App\Http\Controllers\RdocumentoController;
 use App\Http\Controllers\RegularizacioneController;
 use App\Http\Controllers\ReingresoController;
 use App\Http\Controllers\RepositorioController;
+use App\Http\Controllers\SacademicaReporteNotaController;
 use App\Http\Controllers\SaludAlternativaController;
 use App\Http\Controllers\SaludappController;
 use App\Http\Controllers\SaludController;
@@ -248,8 +250,12 @@ Route::resource('sacademica/licencias',LicenciaController::class)->names('sacade
 Route::resource('sacademica/reingresos',ReingresoController::class)->names('sacademica.reingresos');
 Route::resource('sacademica/cargarnotas',CargarNotaController::class)->names('sacademica.cargarnotas');
 Route::resource('sacademica/uasignadas',UasignadaController::class)->names('sacademica.uasignadas');
+Route::resource('sacademica/intercambiables',IntercambiableController::class)->names('sacademica.intercambiables');
 
 Route::resource('sacademica/uasigandas/horarios',HorarioController::class)->names('sacademica.uasignadas.horarios');
+
+//REPORTES ORDENES DE MERITO EN SECRETARIA ACADEMICA
+Route::resource('sacademica/reportes/ordermerito',SacademicaReporteNotaController::class)->names('sacademica.reportes.ordermerito');
 
 
 /* rutas para students */

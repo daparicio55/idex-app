@@ -39,4 +39,5 @@ class Udidactica extends Model
     public function ematricula_detalles_eq(){
         return $this->hasMany(EmatriculaDetalle::class,'udidactica_id','udidactica_id');
     }
+    
 }
