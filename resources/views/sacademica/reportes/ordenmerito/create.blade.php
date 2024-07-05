@@ -53,6 +53,35 @@
                 padding: 5px 0;
                 height: auto; /* Se ajusta al contenido */
             }
+            .bg-primero{
+                background: #119605;
+                color:aliceblue;
+                font-weight: 600;
+            }
+            .bg-segundo{
+                background: #a72b05;
+                color:aliceblue;
+                font-weight: 600;
+            }
+            .bg-tercero{
+                background: #121764;
+                color:aliceblue;
+                font-weight: 600;
+            }
+            footer p{
+                padding: 0px;
+                margin: 6rem 0px 0px 0px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 0.7rem;
+            }
+            footer p span{
+                border-top: 1px solid #000;
+                font-size: 0.7rem;
+                padding-top: 0.3rem;
+            }
+            footer span{
+                font-size: 0.7rem;
+            }
         }
     </style>
 </head>
@@ -107,7 +136,7 @@
             </thead>
             <tbody>
                 @foreach ($acta['estudiantes'] as $k => $estudiante)
-                    <tr>
+                    <tr @if($estudiante['ubicacion'] == 1) class="bg-primero" @endif @if($estudiante['ubicacion'] == 2) class="bg-segundo" @endif @if($estudiante['ubicacion'] == 3) class="bg-tercero" @endif>
                         <td>{{ $k + 1 }}</td>
                         <td>{{ $estudiante['apellido'] }}, {{ Str::title($estudiante['nombre']) }}</td>
                         <td>{{ $estudiante['dni'] }}</td>
@@ -127,5 +156,9 @@
             </tbody>
         </table>
     </main>
+    <footer style="text-align: center">
+        <p><span>SECRETARIA ACADÉMICA</span></p>
+        <span>firma y sello</span>
+    </footer>
 </body>
 </html>
