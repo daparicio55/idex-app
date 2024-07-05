@@ -104,6 +104,7 @@ use App\Models\Estudiante;
 use App\Models\Pmatricula;
 use App\Models\Practica;
 use App\Models\Servicio;
+use App\Models\Udidactica;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -441,7 +442,9 @@ Route::get('statistics/website',[StatisticController::class,'website'])->name('s
     return sendSMS("935526612","esto es una mensage para la prueba del sistema de tratite documentario");
 }); */
 Route::get('/last',function(){
-    return view('welcome');
+    //return view('welcome');
+    $uni = Udidactica::find(17);
+    return $uni->intercambiables[0]->unidades->where('id','<>',$uni->id);
 });
 /* Route::get('/ver',function(){
     $ventas = Servicio::get();

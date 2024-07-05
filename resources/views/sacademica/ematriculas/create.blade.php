@@ -388,8 +388,7 @@
                     td6.innerHTML = '<button type="button" id="btn'+unidad.id+'" onclick="creditos('+unidad.creditos+','+unidad.id+')" class="btn btn-primary"><i class="fas fa-plus"></i></button>';
                 }else{
                     td6.innerHTML = '<button type="button" disabled id="btn'+unidad.id+'" onclick="creditos('+unidad.creditos+','+unidad.id+')" class="btn btn-primary"><i class="fas fa-plus"></i></button>'
-                }
-                
+                }                
                 tr.appendChild(td6);
                 tr.appendChild(td0);
                 tr.appendChild(td1);
@@ -399,6 +398,7 @@
                 tr.appendChild(td5);
                 tr.appendChild(td7);
                 HTMLResponse1.appendChild(tr);
+                console.log(unidad);
             });
         });
     /* termino la eleccion */

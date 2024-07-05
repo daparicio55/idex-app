@@ -39,5 +39,8 @@ class Udidactica extends Model
     public function ematricula_detalles_eq(){
         return $this->hasMany(EmatriculaDetalle::class,'udidactica_id','udidactica_id');
     }
-    
+    public function intercambiables(){
+        return $this->belongsToMany(Intercambiable::class,'intercambiable_udidactica','udidactica_id','intercambiable_id');
+
+    }
 }

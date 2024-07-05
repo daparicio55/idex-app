@@ -116,11 +116,11 @@ class EstudiantePEstudioController extends Controller
             $horarios = [];
             if(isset($uni->equivalencia->id)){
                 $uasignada = Uasignada::where('udidactica_id','=',$uni->equivalencia->id)
-                ->where('pmatricula_id','=',100)
+                ->where('pmatricula_id','=',101)
                 ->first();
             }else{
                 $uasignada = Uasignada::where('udidactica_id','=',$uni->id)
-                ->where('pmatricula_id','=',100)
+                ->where('pmatricula_id','=',101)
                 ->first();
             }
             if(isset($uasignada->horarios)){
@@ -144,17 +144,26 @@ class EstudiantePEstudioController extends Controller
                     'horarios'=>$horarios
                 ]);
             }else{
+                if(isset($uni->intercambiables[0])){
+                    $intercambios = $uni->intercambiables[0]->unidades->where('id','<>',$uni->id);
+                }else{
+                    $intercambios = null;
+                }
                 array_push($unidades,[
                     'id'=>$uni->id,
                     'ciclo'=>$uni->ciclo,
                     'tipo'=>$uni->tipo,
                     'nombre'=>$uni->nombre,
                     'creditos'=>$uni->creditos,
-                    'horarios'=>$horarios
+                    'horarios'=>$horarios,
+                    'intercambios'=>$intercambios
                 ]);
             }
         }
         return $unidades;
+    }
+    public function get_intercambios($id){
+
     }
     public function licencias($id){
         $estudiante = Estudiante::findOrFail($id);
