@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', '6')
+@section('title', 'Reportes de Monitoreo de Notas')
 
 @section('content_header')
     <h1>Reportes de monitoreo de notas</h1>
@@ -64,11 +64,11 @@
                         <td>{{ $resultado->unidad->nombre }}</td>
                         <td>{{ $resultado->periodo->nombre }}</td>
                         <td>
-                            <a href="{{ route('coordinaciones.reportes.show', $resultado->id) }}" class="btn btn-primary" title="Acta Regular">
+                            <a href="{{ route('coordinaciones.reportes.show', $resultado->id) }}" class="btn btn-primary" title="Acta Regular" target="_blank">
                                 <i class="fas fa-clipboard-list"></i> R
                             </a>
                             @if(isset($resultado->unidad->old))
-                                <a href="{{ route('coordinaciones.reportes.edit',$resultado->id) }}" class="btn btn-success" title="Acta Equivalencias">
+                                <a href="{{ route('coordinaciones.reportes.edit',$resultado->id) }}" class="btn btn-success" title="Acta Equivalencias" target="_blank">
                                     <i class="fas fa-clipboard-list"></i> E
                                 </a>
                             @endif

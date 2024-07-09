@@ -19,11 +19,11 @@ class ReporteController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('can:coordinaciones.reportes.index')->only('index');
+        /* $this->middleware('can:coordinaciones.reportes.index')->only('index');
         $this->middleware('can:coordinaciones.reportes.create')->only('create','store');
         $this->middleware('can:coordinaciones.reportes.edit')->only('edit','update');
         $this->middleware('can:coordinaciones.reportes.destroy')->only('destroy');
-        $this->middleware('can:coordinaciones.reportes.show')->only('show');
+        $this->middleware('can:coordinaciones.reportes.show')->only('show'); */
     }
 
     protected function get_docentes(){
