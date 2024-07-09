@@ -14,7 +14,7 @@
     <button class="btn btn-info mt-1" onclick="showall()">
         <i class="fas fa-eye"></i> Mostrar todas las fechas
     </button>
-    <button class="btn btn-success mt-1">
+    <button class="btn btn-success mt-1" onclick="thisweek()">
         <i class="fas fa-calendar-week"></i> Esta semana
     </button>
 </p>
@@ -109,17 +109,18 @@
 <link rel="stylesheet" href="{{ asset('css/loading.css') }}">
 @endpush
 @section('js')
+    <script src="{{ asset('js/carga.js') }}"></script>
+    <script src="{{ asset('js/issameweek.js') }}"></script>
     <script>
-        function mostrarPantallaDeCarga() {
-        const loader = document.getElementById('loader-wrapper');
-        loader.style.display = "flex";
-        loader.style.opacity = '1'; // Establece la opacidad al 100%
-        }
-        // Ocultar la pantalla de carga con un efecto fade
-        function ocultarPantallaDeCarga() {
-        const loader = document.getElementById('loader-wrapper');
-        loader.style.display = "none";
-        loader.style.opacity = '0'; // Establece la opacidad al 0%
+        function thisweek(){
+            var fdias = @json($fdias);
+            var thisDay = '{{ \Carbon\Carbon::now()->toDateString() }}';
+            fdias.forEach((dia, index)=>{
+                console.log(isSameWeek(dia.fecha,thisDay));
+                if(isSameWeek(dia.fecha,thisDay) == false){
+                    ocultar(index);
+                }
+            });
         }
         function dia(id){
             let day = document.getElementById('text'+id);

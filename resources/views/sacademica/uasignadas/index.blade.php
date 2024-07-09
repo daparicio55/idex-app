@@ -61,6 +61,14 @@
                                 <a href="{{ route('sacademica.uasignadas.horarios.show',$uasignada->id) }}" class="btn btn-info mt-1" title="agregar horarios">
                                     <i class="fas fa-calendar-alt"></i>
                                 </a>
+                                <a href="{{ route('coordinaciones.reportes.show', $uasignada->id) }}" class="btn btn-primary mt-1" title="Acta Regular" target="_blank">
+                                    <i class="fas fa-clipboard-list"></i>
+                                </a>
+                                @if(isset($uasignada->unidad->old))
+                                    <a href="{{ route('coordinaciones.reportes.edit',$uasignada->id) }}" class="btn btn-success mt-1" title="Acta Equivalencias" target="_blank">
+                                        <i class="fas fa-clipboard-list"></i>
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                         <tr>
