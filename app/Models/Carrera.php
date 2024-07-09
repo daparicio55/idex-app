@@ -11,11 +11,16 @@ class Carrera extends Model
     protected $table = 'ccarreras';
     protected $primaryKey = 'idCarrera';
     public $timestamps = false;
-    protected $filltable = [
+    protected $fillable = [
         'nombreCarrera',
         'observacionCarrera',
-        'iformativo_id'
+        'iformativo_id',
+        'ccarrera_id',
+        'icon',
+        'image',
+        'user_id'
     ];
+
     public function itinerarios(){
         return $this->hasMany('App\Models\Iformativo','id');
     }
@@ -27,5 +32,8 @@ class Carrera extends Model
     }
     public function itinerario(){
         return $this->belongsTo(Iformativo::class,'iformativo_id','id');
+    }
+    public function anterior(){
+        return $this->belongsTo(Carrera::class,'ccarrera_id','idCarrera');
     }
 }

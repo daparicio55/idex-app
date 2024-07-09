@@ -31,7 +31,7 @@ class UsuarioController extends Controller
         //
         $usuarios = User::whereDoesntHave('roles', function($query){
             $query->where('name','Bolsa User');
-        })->get();;
+        })->get();
         return view('accesos.usuarios.index',compact('usuarios'));
     }
 

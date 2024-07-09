@@ -83,4 +83,7 @@ class User extends Authenticatable
             }
         }
     }
+    public function coordinacion(){
+        return $this->hasOne(Carrera::class,'user_id','id');
+    }
 }

@@ -30,6 +30,7 @@ use App\Http\Controllers\CepreSumativoConsolidadoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ColegioController;
 use App\Http\Controllers\ConvalidacioneController;
+use App\Http\Controllers\Coordinaciones\ReporteController;
 use App\Http\Controllers\CriterioController;
 use App\Http\Controllers\cvCapacitacionController;
 use App\Http\Controllers\cvConocimientoController;
@@ -80,6 +81,7 @@ use App\Http\Controllers\RdocumentoController;
 use App\Http\Controllers\RegularizacioneController;
 use App\Http\Controllers\ReingresoController;
 use App\Http\Controllers\RepositorioController;
+use App\Http\Controllers\Sacademica\ProgramaController;
 use App\Http\Controllers\SacademicaReporteNotaController;
 use App\Http\Controllers\SaludAlternativaController;
 use App\Http\Controllers\SaludappController;
@@ -443,11 +445,17 @@ Route::get('statistics/website',[StatisticController::class,'website'])->name('s
 }); */
 Route::get('/last',function(){
     //return view('welcome');
-    $uni = Udidactica::find(17);
-    return $uni->intercambiables[0]->unidades->where('id','<>',$uni->id);
+    /* $uni = Udidactica::find(17);
+    return $uni->intercambiables[0]->unidades->where('id','<>',$uni->id); */
 });
 /* Route::get('/ver',function(){
     $ventas = Servicio::get();
     return $ventas->detalles->count();
     
 });  */
+//Coordinaciones
+Route::resource('/sacademica/programas',ProgramaController::class)->names('sacademica.programas');
+
+
+Route::resource('/coordinaciones/reportes',ReporteController::class)->names('coordinaciones.reportes');
+

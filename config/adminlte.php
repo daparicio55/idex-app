@@ -231,13 +231,7 @@ return [
             'topnav_right' => true,
         ],
         [
-            'text' => 'Administrador',
-            'icon' => 'fas fa-users-cog',
-            'route' => 'administrador.index',
-            'can'=>'administrador.index',
-        ],
-        [
-            'text'    => 'Accesos',
+            'text'    => 'Soporte Tecnológico',
             'icon'    => 'fab fa-galactic-republic',
             'icon_color'=>'info',
             'can'     => 'accesos.permisos.index',
@@ -260,6 +254,12 @@ return [
                     'url'  => 'accesos/oficinas',
                 ],
                 [
+                    'text' => 'Reportes',
+                    'icon' => 'fas fa-users-cog',
+                    'route' => 'administrador.index',
+                    'can'=>'administrador.index',
+                ],
+                [
                     'icon'    => 'fas fa-terminal',
                     'text' => 'Permisos',
                     'url'  => 'accesos/permisos',
@@ -268,43 +268,6 @@ return [
                     'icon'    => 'fas fa-suitcase-rolling',
                     'text' => 'Roles',
                     'url'  => 'accesos/roles',
-                ],
-            ],
-        ],
-        [
-            'text'    => 'Admisiones',
-            'icon'    => 'fab fa-galactic-republic',
-            'can'   => 'admisiones.reportes.index',
-            'submenu' => [
-                [
-                    'icon'    => 'far fa-user',
-                    'text' => 'Postulantes',
-                    'url'  => 'admisiones/postulantes',
-                    'can'=>'admisiones.postulantes.index'
-                ],
-                [
-                    'icon'=>'fas fa-microchip',
-                    'text'=>'Configuracion',
-                    'url'=>'admisiones/configuraciones',
-                    'can'=>'admisiones.configuraciones.index'
-                ],
-                [
-                    'icon'=>'fas fa-cubes',
-                    'text'=>'Eva. Ordinaria',
-                    'url'=>'admisiones/ordinarios',
-                    'can'=>'admisiones.ordinarios.index'
-                ],
-                [
-                    'icon'=>'fas fa-dungeon',
-                    'text'=>'Estudiantes',
-                    'url'=>'admisiones/estudiantes',
-                    'can'=>'admisiones.estudiantes.index'
-                ],
-                [
-                    'icon'    => 'fas fa-eye',
-                    'text' => 'Reportes',
-                    'url'  => 'admisiones/reportes',
-                    'can'=>'admisiones.reportes.index'
                 ],
             ],
         ],
@@ -451,13 +414,51 @@ return [
                             'can'=>'sacademica.pmatriculas.index',
                             'icon_color'=>'primary',
                         ],
+                        [
+                            'text'=>'Programas de Estudios',
+                            'icon'=>'far fa-square',
+                            'route'=>'sacademica.programas.index',
+                            'icon_color'=>'primary',
+                        ]
                     ]
                 ],
-                /* [
-                    'text'=>'Matrículas',
-                    'icon'=>'fas fa-book-reader',
-                    
-                ], */
+                [
+                    'text'    => 'Procesos de Admision',
+                    'icon'    => 'fab fa-galactic-republic',
+                    'can'   => 'admisiones.reportes.index',
+                    'submenu' => [
+                        [
+                            'icon'    => 'far fa-user',
+                            'text' => 'Postulantes',
+                            'url'  => 'admisiones/postulantes',
+                            'can'=>'admisiones.postulantes.index'
+                        ],
+                        [
+                            'icon'=>'fas fa-microchip',
+                            'text'=>'Configuracion',
+                            'url'=>'admisiones/configuraciones',
+                            'can'=>'admisiones.configuraciones.index'
+                        ],
+                        [
+                            'icon'=>'fas fa-cubes',
+                            'text'=>'Eva. Ordinaria',
+                            'url'=>'admisiones/ordinarios',
+                            'can'=>'admisiones.ordinarios.index'
+                        ],
+                        [
+                            'icon'=>'fas fa-dungeon',
+                            'text'=>'Estudiantes',
+                            'url'=>'admisiones/estudiantes',
+                            'can'=>'admisiones.estudiantes.index'
+                        ],
+                        [
+                            'icon'    => 'fas fa-eye',
+                            'text' => 'Reportes',
+                            'url'  => 'admisiones/reportes',
+                            'can'=>'admisiones.reportes.index'
+                        ],
+                    ],
+                ],
                 [
                     'text'=>'Matrículas',
                     'icon'=>'fas fa-book-reader',
@@ -763,6 +764,20 @@ return [
                 ]
             ]
         ],
+        [
+            'text'=>'Of. Coordinación',
+            'icon'=>'fas fa-user-tie',
+            'icon_color'=>'success',
+            'can'=>'coordinaciones.reportes.index',
+            'submenu'=>[
+                [
+                    'text'=>'Reportes',
+                    'icon'=>'fas fa-chart-line',
+                    'icon_color'=>'success',
+                    'route'=>'coordinaciones.reportes.index'
+                ],
+            ],
+        ]
         /* [
             'text'=>'Estadisticas',
             'icon'=>'far fa-chart-bar',
