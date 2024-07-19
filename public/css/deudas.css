@@ -1,0 +1,93 @@
+.table-size{
+    width: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+}
+
+header table td{
+    text-align: center;
+    width: 33%;
+}
+td p{
+    text-align: center;
+    line-height: 15px;
+    padding: 0px;
+    margin: 0px;
+}
+h3{
+    text-align: center;
+    background-color: rgb(14, 24, 75);
+    margin-top: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: white
+}
+.cuadro{
+    border: 1px solid black;
+    padding-top: 0px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+main{
+    margin-top: 20px;
+}
+section table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+section table td,tr{
+    border: 1px solid black;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+section table td:first-child{
+    background-color:  rgb(36, 52, 136);
+    color: white;
+    font-weight: 900;
+    width: 200px;
+}
+footer table{
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    border: 1px solid black;
+}
+footer table thead{
+    background-color:  rgb(36, 52, 136);
+    color: rgb(0, 0, 0);
+    font-weight: 900;
+}
+footer thead td,th{  
+    border: 1px solid black;
+    padding-top: 8px;
+    padding-left: 5px;
+    padding-bottom: 8px;
+    color: white
+}
+footer tbody td{
+    padding-left: 7px;
+    padding-top: 20px; 
+    padding-bottom: 20px;
+    border: 1px solid black;
+}
+.firmas{
+    margin-top: 180px;
+}
+.subline{
+    margin-bottom: 8px;
+}
+.page-break-before {
+    page-break-before: always;
+}
+
+.page-break-after {
+    page-break-after: always;
+}
+
+.page-break-inside {
+    page-break-inside: avoid;
+}

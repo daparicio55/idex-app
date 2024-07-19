@@ -17,6 +17,9 @@ class Deuda extends Model
     public function deudadetalles(){
         return $this->hasMany(DeudaDetalle::class,'idDeuda');
     }
+    public function detalles(){
+        return $this->hasMany(DeudaDetalle::class,'idDeuda');
+    }
     public function servicio(){
         return $this->belongsTo(Servicio::class,'idServicio');
     }

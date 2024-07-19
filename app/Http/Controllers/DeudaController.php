@@ -28,18 +28,29 @@ class DeudaController extends Controller
     }
     public function index(Request $request)
     {
-        $query = $request->get('searchText');
-        $estado = $request->get('estado');
-        if(isset($request->estado)){
-            
-            $deudas = Deuda::whereRelation('cliente','dniRuc','like','%'.$query.'%')
-            ->where('estado','=',$estado)
-            ->orderBy('numero','desc')
+        $estados = [
+            'deuda'=>'Deuda',
+            'pagado'=>'Pagado',
+        ];
+        $text = $request->text;
+        $finicio = $request->finicio;
+        $ffin = $request->ffin;        
+        if(isset($request->estados)){
+            $deudas = Deuda::where('estado',$request->estados)->orderBy('numero','desc')
+            ->when($text,function($query) use ($text){
+                return $query->whereHas('cliente',function($q) use($text){
+                    $q->where('dniRuc','=',$text)
+                    ->orWhere('apellido','like','%'.$text.'%')
+                    ->orWhere('nombre','like','%'.$text.'%');
+                });
+            })->when($finicio || $ffin,function($query) use ($finicio,$ffin){
+                return $query->whereBetween('fDeuda',[$finicio,$ffin]);
+            })
             ->get();
         }else{
-            $deudas = Deuda::orderBy('numero','desc')->get();
+            $deudas = Deuda::orderBy('numero','desc')->paginate(10);
         }
-        return view('ventas.deudas.index',['deudas'=>$deudas,'searchText'=>$query]);
+        return view('ventas.deudas.index',compact('deudas','estados'));        
     }
 
     /**
@@ -344,6 +355,11 @@ class DeudaController extends Controller
         $deudasDetalles = DB::table('deudas_detalles')
         ->where('idDeuda','=',$id)
         ->get();
+
+        $deuda = Deuda::findorFail($id);
+        //return $deuda;
+
+        return view('ventas.deudas.imprimirv2',compact('deuda'));
         return view('ventas.deudas.imprimir',compact('deudas','deudasDetalles'));
 		$pdf = PDF::loadview("ventas.deudas.imprimir",['deudas'=>$deudas,'deudasDetalles'=>$deudasDetalles]);
 		$pdf->setPaper('a4','landscape');

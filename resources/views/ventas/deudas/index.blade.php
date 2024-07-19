@@ -9,10 +9,8 @@
 					<i class="fas fa-plus-square"></i> Nuevo
 				</button>
 			</a> 
-			<a href="">
-				<button class="btn btn-danger" name="bt_limpiar" id="bt_limpiar">
-					<i class="fas fa-broom"></i> Limpiar
-				</button>
+			<a href="{{ route('ventas.deudas.index') }}" class="btn btn-danger">
+				<i class="fas fa-broom"></i> Limpiar
 			</a>
 		</h3>
 	</div>
@@ -20,17 +18,7 @@
 @stop
 @section('content')
 @include('ventas.deudas.search')
-<br>
-@if (session('info'))
-    <div class="alert alert-success" id='info'>
-        <strong>{{session('info')}}</strong>
-    </div>
-@endif
-@if (session('error'))
-    <div class="alert alert-danger" id='error'>
-        <strong>{{session('error')}}</strong>
-    </div>
-@endif
+<x-alert/>
 <div class="row">
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="table-responsive">
@@ -75,20 +63,19 @@
 					</tr>
 					@endforeach
 				</tbody>
-
+				@if (method_exists($deudas, 'links'))
+					<tfoot>
+						<tr>
+							<td colspan="9">
+								{{ $deudas->links() }}
+							</td>
+						</tr>	
+					</tfoot>
+				@endif
+				
 			</table>
 			
 		</div>
 	</div>
 </div>
-@stop
-@section('js')
-<script>
-    $(document).ready(function()
-    {
-        $('#bt_limpiar').click(function(){
-            window.location.href="/ventas/deudas/";
-        });
-    });
-</script>
 @stop

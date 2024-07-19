@@ -95,7 +95,7 @@
                       <thead style="background-color:#A9D0F5">
                             <th style="width: 10%">Num.</th>
                             <th>Servicio</th>
-                            <th style="width: 10%">Fecha</th>
+                            <th style="width: 10%" title="cuando se pagara la cuota">Fecha</th>
                             <th style="width: 10%">Estado</th>
                             <th style="width: 10%">Pago</th>
                       </thead>
@@ -167,7 +167,7 @@ $(document).ready(function()
             var fila='<tr><td><input type="hidden" name="orden[]" value="'+cont+'">'+cont+'</td><td>'+datosArticulo[1]+'</td><td> <input type="date" name="ffecha[]" id="ffecha" required class="form-control" value="{{date('Y-m-d')}}"></td><td>Deuda</td><td><input class="form-control" type="number" name="pMensual[]" value="'+pagoMensual+'"></td></tr>'
             $('#detalles').append(fila);
         }
-        $('#total').html("S/. "+datosArticulo[2]);
+        $('#total').html("S/. "+totalPago);
         $('#guardar').show();
       }
       function mostrarServicio()
