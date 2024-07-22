@@ -87,28 +87,32 @@
                 <td class="border text-center" colspan="{{ $total_fechas }}">Licencia - {{ $estudiante->licenciaObservacion }}</td>
             @else
                 @foreach ($fechas as $kd => $dia)
-                        
-                            @if ($faltas >= $maximo)
-                                @if ($kd == 0)
-                                    <td class="border text-center text-danger" colspan="{{ $total_fechas }}">Inhabilitado por superar el 30% de inasistencias</td>
-                                @endif
-                            @else
-                                @php
-                                    $valor = \App\Models\Docentes\Asistencias::where('fecha','=',$dia['fecha'])->where('emdetalle_id','=',$estudiante->id)->first();
-                                    if(isset($valor->estado)){
-                                        $estado = $valor->estado;
-                                        if($estado == "P"){
-                                            $color = "primary";
-                                        }else{
-                                            $color = "danger";
-                                        }
-                                    }else{
-                                        $estado = "NR";
-                                        $color = "warning";
-                                    }
-                                @endphp
-                            <td class="border text-{{ $color }}">{{ $estado }}</td>
-                            @endif
+                    @php
+                        $respuesta = new \App\Services\DateService();
+                    @endphp
+                    @if ($respuesta->inability($estudiante->id,$uasignada))
+                        @if ($kd == 0)
+                            <td class="border text-center text-danger text-danger" colspan="{{ $total_fechas }}">
+                                Inhabilitado por superar el 30% de inasistencias
+                            </td>
+                        @endif
+                    @else
+                        @php
+                            $valor = \App\Models\Docentes\Asistencias::where('fecha','=',$dia['fecha'])->where('emdetalle_id','=',$estudiante->id)->first();
+                            if(isset($valor->estado)){
+                                $estado = $valor->estado;
+                                if($estado == "P"){
+                                    $color = "primary";
+                                }else{
+                                    $color = "danger";
+                                }
+                            }else{
+                                $estado = "NR";
+                                $color = "warning";
+                            }
+                        @endphp
+                    <td class="border text-{{ $color }}">{{ $estado }}</td>
+                    @endif
                 @endforeach
             @endif
         </tr>
@@ -117,7 +121,7 @@
 <!-- Resumen de Notas con los Indicadores -->
 @section('notas_cuerpo')
     @foreach ($estudiantes as $key=>$estudiante)
-    @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
+    @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI" || $respuesta->inability($estudiante->id,$uasignada) )
         @php
             $colu = 0;
         @endphp
@@ -133,7 +137,11 @@
             @if($estudiante->licencia == "SI")
                 <td class="p-0 text-center border" colspan="{{ $colu + 2 }}">Licencia - {{ $estudiante->licenciaObservacion }}</td>
             @else
-                <td class="p-0 text-center border" colspan="{{ $colu + 2 }}">{{ $estudiante->tipo }} - {{ $estudiante->observacion }}</td>
+                @if($respuesta->inability($estudiante->id,$uasignada))
+                    <td class="p-0 text-center border text-danger" colspan="{{ $colu + 2 }}">Inhabilitado por superar el 30% de inasistencias</td>
+                @else
+                    <td class="p-0 text-center border" colspan="{{ $colu + 2 }}">{{ $estudiante->tipo }} - {{ $estudiante->observacion }}</td>
+                @endif
             @endif
         </tr>
     @else
@@ -177,16 +185,22 @@
         <td class="p-0 text-center border">{{ cero($key + 1)  }}</td>
         <td class="pl-2 pb-0 pt-0 border border-1">{{ $estudiante->dniRuc }}</td>
         <td class="pl-2 pb-0 pt-0 border"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
-        @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
+        @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI" || $respuesta->inability($estudiante->id,$uasignada))
 
             @if($estudiante->licencia == "SI")
                 <td class="p-0 border text-center" colspan="{{ count($uasignada->capacidades) + 1 }}">
                     Licencia - {{ $estudiante->licenciaObservacion }}
                 </td>
             @else
-                <td class="p-0 border text-center" colspan="{{ count($uasignada->capacidades) + 1 }}">
-                    {{ $estudiante->tipo }} - {{ $estudiante->observacion }}
-                </td>
+                @if($respuesta->inability($estudiante->id,$uasignada))
+                    <td class="p-0 border text-center text-danger" colspan="{{ count($uasignada->capacidades) + 1 }}">
+                        Inhabilitado por superar el 30% de inasistencias
+                    </td>
+                @else
+                    <td class="p-0 border text-center" colspan="{{ count($uasignada->capacidades) + 1 }}">
+                        {{ $estudiante->tipo }} - {{ $estudiante->observacion }}
+                    </td>
+                @endif
             @endif
         @else
             @php
@@ -252,16 +266,25 @@
         <td class="pl-2 pb-0 pt-0 border border-1">{{ $estudiante->dniRuc }}</td>
         <td class="pl-2 pb-0 pt-0 border"><span class="text-uppercase">{{  $estudiante->apellido }},</span> <span class="text-capitalize">{{ strtolower($estudiante->nombre) }}</span></td>
         <td class="p-0 border text-center">{{ $estudiante->periodo }}</td>
-            @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI")
-
+            @if ($estudiante->tipo == "Convalidacion" || $estudiante->licencia == "SI" || $respuesta->inability($estudiante->id,$uasignada))
                 @if($estudiante->licencia == "SI")
                     <td class="p-0 border text-center" colspan="3">
                         Licencia - {{ $estudiante->licenciaObservacion }}
                     </td>
                 @else
-                    <td class="p-0 border text-center" colspan="3">
-                        {{ $estudiante->tipo }} - {{ $estudiante->observacion }}
-                    </td>
+                    @if($respuesta->inability($estudiante->id,$uasignada))
+                       
+                            <td class="p-0 border text-center text-danger">
+                                00
+                            </td>
+                            <td class="p-0 border text-center text-danger" colspan="2">
+                                Inhabilitado
+                            </td>
+                    @else
+                        <td class="p-0 border text-center" colspan="3">
+                            {{ $estudiante->tipo }} - {{ $estudiante->observacion }}
+                        </td>
+                    @endif
                 @endif
             @else
                 @php

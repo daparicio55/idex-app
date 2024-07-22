@@ -10,8 +10,8 @@ use App\Models\Indicadore;
 use App\Models\IndicadoreDetalle;
 use App\Models\Uasignada;
 use App\Models\Udidactica;
+use App\Services\DateService;
 use Carbon\Carbon;
-use DragonCode\Support\Facades\Helpers\Arr;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -281,7 +281,9 @@ class IndicadoreController extends Controller
                 );
             }
             DB::commit();
+
             for($i=0;$i<$cantidad;$i++){
+                $dateService = new DateService();
                 $estudiantematriculadetalle = EmatriculaDetalle::findOrFail($request->ematricula_detalle_id[$i]);
                 $unidad = Udidactica::findOrFail($estudiantematriculadetalle->udidactica_id);
                 if(isset($unidad->equivalencia->id)){
@@ -296,25 +298,30 @@ class IndicadoreController extends Controller
                 $cont=0;
                 $sum=0;
                 $pro=0;
-                foreach ($uasignada->capacidades as $capacidade){
-                    $nota = 0;
-                    $suma = 0;
-                    $contador = 0;
-                        foreach ($capacidade->indicadores as $indicadore){
-                            $suma = $suma + number_format(indicador_calificacion($indicadore->id, $estudiantematriculadetalle->id),2,'.','');
-                            $contador ++;
-                        }
-                    $nota = $suma / (($contador == 0) ? 1 : $contador);
-                    //$nota = round(number_format($nota,2,'.',''),0);
-                    $nota = number_format(round($nota,0),0);
-                    $sum = $sum + $nota;
-                    $cont++;
+                if($dateService->inability($estudiantematriculadetalle->id,$uasignada)){
+                    $estudiantematriculadetalle->nota = 0;
+                    $estudiantematriculadetalle->update();
+                }else{
+                    foreach ($uasignada->capacidades as $capacidade){
+                        $nota = 0;
+                        $suma = 0;
+                        $contador = 0;
+                            foreach ($capacidade->indicadores as $indicadore){
+                                $suma = $suma + number_format(indicador_calificacion($indicadore->id, $estudiantematriculadetalle->id),2,'.','');
+                                $contador ++;
+                            }
+                        $nota = $suma / (($contador == 0) ? 1 : $contador);
+                        //$nota = round(number_format($nota,2,'.',''),0);
+                        $nota = number_format(round($nota,0),0);
+                        $sum = $sum + $nota;
+                        $cont++;
+                    }
+                    $pro = $sum / (($cont == 0) ? 1 : $cont);
+                    //$pro = round(number_format($pro,2,'.',''),0);
+                    $pro = number_format(round($pro,0),0);
+                    $estudiantematriculadetalle->nota = $pro;
+                    $estudiantematriculadetalle->update();
                 }
-                $pro = $sum / (($cont == 0) ? 1 : $cont);
-                //$pro = round(number_format($pro,2,'.',''),0);
-                $pro = number_format(round($pro,0),0);
-                $estudiantematriculadetalle->nota = $pro;
-                $estudiantematriculadetalle->update();
             }
         } catch (\Throwable $th) {
             DB::rollBack();
