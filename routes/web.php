@@ -45,6 +45,7 @@ use App\Http\Controllers\VentaController;
 use App\Http\Controllers\DeudaController;
 use App\Http\Controllers\DocenteCursoController;
 use App\Http\Controllers\Docentes\AsistenciaController;
+use App\Http\Controllers\Docentes\RecuperacioneController;
 use App\Http\Controllers\DocumentotipoController;
 use App\Http\Controllers\EdocumentoController;
 use App\Http\Controllers\EquipoController;
@@ -183,6 +184,15 @@ Route::resource('docentes/cv/personales',cvPersonalController::class)->names('do
 Route::resource('docentes/cv/estudios',cvEstudioController::class)->names('docentes.cv.estudios');
 Route::resource('docentes/cv/reportes',cvReporteController::class)->names('docentes.cv.reportes');
 Route::resource('docentes/cv/conocimientos',cvConocimientoController::class)->names('docentes.cv.conocimientos');
+Route::get('docentes/cursos/recuperaciones/{id}',[RecuperacioneController::class,'index'])
+->name('docentes.cursos.recuperaciones.index');
+Route::get('docentes/cursos/recuperaciones/{id}/create',[RecuperacioneController::class,'create'])
+->name('docentes.cursos.recuperaciones.create');
+Route::post('docentes/cursos/recuperaciones/{id}/store',[RecuperacioneController::class,'store'])
+->name('docentes.cursos.recuperaciones.store');
+Route::delete('docentes/cursos/recuperaciones/{id}/delete',[RecuperacioneController::class,'destroy'])
+->name('docentes.cursos.recuperaciones.delete');
+
 Route::resource('docentes/cursos',DocenteCursoController::class)->names('docentes.cursos');
 Route::get('docentes/cursos/imprimir/{id}',[DocenteCursoController::class,'imprimir'])->name('docentes.cursos.imprimir');
 Route::get('docentes/cursos/equivalencia/{id}',[DocenteCursoController::class,'equivalencia'])->name('docentes.cursos.equivalencia');

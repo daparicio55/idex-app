@@ -14,12 +14,14 @@ class ModalDelete extends Component
     public $id;
     public $titulo;
     public $size;
-    public function __construct($id,$titulo,$size='md')
+    public $route;
+    public function __construct($id,$titulo,$route,$size='md')
     {
         //
         $this->id = $id;
         $this->titulo = $titulo;
         $this->size = $size;
+        $this->route = $route;
     }
 
     /**

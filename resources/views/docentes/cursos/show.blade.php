@@ -52,7 +52,7 @@
                                             </button>
                                             @isset($indicadore->fecha)
                                                 <a href="{{ route('docentes.cursos.capacidades.indicadores.calificar',$indicadore->id) }}" class="btn btn-primary ml-2 @if(calificacion_cerrado($indicadore->id) == true) disabled @endif">
-                                                    <i class="fas fa-sort-numeric-up-alt"></i> Calificaciones {{ calificacion_cerrado($indicadore->id) }}
+                                                    <i class="fas fa-sort-numeric-up-alt"></i> Calificaciones
                                                 </a>
                                             @endisset
                                             </div>

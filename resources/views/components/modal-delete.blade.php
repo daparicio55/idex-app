@@ -1,5 +1,5 @@
 <div class="d-inline">
-    {!! Form::open(['route'=>['sacademica.intercambiables.destroy',$id],'method'=>'delete','class'=>'d-inline']) !!}
+    {!! Form::open(['route'=>[$route,$id],'method'=>'delete','class'=>'d-inline']) !!}
     <div class="modal fade" id="deleteModal{{ $id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

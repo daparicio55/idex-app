@@ -69,7 +69,7 @@
                                     </ul>
                                 </td>
                                 <td style="min-width: 160px">
-                                    <a href="{{ route('docentes.cursos.show',$asignacione->id) }}" class="btn btn-info" style="min-width: 140px" title="Gestion de Calificaciones">
+                                    <a href="{{ route('docentes.cursos.show',$asignacione->id) }}" class="btn btn-info mt-1" style="min-width: 140px" title="Gestion de Calificaciones">
                                         <i class="fas fa-pencil-alt"></i> Calificaciones
                                     </a>
                                     {!! Form::open(['route'=>'exports.nomina2','method'=>'get','class'=>'d-inline']) !!}
@@ -87,6 +87,9 @@
                                             <i class="fas fa-calendar-alt"></i> Asistencia
                                         </button>
                                     {!! Form::close() !!}
+                                    <a href="{{ route('docentes.cursos.recuperaciones.index',$asignacione->id) }}" class="btn btn-secondary mt-1" style="min-width: 140px">
+                                        <i class="fas fa-file-pdf"></i> Recuperación
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

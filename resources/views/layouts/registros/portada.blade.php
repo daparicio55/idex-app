@@ -286,18 +286,19 @@
         <table class="table" id="tactafinal">
             <thead>
                 <tr>
-                    <td class="p-0 border text-center" rowspan="3">N°</td>
-                    <td class="p-0 border text-center" rowspan="3">DNI</td>
-                    <td class="p-0 border text-center" rowspan="3">APELLIDOS Y NOMBRES</td>
-                    <td class="p-0 border text-center" rowspan="3">INGRESO</td>
-                    <td class="p-0 border text-center" colspan="3">Evaluación FINAL</td>
+                    <td class="p-0 border text-center" rowspan="4">N°</td>
+                    <td class="p-0 border text-center" rowspan="4">DNI</td>
+                    <td class="p-0 border text-center" rowspan="4">APELLIDOS Y NOMBRES</td>
+                    <td class="p-0 border text-center" rowspan="4">INGRESO</td>
+                    <td class="p-0 border text-center" colspan="4">Evaluación FINAL</td>
                 </tr>
                 <tr>
-                    <td class="p-0 border text-center" colspan="2">Logro Final</td>
-                    <td class="p-0 border text-center" rowspan="2">PUNTAJE</td>
+                    <td class="p-0 border text-center" colspan="3">Logro Final</td>
+                    <td class="p-0 border text-center" rowspan="3">PUNTAJE</td>
                 </tr>
                 <tr>
                     <td class="p-0 border text-center">números</td>
+                    <td class="p-0 border text-center">recuperación</td>
                     <td class="p-0 border text-center">letras</td>
                 </tr>
             </thead>

@@ -55,7 +55,7 @@
                                 <i class="fas fa-edit"></i> Editar
                             </a>
                             <a href="{{ route('docentes.cursos.capacidades.indicadores.calificar',$indicadore->id) }}" class="btn btn-primary mt-2 @if(calificacion_cerrado($indicadore->id) == true) disabled @endif">
-                                <i class="fas fa-sort-numeric-up-alt"></i> Calificaciones {{ calificacion_cerrado($indicadore->id) }}
+                                <i class="fas fa-sort-numeric-up-alt"></i> Calificaciones
                             </a>
                             @include('docentes.cursos.capacidades.indicadores.modal')
                         </td>
