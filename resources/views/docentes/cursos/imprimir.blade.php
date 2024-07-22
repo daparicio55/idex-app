@@ -276,7 +276,7 @@
                             <td class="p-0 border text-center text-danger">
                                 00
                             </td>
-                            <td class="p-0 border text-center text-danger" colspan="2">
+                            <td class="p-0 border text-center text-danger" colspan="3">
                                 Inhabilitado
                             </td>
                     @else
@@ -316,9 +316,22 @@
                     $pro = round(number_format($pro,2,'.',''),0);
                 @endphp
                 <td class="p-0 border text-center @if($pro>12) text-primary @else text-danger @endif">{{ cero($pro) }}</td>
-                <td class="p-0 border text-center"></td>
-                <td class="p-0 text-center">{{ letras($pro) }}</td>
-                <td class="p-0 border text-center">{{ cero($pro * $uasignada->unidad->creditos) }}</td>
+                {{-- <td class="p-0 border text-center">{{ $estudiante }}</td> --}}
+                <td class="p-0 border text-center @if(recuperacion($estudiante)) @if(recuperacion($estudiante)>12) text-primary @else text-danger @endif @endif">{{ recuperacion($estudiante) }}</td>
+                <td class="p-0 text-center">
+                    @if(recuperacion($estudiante))
+                        {{ letras(recuperacion($estudiante)) }}
+                    @else
+                        {{ letras($pro) }}
+                    @endif
+                </td>
+                <td class="p-0 border text-center">
+                    @if(recuperacion($estudiante))
+                        {{ cero(recuperacion($estudiante) * $uasignada->unidad->creditos) }}
+                    @else
+                        {{ cero($pro * $uasignada->unidad->creditos) }} 
+                    @endif
+                </td>
             @endif
     </tr>
     @endforeach

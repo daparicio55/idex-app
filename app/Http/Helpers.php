@@ -769,6 +769,15 @@ function indicador_calificacion($indicador_id,$ematricula_detalle_id){
                 return $th->getMessage();
         }
 }
+function recuperacion($estudiante){
+        $emd = EmatriculaDetalle::findOrFail($estudiante->id);
+        if(isset($emd->recuperacion->nota)){
+                return number_format($emd->recuperacion->nota,0);
+                
+        }else{
+                return false;
+        }
+}
 function letras($num){
         $letras = [
                 0=>'cero',

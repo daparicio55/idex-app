@@ -15,6 +15,16 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:students.index')->only('index');
+        $this->middleware('can:students.create')->only('create','store');
+        $this->middleware('can:students.edit')->only('edit','update');
+        $this->middleware('can:students.destroy')->only('destroy');
+        $this->middleware('can:students.show')->only('show');
+		$this->middleware('can:students.anular')->only('anular');
+    }
     public function index(Request $request)
     {
         ///
