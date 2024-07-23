@@ -40,15 +40,29 @@
                                             $estado = "text-danger";
                                         @endphp
                                         @foreach ($notas as $nota)
-                                        @if($nota->nota > 12)
-                                            @php
-                                                $estado = "text-primary";
-                                            @endphp
-                                        @endif
+                                            @if(isset($nota->recuperacion->nota))
+                                                @if($nota->recuperacion->nota > 12)
+                                                    @php
+                                                        $estado = "text-primary";
+                                                    @endphp
+                                                @endif
+                                            @else
+                                                @if($nota->nota > 12)
+                                                    @php
+                                                        $estado = "text-primary";
+                                                    @endphp
+                                                @endif
+                                            @endif
                                             <li>
-                                                <span class="{{ $estado }}">
-                                                    {{ cero($nota->nota) }}
-                                                </span>
+                                                @if(isset($nota->recuperacion->nota))
+                                                    <span class="{{ $estado }}">
+                                                        {{ number_format($nota->recuperacion->nota,0) }} 
+                                                    </span>
+                                                @else
+                                                    <span class="{{ $estado }}">
+                                                        {{ cero($nota->nota) }}
+                                                    </span>
+                                                @endif
                                             </li>
                                         @endforeach
                                     </ul>

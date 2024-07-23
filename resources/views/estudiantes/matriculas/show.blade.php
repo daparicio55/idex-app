@@ -15,7 +15,7 @@
         <h5 class="h5">{{ $detalle->unidad->nombre }} - {{ $detalle->tipo }}</h5>
     </div>
     <div class="card-body">
-        <b class="h5">NOTA: </b> <span class="h5"> {{ cero($detalle->nota) }} </span>
+        <b class="h5">NOTA: </b> <span class="h5"> {{ cero($detalle->nota) }} </span> @if(isset($detalle->recuperacion->nota)) <b class="h5"> - RECUPERACIÓN:</b> <span class="h5"> {{ number_format($detalle->recuperacion->nota,0) }} </span> @endif
         @php
             $uasignada = \App\Models\Uasignada::where('pmatricula_id','=',$detalle->matricula->pmatricula_id)
             ->where('udidactica_id','=',$detalle->udidactica_id)
