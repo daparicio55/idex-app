@@ -109,6 +109,7 @@ use App\Models\Practica;
 use App\Models\Servicio;
 use App\Models\Udidactica;
 use App\Models\User;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -368,7 +369,7 @@ Route::get('estudiantepestudio/licencias/{id}',[EstudiantePEstudioController::cl
 
 Route::get('estudiantepestudio/datos/{id}',[EstudiantePEstudioController::class,'datos'])
 ->where('id','[0-9]+')->name('estudiantepestudio.datos');
-Route::get('estudiantepestudio/unidades/{id}',[EstudiantePEstudioController::class,'unidades'])
+Route::get('estudiantepestudio/unidades/{id}/periodo/{periodo}',[EstudiantePEstudioController::class,'unidades'])
 ->where('id','[0-9]+')->name('estudiantepestudio.unidades');
 Route::get('estudiantepestudio/notas/',[EstudiantePEstudioController::class,'notas'])
 ->name('estudiantepestudio.notas');
@@ -465,7 +466,4 @@ Route::get('/last',function(){
 });  */
 //Coordinaciones
 Route::resource('/sacademica/programas',ProgramaController::class)->names('sacademica.programas');
-
-
 Route::resource('/coordinaciones/reportes',ReporteController::class)->names('coordinaciones.reportes');
-

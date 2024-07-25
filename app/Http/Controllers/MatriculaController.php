@@ -21,7 +21,6 @@ class MatriculaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    protected $buscar;
     public function __construct()
     {
         $this->middleware('auth');
@@ -31,32 +30,50 @@ class MatriculaController extends Controller
         $this->middleware('can:sacademica.matriculas.destroy')->only('destroy');
         $this->middleware('can:sacademica.matriculas.show')->only('show');
     }
+    public function indexRequestValidate($request){
+        $programa = $request->programa;
+        $ciclo = $request->ciclo;
+        $periodo = $request->periodo;
+        $searchText = $request->searchText;
+        if(isset($programa) || isset($ciclo) || isset($periodo) || isset($searchText)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     public function index(Request $request)
     {
-        //vamos a sacar el periodo actual
         $programas = Carrera::orderBy('nombreCarrera')->where('observacionCarrera','=','visible')->get();
-        //$periodos = Pmatricula::
-        $anio = Carbon::now()->parse()->year;
+        $periodos = Pmatricula::orderBy('nombre','desc')->get();
+       /*  $anio = Carbon::now()->parse()->year;
         $periodoPar = Pmatricula::where('nombre','=',$anio."-1")->first();
-        $periodoImpar = Pmatricula::where('nombre','=',$anio."-2")->first();
-        $searchText = null;
-        if (isset($request->searchText)){
-            $this->buscar = $request->searchText;
-            $searchText = $request->searchText;
-            /* $matriculas = Ematricula::orderBy('id','desc')
-            ->get(); */
-            $matriculas = Ematricula::orderBy('id','desc')
-            ->whereHas('estudiante.postulante.cliente',function($query){
-                $query->where('dniRuc',$this->buscar)
-                ->orWhere('apellido','like','%'.$this->buscar.'%')
-                ->orWhere('nombre','like','%'.$this->buscar.'%');
-            })->get();
+        $periodoImpar = Pmatricula::where('nombre','=',$anio."-2")->first(); */
+        if($this->indexRequestValidate($request)){
+            $matriculas = Ematricula::when($request->searchText,function($queryText) use($request){
+                $queryText->whereHas('estudiante.postulante.cliente',function($query) use($request){
+                    $query->where('dniRuc','=',$request->searchText)
+                    ->orWhere('nombre','like','%'.$request->searchText.'%')
+                    ->orWhere('apellido','like','%'.$request->searchText.'%');
+                });
+            })->when($request->programa,function($queryPrograma) use($request){
+                $queryPrograma->whereHas('estudiante.postulante',function($query) use($request){
+                    $query->where('idCarrera','=',$request->programa);
+                });
+            })->when($request->ciclo,function($queryCiclo) use($request){
+                $queryCiclo->whereHas('detalles.unidad',function($query) use($request){
+                    $query->where('ciclo','=',$request->ciclo);
+                });
+            })->when($request->periodo,function($queryPeriodo) use($request){
+                $queryPeriodo->where('pmatricula_id','=',$request->periodo);
+            })
+            ->get();
         }else{
-            $hola = $matriculas = Ematricula::whereHas('matricula',function($query){
-                $query->where('plan_cerrado',0)->whereNot('ematriculas.tipo','=',"Extra");
-            })->orderBy('id','desc')->paginate(10);
+            $matriculas = Ematricula::whereHas('matricula',function($query){
+                $query->where('plan_cerrado',0);
+            })->orderBy('fecha','desc')
+            ->paginate(10);
         }
-        return view('sacademica.ematriculas.index',compact('matriculas','searchText','programas'));
+        return view('sacademica.ematriculas.index',compact('matriculas','programas','periodos'));
     }
 
     /**
@@ -68,12 +85,12 @@ class MatriculaController extends Controller
     {
         $sexos = ['Masculino'=>'Masculino','Femenino'=>'Femenino'];
         $periodos = Pmatricula::orderBy('nombre','desc')
+        ->where('plan_cerrado',0)
         ->pluck('nombre','id')
         ->toArray();
         $tipo = tMatricula();
         return view('sacademica.ematriculas.create',compact('sexos','periodos','tipo'));
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -141,7 +158,7 @@ class MatriculaController extends Controller
     {
         //
         $matricula = Ematricula::findOrFail($id);
-        return view('sacademica.ematriculas.show',compact('matricula'));
+        return view('sacademica.ematriculas.showv2',compact('matricula'));
     }
 
     /**

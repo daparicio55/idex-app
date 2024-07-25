@@ -26,30 +26,7 @@
     $estudiante_id = 0;
 @endphp
 <!-- verificamos si tiene deuda -->
-<div class="row" id="deudas" style="display: none">
-    <div class="card col-sm-12">
-        <div class="card-header bg-danger mt-2">
-            <h4><i class="fas fa-credit-card"></i> Pagos Pendientes.</h4>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <td>#</td>
-                            <td>Fecha</td>
-                            <td>Servicio</td>
-                            <td>Observacion</td>
-                        </tr>
-                    </thead>
-                    <tbody id="table_deudas">
-                        
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+@include('sacademica.ematriculas.partes.deuda')
 {{-- programa de estudios --}}
 <div class="row">
     <div class="card col-lg-12">
@@ -69,80 +46,9 @@
     </div>
 </div>
 {{-- datos del cliente  --}}
-<div class="row">
-    <div class="card col-lg-12">
-        <div class="card-header">
-            <h4><i class="fas fa-database"></i> Datos Personales.</h4>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                    {!! Form::label('apellido', 'Apellidos', [null]) !!}
-                    <input type="text" id="apellido" name="apellido" class="form-control" disabled>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                    {!! Form::label('nombre', 'Nombres', [null]) !!}
-                    <input type="text" id="nombre" name="nombre" class="form-control" disabled>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                    {!! Form::label('telefono', 'Telefono Llamadas', [null]) !!}
-                    <input type="text" id="telefono" name="telefono" class="form-control" required>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                    {!! Form::label('telefono2', 'Telefono WhatsApp', [null]) !!}
-                    <input type="text" id="telefono2" name="telefono2" class="form-control" required>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                    {!! Form::label('fechaNacimiento', 'F. Nacimiento', ['class'=>'pb-2']) !!}
-                    <input type="date" id="fechaNacimiento" name="fechaNacimiento" class="form-control" required>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                    {!! Form::label('sexo', 'Sexo', ['class'=>'pb-2']) !!}
-                    {!! Form::select('sexo', $sexos, null, ['class'=>'form-control']) !!}
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                    {!! Form::label('email', 'Correo', [null]) !!}
-                    <label for="">
-                        <button type="button" class="btn btn-info btn-sm" id="btn_mail">
-                            <i class="fas fa-mail-bulk"></i>
-                        </button>
-                    </label>
-                    <input type="text" id="email" name="email" class="form-control" required>
-                </div>
-                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
-                    {!! Form::label('direccion', 'Dirección', ['class'=>'pb-2']) !!}
-                    <input type="text" id="direccion" name="direccion" class="form-control" required>                    
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@include('sacademica.ematriculas.partes.cliente')
 {{-- datos del periodo de matricula --}}
-<div class="row">
-    <div class="card col-lg-12">
-        <div class="card-header">
-            <h4><i class="far fa-calendar-alt"></i> Periodo de Matricula.</h4>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                    {!! Form::label('pmatricula_id', 'Periodo', [null]) !!}
-                    {!! Form::select('pmatricula_id', $periodos, null, ['class'=>'form-control']) !!}
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                    {!! Form::label('tipo', 'Tipo Matricula', [null]) !!}
-                    {!! Form::select('tipo', $tipo, null, ['class'=>'form-control']) !!}
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                    {!! Form::label('fecha', 'Fecha', [null]) !!}
-                    {!! Form::date('fecha', null, ['class'=>'form-control','required']) !!}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@include('sacademica.ematriculas.partes.periodomatricula')
 {{-- unidades didacticas --}}
 <div class="row">
     <div class="card col-lg-12">
@@ -189,57 +95,8 @@
 
 @stop
 @section('js')
-    <script>
-    var URL = $('#url').val();
-    $('#frm').submit(function(event){
-        $('#btn_guardar').attr('disabled',true);
-    });
-    function buscardni(){
-        var dni = document.getElementById("searchText").value;
-        if (dni.trim() == ""){
-            alert('Ingrese un texto para buscar');
-        }else{
-            document.getElementById('deudas').style.display = "none";
-            /* limpiar la tabla */
-            $('#cprogramas tr').each(function(){ 
-                this.remove();
-            });
-            var HTMLResponse = document.querySelector("#cprogramas");
-            var API_URL = URL+"estudiantepestudio/dni/"+dni;
-            fetch(API_URL).then((response)=>response.json()).then((programas)=>{
-                programas.forEach(programa=>{
-                    var tr = document.createElement('tr');
-                    var td1 = document.createElement('td');
-                    var td2 = document.createElement('td');
-                    var td3 = document.createElement('td');
-                    var td4 = document.createElement('td');
-                    var td5 = document.createElement('td');
-                    var td6 = document.createElement('td');
-                    /* vamos asignar los valores */
-                    td1.appendChild(document.createTextNode(programa.idCliente));
-                    td2.appendChild(document.createTextNode(programa.dniRuc));
-                    td3.appendChild(document.createTextNode(programa.Apellido + ', ' + programa.Nombre));
-                    td4.appendChild(document.createTextNode(programa.programa));
-                    /*botones  */
-                    var btn = document.createElement("button");
-                    btn.setAttribute('class','btn btn-primary');
-                    btn.setAttribute('onclick','eleccion('+programa.estudiante_id+')');
-                    btn.appendChild(
-                        document.createTextNode('+')
-                    );
-                    td5.appendChild(btn);
-                    tr.appendChild(td1);
-                    tr.appendChild(td2);
-                    tr.appendChild(td3);
-                    tr.appendChild(td4);
-                    tr.appendChild(td5);
-                    HTMLResponse.appendChild(tr);
-                });
-            });
-            
-            $('#modal-pestudios').modal('show');
-        }
-    }
+    <script src="{{ asset('js/matriculas/main.js') }}"></script>
+    <script>    
     function calcularnotas(estudiante,unidad){
         var API_URL2 = URL+"estudiantepestudio/notas?estudiante="+estudiante+"&unidad="+unidad;
         fetch(API_URL2).then((response)=>response.json()).then((notas)=>{
@@ -338,7 +195,8 @@
             this.remove();
         });
         var HTMLResponse1 = document.querySelector("#unidades");
-        var API_URL1 = URL+"estudiantepestudio/unidades/"+id;
+        var API_URL1 = URL+"estudiantepestudio/unidades/"+id+"/periodo/"+$('#pmatricula_id').val();
+        console.log(API_URL1 );
         fetch(API_URL1).then((response)=>response.json()).then((unidades)=>{
             unidades.forEach(unidad=>{
                 var tr = document.createElement('tr');
@@ -398,7 +256,7 @@
                 tr.appendChild(td5);
                 tr.appendChild(td7);
                 HTMLResponse1.appendChild(tr);
-                console.log(unidad);
+                //console.log(unidad);
             });
         });
     /* termino la eleccion */
@@ -496,10 +354,5 @@
             alert("Existe un cruce de horarios con esta unidad didactica");
         }
     }
-    document.getElementById('btn_mail').addEventListener('click',function(){
-        let dni = document.getElementById('searchText');
-        let text = dni.value + '@idexperujapon.edu.pe';
-        document.getElementById('email').value = text;
-    });
     </script>
 @stop

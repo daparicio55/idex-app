@@ -7,6 +7,7 @@ use App\Models\Ematricula;
 use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
 use App\Models\Horario;
+use App\Models\Pmatricula;
 use App\Models\Uasignada;
 use App\Models\Udidactica;
 use Carbon\Carbon;
@@ -100,8 +101,11 @@ class EstudiantePEstudioController extends Controller
         //tengo que sacar todas las unidades didacticas del la carrera
 
     }
-    public function unidades($id){
+    public function unidades($id,$periodo){
         //
+        //obtener el ultimo periodo de estudios
+        $ultimo_periodo = Pmatricula::find($periodo);
+
         $estudiante = DB::table('estudiantes as est')
         ->join('admisione_postulantes as ad_post','ad_post.id','=','est.admisione_postulante_id')
         ->where('est.id','=',$id)
@@ -116,11 +120,11 @@ class EstudiantePEstudioController extends Controller
             $horarios = [];
             if(isset($uni->equivalencia->id)){
                 $uasignada = Uasignada::where('udidactica_id','=',$uni->equivalencia->id)
-                ->where('pmatricula_id','=',101)
+                ->where('pmatricula_id','=',$ultimo_periodo->id)
                 ->first();
             }else{
                 $uasignada = Uasignada::where('udidactica_id','=',$uni->id)
-                ->where('pmatricula_id','=',101)
+                ->where('pmatricula_id','=',$ultimo_periodo->id)
                 ->first();
             }
             if(isset($uasignada->horarios)){

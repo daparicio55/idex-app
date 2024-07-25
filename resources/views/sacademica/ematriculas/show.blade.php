@@ -1,283 +1,168 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Sistema IDEX Perú Japón</title>
     <meta lang="es_ES">
     <meta charset="utf-8">
     <style>
-        body{
-            font-size: 10px;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-        }
-        h2{
-            text-align: center;
-            margin: 0;
-        }
-        h4{
-            text-align: center;
-            /* margin: 0; */
-        }
-        ul, li {
-            line-height: 1.2; /* Puedes ajustar el valor según tus necesidades */
-            margin: 0;
-            font-size: 10px;
-            list-style: none;
-            padding:0px;
-        }
-        .cabezera{
-            width: 100%;
-        }
-        .filaCentrar{
-            width: 25%;
-            text-align: center;
-        }
-        .informacion{
+            .table-header {
             width: 100%;
             border-collapse: collapse;
-            border: black 1px solid;
-            margin-top: 1rem;
-        }
-        .filaInformacion{
-            width: 20%;
-            border: black 1px solid;
-            font-size: 10px;
-            background:lightgray;
-        }
-        .filaDatos{
-            width: 30%;
-            border: black 1px solid;
-            font-size: 10px;
-        }
-        .tbCuerpo{
-            width: 100%;
-            border: black 1px solid;
-            border-collapse: collapse;
-            font-size: 10px;
+            /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+            margin-bottom: 1rem;
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
-<header>
-    <table class="cabezera">
-        <tbody>
-            <tr>
-                <td class="filaCentrar">
-                    <img src="https://sisge.idexperujapon.edu.pe/img/logo.png"  height="70" alt="">
-                </td>
-                <td class="filaCentrar">&nbsp;</td>
-                <td class="filaCentrar">&nbsp;</td>
-                <td class="filaCentrar">
-                    <img src="https://sisge.idexperujapon.edu.pe/img/pjHeader.jpg" height="70" alt="">
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>Fecha Matricula: {{date("d-m-Y", strtotime($matricula->fecha))}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <h2><b>Sistema de Control IDEX "Perú Japón"</b></h2>
-    <h2><b>Ficha de Matrícula Semestral ({{ $matricula->tipo }})</b></h2>
-</header>
+
+
 <body>
-    <table class="informacion">
-        <tbody>
-            <tr>
-                <td class="filaInformacion"><b>Institución</b></td>
-                <td class="filaDatos">IDEX 'Perú Japón'</td>
-                <td class="filaInformacion"><b>DRE</b></td>
-                <td class="filaDatos">Amazonas</td>
-            </tr>
-            <tr>
-                <td class="filaInformacion"><b>Programa de Estudios</b> </td>
-                <td class="filaDatos">{{$matricula->estudiante->postulante->carrera->nombreCarrera}}</td>
-                <td class="filaInformacion"><b>Periodo de Clases</b></td>
-                <td class="filaDatos">{{$matricula->matricula->nombre}}</td>
-            </tr>
-            <tr>
-                <td class="filaInformacion"><b>Apellidos y Nombres</b> </td>
-                <td class="filaDatos"><strong>{{Str::upper($matricula->estudiante->postulante->cliente->apellido)}}</strong>, {{Str::title($matricula->estudiante->postulante->cliente->nombre)}}</td>
-                <td class="filaInformacion"><b>DNI</b></td>
-                <td class="filaDatos">{{$matricula->estudiante->postulante->cliente->dniRuc}}</td>
-            </tr>
-            <tr>
-                <td class="filaInformacion"><b>Dirección</b> </td>
-                <td class="filaDatos">{{$matricula->estudiante->postulante->cliente->direccion}}</td>
-                <td class="filaInformacion"><b>Telefono / WhatsApp</b></td>
-                <td class="filaDatos">{{$matricula->estudiante->postulante->cliente->telefono}} / {{$matricula->estudiante->postulante->cliente->telefono2}}</td>
-            </tr>
-            <tr>
-                <td class="filaInformacion"><b>Correo</b> </td>
-                <td class="filaDatos">{{$matricula->estudiante->postulante->cliente->email}}</td>
-                <td class="filaInformacion"><b>N° Boleta</b></td>
-                <td class="filaDatos"></td>
-            </tr>
-            <tr>
-                <td class="filaInformacion"><b>Año Ingreso</b> </td>
-                <td class="filaDatos">{{$matricula->estudiante->postulante->admisione->nombre}}</td>
-                <td class="filaInformacion"><b>Usuario Sistema</b></td>
-                <td class="filaDatos">{{$matricula->user->email}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <h4>UNIDADES DIDACTICAS REGULARES</h4>
-    <table class="tbCuerpo">
-        
-        <tbody style="border: black 1px solid">
-            @php
-                $cont=1;
-                $horas=0;
-                $creditos=0;
-            @endphp
-            <tr style="font-weight:bold; background:lightgray">
-                    <td>N°</td>
-                    <td>Ciclo</td>
-                    <td>Tipo</td>
-                    <td>Unidad Didáctica</td>
-                    <td>Horario</td>
-                    {{-- <td>Horas</td> --}}
-                    <td>Tipo M.</td>
-                    <td>Ho. Cré.</td>
-            </tr>
-            @foreach ($matricula->detalles as $detalle)
-            @if ($detalle->tipo == 'Regular')
-            <tr style="border: black 1px solid">
-                <td style="border: black 1px solid">{{$cont}}</td>
-                <td style="border: black 1px solid; text-align: center">{{$detalle->unidad->ciclo}}</td>
-                <td style="border: black 1px solid">{{$detalle->unidad->tipo}}</td>
-                <td style="border: black 1px solid">
-                    
-                    @if(isset($detalle->unidad->equivalencia->nombre))                        
-                        @php
-                            $uasignada = App\Models\Uasignada::where('pmatricula_id','=',$matricula->pmatricula_id)
-                            ->where('udidactica_id','=',$detalle->unidad->equivalencia->id)
-                            ->first();
-                        @endphp
-                        {{$detalle->unidad->nombre}} <span style="color: red">Equivalencia:</span> {{ $detalle->unidad->equivalencia->nombre }} Ciclo: {{ $detalle->unidad->equivalencia->ciclo }}
-                        <b>Docente: </b> {{ $uasignada->user->name }}
-                    @else
-                        
-                        @php
-                            $uasignada = App\Models\Uasignada::where('pmatricula_id','=',$matricula->pmatricula_id)
-                            ->where('udidactica_id','=',$detalle->unidad->id)
-                            ->first();
-                        @endphp
-                        @if (isset($uasignada->user->name))
-                            {{$detalle->unidad->nombre}} <b>Docente: </b> {{ $uasignada->user->name }}
-                        @else
-                            {{$detalle->unidad->nombre}}
-                        @endif
-                        
-                    @endif
-                </td>
-                <td>
-                    @if(isset($uasignada))
-                    <ul>
-                        @foreach ($uasignada->horarios as $horario)
-                            <li>{{ $horario->day }}-{{ $horario->hinicio }}-{{ $horario->hfin }}</li>
-                        @endforeach
-                    </ul>
-                    @endif
-                </td>
-                {{-- <td style="border: black 1px solid">{{$detalle->unidad->horas}}</td>  --}}   
-                <td style="border: black 1px solid">{{$detalle->tipo}}</td>
-                <td style="border: black 1px solid">{{$detalle->unidad->horas}}/{{$detalle->unidad->creditos}}</td>
-            </tr>
-            @php
-                $horas=$horas+$detalle->unidad->horas;
-                $creditos=$creditos+$detalle->unidad->creditos;
-                $cont++;
-            @endphp
-            @endif
-            @endforeach
-            <tr>
-                <td colspan="3"></td>
-                <td style="text-align: center" colspan="2"><b>Total Horas Semanales: {{$horas}}</b></td>
-                <td colspan="2" style="text-align: center"><b>Total Creditos: {{$creditos}}</b></td>
-            </tr>
-        </tbody>
-    </table>
-    <h4>UNIDADES DIDACTICAS REPITENCIA</h4>
-    <table class="tbCuerpo">
-        
-        <tbody style="border: black 1px solid">
-            @php
-                $cont=1;
-                $horas=0;
-                $creditos=0;
-            @endphp
-            <tr style="font-weight:bold; background:lightgray">
-                <td>N°</td>
-                <td>Ciclo</td>
-                <td>Tipo</td>
-                <td>Unidad Didáctica</td>
-                <td>Horario</td>
-                {{-- <td>Horas</td> --}}
-                <td>Tipo M.</td>
-                <td>Ho. Cré.</td>
-            </tr>
-            @foreach ($matricula->detalles as $detalle)
-            @if ($detalle->tipo == 'Repitencia')
-            <tr style="border: black 1px solid">
-                <td style="border: black 1px solid">{{$cont}}</td>
-                <td style="border: black 1px solid; text-align: center">{{$detalle->unidad->ciclo}}</td>
-                <td style="border: black 1px solid">{{$detalle->unidad->tipo}}</td>
-                
-                <td style="border: black 1px solid">
-                    
-                    @if(isset($detalle->unidad->equivalencia->nombre))                        
-                        @php
-                            $uasignada = App\Models\Uasignada::where('pmatricula_id','=',$matricula->pmatricula_id)
-                            ->where('udidactica_id','=',$detalle->unidad->equivalencia->id)
-                            ->first();
-                        @endphp
-                        {{$detalle->unidad->nombre}} <span style="color: red">Equivalencia:</span> {{ $detalle->unidad->equivalencia->nombre }} Ciclo: {{ $detalle->unidad->equivalencia->ciclo }}
-                        @isset($uasignada->user->name)
-                            <b>Docente: </b> {{ $uasignada->user->name }}    
-                        @endisset
-                    @else
-                        
-                        @php
-                            $uasignada = App\Models\Uasignada::where('pmatricula_id','=',$matricula->pmatricula_id)
-                            ->where('udidactica_id','=',$detalle->unidad->id)
-                            ->first();
-                        @endphp
-                        @if ($uasignada !== null)
-                            {{$detalle->unidad->nombre}} <b>Docente: </b> {{ $uasignada->user->name }}
-                        @else
-                            {{$detalle->unidad->nombre}}
-                        @endif
-                        
-                    @endif
-                </td>
-                <td>
-                    @if($uasignada !== null)
-                    <ul>
-                        @foreach ($uasignada->horarios as $horario)
-                            <li>{{ $horario->day }}-{{ $horario->hinicio }}-{{ $horario->hfin }}</li>
-                        @endforeach
-                    </ul>
-                    @endif
-                </td>>
-                {{-- <td style="border: black 1px solid">{{$detalle->unidad->horas}}</td>   --}}  
-                <td style="border: black 1px solid">{{$detalle->tipo}}</td>
-                <td style="border: black 1px solid">{{$detalle->unidad->horas}}/{{$detalle->unidad->creditos}}</td>
-            </tr>
-            @php
-                $horas=$horas+$detalle->unidad->horas;
-                $creditos=$creditos+$detalle->unidad->creditos;
-                $cont++;
-            @endphp
-            @endif
-            @endforeach
-            <tr>
-                <td colspan="3"></td>
-                <td style="text-align: center" colspan="2"><b>Total Horas Semanales: {{$horas}}</b></td>
-                <td colspan="2" style="text-align: center"><b>Total Creditos: {{$creditos}}</b></td>
-            </tr>
-        </tbody>
-    </table>
+    <header>
+        <table class="table-header">
+            <thead>
+                <tr>
+                    <th>
+                        <img src="https://titulosinstitutos.minedu.gob.pe/Content/img/logo-minedu.png" width="200px"
+                            alt="a">
+                    </th>
+                    <th>
+                        <h5 class="mb-0 text-center"><b>Sistema de Control IDEX "Perú Japón"</b></h5>
+                        <h5 class="mb-0 text-center"><b>Ficha de Matrícula Semestral ({{ $matricula->tipo }})</b></h5>
+                        <p class="text-center">fecha de matrícula: {{ date('d-m-Y',strtotime($matricula->fecha)) }}</p>
+                    </th>
+                    <th>
+                        <img src="https://idexperujapon.edu.pe/wp-content/uploads/2023/08/cropped-logo-300x93.png"
+                            width="150px" alt="b">
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </header>
+    <div class="card" style="font-size: 0.7rem">
+        <div class="card-header bg-primary text-white">
+            <span class="font-bold">DATOS PERSONALES</span>
+        </div>
+        <div class="card-body pt-1 pb-0 pl-0 pr-0">
+            <div class="row">
+                <div class="col-sm-10 pl-0">
+                    <table class="table mb-1" style="font-size: 0.8rem">
+                        <tbody>
+                            <tr>
+                                <th class="pt-0 pb-0 pl-1 bg-primary">Institución</th>
+                                <td class="pt-0 pb-0 pl-1">IESTP Perú Japón</td>
+                                <th class="pt-0 pb-0 pl-1 bg-primary">DRE</th>
+                                <td class="pt-0 pb-0 pl-1">Amazonas</td>
+                            </tr>
+                            <tr>
+                                <th class="pt-0 pb-0 pl-1 bg-primary" colspan="2">Programa de Estudios</th>
+                                <th class="pt-0 pb-0 pl-1 bg-primary">Admisión</th>
+                                <td class="pt-0 pb-0 pl-1">{{ $matricula->estudiante->postulante->admisione->nombre }}</td>
+                            </tr>
+                            <tr>
+                                <td class="pt-0 pb-0 pl-1" colspan="4">{{ $matricula->estudiante->postulante->carrera->nombreCarrera }}</td>
+                            </tr>
+                            <tr>
+                                <th class="pt-0 pb-0 pl-1 bg-primary" colspan="2">APELLIDOS, Nombres</th>
+                                <th class="pt-0 pb-0 pl-1 bg-primary">DNI</th>
+                                <td class="pt-0 pb-0 pl-1">{{ $matricula->estudiante->postulante->cliente->dniRuc }}</td>
+                            </tr>
+                            <tr>
+                                <td class="pt-0 pb-0 pl-1" colspan="4">{{ Str::upper($matricula->estudiante->postulante->cliente->apellido) }}, {{ Str::title($matricula->estudiante->postulante->cliente->nombre) }}</td>
+                            </tr>
+                            <tr>
+                                <th class="pt-0 pb-0 pl-1 bg-primary">Correo</th>
+                                <td class="pt-0 pb-0 pl-1">{{ $matricula->estudiante->postulante->cliente->email }}</td>
+                                <th class="pt-0 pb-0 pl-1 bg-primary">Teléfono</th>
+                                <td class="pt-0 pb-0 pl-1">{{ $matricula->estudiante->postulante->cliente->telefono }}</td>
+                            </tr>
+                            <tr>
+                                <th class="pt-0 pb-0 pl-1 bg-primary">U. Sistema</th>
+                                <td class="pt-0 pb-0 pl-1">{{ $matricula->user->email }}</td>
+                                <th class="pt-0 pb-0 pl-1 bg-primary">Periodo</th>
+                                <td class="pt-0 pb-0 pl-1">{{ $matricula->matricula->nombre }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-2">
+                    <img style="height: 150px" src="{{ Storage::url($matricula->estudiante->postulante->url) }}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card" style="font-size: 0.6rem">
+        <div class="card-header bg-success text-white">
+            <b>UNIDADES DIDACTICAS REGULARES</b>
+        </div>
+        <div class="card-body pt-1 pb-0 pl-0 pr-0">
+            <table class="table mb-1 table-bordered">
+                <thead>
+                    <tr class="bg-secondary">
+                        <th class="pt-0 pb-0">#</th>
+                        <th class="pt-0 pb-0">Ci.</th>
+                        <th class="pt-0 pb-0">Tipo</th>
+                        <th class="pt-0 pb-0">Unidad Didáctica</th>
+                        <th class="pt-0 pb-0">Horario</th>
+                        <th class="pt-0 pb-0">Tipo</th>
+                        <th class="pt-0 pb-0">H/C</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($matricula->detalles->where('tipo','=','Regular') as $detalle)
+                            <tr>
+                                <td class="pt-0 pb-0">{{ $loop->index + 1 }}</td>
+                                <td class="pt-0 pb-0">{{ $detalle->unidad->ciclo }}</td>
+                                <td class="pt-0 pb-0">{{ $detalle->unidad->tipo }}</td>
+                                @if(isset($detalle->unidad->equivalencia->id))
+                                    <td class="pt-0 pb-0">
+                                        {{ $detalle->unidad->nombre }}
+                                        @if(isset(getDocente($matricula->pmatricula_id,$detalle->unidad->equivalencia->id)->user->name))
+                                            <span class="text-danger">
+                                                Equivalencia:
+                                                {{ $detalle->unidad->equivalencia->nombre }} Ciclo:
+                                                {{ $detalle->unidad->equivalencia->ciclo }}
+                                            </span>
+                                            <span class="d-block">
+                                                <b>Docente:</b> {{ getDocente($matricula->pmatricula_id,$detalle->unidad->equivalencia->id)->user->name }}
+                                            </span>
+                                        @endif
+                                    </td> 
+                                @else
+                                    <td class="pt-0 pb-0">
+                                        {{ $detalle->unidad->nombre }}
+                                        <b>Docente:</b> {{ getDocente($matricula->pmatricula_id,$detalle->unidad->id)->user->name }}
+                                    </td>
+                                @endif
+                                <td class="pt-0 pb-0">
+                                    @if(isset(getDocente($matricula->pmatricula_id,$detalle->unidad->id)->user->name))
+                                        <ul class="mb-0">
+                                            @foreach (getDocente($matricula->pmatricula_id,$detalle->unidad->id)->horarios as $horario)
+                                                <li>{{ $horario->day }}-{{ $horario->hinicio }}-{{ $horario->hfin }}</li>
+                                            @endforeach
+                                        </ul>
+                                    @endif  
+                                </td>
+                                <td class="pt-0 pb-0">{{ $detalle->tipo }}</td>
+                                <td class="pt-0 pb-0">
+                                    {{ $detalle->unidad->horas }}/{{ $detalle->unidad->creditos }}
+                                </td>                   
+                            </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer d-flex justify-content-between pt-1 pb-0">
+            <div>
+                Total Horas Semanales: {{ $matricula->detalles->where('tipo','=','Regular')->sum('unidad.horas') }}
+            </div>
+            <div>
+                Total Creditos: {{ $matricula->detalles->where('tipo','=','Regular')->sum('unidad.creditos') }}
+            </div>
+        </div>
+    </div>
+    
+    
     <br>
     <br>
     <br>
@@ -289,15 +174,22 @@
     <table style="width: 100%">
         <tbody>
             <tr style="text-align: center">
-                <td style="width: 33%">_______________________</td><td style="width: 33%">&nbsp;</td><td style="width: 33%">_____________</td>
+                <td style="width: 33%">_______________________</td>
+                <td style="width: 33%">&nbsp;</td>
+                <td style="width: 33%">_____________</td>
             </tr>
             <tr style="text-align: center">
-                <td style="width: 33%">SECRETARIA ACADÉMICA</td><td style="width: 33%">&nbsp;</td><td style="width: 33%">ESTUDIANTE</td>
+                <td style="width: 33%">SECRETARIA ACADÉMICA</td>
+                <td style="width: 33%">&nbsp;</td>
+                <td style="width: 33%">ESTUDIANTE</td>
             </tr>
             <tr style="text-align: center">
-                <td style="width: 33%">firma post firma y sello</td><td style="width: 33%">&nbsp;</td><td style="width: 33%">firma</td>
+                <td style="width: 33%">firma post firma y sello</td>
+                <td style="width: 33%">&nbsp;</td>
+                <td style="width: 33%">firma</td>
             </tr>
         </tbody>
     </table>
 </body>
+
 </html>

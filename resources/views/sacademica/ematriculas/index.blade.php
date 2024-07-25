@@ -1,73 +1,30 @@
 @extends('adminlte::page')
 @section('title', 'Matriculas')
-
 @section('content_header')
-    <h1>Matriculas
-		<a href="{{route('sacademica.matriculas.create')}}" class="btn btn-success">
-			<i class="far fa-file"></i> Nuevo
-		</a>
-	</h1>
+    <x-alert/>
+    <h1>Lista de Matrículas del Sistema...</h1>
+    <a href="{{route('sacademica.matriculas.create')}}" class="btn btn-success mt-2 mb-2">
+        <i class="far fa-file"></i> Nuevo Registro
+    </a>
+    @include('sacademica.ematriculas.search')
 @stop
 @section('content')
-@if (session('info'))
-    <div class="alert alert-success" id='info'>
-        <strong>{{session('info')}}</strong>
-    </div>
-@endif
-@if (session('error'))
-    <div class="alert alert-danger" id='error'>
-        <strong>{{session('error')}}</strong>
-    </div>
-@endif
-{!! Form::open(['route'=>'sacademica.matriculas.index','method'=>'GET','autocomplete'=>'off','role'=>'search']) !!}
-<div class="row">
-    <div class="col-sm-12 col-md-12">
-        <div class='form-group'>
-            <div class="input-group">
-                <input type="text" class="form-control" name="searchText" placeholder="Ingrese número de DNI a buscar..." @if(isset($searchText)) value="{{$searchText}}" @endif >
-                <span class="input-group-btn">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search-plus"></i> Buscar
-                    </button>
-                    <a href="{{route('sacademica.matriculas.index')}}" class="btn btn-danger">
-                        <i class="fas fa-recycle"></i> Limpiar
-                    </a>
-                </span>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12 col-md-6">
-        <select name="programa" class="form-control">
-            <option value="0" disabled selected>Seleccione Programa de Estudios</option>
-            @foreach ($programas as $programa)
-                <option value="{{ $programa->idCarrera }}">{{ $programa->nombreCarrera }}</option>
-            @endforeach
-        </select>
-    </div>
-    <div class="col-sm-4">
-        <select name="periodo">
-            
-        </select>
-    </div>
-</div>
-{!! Form::close() !!}
-<div class="row mt-2">
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		<div class="table-responsive">
-			<table class="table table-striped table-bordered table-condensed table-hover">
-                <thead>
-                    <th>DNI</th>
-                    <th>APELLIDOS, Nombres</th>
-                    <th>Programa de Estudios</th>
-                    <th>Telefono</th>
-                    <th>WhatsApp</th>
-                    <th style="width: 100px">Fecha</th>
-                    <th>Periodo</th>
-                </thead>
-                <tbody>
-                @foreach ($matriculas as $matricula)
+<div class="table-responsive">
+    <table class="table table-bordered table-condensed table-hover">
+        <thead>
+            <tr>
+                <th>DNI</th>
+                <th>APELLIDOS, Nombres</th>
+                <th>Programa de Estudios</th>
+                <th>Telefono</th>
+                <th>WhatsApp</th>
+                <th style="width: 100px">Fecha</th>
+                <th>Periodo</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($matriculas as $matricula)
                         <tr @if($matricula->licencia == "SI") style="text-decoration : line-through" @endif>
                             <td>{{ $matricula->estudiante->postulante->cliente->dniRuc }}</td>
                             <td><strong>{{Str::upper($matricula->estudiante->postulante->cliente->apellido)}}</strong>, {{Str::title($matricula->estudiante->postulante->cliente->nombre)}}</td>
@@ -88,45 +45,18 @@
                                 </a>
                             </td>                        
                         </tr>
-                        {{-- <tr>
-                            <td>
-                                <a href="" class="btn btn-primary" data-target="#modal-licencia-{{$matricula->id}}" data-toggle="modal">
-                                    Licencia
-                                </a>
-                            </td>
-                            <td colspan="6" class="text-danger">
-                                {{ $matricula->licenciaObservacion }}
-                            </td>
-                            <td style="text-align: center">
-                                <a data-target="#modal-dlicencia-{{$matricula->id}}" data-toggle="modal" href="" class="btn btn-primary" title="eliminar licencia">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </td>
-                        </tr> --}}
                         @include('sacademica.ematriculas.delete')
                 @endforeach
-                </tbody>
-                <tfoot>
-                    @if (!isset($searchText))
-                        {{ $matriculas->links() }}
-                    @endif
-                </tfoot>
-            </table>
-        </div>
-    </div>
+        </tbody>
+        <tfoot>
+            @if(method_exists($matriculas, 'links'))
+            <tr>
+                <td colspan="8" class="pb-0">
+                    {{ $matriculas->links() }}
+                </td>
+            </tr>
+            @endif
+        </tfoot>
+    </table>
 </div>
-@stop
-@section('js')
-    <script>
-	$(document).ready(function(){
-    setTimeout(() => {
-        $("#info").hide();
-    }, 12000);
-    });
-    $(document).ready(function(){
-        setTimeout(() => {
-        $("#error").hide();
-      }, 12000);
-    });
-	</script>
 @stop

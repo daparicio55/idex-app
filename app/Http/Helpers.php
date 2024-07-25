@@ -1004,5 +1004,10 @@ function caNota($capacidade,$detalleMatricula){
         ];
         return $arr;
 }
-
+function getDocente($pmatricula_id,$udidactica_id){
+        $uasignada = Uasignada::where('pmatricula_id','=',$pmatricula_id)
+        ->where('udidactica_id', '=',$udidactica_id)
+        ->first();
+        return $uasignada;
+}
 
