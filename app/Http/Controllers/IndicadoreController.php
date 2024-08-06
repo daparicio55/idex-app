@@ -263,9 +263,6 @@ class IndicadoreController extends Controller
         }else{
             $equivalencias = null;
         }
-        //dd($equivalencias);
-        //dd($estudiantes->toSql());
-        //dd($criterio->asignacione->unidad->old->id);
         return view('docentes.cursos.capacidades.indicadores.calificar',compact('estudiantes','equivalencias','indicadore'));
     }
     public function calificarStore(CalificarStoreRequest $request,$indicadore_id){

@@ -126,6 +126,7 @@
             let day = document.getElementById('text'+id);
             let select = document.getElementsByName('select'+id+'[]');
             let token = document.getElementsByName('_token');
+            let uasignada_id = '{{ $asignacione->id }}';
             let ruta = "{{ route('docentes.asistencias.store') }}";
             let d = [];
             select.forEach(element => {
@@ -135,6 +136,7 @@
                 _token: token[0].value,
                 dia: day.value,
                 datos: d,
+                uasignada: uasignada_id
             }
             const opciones = {
             method: 'POST',

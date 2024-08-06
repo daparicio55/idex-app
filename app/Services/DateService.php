@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\Docentes\Asistencias;
+use App\Models\Uasignada;
 use Carbon\Carbon;
 
 class DateService
@@ -76,6 +77,9 @@ class DateService
         return $fdias;
     }
     public function inability($emdetalle_id,$uasignada){
+        if(is_numeric($uasignada)){
+            $uasignada = Uasignada::findOrFail($uasignada);
+        }
         $fechas = $this->fdias($uasignada);
         $faltas = Asistencias::where('emdetalle_id','=',$emdetalle_id)->where('estado','=','F')->get();
         $total_fechas = count($fechas);

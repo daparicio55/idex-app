@@ -156,7 +156,7 @@ class AsistenciaController extends Controller
     {            
         try {
             foreach ($request->datos as $key => $dato) {
-                # code...
+                # code... $dateService->inability($estudiantematriculadetalle->id,$uasignada)
                 $data = explode(':',$dato);
                 $asistencia = Asistencias::updateOrCreate(
                     ['fecha'=>$request->dia,'emdetalle_id'=>$data[0]],
@@ -168,6 +168,7 @@ class AsistenciaController extends Controller
                     ]
                 );
             }
+            //luego de guardar la asistencia debemos de
             $array = [
                 'respuesta' =>'Correcto'
             ];  
