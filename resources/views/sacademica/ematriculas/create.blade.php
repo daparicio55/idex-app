@@ -260,7 +260,7 @@
             });
         });
     /* termino la eleccion */
-    var API_URL11 = URL+"estudiantepestudio/unidades/"+id;
+    var API_URL11 = URL+"estudiantepestudio/unidades/"+id+"/periodo/"+$('#pmatricula_id').val();
     fetch(API_URL11).then((response)=>response.json()).then((unidades)=>{
         unidades.forEach(unidad=>{
             calcularnotas(id,unidad.id);         
