@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Docentes\Asistencias;
 use App\Models\EmatriculaDetalle;
 use App\Models\Uasignada;
+use App\Services\DateService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
@@ -153,7 +154,10 @@ class AsistenciaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {            
+    {   
+        /* return [
+            'respuesta' => $request->all(),
+        ]; */  
         try {
             foreach ($request->datos as $key => $dato) {
                 # code... $dateService->inability($estudiantematriculadetalle->id,$uasignada)
@@ -167,8 +171,15 @@ class AsistenciaController extends Controller
                         'emdetalle_id' => $data[0],
                     ]
                 );
+                $dateService = new DateService();
+                $uasignada = Uasignada::findOrFail($request->uasignada);
+                $em_detalle = EmatriculaDetalle::findOrFail($data[0]);
+                if($dateService->inability($data[0],$uasignada)){
+                    $em_detalle->nota = 0;
+                    $em_detalle->update();
+                }
             }
-            //luego de guardar la asistencia debemos de
+            //luego de guardar la asistencia debemos de revisar si le ponemos 0 o no
             $array = [
                 'respuesta' =>'Correcto'
             ];  

@@ -199,7 +199,7 @@ class AdministradorController extends Controller
                         break;
                     }
                 }
-                /* array_push($uni,[
+                /* array_push($uni,[ kXhJZj]jyHjc1
                     'unidad'=>$unidade->nombre,
                     'notas'=>$notas,
                     'aprobado'=>$aprobado,
