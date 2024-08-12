@@ -19,7 +19,6 @@
         </button>
     </div>
 </div>
-
 <div class="card">
     <div class="card-header bg-danger">
         <h5 class="h5"><i class="fas fa-user-graduate"></i> Datos Estudiante</h5>

@@ -417,6 +417,10 @@ Route::get('/privacidad',function(){
     ->name('administrador.normalizarnombres');
     Route::get('/administrador/masivemakeaccount/{id}',[AdministradorController::class,'masivemakeaccount'])
     ->name('administrador.masivemakeaccount');
+    Route::get('/administrador/setnulllicencias/{id}',[AdministradorController::class,'null_licencias'])
+    ->name('administrador.setnulllicencias');
+    Route::get('/administrador/setceroinabilitados/{id}',[AdministradorController::class,'set_cero_inabilitados'])
+    ->name('administrador.setceroinabilitados');
     Route::get('/administrador/unidades',function(){
         $carreras = Carrera::where('ccarrera_id','<>',null)->get();
         return view('administrador.unidades',compact('carreras'));

@@ -4,6 +4,9 @@
 
 @section('content_header')
     <h1>Registro de Licencia</h1>
+    <a href="{{ route('sacademica.licencias.index') }}" class="btn btn-danger mt-2">
+        <i class="fas fa-backward"></i> Regresar
+    </a>
 @stop
 
 @section('content')
@@ -63,10 +66,6 @@
     </div>
 @stop
 
-@section('css')
-    {{-- Add here extra stylesheets --}}
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
-@stop
 
 @section('js')
     <script>

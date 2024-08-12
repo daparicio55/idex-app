@@ -52,7 +52,27 @@ class LicenciaController extends Controller
     public function store(Request $request)
     {
         //
-        return $request;
+        $request->validate([
+            'licencia'=>'required',
+            'observacion'=>'required'
+        ]);
+        try {
+            //code...
+            DB::beginTransaction();
+            $licencia = Licencia::findOrFail($request->licencia);
+            $licencia->observacion = $request->observacion;
+            $matricula = Ematricula::findOrFail($licencia->matricula->id);
+            $matricula->licenciaObservacion = $request->observacion;
+            $matricula->update();
+            DB::commit();
+            
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            dd($th->getMessage());
+            return Redirect::route('sacademica.licencias.index')->with('error','error al intentar actualizar la resolucion');
+        }
+        return Redirect::route('sacademica.licencias.index')->with('info','Se actualizo la resolucion correctamente');
     }
 
     /**

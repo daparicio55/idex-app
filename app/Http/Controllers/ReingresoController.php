@@ -8,6 +8,7 @@ use App\Models\Reingreso;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class ReingresoController extends Controller
 {
@@ -25,6 +26,19 @@ class ReingresoController extends Controller
     public function create(){
         return view('sacademica.reingresos.create');
     }
+    public function store(Request $request){
+        try {
+            //code...
+            $reingreso = Reingreso::findOrFail($request->reingreso);
+            $reingreso->observacion = $request->observacion;
+            $reingreso->update();
+        } catch (\Throwable $th) {
+            //throw $th;
+            dd($th->getMessage());
+            return Redirect::route('sacademica.reingresos.index')->with('error','no pudo actualizar la resolucion correctamente');
+        }
+        return Redirect::route('sacademica.reingresos.index')->with('info','se actualizo la resolucion correctamente');
+    }
     public function update(Request $request,$id){
         try {
             //code...
@@ -39,9 +53,24 @@ class ReingresoController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
-            dd($th->getMessage());
-            return view('sacademica.reingresos.index')->with('error',$th->getMessage());
+            return Redirect::route('sacademica.reingresos.index')->with('error',$th->getMessage());
         }
-        return view('sacademica.reingresos.index')->with('info','se registro correctamente el reingreso');
+        return Redirect::route('sacademica.reingresos.index')->with('info','se registro correctamente el reingreso');
+    }
+    public function destroy($id){
+        try {
+            //code...
+            DB::beginTransaction();
+            $reingreso = Reingreso::findOrFail($id);
+            $reingreso->licencia->matricula->update(['licencia','SI']);
+            $reingreso->delete();
+            DB::commit();
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            dd($th->getMessage());
+            return Redirect::route('sacademica.reingresos.index')->with('error','no se elimino el registro de reingreso correctamente');
+        }
+        return Redirect::route('sacademica.reingresos.index')->with('info','se elimino el registro de reingreso correctamente');
     }
 }

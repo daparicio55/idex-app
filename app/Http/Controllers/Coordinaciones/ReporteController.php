@@ -19,11 +19,11 @@ class ReporteController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        /* $this->middleware('can:coordinaciones.reportes.index')->only('index');
+        $this->middleware('can:coordinaciones.reportes.index')->only('index');
         $this->middleware('can:coordinaciones.reportes.create')->only('create','store');
         $this->middleware('can:coordinaciones.reportes.edit')->only('edit','update');
         $this->middleware('can:coordinaciones.reportes.destroy')->only('destroy');
-        $this->middleware('can:coordinaciones.reportes.show')->only('show'); */
+        $this->middleware('can:coordinaciones.reportes.show')->only('show');
     }
 
     protected function get_docentes(){
@@ -83,6 +83,7 @@ class ReporteController extends Controller
     {
         $uasignada = Uasignada::findOrFail($id);
         $fechas = $this->fdias($uasignada);
+        
         //tengo que poner la unidad didactica de equivalencia.
         $estudiantes = Ematricula::select('ematriculas.licencia','ematriculas.licenciaObservacion','clientes.nombre','clientes.apellido','clientes.dniRuc','admisiones.periodo','ematricula_detalles.tipo','ematricula_detalles.observacion','ematricula_detalles.id')
         ->join('ematricula_detalles','ematriculas.id','=','ematricula_detalles.ematricula_id')
@@ -156,6 +157,7 @@ class ReporteController extends Controller
     ];
     protected function fdias($asignacione){
         //llenamos con los días de la semana que se lleva esta unidad didactica
+        //dd($asignacione->horarios);
         $dias = [];
         foreach ($asignacione->horarios as $key => $horario) {
             # code...

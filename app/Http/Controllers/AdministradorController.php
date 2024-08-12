@@ -12,11 +12,14 @@ use App\Models\Estudiante;
 use App\Models\Mformativo;
 use App\Models\Pmatricula;
 use App\Models\Practica;
+use App\Models\Uasignada;
 use App\Models\Ucliente;
 use App\Models\Udidactica;
 use App\Models\User;
+use App\Services\DateService;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class AdministradorController extends Controller
 {
@@ -34,17 +37,73 @@ class AdministradorController extends Controller
         $this->middleware('can:administrador.checkeformativas')->only('checkeformativas');
     }
     public function normalizarnombres(){
-        $clientes = Cliente::all();
-        b:foreach ($clientes as $key => $cliente) {
-            # code...
-            $cliente->mayusculas();
+        try {
+            //code...
+            $clientes = Cliente::all();
+            foreach ($clientes as $key => $cliente) {
+                # code...
+                $cliente->mayusculas();
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return [
+                'estado'=>'Fallo',
+                'message'=>$th->getMessage()
+            ];
         }
-        
-        return "Listo";
+        return [
+            'estado'=>'Listo',
+            'message'=>'Nombres normalizados'
+        ];
+    }
+    function set_null_licencias($pmatricula_id){
+        $resultados = EmatriculaDetalle::whereHas('matricula',function($query) use($pmatricula_id){
+                $query->where('pmatricula_id','=',$pmatricula_id)
+                ->where('licencia','=','SI');
+        })->update(['nota'=>null]);        
+        return Redirect::route('administrador.index')->with('info',"se puso notas nulas a $resultados unidades didácticas con Licencias");
+    }
+    public function null_licencias($pmatricula_id){
+        return $this->set_null_licencias($pmatricula_id);
+    }
+    function set_cero_inabilitados($pmatricula_id){
+        $emdetalles = EmatriculaDetalle::whereHas('matricula',function($query) use($pmatricula_id){
+                $query->where('pmatricula_id','=',$pmatricula_id);
+        })->get();
+        $inabilitados = [];
+        foreach ($emdetalles as $emdetalle) {
+                # code...
+                $uasignada = Uasignada::where('pmatricula_id','=',$pmatricula_id)
+                ->where('udidactica_id','=',$emdetalle->udidactica_id)
+                ->first();
+                $dateservices = new DateService();
+                if(isset($uasignada->id)){
+                        if($emdetalle->nota <> 0){
+                                if($dateservices->inability($emdetalle->id,$uasignada)){
+                                        if(!isset($emdetalle->matricula->li->id)){
+                                                $emdetalle->nota = 0;
+                                                $emdetalle->update();
+                                                $inabilitados [] = [
+                                                        'id'=>$emdetalle->id,
+                                                        'dni'=>$emdetalle->matricula->estudiante->postulante->cliente->dniRuc,
+                                                        'nombre'=>$emdetalle->matricula->estudiante->postulante->cliente->apellido.' ,'.$emdetalle->matricula->estudiante->postulante->cliente->nombre,
+                                                        'programa'=>$emdetalle->matricula->estudiante->postulante->carrera->nombreCarrera,
+                                                        'ciclo'=>$emdetalle->unidad->ciclo,
+                                                        'unidad'=>$emdetalle->unidad->nombre,
+                                                        'periodo'=>$emdetalle->matricula->matricula->nombre,
+                                                        'nota'=>$emdetalle->nota
+                                                ];
+                                        }
+                                };
+                        }
+                }
+        }
+        $cant = count($inabilitados);
+        return Redirect::route('administrador.index')->with('info',"se supo CERO a $cant unidades didacticas"); 
     }
     public function index(){
         $admisiones = Admisione::orderBy('periodo','desc')->take(10)->get();
-        $periodos = Pmatricula::orderBy('nombre','desc')->take(18)->get();
+        $periodos = Pmatricula::orderBy('nombre','desc')->take(10)->get();
         return view('administrador.index',compact('admisiones','periodos'));
     }
     public function reportematricula($id){

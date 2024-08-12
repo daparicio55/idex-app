@@ -5,124 +5,122 @@
     <h1>Panel de Administrador</h1>
 @stop
 @section('content')
+<x-alert/>
 
-<nav class="navbar navbar-expand-lg navbar-light">
-  <div class="collapse navbar-collapse" id="navbarNavDropdown1">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a href="{{ route('administrador.normalizarnombres') }}" class="btn btn-outline-danger" >Normalizacion de Nombres</a>
-      </li>
-      <li class="nav-item">
-        <button class="btn btn-outline-success ml-2" id="btn-notas" type="button">Revisar Notas</button>
-      </li>
-      <li>
-        <button type="button" class="btn btn-outline-info ml-2">Revisar Ex. Formativas</button>
-      </li>
-      <li>
-        <a href="{{ route('administrador.reportedeudas') }}" class="btn btn-outline-primary ml-2">Reporte Deudas</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+<table class="table mt-2">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Acciones del Administrador</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="pb-1 pt-1">1</td>
+      <td class="pb-1 pt-1">Normalizacion de nombres de clientes del sistema a todos en mayusculas</td>
+      <td class="pb-1 pt-1">
+        <button type="button" class="btn btn-secondary w-100" id="btn_normalizar">
+          Normalizar
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="pb-1 pt-1">2</td>
+      <td class="pb-1 pt-1">Revisar notas de estudiantes del sistema.</td>
+      <td class="pb-1 pt-1">
+        <button type="button" class="btn btn-secondary w-100" id="btn_revizar_notas">
+          Revisar
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="pb-1 pt-1">3</td>
+      <td class="pb-1 pt-1">Revisar experiencias formativas de los estudiantes</td>
+      <td class="pb-1 pt-1">
+        <button type="button" class="btn btn-secondary w-100" id="btn_revizar_experiencias">
+          Revisar
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="pb-1 pt-1">4</td>
+      <td class="pb-1 pt-1">Mostrar reportes de deudas de todo el sistema</td>
+      <td class="pb-1 pt-1">
+        <a type="button" href="{{ route('administrador.reportedeudas') }}" target="_blank" class="btn btn-secondary w-100" id="btn_reportes_deudas"> 
+          Mostrar
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td class="pb-1 pt-1">5</td>
+      <td class="pb-1 pt-1">Mostrar reportes de ingresantes por periodo de admision</td>
+      <td class="pb-1 pt-1">
+        <x-btn-drop-down id="reporteingresantes" :items=$admisiones ruta="administrador.reporteingresantes">
+          Admisiones
+        </x-btn-drop-down>
+      </td>
+    </tr>
+    <tr>
+      <td class="pb-1 pt-1">6</td>
+      <td class="pb-1 pt-1">Mostrar reportes de estudiantes con dicapacidad por periodo de estudios</td>
+      <td class="pb-1 pt-1">
+        <x-btn-drop-down id="reportediscapacitados" :items=$periodos ruta="administrador.reportedis">
+          P. Matrículas
+        </x-btn-drop-down>
+      </td>
+    </tr>
+    <tr>
+      <td class="pb-1 pt-1">7</td>
+      <td class="pb-1 pt-1">Mostrar reportes de matriculas por periodo de estudios</td>
+      <td class="pb-1 pt-1">
+        <x-btn-drop-down id="reportematriculas" :items=$periodos ruta="administrador.reportematricula">
+          P. Matrículas
+        </x-btn-drop-down>
+      </td>
+    </tr>
+    <tr>
+      <td class="pb-1 pt-1">8</td>
+      <td class="pb-1 pt-1">Creacion de cuentas de estudiantes masivamente por periodo de estudios</td>
+      <td class="pb-1 pt-1">
+        <x-btn-drop-down id="makemasiveaccount" :items=$periodos ruta="administrador.masivemakeaccount">
+          P. Matrículas
+        </x-btn-drop-down>
+      </td>
+    </tr>
+    <tr>
+      <td class="pb-1 pt-1">9</td>
+      <td class="pb-1 pt-1">Set <span class="text-info">NULL</span> notas a estudiantes con licencia</td>
+      <td class="pb-1 pt-1">
+        <x-btn-drop-down id="setnulllicencias" :items=$periodos ruta="administrador.setnulllicencias">
+          P. Matrículas
+        </x-btn-drop-down>
+      </td>
+    </tr>
+    <tr>
+      <td class="pb-1 pt-1">10</td>
+      <td class="pb-1 pt-1">Set <span class="text-danger">CERO</span> notas a estudiates deshabilitados por inasistencia</td>
+      <td class="pb-1 pt-1">
+        <x-btn-drop-down id="setcerodeshabilitados" :items=$periodos ruta="administrador.setceroinabilitados">
+          P. Matrículas
+        </x-btn-drop-down>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-
-<nav class="navbar navbar-expand-lg navbar-light">
-    {{-- <a class="navbar-brand" href="#">MENU</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button> --}}
-    
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="navingresantes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Reporte Ingresantes
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navingresantes">
-            @foreach ($admisiones as $admisione)
-                <a class="dropdown-item" href="{{ route('administrador.reporteingresantes',$admisione->id) }}">{{ $admisione->periodo }}</a>    
-            @endforeach
-          </div>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="navdiscapacidad" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Reporte Discapacidad
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navdiscapacidad">
-            @foreach ($periodos as $periodo)
-              <a href="{{ route('administrador.reportedis',$periodo->id) }}" class="dropdown-item">
-                {{ $periodo->nombre }}
-              </a>
-            @endforeach
-          </div>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="navreportematricula" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Reporte de Matriculas
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navreportematricula">
-            @foreach ($periodos as $periodo)
-                <a href="{{ route('administrador.reportematricula',$periodo->id) }}" class="dropdown-item">
-                  {{ $periodo->nombre }}
-                </a>
-            @endforeach
-          </div>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="navmasiveaccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Masive Create Account
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navmasiveaccount">
-            @foreach ($periodos as $periodo)
-                <a href="{{ route('administrador.masivemakeaccount',$periodo->id) }}" class="dropdown-item">
-                  {{ $periodo->nombre }}
-                </a>
-            @endforeach
-          </div>
-        </li>
-      </ul>
-    </div>
-</nav>
-<div id="loader-wrapper" style="display: none">
-  <div id="loader">
-      <div id="circle"></div>
-  </div>
-  <p id="loading-text">Cargando esto puede tomar varios minutos ...</p>
-</div>
+<x-loading/>
 @stop
 @section('css')
   <link rel="stylesheet" href="{{ asset('css/loading.css') }}">
 @stop
 @section('js')
-    <script>
-    function mostrarPantallaDeCarga() {
-      const loader = document.getElementById('loader-wrapper');
-      loader.style.display = "flex";
-      loader.style.opacity = '1'; // Establece la opacidad al 100%
-    }
-    // Ocultar la pantalla de carga con un efecto fade
-    function ocultarPantallaDeCarga() {
-      const loader = document.getElementById('loader-wrapper');
-      loader.style.display = "none";
-      loader.style.opacity = '0'; // Establece la opacidad al 0%
-    }
-    document.getElementById('btn-notas',).addEventListener('click',function(){
-      let url = '{{ asset('') }}';
-      let ruta = url+'administrador/checknotas';
-      console.log(ruta);
-      mostrarPantallaDeCarga();
-      fetch(ruta).then(response => {
-        if (!response.ok){
-          throw new Error('Error en la solicitud');
-        }
-        return response.json();
-      }).then(data => {
-        console.log(data);
-      }).catch(error=>{
-        console.log(error);
-      }).finally(()=>{
-        ocultarPantallaDeCarga();
-      });
+  <script src="{{ asset('js/carga.js') }}"></script>
+  <script src="{{ asset('js/administrador/main.js') }}"></script>
+  <script>
+    document.getElementById('btn_normalizar').addEventListener('click',function(){
+      let ruta = "{{ route('administrador.normalizarnombres') }}";
+      normalizar_nombres(ruta);
     });
-    </script>
+  </script>
 @stop

@@ -2,17 +2,13 @@
 
 use App\Models\AdmisioneVacante;
 use App\Models\Capacidade;
-use App\Models\Cepre;
 use App\Models\CepreEstudiante;
 use App\Models\CepreSumativo;
 use App\Models\CepreSumativoAlternativa;
 use App\Models\CepreSumativoMarcada;
 use App\Models\Cliente;
-use App\Models\CriterioDetalle;
 use App\Models\Deuda;
-use App\Models\DeudaDetalle;
 use App\Models\Dmove;
-use App\Models\Document;
 use App\Models\Ematricula;
 use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
@@ -21,9 +17,9 @@ use App\Models\IndicadoreDetalle;
 use App\Models\Mformativo;
 use App\Models\Uasignada;
 use App\Models\Udidactica;
+use App\Services\DateService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use LDAP\Result;
 use Twilio\Rest\Client;
 function oficinaNombre(){
     $oficina=DB::table('users')
@@ -1010,4 +1006,70 @@ function getDocente($pmatricula_id,$udidactica_id){
         ->first();
         return $uasignada;
 }
+function getNota($em_detalle){
+        //daremos la nota la matricula
+        $em_detalle = EmatriculaDetalle::findOrFail($em_detalle);
+        $uasignada = Uasignada::where('udidactica_id','=',$em_detalle->udidactica_id)
+        ->where('pmatricula_id','=',$em_detalle->matricula->pmatricula_id)
+        ->first();
 
+        $capacidades = [];
+
+        foreach ($uasignada->capacidades as $capacidade) {
+                $notas = IndicadoreDetalle::whereHas('indicador', function($query) use($capacidade){
+                        $query->where('capacidade_id','=',$capacidade->id);
+                })->where('ematricula_detalle_id','=',$em_detalle->id)
+                ->get();
+                $suma = $notas->average('nota');
+                $capacidades [] = [
+                        'capacidad'=> round($suma,0),
+                ];
+        }
+        $total=0;
+        foreach ($capacidades as $capacidad) {
+                # code...
+                $total += $capacidad["capacidad"];
+        }
+        return round(($total/count($capacidades)),0);
+}
+function set_cero_inabilitados($pmatricula_id){
+        $emdetalles = EmatriculaDetalle::whereHas('matricula',function($query) use($pmatricula_id){
+                $query->where('pmatricula_id','=',$pmatricula_id);
+        })->get();
+        $inabilitados = [];
+        foreach ($emdetalles as $emdetalle) {
+                # code...
+                $uasignada = Uasignada::where('pmatricula_id','=',$pmatricula_id)
+                ->where('udidactica_id','=',$emdetalle->udidactica_id)
+                ->first();
+                $dateservices = new DateService();
+                if(isset($uasignada->id)){
+                        if($emdetalle->nota <> 0){
+                                if($dateservices->inability($emdetalle->id,$uasignada)){
+                                        if(!isset($emdetalle->matricula->li->id)){
+                                                $emdetalle->nota = 0;
+                                                $emdetalle->update();
+                                                $inabilitados [] = [
+                                                        'id'=>$emdetalle->id,
+                                                        'dni'=>$emdetalle->matricula->estudiante->postulante->cliente->dniRuc,
+                                                        'nombre'=>$emdetalle->matricula->estudiante->postulante->cliente->apellido.' ,'.$emdetalle->matricula->estudiante->postulante->cliente->nombre,
+                                                        'programa'=>$emdetalle->matricula->estudiante->postulante->carrera->nombreCarrera,
+                                                        'ciclo'=>$emdetalle->unidad->ciclo,
+                                                        'unidad'=>$emdetalle->unidad->nombre,
+                                                        'periodo'=>$emdetalle->matricula->matricula->nombre,
+                                                        'nota'=>$emdetalle->nota
+                                                ];
+                                        }
+                                };
+                        }
+                }
+        }
+        return $inabilitados;
+}
+function set_null_licencias($pmatricula_id){
+        $resultados = EmatriculaDetalle::whereHas('matricula',function($query) use($pmatricula_id){
+                $query->where('pmatricula_id','=',$pmatricula_id)
+                ->where('licencia','=','SI');
+        })->update(['nota'=>null]);
+        return $resultados;
+}

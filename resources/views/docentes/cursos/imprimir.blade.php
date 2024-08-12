@@ -24,6 +24,10 @@
 @section('docente')
     {{ $uasignada->user->name }}
 @endsection
+@php
+    $respuesta = new \App\Services\DateService();
+    $total_fechas = count($fechas);
+@endphp
 <!-- Lista de Alumnos -->
 @section('alumnos')
     @foreach ($estudiantes as $key=>$estudiante)
@@ -58,38 +62,16 @@
     @foreach ($fechas as $fecha)
         <th class="pl-0 pr-0 pt-1 pb-1 text-center border vertical-text">{{ date('d-m-Y',strtotime($fecha['fecha'])) }}</th>
     @endforeach
-    @php
-        $total_fechas = count($fechas);
-        $maximo = $total_fechas * 0.30;
-        $maximo = ceil($maximo);
-    @endphp
 @endsection
 @section('asistencias')
     @foreach ($estudiantes as $key=>$estudiante)
         <tr>
-            {{-- calculamos las faltas --}}
-            @php
-                $faltas = 0;
-            @endphp
-            @foreach ($fechas as $dia)
-                @php
-                    $valor = \App\Models\Docentes\Asistencias::where('fecha','=',$dia['fecha'])->where('emdetalle_id','=',$estudiante->id)->first();
-                    if(isset($valor->estado)){
-                        if($valor->estado == "F"){
-                            $faltas ++;
-                        }
-                    }
-                @endphp
-            @endforeach
             {{-- revizamos si las faltas superan el %30 --}}
             <td>{{ cero($key+1) }}</td>
             @if($estudiante->licencia == "SI")
                 <td class="border text-center" colspan="{{ $total_fechas }}">Licencia - {{ $estudiante->licenciaObservacion }}</td>
             @else
                 @foreach ($fechas as $kd => $dia)
-                    @php
-                        $respuesta = new \App\Services\DateService();
-                    @endphp
                     @if ($respuesta->inability($estudiante->id,$uasignada))
                         @if ($kd == 0)
                             <td class="border text-center text-danger text-danger" colspan="{{ $total_fechas }}">

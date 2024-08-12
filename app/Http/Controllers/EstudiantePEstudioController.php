@@ -215,6 +215,7 @@ class EstudiantePEstudioController extends Controller
         ->orderBy('fecha','desc')
         ->get();
         $respuesta = false;
+        $resolucion = null;
         //de forma rápida buscamos si tenemos licencias
         foreach ($matriculas as $key => $matricula) {
             # code...
@@ -223,11 +224,13 @@ class EstudiantePEstudioController extends Controller
                 if(!isset($matricula->li->reingreso->id))
                 {
                     $respuesta = true;
+                    $resolucion = $matricula->licenciaObservacion;
                 }
             }
         }
         $arr = [
             'message'=>$respuesta,
+            'resolucion'=>$resolucion
         ];
         return $arr;
     }

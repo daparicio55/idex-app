@@ -121,7 +121,7 @@
             return response.json();
         }).then(function(data){
             if(data.message){
-                alert('LICENCIA ACTIVA, REALIZE EL REINGRESO PRIMERO');
+                alert('LICENCIA ACTIVA, REALIZE EL REINGRESO PRIMERO: '+data.resolucion);
                 return;
             }
             eleccion2(id);

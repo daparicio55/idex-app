@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Ematricula extends Model
 {
     use HasFactory;
+    public $fillable = [
+        'licencia',
+        'licenciaObservacion'
+    ];
     public function estudiante(){
         return $this->belongsTo(Estudiante::class,'estudiante_id');
     }
