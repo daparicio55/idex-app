@@ -102,9 +102,12 @@ use App\Http\Controllers\VmatriculaController;
 use App\Models\Carrera;
 use App\Models\Cliente;
 use App\Models\cvPersonale;
+use App\Models\Docentes\Recuperation;
+use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
 use App\Models\Pmatricula;
 use App\Models\User;
+use App\Models\Venta;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -426,6 +429,9 @@ Route::get('/privacidad',function(){
         return view('administrador.unidades',compact('carreras'));
         return $carreras;
     });
+
+Route::get('statistics/website',[StatisticController::class,'website'])->name('statistics.website');
+
 //RUTAS DE ESTUDIANTES
 
 
@@ -446,23 +452,56 @@ Route::get('/sacademica/correos',function(){
     }
     
 })->middleware('auth');
-/* Route::get('/info_php',function(){
-    echo phpinfo();
-}); */
-Route::get('statistics/website',[StatisticController::class,'website'])->name('statistics.website');
-/* Route::get('/sms',function(){
-    return sendSMS("935526612","esto es una mensage para la prueba del sistema de tratite documentario");
-}); */
-Route::get('/last',function(){
-    //return view('welcome');
-    /* $uni = Udidactica::find(17);
-    return $uni->intercambiables[0]->unidades->where('id','<>',$uni->id); */
+Route::get('/jalados',function(){
+    $emdetalle = EmatriculaDetalle::whereHas('matricula',function($query){
+        $query->where('pmatricula_id','=',101);
+    })->get();
+    $jalados = Recuperation::whereHas('ematriculaDetalle.matricula',function($query){
+        $query->where('pmatricula_id','=',100)
+        ->where('emd_id','=',39174);
+
+    })->first();
+    //return $jalados;
+    return $jalados->ematriculaDetalle->matricula->estudiante;
 });
-/* Route::get('/ver',function(){
-    $ventas = Servicio::get();
-    return $ventas->detalles->count();
-    
-});  */
+
 //Coordinaciones
 Route::resource('/sacademica/programas',ProgramaController::class)->names('sacademica.programas');
 Route::resource('/coordinaciones/reportes',ReporteController::class)->names('coordinaciones.reportes');
+Route::get('/porcreditos',function(){
+    $pmatricula = Pmatricula::find(101);
+    $matriculas_arr = [];
+    foreach ($pmatricula->matriculas as $key => $matricula) {
+        # code...
+        $detalle_response = [];
+        $pago = 0;
+        foreach ($matricula->detalles as $key => $detalle) {
+            # code...
+            if ($detalle->tipo == "Regular"){
+                $pago = $pago + intval($detalle->unidad->creditos) * 13;
+            }
+            if ($detalle->tipo == "Repitencia"){
+                $pago = $pago + intval($detalle->unidad->creditos) * 26;
+            }
+            $detalle_response [] = [
+                'tipo' => $detalle->tipo,
+                'creditos' => $detalle->unidad->creditos,
+            ];
+        }
+        $ventas = Venta::whereBetween('fecha',['2024-08-01','2024-08-14'])
+        ->where('idCliente','=',$matricula->estudiante->postulante->cliente->idCliente)
+        ->get();
+        $matriculas_arr [] = [
+            'numero' => $key + 1,
+            'dni' => $matricula->estudiante->postulante->cliente->dniRuc,
+            'nombres' => $matricula->estudiante->postulante->cliente->apellido.', '.$matricula->estudiante->postulante->cliente->nombre,
+            'pago' => $pago,
+            'pnormal' => $ventas->sum('total'),
+            'ventas'=>$ventas,
+            //'detalles' => $detalle_response,
+        ];
+    }
+    $c_pagos = array_column($matriculas_arr,'pago');
+    $total = array_sum($c_pagos);
+    return view('administrador.reportecreditos',compact('matriculas_arr'));
+})->middleware('auth');

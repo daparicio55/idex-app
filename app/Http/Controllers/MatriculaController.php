@@ -70,7 +70,7 @@ class MatriculaController extends Controller
         }else{
             $matriculas = Ematricula::whereHas('matricula',function($query){
                 $query->where('plan_cerrado',0);
-            })->orderBy('fecha','desc')
+            })->orderBy('id','desc')
             ->paginate(10);
         }
         return view('sacademica.ematriculas.index',compact('matriculas','programas','periodos'));

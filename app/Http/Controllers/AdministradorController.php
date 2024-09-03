@@ -114,7 +114,7 @@ class AdministradorController extends Controller
         try {
             //code...
             $request = new Request();
-        $estudiantes = Estudiante::whereHas('matriculas',function($query) use($id){
+            $estudiantes = Estudiante::whereHas('matriculas',function($query) use($id){
             $query->where('pmatricula_id','=',$id);
         })->get();
         //return $estudiantes;
@@ -152,19 +152,20 @@ class AdministradorController extends Controller
                     array_push($users,$a);
                 }else{
                     //de existir el usuario entonces solo creamos la tabla intermedia;
-                    
-                    $request->merge(['email' => $uss->email]);
-                    $ucliente = new Ucliente();
-                    $ucliente->user_id = $uss->id;
-                    $ucliente->cliente_id = $cliente->idCliente;
-                    $ucliente->save();
-                    $a = [
-                        'dni'=>$cliente->dniRuc,
-                        'apellido'=>$cliente->apellido,
-                        'nombre'=>$cliente->nombre,
-                        'contraseña'=>'Pj'.$cliente->dniRuc,
-                    ];
-                    array_push($users,$a);
+                    if(!isset($uss->ucliente->id)){
+                        $request->merge(['email' => $uss->email]);
+                        $ucliente = new Ucliente();
+                        $ucliente->user_id = $uss->id;
+                        $ucliente->cliente_id = $cliente->idCliente;
+                        $ucliente->save();
+                        $a = [
+                            'dni'=>$cliente->dniRuc,
+                            'apellido'=>$cliente->apellido,
+                            'nombre'=>$cliente->nombre,
+                            'contraseña'=>'Pj'.$cliente->dniRuc,
+                        ];
+                        array_push($users,$a);
+                    }
                 }
                 //$this->sendReset($request);
             }

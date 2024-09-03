@@ -99,12 +99,13 @@
     <script>    
     function calcularnotas(estudiante,unidad){
         var API_URL2 = URL+"estudiantepestudio/notas?estudiante="+estudiante+"&unidad="+unidad;
+        console.log(API_URL2);
         fetch(API_URL2).then((response)=>response.json()).then((notas)=>{
             notas.forEach(nota=>{
                 $('#txt'+unidad).val(nota.nota);
                 var texto = document.getElementById('txt'+unidad);
                 var check = document.getElementById('check'+unidad);
-                if (nota.nota<13){
+                if (nota.nota < 13){
                     texto.setAttribute('style','color: red');
                 }else{
                     $('#fila'+unidad).remove();

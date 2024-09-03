@@ -69,6 +69,8 @@
                         <select name='select{{ $y }}[]' style="display: inline" @if($estado <> "NR") @if($estado == "P") class="text-primary" @else @if($estado == "F") class="text-danger" @else class="text-warning" @endif @endif @endif>
                             <option value="{{ $detalle['id'] }}:P" @if($estado == "P") selected @endif>P</option>
                             <option value="{{ $detalle['id'] }}:F" @if($estado == "F") selected @endif>F</option>
+                            <option value="{{ $detalle['id'] }}:J" @if($estado == "J") selected @endif>J</option>
+                            <option value="{{ $detalle['id'] }}:L" @if($estado == "L") selected @endif>L</option>
                         </select>
                         @if ($estado == "NR")
                             <span class="text-danger"><i class="fas fa-exclamation"></i></span>

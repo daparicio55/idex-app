@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Mail\CorreoMail;
 use App\Models\Cliente;
+use App\Models\EmatriculaDetalle;
 use App\Models\Estudiante;
+use App\Models\Udidactica;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use PDF;
@@ -27,14 +29,106 @@ class StudentController extends Controller
     }
     public function index(Request $request)
     {
-        ///
         if(isset($request->dni)){
             $cliente = Cliente::where('dniRuc','=',$request->dni)->first();
-            return view('students.index',compact('cliente'));
+            $datos = $this->getData($request->dni);
+            $object = (object) $datos;
+            return view('students.show',compact('datos','object'));
+            //return view('students.index',compact('cliente'));
         }
         return view('students.index');
     }
+    public function getData($dni){
+        $query = Cliente::where('dniRuc','=',$dni)->first();
+        $data = null;
+        $data_postulaciones = null;
+        if (isset($query->idCliente)){
+            $cliente = Cliente::findOrFail($query->idCliente);
+            $data_client = [
+                'nombres' => $cliente->nombre,
+                'apellidos' => $cliente->apellido,
+                'dni' => $cliente->dniRuc,
+                'telefono' => $cliente->telefono,
+                'telefono2' => $cliente->telefono2
+            ];
+            #recorremos las postulaciones que tiene el cliente
+            foreach ($cliente->postulaciones as $key => $postulacione) {
+                # ingresamos las postulaciones del cliente
+                if(isset($postulacione->estudiante->id)){
+                    $unidades = $this->getCiclos($postulacione);
+                    $data_postulaciones [] = [
+                        'programa' => $postulacione->carrera->nombreCarrera,
+                        'periodo' => $postulacione->admisione->nombre,
+                        'ciclos' => $unidades,
+                    ];
+                }
+            }          
+        }
+        
+        $data = [
+            'cliente'=> $data_client,
+            'carreras' => $data_postulaciones,
+        ];
+        return $data;
+    }
+    public function getCiclos($postulacione){
+        $ciclos = [
+            'I',
+            'II',
+            'III',
+            'IV',
+            'V',
+            'VI'
+        ];
+        $response = null;
+        foreach ($ciclos as $key => $ciclo) {
+            # code...
+            $unidades = $this->getUnidades($postulacione,$ciclo);
 
+            $response [] = [
+                'nombre' => $ciclo,
+                'unidades'=> $unidades,
+            ];
+        }
+        return $response;
+    }
+    public function getUnidades($postulacione,$ciclo){
+        $datos = Udidactica::whereHas('modulo',function($query) use($postulacione,$ciclo){
+            $query->where('carrera_id','=',$postulacione->idCarrera)
+            ->where('ciclo',$ciclo);
+        })->orderBy('tipo','desc')->orderBy('nombre','asc')->get();
+        $response = null;
+        foreach ($datos as $key => $dato) {
+            # code...
+            $matriculas = $this->getMatriculas($postulacione,$dato);
+            $response [] = [
+                'id'=>$dato->id,
+                'nombre'=>$dato->nombre,
+                'tipo'=>$dato->tipo,
+                'creditos'=>$dato->creditos,
+                'horas'=>$dato->horas,
+                'matriculas'=>$matriculas,
+            ];
+        }
+        return $response;
+    }
+    public function getMatriculas($postulacione,$unidad){
+        $matriculas = EmatriculaDetalle::whereHas('matricula',function($query) use($postulacione, $unidad){
+            $query->where('estudiante_id','=',$postulacione->estudiante->id)
+            ->where('udidactica_id','=',$unidad->id);
+        })->get();
+        $response = [];
+        foreach ($matriculas as $key => $matricula) {
+            # code...
+            $response [] = [
+                'tipo' => $matricula->tipo,
+                'nota' => $matricula->nota,
+                'color' => $matricula->nota > 12 ? 'primary' : 'danger',
+                'periodo' => $matricula->matricula->matricula->nombre,
+            ];
+        }
+        return $response;
+    }
     /**
      * Show the form for creating a new resource.
      *

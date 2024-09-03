@@ -32,6 +32,23 @@ class EstudiantePEstudioController extends Controller
         ->where('est.id','=',$request->estudiante)
         ->where('ema_de.udidactica_id','=',$request->unidad)
         ->get();
+        $notas = EmatriculaDetalle::where('udidactica_id','=',$request->unidad)
+        ->whereHas('matricula',function($query) use($request){
+            $query->where('estudiante_id','=',$request->estudiante);
+        })->get();
+        $arry = [];
+        foreach ($notas as $key => $nota) {
+            $num = null;
+            if (isset($nota->recuperacion->id)){
+                $num = $nota->recuperacion->nota;
+            }else{
+                $num = $nota->nota;
+            }
+            $arry [] = [
+                'nota'=>$num,
+            ];
+        }
+        return $arry;
         return $notas;
     }
     public function buscardni($dni){
@@ -79,9 +96,16 @@ class EstudiantePEstudioController extends Controller
             $calificaciones = [];
             $salto = false;
             foreach ($notas as $nota) {
-                if($nota->nota >12){
-                    $salto = true;
-                    break;
+                if($nota->nota > 12 || isset($nota->recuperacion->id)){
+                    if(isset($nota->recuperacion->id)){
+                        if($nota->recuperacion->nota > 12){
+                            $salto = true;
+                            break;
+                        }
+                    }else{
+                        $salto = true;
+                        break;
+                    }
                 }
                 array_push($calificaciones,$nota->nota);
             }
