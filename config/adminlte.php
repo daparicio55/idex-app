@@ -46,11 +46,11 @@ return [
     */
 
     'logo' => '<b>SISGE-PJ</b> | Principal',
-    'logo_img' => 'img/logo.png',
+    'logo_img' => 'favicons/favicon-48x48.ico',
     'logo_img_class' => 'brand-image img-circle elevation-3',
-    'logo_img_xl' => null,
+    'logo_img_xl' => 'favicons/favicon-48x48.ico',
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'AdminLTE',
+    'logo_img_alt' => 'SISGE-PJ',
 
     /*
     |--------------------------------------------------------------------------

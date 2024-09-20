@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
+    <link rel="icon" href="{{ asset('favicons/favicon-48x48.ico') }}" sizes="48x48">
+    <link rel="icon" href="{{ asset('favicons/favicon-32x32.ico') }}" sizes="48x48">
+    <link rel="icon" href="{{ asset('favicons/favicon-16x16.ico') }}" sizes="48x48">
     <style>
         .h1{
             font-weight: 800;
